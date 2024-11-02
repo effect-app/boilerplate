@@ -12,10 +12,6 @@ import { User } from "models/User.js"
 import { Q } from "../lib.js"
 import { UserProfile } from "../UserProfile.js"
 
-export interface UserPersistenceModel extends User.Encoded {
-  _etag: string | undefined
-}
-
 export type UserSeed = "sample" | ""
 
 export class UserRepo extends Effect.Service<UserRepo>()("UserRepo", {
