@@ -1,12 +1,12 @@
 import { initializeSync } from "@effect-app/vue/runtime"
 import { FetchHttpClient } from "@effect/platform"
 import { HashMap, Layer } from "effect"
-import { ApiClient, type ApiConfig } from "effect-app/client"
+import { ApiClientFactory, type ApiConfig } from "effect-app/client"
 import { typedKeysOf } from "effect-app/utils"
 import { readFileSync } from "fs"
 
 export function makeRuntime(config: ApiConfig) {
-  const layers = ApiClient.layer(config).pipe(Layer.provide(FetchHttpClient.layer))
+  const layers = ApiClientFactory.layer(config).pipe(Layer.provide(FetchHttpClient.layer))
   const runtime = initializeSync(layers)
 
   return runtime
@@ -36,7 +36,7 @@ export function makeHeadersHashMap(namespace: string, role?: "manager") {
   return HashMap.make(...keys.map((_) => [_, headers[_]!] as const))
 }
 
-type Env = ApiClient
+type Env = ApiClientFactory
 export type SupportedEnv = Env // Effect.DefaultEnv |
 
 export function toBase64(b: string) {

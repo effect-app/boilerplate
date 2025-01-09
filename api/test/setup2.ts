@@ -4,7 +4,7 @@ import { basicLayer, basicRuntime } from "#api/lib/basicRuntime"
 import { ApiPortTag } from "#api/lib/layers"
 import * as HttpClientNode from "@effect/platform-node/NodeHttpClient"
 import { Config, Effect, Layer, ManagedRuntime } from "effect-app"
-import { ApiClient } from "effect-app/client"
+import { ApiClientFactory } from "effect-app/client"
 import type { Runtime } from "effect/Runtime"
 
 const POOL_ID = process.env["VITEST_POOL_ID"]
@@ -20,7 +20,7 @@ const ApiClientLive = Config
       .hashMap(Config.string(), "headers")
       .pipe(Config.option)
   })
-  .pipe(Effect.andThen(ApiClient.layer), Layer.unwrapEffect, Layer.provide(HttpClientNode.layer))
+  .pipe(Effect.andThen(ApiClientFactory.layer), Layer.unwrapEffect, Layer.provide(HttpClientNode.layer))
 
 const appLayer = ApiLive
   .pipe(Layer.provideMerge(

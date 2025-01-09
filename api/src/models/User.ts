@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import * as A from "@effect/schema/Arbitrary"
 import { type Schema } from "effect-app"
 import { Context, Effect, Equivalence, pipe, S } from "effect-app"
 import { fakerArb } from "effect-app/faker"
 import { UserProfileId } from "effect-app/ids"
+import { AST } from "effect-app/Schema"
+import type * as A from "effect/Arbitrary"
 
 export const FirstName = S
   .NonEmptyString255
   .pipe(
     S.annotations({
-      [A.ArbitraryHookId]: (): A.LazyArbitrary<string> => (fc) => fc.string()
+      [AST.ArbitraryAnnotationId]: (): A.LazyArbitrary<string> => (fc) => fc.string()
     }),
     S.withDefaultMake
   )
@@ -20,14 +21,14 @@ export const DisplayName = FirstName
 export type DisplayName = Schema.Type<typeof DisplayName>
 
 S.Array(S.NonEmptyString255).pipe(
-  S.annotations({ [A.ArbitraryHookId]: (): A.LazyArbitrary<Array<string>> => (fc) => fc.tuple() })
+  S.annotations({ [AST.ArbitraryAnnotationId]: (): A.LazyArbitrary<Array<string>> => (fc) => fc.tuple() })
 )
 
 export const LastName = S
   .NonEmptyString255
   .pipe(
     S.annotations({
-      [A.ArbitraryHookId]: (): A.LazyArbitrary<string> => fakerArb((faker) => faker.person.lastName)
+      [AST.ArbitraryAnnotationId]: (): A.LazyArbitrary<string> => fakerArb((faker) => faker.person.lastName)
     }),
     S.withDefaultMake
   )

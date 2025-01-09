@@ -6,8 +6,11 @@ import rootPj from "../package.json"
 
 // use `pnpm effa link` in the root project
 // `pnpm effa unlink` to revert
+const a = fs.existsSync("../libs")
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const localLibs = !!(rootPj.resolutions as any)["effect-app"]
+const localLibs = a || !!(rootPj.resolutions as any)["effect-app"]
+
+const b = a ? "../libs" : "../../../effect-app/libs"
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
@@ -28,17 +31,11 @@ export default defineNuxtConfig({
     ...(localLibs
       ? {
           "effect-app": fileURLToPath(
-            new URL(
-              "../../../effect-app/libs/packages/effect-app/dist",
-              import.meta.url,
-            ),
+            new URL(b + "/packages/effect-app/src", import.meta.url),
           ),
-          // "@effect-app/vue": fileURLToPath(
-          //   new URL(
-          //     "../../../effect-app/libs/packages/vue/dist",
-          //     import.meta.url,
-          //   ),
-          // ),
+          "@effect-app/vue": fileURLToPath(
+            new URL(b + "/packages/vue/src", import.meta.url),
+          ),
         }
       : {}),
   },

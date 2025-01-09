@@ -14,7 +14,6 @@
     "node_modules/express-oauth2-jwt-bearer",
     "node_modules/fast-check",
     "node_modules/effect/*",
-    "node_modules/@effect/schema/Schema",
     ".nuxt"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",

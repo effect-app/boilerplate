@@ -3,4 +3,3 @@ packages:
   - frontend
   - e2e
   #- libs/packages/* # link
-  #- libs # link
