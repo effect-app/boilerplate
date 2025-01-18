@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BlogRsc } from "#resources"
+import { BlogRsc } from "#Blog/resources"
 import { S } from "effect-app"
 
 const blogClient = clientFor(BlogRsc)

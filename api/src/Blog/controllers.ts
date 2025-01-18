@@ -1,7 +1,6 @@
 import { UserRepo } from "#api/Accounts/UserRepo"
 import { Events } from "#api/Events"
 import { matchFor, Router } from "#api/lib/routing"
-import { BlogRsc } from "#resources"
 import { BogusEvent } from "#resources/Events"
 import { Operations } from "@effect-app/infra/Operations"
 import { Duration, Effect, Schedule } from "effect"
@@ -10,6 +9,7 @@ import { NonEmptyString2k, NonNegativeInt } from "effect-app/Schema"
 import { OperationsDefault } from "../lib/layers.js"
 import { BlogPostRepo } from "./BlogPostRepo.js"
 import { BlogPost } from "./models.js"
+import { BlogRsc } from "./resources.js"
 
 export default Router(BlogRsc)({
   dependencies: [

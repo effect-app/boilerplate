@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HelloWorldRsc } from "#resources"
+import { HelloWorldRsc } from "#HelloWorld/resources"
 import { buildFormFromSchema } from "@effect-app/vue/form"
 import { S } from "effect-app"
 

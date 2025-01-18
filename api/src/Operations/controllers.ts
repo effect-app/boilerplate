@@ -1,8 +1,8 @@
 import { OperationsDefault } from "#api/lib/layers"
 import { matchFor, Router } from "#api/lib/routing"
-import { OperationsRsc } from "#resources"
 import { Operations } from "@effect-app/infra/Operations"
 import { Effect } from "effect-app"
+import { OperationsRsc } from "./resources.js"
 
 export default Router(OperationsRsc)({
   dependencies: [OperationsDefault],

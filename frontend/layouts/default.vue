@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { AccountsRsc } from "#resources"
 import { useRouter } from "vue-router"
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
+import { AccountsRsc } from "#Accounts/resources"
 
 const accountsClient = clientFor(AccountsRsc)
 const [userResult] = useSafeQuery(accountsClient.GetMe)
