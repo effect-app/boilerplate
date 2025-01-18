@@ -1,6 +1,6 @@
-import { BlogPost } from "#models/Blog"
+import { UserViewFromId } from "#api/Accounts/UserResolver"
 import { S } from "#resources/lib"
-import { UserViewFromId } from "../resolvers/UserResolver.js"
+import { BlogPost } from "./models.js"
 
 export class BlogPostView extends S.ExtendedClass<BlogPostView, BlogPostView.Encoded>()({
   ...BlogPost.omit("author"),

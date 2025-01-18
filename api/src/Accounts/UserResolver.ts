@@ -1,11 +1,11 @@
-import { UserId } from "#models/User"
 import { clientFor } from "#resources/lib"
 import { Effect, Exit, Request, RequestResolver } from "effect"
 import { Array, Option, pipe, S } from "effect-app"
 import { ApiClientFactory, NotFoundError } from "effect-app/client"
 import { type Schema } from "effect-app/Schema"
-import * as UsersRsc from "../Users.js"
-import { UserView } from "../views/UserView.js"
+import { UserId } from "./models.js"
+import { AccountsRsc } from "./resources.js"
+import { UserView } from "./UserView.js"
 
 interface GetUserViewById extends Request.Request<UserView, NotFoundError<"User">> {
   readonly _tag: "GetUserViewById"
@@ -15,7 +15,7 @@ const GetUserViewById = Request.tagged<GetUserViewById>("GetUserViewById")
 
 const getUserViewByIdResolver = RequestResolver
   .makeBatched((requests: GetUserViewById[]) =>
-    clientFor(UsersRsc).pipe(
+    clientFor(AccountsRsc).pipe(
       Effect.flatMap((client) =>
         client
           .IndexUsers

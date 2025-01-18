@@ -1,4 +1,4 @@
-import type { Role } from "#models/User"
+import type { Role } from "#api/Accounts/models"
 import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
 import { Duration, Layer, Request as EffectRequest } from "effect-app"
 import type { RPCContextMap } from "effect-app/client"

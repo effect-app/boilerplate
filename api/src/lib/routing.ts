@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { AppLogger } from "#api/chore/logger"
 import { BaseConfig } from "#api/config"
+import { AppLogger } from "#api/lib/logger"
 import { RequestCacheLayers } from "#api/resources/lib"
 import { makeMiddleware, makeRouter, RpcHeadersFromHttpHeaders } from "@effect-app/infra/api/routing"
 import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
@@ -13,11 +13,7 @@ import { Context, Effect, Exit, Layer, Option } from "effect-app"
 import type { GetEffectContext, RPCContextMap } from "effect-app/client"
 import type { HttpHeaders, HttpServerRequest } from "effect-app/http"
 import type * as EffectRequest from "effect/Request"
-import {
-  makeUserProfileFromAuthorizationHeader,
-  makeUserProfileFromUserHeader,
-  UserProfile
-} from "../services/UserProfile.js"
+import { makeUserProfileFromAuthorizationHeader, makeUserProfileFromUserHeader, UserProfile } from "../UserProfile.js"
 import { basicRuntime } from "./basicRuntime.js"
 
 export interface CTX {

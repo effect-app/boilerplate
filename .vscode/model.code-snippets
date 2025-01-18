@@ -8,7 +8,7 @@
     "ResourceCodegen": {
         "prefix": "genrsc",
         "body": [
-            "// codegen:start {preset: meta, sourcePrefix: src/resources/}"
+            "// codegen:start {preset: meta, sourcePrefix: src/}"
         ]
     },
     "ModelComplete": {

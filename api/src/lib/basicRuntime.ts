@@ -1,4 +1,4 @@
-import { AppLogger } from "#api/chore/logger"
+import { AppLogger } from "#api/lib/logger"
 import { reportError } from "@effect-app/infra/errorReporter"
 import { logJson } from "@effect-app/infra/logger/jsonLogger"
 import { PlatformLogger } from "@effect/platform"

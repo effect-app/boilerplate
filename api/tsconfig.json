@@ -1,6 +1,19 @@
 {
   "compilerOptions": {
     "paths": {
+      // TODO: auto gen
+      "#Blog/*": [
+        "./src/Blog/*.js"
+      ],
+      "#Operations/*": [
+        "./src/Operations/*.js"
+      ],
+      "#Accounts/*": [
+        "./src/Accounts/*.js"
+      ],
+      "#HelloWorld/*": [
+        "./src/HelloWorld/*.js"
+      ],
       "#core/*": [
         "./src/core/*.js"
       ],

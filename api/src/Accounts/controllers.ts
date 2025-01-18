@@ -1,16 +1,17 @@
 import { matchFor, Router } from "#api/lib/routing"
-import { Q, UserRepo } from "#api/services"
-import { UsersRsc } from "#resources"
-import type { UserView } from "#resources/views"
-import { Array } from "effect"
-import { Effect, Order } from "effect-app"
+import { Q } from "@effect-app/infra/Model"
+import { Array, Effect, Order } from "effect-app"
+import { AccountsRsc } from "./resources.js"
+import { UserRepo } from "./UserRepo.js"
+import type { UserView } from "./UserView.js"
 
-export default Router(UsersRsc)({
+export default Router(AccountsRsc)({
   dependencies: [UserRepo.Default],
   effect: Effect.gen(function*() {
     const userRepo = yield* UserRepo
 
-    return matchFor(UsersRsc)({
+    return matchFor(AccountsRsc)({
+      GetMe: userRepo.getCurrentUser,
       IndexUsers: (req) =>
         userRepo
           .query(Q.where("id", "in", req.filterByIds))

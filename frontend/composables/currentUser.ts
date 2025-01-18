@@ -1,6 +1,6 @@
 // Naive login, good enough for the start
 
-import type { UserId } from "#models/User"
+import type { UserId } from "#Accounts/models"
 
 export function getUserId() {
   return useCookie("user-id")

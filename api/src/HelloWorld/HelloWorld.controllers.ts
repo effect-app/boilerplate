@@ -1,11 +1,10 @@
+import { User } from "#api/Accounts/models"
+import { UserRepo } from "#api/Accounts/UserRepo"
 import { matchFor, Router } from "#api/lib/routing"
-import { UserRepo } from "#api/services"
-import { User } from "#models/User"
-import { HelloWorldRsc } from "#resources"
-import { GetHelloWorld } from "#resources/HelloWorld"
 import { getRequestContext } from "@effect-app/infra/api/setupRequest"
 import { generate } from "@effect-app/infra/test"
 import { Effect, S } from "effect-app"
+import { GetHelloWorld, HelloWorldRsc } from "./resources.js"
 
 export default Router(HelloWorldRsc)({
   dependencies: [UserRepo.Default],

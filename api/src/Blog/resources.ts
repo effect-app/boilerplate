@@ -1,8 +1,8 @@
-import { BlogPost, BlogPostId } from "#models/Blog"
+import { S } from "#resources/lib"
 import { InvalidStateError, NotFoundError, OptimisticConcurrencyException } from "effect-app/client"
 import { OperationId } from "effect-app/Operations"
-import { S } from "./lib.js"
-import { BlogPostView } from "./views.js"
+import { BlogPost, BlogPostId } from "./models.js"
+import { BlogPostView } from "./PostView.js"
 
 export class CreatePost extends S.Req<CreatePost>()("CreatePost", BlogPost.pick("title", "body"), {
   allowRoles: ["user"],
@@ -26,6 +26,8 @@ export class PublishPost extends S.Req<PublishPost>()("PublishPost", {
   id: BlogPostId
 }, { allowRoles: ["user"], success: OperationId, failure: S.Union(NotFoundError) }) {}
 
-// codegen:start {preset: meta, sourcePrefix: src/resources/}
+// codegen:start {preset: meta, sourcePrefix: src/}
 export const meta = { moduleName: "Blog" } as const
 // codegen:end
+
+export * as BlogRsc from "./resources.js"

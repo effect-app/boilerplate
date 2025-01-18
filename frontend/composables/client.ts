@@ -5,7 +5,7 @@ import { runtime, type RT } from "~/plugins/runtime"
 import type { Effect } from "effect-app"
 import { clientFor as clientFor_ } from "#resources/lib"
 import type { Requests } from "effect-app/client"
-import { OperationsClient } from "#resources/Operations"
+import { OperationsClient } from "#Operations/resources"
 
 export { useToast } from "vue-toastification"
 
