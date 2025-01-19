@@ -65,6 +65,7 @@
     "h3": "^1.13.0",
     "nuxt": "~3.15.1",
     "sass": "^1.83.1",
+    "ts-plugin-sort-import-suggestions": "^1.0.4",
     "typescript": "~5.7.2",
     "vue-tsc": "^2.2.0"
   }

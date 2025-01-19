@@ -14,6 +14,13 @@
     "noUncheckedIndexedAccess": true,
     // This is not desirable, as it's useful in generators.
     "noImplicitReturns": false,
-    "checkJs": false
+    "checkJs": false,
+    "plugins": [
+      {
+        "name": "ts-plugin-sort-import-suggestions",
+        "moveUpPatterns": ["./*","../*","#*/","@/*","effect-app/*","@effect-app/*","effect","@effect/*"],
+        "moveDownPatterns":["node_modules/*"]
+      }
+    ]
   }
 }
