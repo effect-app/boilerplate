@@ -1,4 +1,6 @@
-# @effect-app-boilerplate
+# Effect App Sample
+
+Demo basic usage of Models, Resources, Controllers, Clients, long running tasks and some SSE.
 
 ## Setup
 
@@ -29,21 +31,6 @@ API Docs: http://localhost:4000/api/docs
 Notes
 
 - Make sure you don't have the old Vue/Vetur vs code plugin installed, but the new ones only: "Vue.volar", "Vue.vscode-typescript-vue-plugin"
-
-### Helpful editor hints
-
-Add to keybinds:
-
-```json
-{
-    "key": "ctrl+shift+i",
-    "command": "editor.action.sourceAction",
-    "args": {
-        "kind": "source.addMissingImports",
-        "apply": "first"
-    }
-}
-```
 
 ## Framework documentation
 
