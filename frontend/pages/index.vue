@@ -61,15 +61,15 @@ onMounted(() => {
           :field="field"
         /> -->
         <TextField
+          v-model="state[name]"
           :label="name"
           :placeholder="name"
-          v-model="state[name]"
           :field="field"
         />
       </template>
     </v-form>
 
-    <QueryResult :result="result" v-slot="{ latest, refreshing }">
+    <QueryResult v-slot="{ latest, refreshing }" :result="result">
       <Delayed v-if="refreshing"><v-progress-circular /></Delayed>
       <div>
         <pre v-html="JSON.stringify(latest, undefined, 2)" />

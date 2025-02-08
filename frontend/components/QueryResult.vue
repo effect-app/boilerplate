@@ -7,25 +7,32 @@
       :latest-error="Result.isFailure(result) ? result.cause : null"
     />
     <slot
+      v-else-if="Result.isFailure(result)"
       name="error"
       :error="result.cause"
-      v-else-if="Result.isFailure(result)"
     >
       <div>
         {{
-          Cause.failureOrCause(result.cause)
-          .pipe(Either.match({ onLeft: (error) => Match.value(error as SupportedErrors).pipe(
-            Match.tags({
-              NotFoundError: () => "Nicht gefunden",
-              NotLoggedInError: () => "Sie mussen eingelogt sein",
-              UnauthorizedError: () =>
-                "Sie sind nicht berechtigt, diese Aktion auszuführen",
+          Cause.failureOrCause(result.cause).pipe(
+            Either.match({
+              onLeft: error =>
+                Match.value(error as SupportedErrors).pipe(
+                  Match.tags({
+                    NotFoundError: () => "Nicht gefunden",
+                    NotLoggedInError: () => "Sie mussen eingelogt sein",
+                    UnauthorizedError: () =>
+                      "Sie sind nicht berechtigt, diese Aktion auszuführen",
+                  }),
+                  Match.orElse(
+                    () =>
+                      "Es ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem in Kürze beheben. Versuchen Sie es erneut.",
+                  ),
+                ),
+              onRight: cause =>
+                Cause.isInterrupted(cause)
+                  ? "Die Anfrage wurde unterbrochen"
+                  : "Es ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem in Kürze beheben. Versuchen Sie es erneut.",
             }),
-            Match.orElse(
-              () =>
-                "Es ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem in Kürze beheben. Versuchen Sie es erneut.",
-            )
-            ), onRight: (cause) => Cause.isInterrupted(cause) ? "Die Anfrage wurde unterbrochen" : "Es ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem in Kürze beheben. Versuchen Sie es erneut."})
           )
         }}
         <div v-if="config.public.env === 'local-dev'">

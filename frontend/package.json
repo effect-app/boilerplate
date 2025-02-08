@@ -11,7 +11,7 @@
     "preview": "nuxt preview",
     "start": "node .output/server/index.mjs",
     "ncu": "ncu",
-    "lint": "NODE_OPTIONS=--max-old-space-size=8192 eslint --ext .ts,.vue --ignore-path ../.gitignore .",
+    "lint": "NODE_OPTIONS=--max-old-space-size=8192 eslint .",
     "autofix": "pnpm lint --fix",
     "testsuite": "pnpm lint",
     "clean": "rm -rf ./.nuxt ./node_modules/.cache"

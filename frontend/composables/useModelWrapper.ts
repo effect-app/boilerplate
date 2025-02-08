@@ -1,5 +1,4 @@
-import type { WritableComputedRef } from "vue"
-import { computed } from "vue"
+import { type WritableComputedRef, computed } from "vue"
 
 export const useModelWrapper = useValueWrapper("modelValue")
 

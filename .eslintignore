@@ -1,9 +1,0 @@
-**/*.js
-**/*.jsx
-**/*.d.ts
-node_modules/
-vitest.config.ts
-vitest.config.test.ts
-libs/
-frontend
-vite.config.ts

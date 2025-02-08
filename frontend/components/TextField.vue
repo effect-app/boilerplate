@@ -3,16 +3,16 @@
     :type="field.type === 'float' || field.type === 'int' ? 'number' : 'text'"
     v-bind="$props"
     :model-value="convertIn(props.modelValue as any, field.type)"
-    @update:model-value="value => convertOut(value, updateValue, field.type)"
     :required="field.metadata.required"
     :rules="
       props.extraRules ? [...props.extraRules, ...field.rules] : field.rules
     "
     color="primary"
+    @update:model-value="value => convertOut(value, updateValue, field.type)"
   >
     <!-- pass down slots -->
     <!-- @vue-skip -->
-    <template v-for="(_, name) in $slots" v-slot:[name]="slotData">
+    <template v-for="(_, name) in $slots" #[name]="slotData">
       <slot :name="name" v-bind="slotData" />
     </template>
   </v-text-field>

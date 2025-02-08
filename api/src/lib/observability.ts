@@ -11,13 +11,7 @@ import opentelemetry from "@opentelemetry/sdk-node"
 import { BatchSpanProcessor, ConsoleSpanExporter, NoopSpanProcessor } from "@opentelemetry/sdk-trace-node"
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions"
 import * as Sentry from "@sentry/node"
-import {
-  SentryPropagator,
-  SentrySampler,
-  SentrySpanProcessor,
-  setupEventContextTrace,
-  wrapContextManagerClass
-} from "@sentry/opentelemetry"
+import { SentryPropagator, SentrySampler, SentrySpanProcessor, setupEventContextTrace, wrapContextManagerClass } from "@sentry/opentelemetry"
 import { Context, Effect, Layer, Redacted } from "effect-app"
 import { dropUndefinedT } from "effect-app/utils"
 import fs from "fs"

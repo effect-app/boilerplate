@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { type Schema } from "effect-app"
-import { Context, Effect, Equivalence, pipe, S } from "effect-app"
+import { Context, Effect, Equivalence, pipe, S, type Schema } from "effect-app"
 import { fakerArb } from "effect-app/faker"
 import { UserProfileId } from "effect-app/ids"
 import { AST } from "effect-app/Schema"

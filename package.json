@@ -9,7 +9,8 @@
       "@hebilicious/vue-query-nuxt@0.3.0": "patches/@hebilicious__vue-query-nuxt@0.3.0.patch",
       "typescript": "patches/typescript.patch",
       "@effect/platform": "patches/@effect__platform.patch",
-      "effect": "patches/effect.patch"
+      "effect": "patches/effect.patch",
+      "@effect-app/cli": "patches/@effect-app__cli.patch"
     }
   },
   "engines": {
@@ -20,8 +21,8 @@
     "preinstall": "npx only-allow pnpm",
     "clean": "pnpm all clean",
     "clean-dist": "pnpm all clean-dist",
-    "autofix": "NODE_OPTIONS=--max-old-space-size=8192 pnpm eslint api --fix && pnpm lint-frontend --fix && pnpm lint-e2e --fix",
-    "lint": "pnpm eslint api && pnpm lint-frontend && pnpm lint-e2e",
+    "autofix": "NODE_OPTIONS=--max-old-space-size=8192 pnpm lint-api --fix && pnpm lint-frontend --fix && pnpm lint-e2e --fix",
+    "lint": "pnpm lint-api && pnpm lint-frontend && pnpm lint-e2e",
     "circular:dist": "pnpm all circular:dist",
     "start": "concurrently -k -p \"[{name}]\" -n \"API,Frontend\" -c \"cyan.bold,green.bold,blue.bold\" \"pnpm start:api\" \"pnpm start:frontend\"",
     "start:api": "cd api && pnpm start",
@@ -40,7 +41,7 @@
     "lint:watch": "ESLINT_TS=1 esw -w --changed --clear --ext ts,tsx",
     "apps": "pnpm all --workspace-concurrency 1",
     "api": "pnpm all --workspace-concurrency 1 --filter \"./api\"",
-    "lint-api": "pnpm eslint api",
+    "lint-api": "cd api && pnpm lint",
     "lint-e2e": "cd e2e && pnpm lint",
     "lint-frontend": "cd frontend && pnpm lint",
     "build:tsc": "NODE_OPTIONS=--max-old-space-size=8192 effect-app-cli index-multi tsc --build",
@@ -110,7 +111,7 @@
     "dprint": "^0.48.0",
     "effect-app": "^2.24.2",
     "enhanced-resolve": "^5.18.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.20.0",
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-import-resolver-webpack": "^0.13.10",
     "eslint-plugin-codegen": "^0.17.0",
@@ -120,6 +121,8 @@
     "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "eslint-watch": "^8.0.0",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.3.0",
     "madge": "^8.0.0",
     "nodemon": "^3.1.9",
     "npm-check-updates": "^17.1.14",

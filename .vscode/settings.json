@@ -22,7 +22,13 @@
       "pattern": "."
     },
     {
-      "pattern": "frontend-*"
+      "pattern": "frontend"
+    },
+    {
+      "pattern": "api"
+    },
+    {
+      "pattern": "e2e"
     }
   ],
   "eslint.execArgv": [

@@ -27,7 +27,7 @@ const router = useRouter()
       <div>{{ router.currentRoute.value.name }}</div>
       &nbsp;
       <QueryResult :result="userResult">
-        <template v-slot="{ latest }">
+        <template #default="{ latest }">
           <div>{{ latest.displayName }}</div>
           <div><a href="/logout">Logout</a></div>
         </template>
