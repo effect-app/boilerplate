@@ -3,7 +3,7 @@
   "extends": [
     "@tsconfig/strictest/tsconfig.json",
     "./.nuxt/tsconfig.json",
-    "../tsconfig.import-order-plugin.json"
+    "../tsconfig.plugins.json"
   ],
   "compilerOptions": {
     "lib": [

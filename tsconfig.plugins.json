@@ -17,8 +17,15 @@
           "^node_modules/"
         ],
         "overrides": {
-          "effect-app": ["Array", "Option", "Either"]
+          "effect-app": [
+            "Array",
+            "Option",
+            "Either"
+          ]
         }
+      },
+      {
+        "name": "@effect/language-service"
       }
     ]
   }

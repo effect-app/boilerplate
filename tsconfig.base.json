@@ -1,6 +1,6 @@
 {
   "extends": [
     "./node_modules/effect-app/tsconfig.base.json",
-    "./tsconfig.import-order-plugin.json"
+    "./tsconfig.plugins.json"
   ]
 }
