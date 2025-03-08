@@ -1,7 +1,8 @@
 import type { Role } from "#models/User"
 import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
 import { Duration, Layer, Request as EffectRequest } from "effect-app"
-import { ApiClientFactory, makeRpcClient, type RPCContextMap } from "effect-app/client"
+import { ApiClientFactory } from "../rpc2/apiClientFactory2.js"
+import { RPCContextMap, makeRpcClient } from "effect-app/client/req"
 
 type CTXMap = {
   // we put `never`, because we can't access this service here in the client, and we also don't need to
