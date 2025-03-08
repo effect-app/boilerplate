@@ -265,8 +265,8 @@ importers:
         specifier: ^12.26.0
         version: 12.26.0
       '@effect-app/infra':
-        specifier: 2.44.0
-        version: 2.44.0(3bd6fd7cdf491571357e14bc577bfa4a)
+        specifier: 2.44.1
+        version: 2.44.1(3bd6fd7cdf491571357e14bc577bfa4a)
       '@effect/opentelemetry':
         specifier: 0.44.7
         version: 0.44.7(@opentelemetry/api@1.9.0)(@opentelemetry/resources@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-metrics@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-node@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-web@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.30.0)(effect@3.13.7(patch_hash=adcc699205231b28255e9f096059e8e05a3fa4e19f5f5059960534717fb8a7f2))
@@ -1363,17 +1363,17 @@ packages:
     peerDependencies:
       effect: 3.13.7
 
-  '@effect-app/infra@2.44.0':
-    resolution: {integrity: sha512-U1RHdAUeijzFizS9Dgj2lAu8zu2LjLNdCb62hfbxVV+k4X8RERxOz2FNht1boox5Fmmx10tE/ggA0pApVaaH1g==}
+  '@effect-app/infra@2.44.1':
+    resolution: {integrity: sha512-Xbxv2wnEvkf2bk4HHH1n5MujvQrruptbEvWTz5GLdrorLFZU7H4WJvIMqn66MMsCyUGHb+DlKi52XtVv6hY99Q==}
     peerDependencies:
       '@azure/cosmos': ^4.2.0
       '@azure/service-bus': ^7.9.5
       '@effect/experimental': 0.42.0
       '@effect/platform': 0.78.0
-      '@effect/rpc': ^0.52.6
-      '@effect/rpc-http': ^0.50.6
-      '@effect/sql': ^0.30.6
-      '@effect/vitest': ^0.19.4
+      '@effect/rpc': ^0.53.0
+      '@effect/rpc-http': ^0.51.0
+      '@effect/sql': ^0.31.0
+      '@effect/vitest': ^0.19.5
       '@sendgrid/helpers': ^8.0.0
       '@sendgrid/mail': ^8.1.4
       effect: 3.13.7
@@ -9829,7 +9829,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@effect-app/infra@2.44.0(3bd6fd7cdf491571357e14bc577bfa4a)':
+  '@effect-app/infra@2.44.1(3bd6fd7cdf491571357e14bc577bfa4a)':
     dependencies:
       '@azure/cosmos': 4.2.0
       '@azure/service-bus': 7.9.5
