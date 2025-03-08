@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { NonEmptyReadonlyArray } from "effect-app"
 import { Array, Cause, Duration, Effect, FiberRef, Layer, Predicate, Request, S, Schedule, Schema } from "effect-app"
-import { Rpc, RpcGroup, RpcServer } from "effect-app/canary/Rpc"
+import { Rpc, RpcGroup, RpcServer } from "@effect/rpc"
 import type { GetEffectContext, RPCContextMap } from "effect-app/client/req"
 import type { HttpRouter } from "effect-app/http"
 import { HttpHeaders, HttpServerRequest } from "effect-app/http"

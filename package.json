@@ -9,6 +9,7 @@
       "@hebilicious/vue-query-nuxt@0.3.0": "patches/@hebilicious__vue-query-nuxt@0.3.0.patch",
       "typescript": "patches/typescript.patch",
       "@effect/experimental": "patches/@effect__experimental.patch",
+      "@effect/rpc": "patches/@effect__rpc.patch",
       "@effect/platform": "patches/@effect__platform.patch",
       "@effect/platform-node": "patches/@effect__platform-node.patch",
       "effect": "patches/effect.patch",
