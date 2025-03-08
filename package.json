@@ -12,6 +12,7 @@
       "@effect/rpc": "patches/@effect__rpc.patch",
       "@effect/platform": "patches/@effect__platform.patch",
       "@effect/platform-node": "patches/@effect__platform-node.patch",
+      "@effect/platform-node-shared": "patches/@effect__platform-node-shared.patch",
       "effect": "patches/effect.patch",
       "ts-plugin-sort-import-suggestions": "patches/ts-plugin-sort-import-suggestions.patch"
     }

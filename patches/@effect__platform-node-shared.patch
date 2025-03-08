@@ -1,0 +1,820 @@
+diff --git a/NodeSocketServer/package.json b/NodeSocketServer/package.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..f595f81078be0ab1ab14d3ccd16d52b2f4fc6f33
+--- /dev/null
++++ b/NodeSocketServer/package.json
+@@ -0,0 +1,6 @@
++{
++  "main": "../dist/cjs/NodeSocketServer.js",
++  "module": "../dist/esm/NodeSocketServer.js",
++  "types": "../dist/dts/NodeSocketServer.d.ts",
++  "sideEffects": []
++}
+diff --git a/dist/cjs/NodeSocket.js b/dist/cjs/NodeSocket.js
+index 66a9d36cf9933115823be1a68aab374bcdb50e20..bb7840414f7914374daf13e3831bb34b92f7cbeb 100644
+--- a/dist/cjs/NodeSocket.js
++++ b/dist/cjs/NodeSocket.js
+@@ -35,6 +35,7 @@ const makeNet = options => fromDuplex(Effect.acquireRelease(Effect.async(resume
+     resume(Effect.succeed(conn));
+   });
+   conn.on("error", cause => {
++    conn.removeAllListeners();
+     resume(Effect.fail(new Socket.SocketGenericError({
+       reason: "Open",
+       cause
+diff --git a/dist/cjs/NodeSocket.js.map b/dist/cjs/NodeSocket.js.map
+index 6aaed7b782088e21a6d0ed5ff8a1a2017f4ff4ec..56dedcf51d200a3da028e575c80fc173f622ea23 100644
+--- a/dist/cjs/NodeSocket.js.map
++++ b/dist/cjs/NodeSocket.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"NodeSocket.js","names":["Socket","_interopRequireWildcard","require","Channel","Context","Deferred","Effect","FiberSet","Layer","Scope","Net","_getRequireWildcardCache","e","WeakMap","r","t","__esModule","default","has","get","n","__proto__","a","Object","defineProperty","getOwnPropertyDescriptor","u","hasOwnProperty","call","i","set","NetSocket","exports","GenericTag","makeNet","options","fromDuplex","acquireRelease","async","resume","conn","createConnection","on","removeAllListeners","succeed","cause","fail","SocketGenericError","reason","sync","destroy","closed","destroySoon","open","withFiberRuntime","fiber","currentSocket","latch","unsafeMakeLatch","openContext","currentContext","run","handler","scopedWith","scope","gen","fiberSet","make","pipe","extend","provideService","runtime","onData","chunk","result","isEffect","onEnd","unsafeDone","deferred","void","onError","onClose","hadError","SocketCloseError","code","addFinalizer","off","join","mapInputContext","input","merge","ensuring","unsafeClose","undefined","interruptible","write","whenOpen","isCloseEvent","Error","writer","writableEnded","end","of","TypeId","runRaw","makeNetChannel","unwrapScoped","map","toChannelWith","layerNet","effect"],"sources":["../../src/NodeSocket.ts"],"sourcesContent":[null],"mappings":"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","ignoreList":[]}
+\ No newline at end of file
++{"version":3,"file":"NodeSocket.js","names":["Socket","_interopRequireWildcard","require","Channel","Context","Deferred","Effect","FiberSet","Layer","Scope","Net","_getRequireWildcardCache","e","WeakMap","r","t","__esModule","default","has","get","n","__proto__","a","Object","defineProperty","getOwnPropertyDescriptor","u","hasOwnProperty","call","i","set","NetSocket","exports","GenericTag","makeNet","options","fromDuplex","acquireRelease","async","resume","conn","createConnection","on","removeAllListeners","succeed","cause","fail","SocketGenericError","reason","sync","destroy","closed","destroySoon","open","withFiberRuntime","fiber","currentSocket","latch","unsafeMakeLatch","openContext","currentContext","run","handler","scopedWith","scope","gen","fiberSet","make","pipe","extend","provideService","runtime","onData","chunk","result","isEffect","onEnd","unsafeDone","deferred","void","onError","onClose","hadError","SocketCloseError","code","addFinalizer","off","join","mapInputContext","input","merge","ensuring","unsafeClose","undefined","interruptible","write","whenOpen","isCloseEvent","Error","writer","writableEnded","end","of","TypeId","runRaw","makeNetChannel","unwrapScoped","map","toChannelWith","layerNet","effect"],"sources":["../../src/NodeSocket.ts"],"sourcesContent":[null],"mappings":"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","ignoreList":[]}
+\ No newline at end of file
+diff --git a/dist/cjs/NodeSocketServer.js b/dist/cjs/NodeSocketServer.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..7311eb71b30d0cdca54cc2592641fae6a64e4279
+--- /dev/null
++++ b/dist/cjs/NodeSocketServer.js
+@@ -0,0 +1,149 @@
++"use strict";
++
++Object.defineProperty(exports, "__esModule", {
++  value: true
++});
++exports.makeWebSocket = exports.make = exports.layerWebSocket = exports.layer = exports.IncomingMessage = void 0;
++var Socket = _interopRequireWildcard(require("@effect/platform/Socket"));
++var SocketServer = _interopRequireWildcard(require("@effect/platform/SocketServer"));
++var Context = _interopRequireWildcard(require("effect/Context"));
++var Effect = _interopRequireWildcard(require("effect/Effect"));
++var Exit = _interopRequireWildcard(require("effect/Exit"));
++var FiberRef = _interopRequireWildcard(require("effect/FiberRef"));
++var FiberSet = _interopRequireWildcard(require("effect/FiberSet"));
++var _Function = require("effect/Function");
++var Layer = _interopRequireWildcard(require("effect/Layer"));
++var Scope = _interopRequireWildcard(require("effect/Scope"));
++var Net = _interopRequireWildcard(require("node:net"));
++var WS = _interopRequireWildcard(require("ws"));
++var NodeSocket = _interopRequireWildcard(require("./NodeSocket.js"));
++function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
++function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
++/**
++ * @since 1.0.0
++ */
++
++/**
++ * @since 1.0.0
++ * @category tags
++ */
++class IncomingMessage extends /*#__PURE__*/Context.Tag("@effect/platform-node-shared/NodeSocketServer/IncomingMessage")() {}
++/**
++ * @since 1.0.0
++ * @category constructors
++ */
++exports.IncomingMessage = IncomingMessage;
++const make = exports.make = /*#__PURE__*/Effect.fnUntraced(function* (options) {
++  const server = yield* Effect.acquireRelease(Effect.sync(() => Net.createServer(options)), server => Effect.async(resume => {
++    server.close(() => resume(Effect.void));
++  }));
++  yield* Effect.async(resume => {
++    server.once("error", cause => {
++      resume(Effect.fail(new SocketServer.SocketServerError({
++        reason: "Open",
++        cause
++      })));
++    });
++    server.listen(options, () => {
++      resume(Effect.void);
++    });
++  });
++  const run = Effect.fnUntraced(function* (handler) {
++    const scope = yield* Scope.make();
++    const fiberSet = yield* FiberSet.make().pipe(Scope.extend(scope));
++    const run = yield* FiberSet.runtime(fiberSet)();
++    function onConnection(conn) {
++      (0, _Function.pipe)(NodeSocket.fromDuplex(Effect.acquireRelease(Effect.succeed(conn), conn => Effect.sync(() => {
++        if (conn.closed === false) {
++          conn.destroySoon();
++        }
++      }))), Effect.flatMap(handler), Effect.catchAllCause(reportUnhandledError), Effect.provideService(NodeSocket.NetSocket, conn), run);
++    }
++    return yield* Effect.async(_resume => {
++      server.on("connection", onConnection);
++      return Effect.sync(() => {
++        server.off("connection", onConnection);
++      });
++    }).pipe(Effect.ensuring(Scope.close(scope, Exit.void)));
++  });
++  const address = server.address();
++  return SocketServer.SocketServer.of({
++    address: typeof address === "string" ? {
++      _tag: "UnixAddress",
++      path: address
++    } : {
++      _tag: "TcpAddress",
++      hostname: address.address,
++      port: address.port
++    },
++    run
++  });
++});
++/**
++ * @since 1.0.0
++ * @category layers
++ */
++const layer = options => Layer.scoped(SocketServer.SocketServer, make(options));
++/**
++ * @since 1.0.0
++ * @category constructors
++ */
++exports.layer = layer;
++const makeWebSocket = exports.makeWebSocket = /*#__PURE__*/Effect.fnUntraced(function* (options) {
++  const server = yield* Effect.acquireRelease(Effect.sync(() => new WS.WebSocketServer(options)), server => Effect.async(resume => {
++    server.close(() => resume(Effect.void));
++  }));
++  yield* Effect.async(resume => {
++    server.once("error", error => {
++      resume(Effect.fail(new SocketServer.SocketServerError({
++        reason: "Open",
++        cause: error
++      })));
++    });
++    server.once("listening", () => {
++      resume(Effect.void);
++    });
++  });
++  const run = Effect.fnUntraced(function* (handler) {
++    const scope = yield* Scope.make();
++    const fiberSet = yield* FiberSet.make().pipe(Scope.extend(scope));
++    const run = yield* FiberSet.runtime(fiberSet)();
++    function onConnection(conn, req) {
++      (0, _Function.pipe)(Socket.fromWebSocket(Effect.acquireRelease(Effect.succeed(conn), conn => Effect.sync(() => {
++        conn.close();
++      }))), Effect.flatMap(handler), Effect.catchAllCause(reportUnhandledError), Effect.provideService(Socket.WebSocket, conn), Effect.provideService(IncomingMessage, req), run);
++    }
++    return yield* Effect.async(_resume => {
++      server.on("connection", onConnection);
++      return Effect.sync(() => {
++        server.off("connection", onConnection);
++      });
++    }).pipe(Effect.ensuring(Scope.close(scope, Exit.void)));
++  });
++  const address = server.address();
++  return SocketServer.SocketServer.of({
++    address: typeof address === "string" ? {
++      _tag: "UnixAddress",
++      path: address
++    } : {
++      _tag: "TcpAddress",
++      hostname: address.address,
++      port: address.port
++    },
++    run
++  });
++});
++/**
++ * @since 1.0.0
++ * @category layers
++ */
++const layerWebSocket = options => Layer.scoped(SocketServer.SocketServer, makeWebSocket(options));
++exports.layerWebSocket = layerWebSocket;
++const reportUnhandledError = cause => Effect.withFiberRuntime(fiber => {
++  const unhandledLogLevel = fiber.getFiberRef(FiberRef.unhandledErrorLogLevel);
++  if (unhandledLogLevel._tag === "Some") {
++    return Effect.logWithLevel(unhandledLogLevel.value, cause, "Unhandled error in SocketServer");
++  }
++  return Effect.void;
++});
++//# sourceMappingURL=NodeSocketServer.js.map
+\ No newline at end of file
+diff --git a/dist/cjs/NodeSocketServer.js.map b/dist/cjs/NodeSocketServer.js.map
+new file mode 100644
+index 0000000000000000000000000000000000000000..12c88bae10fcee00c961bf92982f24e00fca5345
+--- /dev/null
++++ b/dist/cjs/NodeSocketServer.js.map
+@@ -0,0 +1 @@
++{"version":3,"file":"NodeSocketServer.js","names":["Socket","_interopRequireWildcard","require","SocketServer","Context","Effect","Exit","FiberRef","FiberSet","_Function","Layer","Scope","Net","WS","NodeSocket","_getRequireWildcardCache","e","WeakMap","r","t","__esModule","default","has","get","n","__proto__","a","Object","defineProperty","getOwnPropertyDescriptor","u","hasOwnProperty","call","i","set","IncomingMessage","Tag","exports","make","fnUntraced","options","server","acquireRelease","sync","createServer","async","resume","close","void","once","cause","fail","SocketServerError","reason","listen","run","handler","scope","fiberSet","pipe","extend","runtime","onConnection","conn","fromDuplex","succeed","closed","destroySoon","flatMap","catchAllCause","reportUnhandledError","provideService","NetSocket","_resume","on","off","ensuring","address","of","_tag","path","hostname","port","layer","scoped","makeWebSocket","WebSocketServer","error","req","fromWebSocket","WebSocket","layerWebSocket","withFiberRuntime","fiber","unhandledLogLevel","getFiberRef","unhandledErrorLogLevel","logWithLevel","value"],"sources":["../../src/NodeSocketServer.ts"],"sourcesContent":[null],"mappings":"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","ignoreList":[]}
+\ No newline at end of file
+diff --git a/dist/cjs/NodeStream.js.map b/dist/cjs/NodeStream.js.map
+index 47950f38e61af4ad19b0424e9ebccf74fd5c7e70..2add5d561aac48886540a911870c2535830c5008 100644
+--- a/dist/cjs/NodeStream.js.map
++++ b/dist/cjs/NodeStream.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"NodeStream.js","names":["internal","_interopRequireWildcard","require","_getRequireWildcardCache","e","WeakMap","r","t","__esModule","default","has","get","n","__proto__","a","Object","defineProperty","getOwnPropertyDescriptor","u","hasOwnProperty","call","i","set","fromReadable","exports","fromReadableChannel","fromDuplex","pipeThroughDuplex","pipeThroughSimple","toReadable","toReadableNever","toString","toUint8Array"],"sources":["../../src/NodeStream.ts"],"sourcesContent":[null],"mappings":";;;;;;AAWA,IAAAA,QAAA,GAAAC,uBAAA,CAAAC,OAAA;AAAgD,SAAAC,yBAAAC,CAAA,6BAAAC,OAAA,mBAAAC,CAAA,OAAAD,OAAA,IAAAE,CAAA,OAAAF,OAAA,YAAAF,wBAAA,YAAAA,CAAAC,CAAA,WAAAA,CAAA,GAAAG,CAAA,GAAAD,CAAA,KAAAF,CAAA;AAAA,SAAAH,wBAAAG,CAAA,EAAAE,CAAA,SAAAA,CAAA,IAAAF,CAAA,IAAAA,CAAA,CAAAI,UAAA,SAAAJ,CAAA,eAAAA,CAAA,uBAAAA,CAAA,yBAAAA,CAAA,WAAAK,OAAA,EAAAL,CAAA,QAAAG,CAAA,GAAAJ,wBAAA,CAAAG,CAAA,OAAAC,CAAA,IAAAA,CAAA,CAAAG,GAAA,CAAAN,CAAA,UAAAG,CAAA,CAAAI,GAAA,CAAAP,CAAA,OAAAQ,CAAA,KAAAC,SAAA,UAAAC,CAAA,GAAAC,MAAA,CAAAC,cAAA,IAAAD,MAAA,CAAAE,wBAAA,WAAAC,CAAA,IAAAd,CAAA,oBAAAc,CAAA,OAAAC,cAAA,CAAAC,IAAA,CAAAhB,CAAA,EAAAc,CAAA,SAAAG,CAAA,GAAAP,CAAA,GAAAC,MAAA,CAAAE,wBAAA,CAAAb,CAAA,EAAAc,CAAA,UAAAG,CAAA,KAAAA,CAAA,CAAAV,GAAA,IAAAU,CAAA,CAAAC,GAAA,IAAAP,MAAA,CAAAC,cAAA,CAAAJ,CAAA,EAAAM,CAAA,EAAAG,CAAA,IAAAT,CAAA,CAAAM,CAAA,IAAAd,CAAA,CAAAc,CAAA,YAAAN,CAAA,CAAAH,OAAA,GAAAL,CAAA,EAAAG,CAAA,IAAAA,CAAA,CAAAe,GAAA,CAAAlB,CAAA,EAAAQ,CAAA,GAAAA,CAAA;AAoBhD;;;;AAIO,MAAMW,YAAY,GAAAC,OAAA,CAAAD,YAAA,GAILvB,QAAQ,CAACuB,YAAY;AAEzC;;;;AAIO,MAAME,mBAAmB,GAAAD,OAAA,CAAAC,mBAAA,GAI6BzB,QAAQ,CAACyB,mBAAmB;AAEzF;;;;AAIO,MAAMC,UAAU,GAAAF,OAAA,CAAAE,UAAA,GAIuC1B,QAAQ,CAAC0B,UAAU;AAEjF;;;;AAIO,MAAMC,iBAAiB,GAAAH,OAAA,CAAAG,iBAAA,GAoB1B3B,QAAQ,CAAC2B,iBAAiB;AAE9B;;;;AAIO,MAAMC,iBAAiB,GAAAJ,OAAA,CAAAI,iBAAA,GAW1B5B,QAAQ,CAAC4B,iBAAiB;AAE9B;;;;AAIO,MAAMC,UAAU,GAAAL,OAAA,CAAAK,UAAA,GACrB7B,QAAQ,CAAC6B,UAAU;AAErB;;;;AAIO,MAAMC,eAAe,GAAAN,OAAA,CAAAM,eAAA,GAAmE9B,QAAQ,CAAC8B,eAAe;AAEvH;;;;AAIO,MAAMC,QAAQ,GAAAP,OAAA,CAAAO,QAAA,GAOI/B,QAAQ,CAAC+B,QAAQ;AAE1C;;;;AAIO,MAAMC,YAAY,GAAAR,OAAA,CAAAQ,YAAA,GAGIhC,QAAQ,CAACgC,YAAY","ignoreList":[]}
+\ No newline at end of file
++{"version":3,"file":"NodeStream.js","names":["internal","_interopRequireWildcard","require","_getRequireWildcardCache","e","WeakMap","r","t","__esModule","default","has","get","n","__proto__","a","Object","defineProperty","getOwnPropertyDescriptor","u","hasOwnProperty","call","i","set","fromReadable","exports","fromReadableChannel","fromDuplex","pipeThroughDuplex","pipeThroughSimple","toReadable","toReadableNever","toString","toUint8Array"],"sources":["../../src/NodeStream.ts"],"sourcesContent":[null],"mappings":";;;;;;AAWA,IAAAA,QAAA,GAAAC,uBAAA,CAAAC,OAAA;AAAgD,SAAAC,yBAAAC,CAAA,6BAAAC,OAAA,mBAAAC,CAAA,OAAAD,OAAA,IAAAE,CAAA,OAAAF,OAAA,YAAAF,wBAAA,YAAAA,CAAAC,CAAA,WAAAA,CAAA,GAAAG,CAAA,GAAAD,CAAA,KAAAF,CAAA;AAAA,SAAAH,wBAAAG,CAAA,EAAAE,CAAA,SAAAA,CAAA,IAAAF,CAAA,IAAAA,CAAA,CAAAI,UAAA,SAAAJ,CAAA,eAAAA,CAAA,uBAAAA,CAAA,yBAAAA,CAAA,WAAAK,OAAA,EAAAL,CAAA,QAAAG,CAAA,GAAAJ,wBAAA,CAAAG,CAAA,OAAAC,CAAA,IAAAA,CAAA,CAAAG,GAAA,CAAAN,CAAA,UAAAG,CAAA,CAAAI,GAAA,CAAAP,CAAA,OAAAQ,CAAA,KAAAC,SAAA,UAAAC,CAAA,GAAAC,MAAA,CAAAC,cAAA,IAAAD,MAAA,CAAAE,wBAAA,WAAAC,CAAA,IAAAd,CAAA,oBAAAc,CAAA,OAAAC,cAAA,CAAAC,IAAA,CAAAhB,CAAA,EAAAc,CAAA,SAAAG,CAAA,GAAAP,CAAA,GAAAC,MAAA,CAAAE,wBAAA,CAAAb,CAAA,EAAAc,CAAA,UAAAG,CAAA,KAAAA,CAAA,CAAAV,GAAA,IAAAU,CAAA,CAAAC,GAAA,IAAAP,MAAA,CAAAC,cAAA,CAAAJ,CAAA,EAAAM,CAAA,EAAAG,CAAA,IAAAT,CAAA,CAAAM,CAAA,IAAAd,CAAA,CAAAc,CAAA,YAAAN,CAAA,CAAAH,OAAA,GAAAL,CAAA,EAAAG,CAAA,IAAAA,CAAA,CAAAe,GAAA,CAAAlB,CAAA,EAAAQ,CAAA,GAAAA,CAAA;AAoBhD;;;;AAIO,MAAMW,YAAY,GAAAC,OAAA,CAAAD,YAAA,GAILvB,QAAQ,CAACuB,YAAY;AAEzC;;;;AAIO,MAAME,mBAAmB,GAAAD,OAAA,CAAAC,mBAAA,GAI6BzB,QAAQ,CAACyB,mBAAmB;AAEzF;;;;AAIO,MAAMC,UAAU,GAAAF,OAAA,CAAAE,UAAA,GAIuC1B,QAAQ,CAAC0B,UAAU;AAEjF;;;;AAIO,MAAMC,iBAAiB,GAAAH,OAAA,CAAAG,iBAAA,GAY1B3B,QAAQ,CAAC2B,iBAAiB;AAE9B;;;;AAIO,MAAMC,iBAAiB,GAAAJ,OAAA,CAAAI,iBAAA,GAG1B5B,QAAQ,CAAC4B,iBAAiB;AAE9B;;;;AAIO,MAAMC,UAAU,GAAAL,OAAA,CAAAK,UAAA,GACrB7B,QAAQ,CAAC6B,UAAU;AAErB;;;;AAIO,MAAMC,eAAe,GAAAN,OAAA,CAAAM,eAAA,GAAmE9B,QAAQ,CAAC8B,eAAe;AAEvH;;;;AAIO,MAAMC,QAAQ,GAAAP,OAAA,CAAAO,QAAA,GAOI/B,QAAQ,CAAC+B,QAAQ;AAE1C;;;;AAIO,MAAMC,YAAY,GAAAR,OAAA,CAAAQ,YAAA,GAGIhC,QAAQ,CAACgC,YAAY","ignoreList":[]}
+\ No newline at end of file
+diff --git a/dist/dts/NodeSocket.d.ts.map b/dist/dts/NodeSocket.d.ts.map
+index 3902db2672b97c998839ab5e2618bddbc3330a8a..a12d81a7e96c6e6890fecd9ba23b944cdb82b7d6 100644
+--- a/dist/dts/NodeSocket.d.ts.map
++++ b/dist/dts/NodeSocket.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"NodeSocket.d.ts","sourceRoot":"","sources":["../../src/NodeSocket.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,OAAO,KAAK,MAAM,MAAM,yBAAyB,CAAA;AACjD,OAAO,KAAK,OAAO,MAAM,gBAAgB,CAAA;AACzC,OAAO,KAAK,KAAK,KAAK,MAAM,cAAc,CAAA;AAC1C,OAAO,KAAK,OAAO,MAAM,gBAAgB,CAAA;AAEzC,OAAO,KAAK,MAAM,MAAM,eAAe,CAAA;AAEvC,OAAO,KAAK,KAAK,MAAM,cAAc,CAAA;AACrC,OAAO,KAAK,KAAK,MAAM,cAAc,CAAA;AACrC,OAAO,KAAK,GAAG,MAAM,UAAU,CAAA;AAC/B,OAAO,KAAK,EAAE,MAAM,EAAE,MAAM,aAAa,CAAA;AAEzC;;;GAGG;AACH,MAAM,WAAW,SAAS;IACxB,QAAQ,CAAC,CAAC,EAAE,OAAO,MAAM,CAAA;CAC1B;AAED;;;GAGG;AACH,eAAO,MAAM,SAAS,EAAE,OAAO,CAAC,GAAG,CAAC,SAAS,EAAE,GAAG,CAAC,MAAM,CAExD,CAAA;AAED;;;GAGG;AACH,eAAO,MAAM,OAAO,YACT,GAAG,CAAC,cAAc,KAC1B,MAAM,CAAC,MAAM,CAAC,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,WAAW,CA4B/C,CAAA;AAEH;;;GAGG;AACH,eAAO,MAAM,UAAU,GAAI,EAAE,QACrB,MAAM,CAAC,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,WAAW,EAAE,EAAE,CAAC,KAClD,MAAM,CAAC,MAAM,CAAC,MAAM,CAAC,MAAM,EAAE,KAAK,EAAE,OAAO,CAAC,EAAE,EAAE,KAAK,CAAC,KAAK,CAAC,CAmG3D,CAAA;AAEJ;;;GAGG;AACH,eAAO,MAAM,cAAc,GAAI,EAAE,mBACtB,GAAG,CAAC,cAAc,KAC1B,OAAO,CAAC,OAAO,CAChB,KAAK,CAAC,KAAK,CAAC,UAAU,CAAC,EACvB,KAAK,CAAC,KAAK,CAAC,UAAU,GAAG,MAAM,GAAG,MAAM,CAAC,UAAU,CAAC,EACpD,MAAM,CAAC,WAAW,GAAG,EAAE,EACvB,EAAE,EACF,IAAI,EACJ,OAAO,CAIN,CAAA;AAEH;;;GAGG;AACH,eAAO,MAAM,QAAQ,YAAa,GAAG,CAAC,cAAc,KAAG,KAAK,CAAC,KAAK,CAAC,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,WAAW,CACrD,CAAA"}
+\ No newline at end of file
++{"version":3,"file":"NodeSocket.d.ts","sourceRoot":"","sources":["../../src/NodeSocket.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,OAAO,KAAK,MAAM,MAAM,yBAAyB,CAAA;AACjD,OAAO,KAAK,OAAO,MAAM,gBAAgB,CAAA;AACzC,OAAO,KAAK,KAAK,KAAK,MAAM,cAAc,CAAA;AAC1C,OAAO,KAAK,OAAO,MAAM,gBAAgB,CAAA;AAEzC,OAAO,KAAK,MAAM,MAAM,eAAe,CAAA;AAEvC,OAAO,KAAK,KAAK,MAAM,cAAc,CAAA;AACrC,OAAO,KAAK,KAAK,MAAM,cAAc,CAAA;AACrC,OAAO,KAAK,GAAG,MAAM,UAAU,CAAA;AAC/B,OAAO,KAAK,EAAE,MAAM,EAAE,MAAM,aAAa,CAAA;AAEzC;;;GAGG;AACH,MAAM,WAAW,SAAS;IACxB,QAAQ,CAAC,CAAC,EAAE,OAAO,MAAM,CAAA;CAC1B;AAED;;;GAGG;AACH,eAAO,MAAM,SAAS,EAAE,OAAO,CAAC,GAAG,CAAC,SAAS,EAAE,GAAG,CAAC,MAAM,CAExD,CAAA;AAED;;;GAGG;AACH,eAAO,MAAM,OAAO,YACT,GAAG,CAAC,cAAc,KAC1B,MAAM,CAAC,MAAM,CAAC,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,WAAW,CA6B/C,CAAA;AAEH;;;GAGG;AACH,eAAO,MAAM,UAAU,GAAI,EAAE,QACrB,MAAM,CAAC,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,WAAW,EAAE,EAAE,CAAC,KAClD,MAAM,CAAC,MAAM,CAAC,MAAM,CAAC,MAAM,EAAE,KAAK,EAAE,OAAO,CAAC,EAAE,EAAE,KAAK,CAAC,KAAK,CAAC,CAmG3D,CAAA;AAEJ;;;GAGG;AACH,eAAO,MAAM,cAAc,GAAI,EAAE,mBACtB,GAAG,CAAC,cAAc,KAC1B,OAAO,CAAC,OAAO,CAChB,KAAK,CAAC,KAAK,CAAC,UAAU,CAAC,EACvB,KAAK,CAAC,KAAK,CAAC,UAAU,GAAG,MAAM,GAAG,MAAM,CAAC,UAAU,CAAC,EACpD,MAAM,CAAC,WAAW,GAAG,EAAE,EACvB,EAAE,EACF,IAAI,EACJ,OAAO,CAIN,CAAA;AAEH;;;GAGG;AACH,eAAO,MAAM,QAAQ,YAAa,GAAG,CAAC,cAAc,KAAG,KAAK,CAAC,KAAK,CAAC,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,WAAW,CACrD,CAAA"}
+\ No newline at end of file
+diff --git a/dist/dts/NodeSocketServer.d.ts b/dist/dts/NodeSocketServer.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..1a048539a73949e822583d53b22b266a4986dd32
+--- /dev/null
++++ b/dist/dts/NodeSocketServer.d.ts
+@@ -0,0 +1,44 @@
++/**
++ * @since 1.0.0
++ */
++import * as Socket from "@effect/platform/Socket";
++import * as SocketServer from "@effect/platform/SocketServer";
++import * as Context from "effect/Context";
++import * as Effect from "effect/Effect";
++import * as Layer from "effect/Layer";
++import * as Scope from "effect/Scope";
++import type * as Http from "node:http";
++import * as Net from "node:net";
++import * as WS from "ws";
++declare const IncomingMessage_base: Context.TagClass<IncomingMessage, "@effect/platform-node-shared/NodeSocketServer/IncomingMessage", Http.IncomingMessage>;
++/**
++ * @since 1.0.0
++ * @category tags
++ */
++export declare class IncomingMessage extends IncomingMessage_base {
++}
++/**
++ * @since 1.0.0
++ * @category constructors
++ */
++export declare const make: (options: Net.ServerOpts & Net.ListenOptions) => Effect.Effect<{
++    readonly address: SocketServer.Address;
++    readonly run: <R, E, _>(handler: (socket: Socket.Socket) => Effect.Effect<_, E, R>) => Effect.Effect<never, SocketServer.SocketServerError, R>;
++}, SocketServer.SocketServerError, Scope.Scope>;
++/**
++ * @since 1.0.0
++ * @category layers
++ */
++export declare const layer: (options: Net.ServerOpts & Net.ListenOptions) => Layer.Layer<SocketServer.SocketServer, SocketServer.SocketServerError>;
++/**
++ * @since 1.0.0
++ * @category constructors
++ */
++export declare const makeWebSocket: (options: WS.ServerOptions<typeof WS.WebSocket, typeof Http.IncomingMessage>) => Effect.Effect<SocketServer.SocketServer["Type"], SocketServer.SocketServerError, Scope.Scope>;
++/**
++ * @since 1.0.0
++ * @category layers
++ */
++export declare const layerWebSocket: (options: WS.ServerOptions) => Layer.Layer<SocketServer.SocketServer, SocketServer.SocketServerError>;
++export {};
++//# sourceMappingURL=NodeSocketServer.d.ts.map
+\ No newline at end of file
+diff --git a/dist/dts/NodeSocketServer.d.ts.map b/dist/dts/NodeSocketServer.d.ts.map
+new file mode 100644
+index 0000000000000000000000000000000000000000..f01c1b449c63b843a4c07ce4972f01fe32d02929
+--- /dev/null
++++ b/dist/dts/NodeSocketServer.d.ts.map
+@@ -0,0 +1 @@
++{"version":3,"file":"NodeSocketServer.d.ts","sourceRoot":"","sources":["../../src/NodeSocketServer.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,OAAO,KAAK,MAAM,MAAM,yBAAyB,CAAA;AACjD,OAAO,KAAK,YAAY,MAAM,+BAA+B,CAAA;AAE7D,OAAO,KAAK,OAAO,MAAM,gBAAgB,CAAA;AACzC,OAAO,KAAK,MAAM,MAAM,eAAe,CAAA;AAKvC,OAAO,KAAK,KAAK,MAAM,cAAc,CAAA;AACrC,OAAO,KAAK,KAAK,MAAM,cAAc,CAAA;AACrC,OAAO,KAAK,KAAK,IAAI,MAAM,WAAW,CAAA;AACtC,OAAO,KAAK,GAAG,MAAM,UAAU,CAAA;AAC/B,OAAO,KAAK,EAAE,MAAM,IAAI,CAAA;;AAGxB;;;GAGG;AACH,qBAAa,eAAgB,SAAQ,oBAGlC;CAAG;AAEN;;;GAGG;AACH,eAAO,MAAM,IAAI;;8CAvBmB,OACpC,MAAM,KAAI,OAAQ,MAAM,cAAa,OACpC,MAAM;+CA+FL,CAAA;AAEF;;;GAGG;AACH,eAAO,MAAM,KAAK,YACP,GAAG,CAAC,UAAU,GAAG,GAAG,CAAC,aAAa,KAC1C,KAAK,CAAC,KAAK,CAAC,YAAY,CAAC,YAAY,EAAE,YAAY,CAAC,iBAAiB,CAIrE,CAAA;AAEH;;;GAGG;AACH,eAAO,MAAM,aAAa,EAAE,CAC1B,OAAO,EAAE,EAAE,CAAC,aAAa,CAAC,OAAO,EAAE,CAAC,SAAS,EAAE,OAAO,IAAI,CAAC,eAAe,CAAC,KACxE,MAAM,CAAC,MAAM,CAChB,YAAY,CAAC,YAAY,CAAC,MAAM,CAAC,EACjC,YAAY,CAAC,iBAAiB,EAC9B,KAAK,CAAC,KAAK,CA0EX,CAAA;AAEF;;;GAGG;AACH,eAAO,MAAM,cAAc,YAChB,EAAE,CAAC,aAAa,KACxB,KAAK,CAAC,KAAK,CAAC,YAAY,CAAC,YAAY,EAAE,YAAY,CAAC,iBAAiB,CAIrE,CAAA"}
+\ No newline at end of file
+diff --git a/dist/dts/NodeStream.d.ts b/dist/dts/NodeStream.d.ts
+index 6a52e0e200aab969345b283e9a8507db4aebf9ce..2465cc92643cea64f2c0fa9bcd7c8bb1dc6837db 100644
+--- a/dist/dts/NodeStream.d.ts
++++ b/dist/dts/NodeStream.d.ts
+@@ -45,15 +45,7 @@ export declare const fromDuplex: <IE, E, I = Uint8Array, O = Uint8Array>(evaluat
+  * @since 1.0.0
+  */
+ export declare const pipeThroughDuplex: {
+-    /**
+-     * @category combinators
+-     * @since 1.0.0
+-     */
+     <E2, B = Uint8Array>(duplex: LazyArg<Duplex>, onError: (error: unknown) => E2, options?: (FromReadableOptions & FromWritableOptions) | undefined): <R, E, A>(self: Stream<A, E, R>) => Stream<B, E2 | E, R>;
+-    /**
+-     * @category combinators
+-     * @since 1.0.0
+-     */
+     <R, E, A, E2, B = Uint8Array>(self: Stream<A, E, R>, duplex: LazyArg<Duplex>, onError: (error: unknown) => E2, options?: (FromReadableOptions & FromWritableOptions) | undefined): Stream<B, E | E2, R>;
+ };
+ /**
+@@ -61,15 +53,7 @@ export declare const pipeThroughDuplex: {
+  * @since 1.0.0
+  */
+ export declare const pipeThroughSimple: {
+-    /**
+-     * @category combinators
+-     * @since 1.0.0
+-     */
+     (duplex: LazyArg<Duplex>): <R, E>(self: Stream<string | Uint8Array, E, R>) => Stream<Uint8Array, E | PlatformError, R>;
+-    /**
+-     * @category combinators
+-     * @since 1.0.0
+-     */
+     <R, E>(self: Stream<string | Uint8Array, E, R>, duplex: LazyArg<Duplex>): Stream<Uint8Array, PlatformError | E, R>;
+ };
+ /**
+diff --git a/dist/dts/NodeStream.d.ts.map b/dist/dts/NodeStream.d.ts.map
+index 3a8219734ee7de5a5203c54e18d0c42ccf68a94e..df5204ade9acdf40254938086d5223ec90152857 100644
+--- a/dist/dts/NodeStream.d.ts.map
++++ b/dist/dts/NodeStream.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"NodeStream.d.ts","sourceRoot":"","sources":["../../src/NodeStream.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
++{"version":3,"file":"NodeStream.d.ts","sourceRoot":"","sources":["../../src/NodeStream.ts"],"names":[],"mappings":"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"}
+\ No newline at end of file
+diff --git a/dist/esm/NodeSocket.js b/dist/esm/NodeSocket.js
+index 7f02e78a16c83384e5f55d0fe587c034efe4748f..5f465b8476e5a24e54641031ac5f9a31d4660889 100644
+--- a/dist/esm/NodeSocket.js
++++ b/dist/esm/NodeSocket.js
+@@ -26,6 +26,7 @@ export const makeNet = options => fromDuplex(Effect.acquireRelease(Effect.async(
+     resume(Effect.succeed(conn));
+   });
+   conn.on("error", cause => {
++    conn.removeAllListeners();
+     resume(Effect.fail(new Socket.SocketGenericError({
+       reason: "Open",
+       cause
+diff --git a/dist/esm/NodeSocket.js.map b/dist/esm/NodeSocket.js.map
+index cb30ac9b83f8e5c0266c2aaf05be2e9c870c0c76..bb4d6a0bd0fb97eb0e49a585ae219bbcc055de8e 100644
+--- a/dist/esm/NodeSocket.js.map
++++ b/dist/esm/NodeSocket.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"NodeSocket.js","names":["Socket","Channel","Context","Deferred","Effect","FiberSet","Layer","Scope","Net","NetSocket","GenericTag","makeNet","options","fromDuplex","acquireRelease","async","resume","conn","createConnection","on","removeAllListeners","succeed","cause","fail","SocketGenericError","reason","sync","destroy","closed","destroySoon","open","withFiberRuntime","fiber","currentSocket","latch","unsafeMakeLatch","openContext","currentContext","run","handler","scopedWith","scope","gen","fiberSet","make","pipe","extend","provideService","runtime","onData","chunk","result","isEffect","onEnd","unsafeDone","deferred","void","onError","onClose","hadError","SocketCloseError","code","addFinalizer","off","join","mapInputContext","input","merge","ensuring","unsafeClose","undefined","interruptible","write","whenOpen","isCloseEvent","Error","writer","writableEnded","end","of","TypeId","runRaw","makeNetChannel","unwrapScoped","map","toChannelWith","layerNet","effect"],"sources":["../../src/NodeSocket.ts"],"sourcesContent":[null],"mappings":"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","ignoreList":[]}
+\ No newline at end of file
++{"version":3,"file":"NodeSocket.js","names":["Socket","Channel","Context","Deferred","Effect","FiberSet","Layer","Scope","Net","NetSocket","GenericTag","makeNet","options","fromDuplex","acquireRelease","async","resume","conn","createConnection","on","removeAllListeners","succeed","cause","fail","SocketGenericError","reason","sync","destroy","closed","destroySoon","open","withFiberRuntime","fiber","currentSocket","latch","unsafeMakeLatch","openContext","currentContext","run","handler","scopedWith","scope","gen","fiberSet","make","pipe","extend","provideService","runtime","onData","chunk","result","isEffect","onEnd","unsafeDone","deferred","void","onError","onClose","hadError","SocketCloseError","code","addFinalizer","off","join","mapInputContext","input","merge","ensuring","unsafeClose","undefined","interruptible","write","whenOpen","isCloseEvent","Error","writer","writableEnded","end","of","TypeId","runRaw","makeNetChannel","unwrapScoped","map","toChannelWith","layerNet","effect"],"sources":["../../src/NodeSocket.ts"],"sourcesContent":[null],"mappings":"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","ignoreList":[]}
+\ No newline at end of file
+diff --git a/dist/esm/NodeSocketServer.js b/dist/esm/NodeSocketServer.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..ca4db24ffca9f89988476e9b36f1558d110ae138
+--- /dev/null
++++ b/dist/esm/NodeSocketServer.js
+@@ -0,0 +1,137 @@
++/**
++ * @since 1.0.0
++ */
++import * as Socket from "@effect/platform/Socket";
++import * as SocketServer from "@effect/platform/SocketServer";
++import * as Context from "effect/Context";
++import * as Effect from "effect/Effect";
++import * as Exit from "effect/Exit";
++import * as FiberRef from "effect/FiberRef";
++import * as FiberSet from "effect/FiberSet";
++import { pipe } from "effect/Function";
++import * as Layer from "effect/Layer";
++import * as Scope from "effect/Scope";
++import * as Net from "node:net";
++import * as WS from "ws";
++import * as NodeSocket from "./NodeSocket.js";
++/**
++ * @since 1.0.0
++ * @category tags
++ */
++export class IncomingMessage extends /*#__PURE__*/Context.Tag("@effect/platform-node-shared/NodeSocketServer/IncomingMessage")() {}
++/**
++ * @since 1.0.0
++ * @category constructors
++ */
++export const make = /*#__PURE__*/Effect.fnUntraced(function* (options) {
++  const server = yield* Effect.acquireRelease(Effect.sync(() => Net.createServer(options)), server => Effect.async(resume => {
++    server.close(() => resume(Effect.void));
++  }));
++  yield* Effect.async(resume => {
++    server.once("error", cause => {
++      resume(Effect.fail(new SocketServer.SocketServerError({
++        reason: "Open",
++        cause
++      })));
++    });
++    server.listen(options, () => {
++      resume(Effect.void);
++    });
++  });
++  const run = Effect.fnUntraced(function* (handler) {
++    const scope = yield* Scope.make();
++    const fiberSet = yield* FiberSet.make().pipe(Scope.extend(scope));
++    const run = yield* FiberSet.runtime(fiberSet)();
++    function onConnection(conn) {
++      pipe(NodeSocket.fromDuplex(Effect.acquireRelease(Effect.succeed(conn), conn => Effect.sync(() => {
++        if (conn.closed === false) {
++          conn.destroySoon();
++        }
++      }))), Effect.flatMap(handler), Effect.catchAllCause(reportUnhandledError), Effect.provideService(NodeSocket.NetSocket, conn), run);
++    }
++    return yield* Effect.async(_resume => {
++      server.on("connection", onConnection);
++      return Effect.sync(() => {
++        server.off("connection", onConnection);
++      });
++    }).pipe(Effect.ensuring(Scope.close(scope, Exit.void)));
++  });
++  const address = server.address();
++  return SocketServer.SocketServer.of({
++    address: typeof address === "string" ? {
++      _tag: "UnixAddress",
++      path: address
++    } : {
++      _tag: "TcpAddress",
++      hostname: address.address,
++      port: address.port
++    },
++    run
++  });
++});
++/**
++ * @since 1.0.0
++ * @category layers
++ */
++export const layer = options => Layer.scoped(SocketServer.SocketServer, make(options));
++/**
++ * @since 1.0.0
++ * @category constructors
++ */
++export const makeWebSocket = /*#__PURE__*/Effect.fnUntraced(function* (options) {
++  const server = yield* Effect.acquireRelease(Effect.sync(() => new WS.WebSocketServer(options)), server => Effect.async(resume => {
++    server.close(() => resume(Effect.void));
++  }));
++  yield* Effect.async(resume => {
++    server.once("error", error => {
++      resume(Effect.fail(new SocketServer.SocketServerError({
++        reason: "Open",
++        cause: error
++      })));
++    });
++    server.once("listening", () => {
++      resume(Effect.void);
++    });
++  });
++  const run = Effect.fnUntraced(function* (handler) {
++    const scope = yield* Scope.make();
++    const fiberSet = yield* FiberSet.make().pipe(Scope.extend(scope));
++    const run = yield* FiberSet.runtime(fiberSet)();
++    function onConnection(conn, req) {
++      pipe(Socket.fromWebSocket(Effect.acquireRelease(Effect.succeed(conn), conn => Effect.sync(() => {
++        conn.close();
++      }))), Effect.flatMap(handler), Effect.catchAllCause(reportUnhandledError), Effect.provideService(Socket.WebSocket, conn), Effect.provideService(IncomingMessage, req), run);
++    }
++    return yield* Effect.async(_resume => {
++      server.on("connection", onConnection);
++      return Effect.sync(() => {
++        server.off("connection", onConnection);
++      });
++    }).pipe(Effect.ensuring(Scope.close(scope, Exit.void)));
++  });
++  const address = server.address();
++  return SocketServer.SocketServer.of({
++    address: typeof address === "string" ? {
++      _tag: "UnixAddress",
++      path: address
++    } : {
++      _tag: "TcpAddress",
++      hostname: address.address,
++      port: address.port
++    },
++    run
++  });
++});
++/**
++ * @since 1.0.0
++ * @category layers
++ */
++export const layerWebSocket = options => Layer.scoped(SocketServer.SocketServer, makeWebSocket(options));
++const reportUnhandledError = cause => Effect.withFiberRuntime(fiber => {
++  const unhandledLogLevel = fiber.getFiberRef(FiberRef.unhandledErrorLogLevel);
++  if (unhandledLogLevel._tag === "Some") {
++    return Effect.logWithLevel(unhandledLogLevel.value, cause, "Unhandled error in SocketServer");
++  }
++  return Effect.void;
++});
++//# sourceMappingURL=NodeSocketServer.js.map
+\ No newline at end of file
+diff --git a/dist/esm/NodeSocketServer.js.map b/dist/esm/NodeSocketServer.js.map
+new file mode 100644
+index 0000000000000000000000000000000000000000..3e0ff011bb9465c5dda785acd5a77a39995a842e
+--- /dev/null
++++ b/dist/esm/NodeSocketServer.js.map
+@@ -0,0 +1 @@
++{"version":3,"file":"NodeSocketServer.js","names":["Socket","SocketServer","Context","Effect","Exit","FiberRef","FiberSet","pipe","Layer","Scope","Net","WS","NodeSocket","IncomingMessage","Tag","make","fnUntraced","options","server","acquireRelease","sync","createServer","async","resume","close","void","once","cause","fail","SocketServerError","reason","listen","run","handler","scope","fiberSet","extend","runtime","onConnection","conn","fromDuplex","succeed","closed","destroySoon","flatMap","catchAllCause","reportUnhandledError","provideService","NetSocket","_resume","on","off","ensuring","address","of","_tag","path","hostname","port","layer","scoped","makeWebSocket","WebSocketServer","error","req","fromWebSocket","WebSocket","layerWebSocket","withFiberRuntime","fiber","unhandledLogLevel","getFiberRef","unhandledErrorLogLevel","logWithLevel","value"],"sources":["../../src/NodeSocketServer.ts"],"sourcesContent":[null],"mappings":"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","ignoreList":[]}
+\ No newline at end of file
+diff --git a/dist/esm/NodeStream.js.map b/dist/esm/NodeStream.js.map
+index 61813b059711e13e5e5850b8f1b992d4011f9e4e..069ecc523e6174fd38d9105ead27f81af4878bd9 100644
+--- a/dist/esm/NodeStream.js.map
++++ b/dist/esm/NodeStream.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"NodeStream.js","names":["internal","fromReadable","fromReadableChannel","fromDuplex","pipeThroughDuplex","pipeThroughSimple","toReadable","toReadableNever","toString","toUint8Array"],"sources":["../../src/NodeStream.ts"],"sourcesContent":[null],"mappings":"AAWA,OAAO,KAAKA,QAAQ,MAAM,sBAAsB;AAoBhD;;;;AAIA,OAAO,MAAMC,YAAY,GAILD,QAAQ,CAACC,YAAY;AAEzC;;;;AAIA,OAAO,MAAMC,mBAAmB,GAI6BF,QAAQ,CAACE,mBAAmB;AAEzF;;;;AAIA,OAAO,MAAMC,UAAU,GAIuCH,QAAQ,CAACG,UAAU;AAEjF;;;;AAIA,OAAO,MAAMC,iBAAiB,GAoB1BJ,QAAQ,CAACI,iBAAiB;AAE9B;;;;AAIA,OAAO,MAAMC,iBAAiB,GAW1BL,QAAQ,CAACK,iBAAiB;AAE9B;;;;AAIA,OAAO,MAAMC,UAAU,GACrBN,QAAQ,CAACM,UAAU;AAErB;;;;AAIA,OAAO,MAAMC,eAAe,GAAmEP,QAAQ,CAACO,eAAe;AAEvH;;;;AAIA,OAAO,MAAMC,QAAQ,GAOIR,QAAQ,CAACQ,QAAQ;AAE1C;;;;AAIA,OAAO,MAAMC,YAAY,GAGIT,QAAQ,CAACS,YAAY","ignoreList":[]}
+\ No newline at end of file
++{"version":3,"file":"NodeStream.js","names":["internal","fromReadable","fromReadableChannel","fromDuplex","pipeThroughDuplex","pipeThroughSimple","toReadable","toReadableNever","toString","toUint8Array"],"sources":["../../src/NodeStream.ts"],"sourcesContent":[null],"mappings":"AAWA,OAAO,KAAKA,QAAQ,MAAM,sBAAsB;AAoBhD;;;;AAIA,OAAO,MAAMC,YAAY,GAILD,QAAQ,CAACC,YAAY;AAEzC;;;;AAIA,OAAO,MAAMC,mBAAmB,GAI6BF,QAAQ,CAACE,mBAAmB;AAEzF;;;;AAIA,OAAO,MAAMC,UAAU,GAIuCH,QAAQ,CAACG,UAAU;AAEjF;;;;AAIA,OAAO,MAAMC,iBAAiB,GAY1BJ,QAAQ,CAACI,iBAAiB;AAE9B;;;;AAIA,OAAO,MAAMC,iBAAiB,GAG1BL,QAAQ,CAACK,iBAAiB;AAE9B;;;;AAIA,OAAO,MAAMC,UAAU,GACrBN,QAAQ,CAACM,UAAU;AAErB;;;;AAIA,OAAO,MAAMC,eAAe,GAAmEP,QAAQ,CAACO,eAAe;AAEvH;;;;AAIA,OAAO,MAAMC,QAAQ,GAOIR,QAAQ,CAACQ,QAAQ;AAE1C;;;;AAIA,OAAO,MAAMC,YAAY,GAGIT,QAAQ,CAACS,YAAY","ignoreList":[]}
+\ No newline at end of file
+diff --git a/package.json b/package.json
+index a0356a5f33e42a85827bbd933565ef98b5d9b295..709fc320812c96ee3ca56795352493a54a7a9e65 100644
+--- a/package.json
++++ b/package.json
+@@ -11,7 +11,8 @@
+   "sideEffects": [],
+   "dependencies": {
+     "@parcel/watcher": "^2.4.1",
+-    "multipasta": "^0.2.5"
++    "multipasta": "^0.2.5",
++    "ws": "^8.18.0"
+   },
+   "peerDependencies": {
+     "@effect/platform": "^0.78.0",
+@@ -67,6 +68,11 @@
+       "import": "./dist/esm/NodeSocket.js",
+       "default": "./dist/cjs/NodeSocket.js"
+     },
++    "./NodeSocketServer": {
++      "types": "./dist/dts/NodeSocketServer.d.ts",
++      "import": "./dist/esm/NodeSocketServer.js",
++      "default": "./dist/cjs/NodeSocketServer.js"
++    },
+     "./NodeStream": {
+       "types": "./dist/dts/NodeStream.d.ts",
+       "import": "./dist/esm/NodeStream.js",
+@@ -107,6 +113,9 @@
+       "NodeSocket": [
+         "./dist/dts/NodeSocket.d.ts"
+       ],
++      "NodeSocketServer": [
++        "./dist/dts/NodeSocketServer.d.ts"
++      ],
+       "NodeStream": [
+         "./dist/dts/NodeStream.d.ts"
+       ],
+diff --git a/src/NodeSocket.ts b/src/NodeSocket.ts
+index c7abf23a1503c691695321814388493bfc0f18ec..a561d1ce5a4adb5686e0f14f05d48bcffdd1286d 100644
+--- a/src/NodeSocket.ts
++++ b/src/NodeSocket.ts
+@@ -45,6 +45,7 @@ export const makeNet = (
+           resume(Effect.succeed(conn))
+         })
+         conn.on("error", (cause) => {
++          conn.removeAllListeners()
+           resume(Effect.fail(new Socket.SocketGenericError({ reason: "Open", cause })))
+         })
+         return Effect.sync(() => {
+diff --git a/src/NodeSocketServer.ts b/src/NodeSocketServer.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..9136b429d4487fbd5760d0f40abe9216a6f60d85
+--- /dev/null
++++ b/src/NodeSocketServer.ts
+@@ -0,0 +1,225 @@
++/**
++ * @since 1.0.0
++ */
++import * as Socket from "@effect/platform/Socket"
++import * as SocketServer from "@effect/platform/SocketServer"
++import type { Cause } from "effect/Cause"
++import * as Context from "effect/Context"
++import * as Effect from "effect/Effect"
++import * as Exit from "effect/Exit"
++import * as FiberRef from "effect/FiberRef"
++import * as FiberSet from "effect/FiberSet"
++import { pipe } from "effect/Function"
++import * as Layer from "effect/Layer"
++import * as Scope from "effect/Scope"
++import type * as Http from "node:http"
++import * as Net from "node:net"
++import * as WS from "ws"
++import * as NodeSocket from "./NodeSocket.js"
++
++/**
++ * @since 1.0.0
++ * @category tags
++ */
++export class IncomingMessage extends Context.Tag("@effect/platform-node-shared/NodeSocketServer/IncomingMessage")<
++  IncomingMessage,
++  Http.IncomingMessage
++>() {}
++
++/**
++ * @since 1.0.0
++ * @category constructors
++ */
++export const make = Effect.fnUntraced(function*(
++  options: Net.ServerOpts & Net.ListenOptions
++) {
++  const server = yield* Effect.acquireRelease(
++    Effect.sync(() => Net.createServer(options)),
++    (server) =>
++      Effect.async<void>((resume) => {
++        server.close(() => resume(Effect.void))
++      })
++  )
++
++  yield* Effect.async<void, SocketServer.SocketServerError>((resume) => {
++    server.once("error", (cause) => {
++      resume(Effect.fail(
++        new SocketServer.SocketServerError({
++          reason: "Open",
++          cause
++        })
++      ))
++    })
++    server.listen(options, () => {
++      resume(Effect.void)
++    })
++  })
++
++  const run = Effect.fnUntraced(function*<R, E, _>(handler: (socket: Socket.Socket) => Effect.Effect<_, E, R>) {
++    const scope = yield* Scope.make()
++    const fiberSet = yield* FiberSet.make().pipe(
++      Scope.extend(scope)
++    )
++    const run = yield* FiberSet.runtime(fiberSet)<R>()
++    function onConnection(conn: Net.Socket) {
++      pipe(
++        NodeSocket.fromDuplex(
++          Effect.acquireRelease(
++            Effect.succeed(conn),
++            (conn) =>
++              Effect.sync(() => {
++                if (conn.closed === false) {
++                  conn.destroySoon()
++                }
++              })
++          )
++        ),
++        Effect.flatMap(handler),
++        Effect.catchAllCause(reportUnhandledError),
++        Effect.provideService(NodeSocket.NetSocket, conn),
++        run
++      )
++    }
++    return yield* Effect.async<never>((_resume) => {
++      server.on("connection", onConnection)
++      return Effect.sync(() => {
++        server.off("connection", onConnection)
++      })
++    }).pipe(
++      Effect.ensuring(Scope.close(scope, Exit.void))
++    )
++  })
++
++  const address = server.address()!
++  return SocketServer.SocketServer.of({
++    address: typeof address === "string" ?
++      {
++        _tag: "UnixAddress",
++        path: address
++      } :
++      {
++        _tag: "TcpAddress",
++        hostname: address.address,
++        port: address.port
++      },
++    run
++  })
++})
++
++/**
++ * @since 1.0.0
++ * @category layers
++ */
++export const layer = (
++  options: Net.ServerOpts & Net.ListenOptions
++): Layer.Layer<SocketServer.SocketServer, SocketServer.SocketServerError> =>
++  Layer.scoped(
++    SocketServer.SocketServer,
++    make(options)
++  )
++
++/**
++ * @since 1.0.0
++ * @category constructors
++ */
++export const makeWebSocket: (
++  options: WS.ServerOptions<typeof WS.WebSocket, typeof Http.IncomingMessage>
++) => Effect.Effect<
++  SocketServer.SocketServer["Type"],
++  SocketServer.SocketServerError,
++  Scope.Scope
++> = Effect.fnUntraced(function*(
++  options: WS.ServerOptions
++) {
++  const server = yield* Effect.acquireRelease(
++    Effect.sync(() => new WS.WebSocketServer(options)),
++    (server) =>
++      Effect.async<void>((resume) => {
++        server.close(() => resume(Effect.void))
++      })
++  )
++
++  yield* Effect.async<void, SocketServer.SocketServerError>((resume) => {
++    server.once("error", (error) => {
++      resume(Effect.fail(
++        new SocketServer.SocketServerError({
++          reason: "Open",
++          cause: error
++        })
++      ))
++    })
++    server.once("listening", () => {
++      resume(Effect.void)
++    })
++  })
++
++  const run = Effect.fnUntraced(function*<R, E, _>(handler: (socket: Socket.Socket) => Effect.Effect<_, E, R>) {
++    const scope = yield* Scope.make()
++    const fiberSet = yield* FiberSet.make().pipe(
++      Scope.extend(scope)
++    )
++    const run = yield* FiberSet.runtime(fiberSet)<R>()
++    function onConnection(conn: Net.Socket, req: Http.IncomingMessage) {
++      pipe(
++        Socket.fromWebSocket(
++          Effect.acquireRelease(
++            Effect.succeed(conn as unknown as globalThis.WebSocket),
++            (conn) =>
++              Effect.sync(() => {
++                conn.close()
++              })
++          )
++        ),
++        Effect.flatMap(handler),
++        Effect.catchAllCause(reportUnhandledError),
++        Effect.provideService(Socket.WebSocket, conn as any),
++        Effect.provideService(IncomingMessage, req),
++        run
++      )
++    }
++    return yield* Effect.async<never>((_resume) => {
++      server.on("connection", onConnection)
++      return Effect.sync(() => {
++        server.off("connection", onConnection)
++      })
++    }).pipe(
++      Effect.ensuring(Scope.close(scope, Exit.void))
++    )
++  })
++
++  const address = server.address()!
++  return SocketServer.SocketServer.of({
++    address: typeof address === "string" ?
++      {
++        _tag: "UnixAddress",
++        path: address
++      } :
++      {
++        _tag: "TcpAddress",
++        hostname: address.address,
++        port: address.port
++      },
++    run
++  })
++})
++
++/**
++ * @since 1.0.0
++ * @category layers
++ */
++export const layerWebSocket = (
++  options: WS.ServerOptions
++): Layer.Layer<SocketServer.SocketServer, SocketServer.SocketServerError> =>
++  Layer.scoped(
++    SocketServer.SocketServer,
++    makeWebSocket(options)
++  )
++
++const reportUnhandledError = <E>(cause: Cause<E>) =>
++  Effect.withFiberRuntime<void>((fiber) => {
++    const unhandledLogLevel = fiber.getFiberRef(FiberRef.unhandledErrorLogLevel)
++    if (unhandledLogLevel._tag === "Some") {
++      return Effect.logWithLevel(unhandledLogLevel.value, cause, "Unhandled error in SocketServer")
++    }
++    return Effect.void
++  })
+diff --git a/src/NodeStream.ts b/src/NodeStream.ts
+index 862f57db1b6857f7dbf7524801f8fc8c66da803f..c399f5273402d7bf3806e076cc59490a6f1ebfa3 100644
+--- a/src/NodeStream.ts
++++ b/src/NodeStream.ts
+@@ -64,19 +64,11 @@ export const fromDuplex: <IE, E, I = Uint8Array, O = Uint8Array>(
+  * @since 1.0.0
+  */
+ export const pipeThroughDuplex: {
+-  /**
+-   * @category combinators
+-   * @since 1.0.0
+-   */
+   <E2, B = Uint8Array>(
+     duplex: LazyArg<Duplex>,
+     onError: (error: unknown) => E2,
+     options?: (FromReadableOptions & FromWritableOptions) | undefined
+   ): <R, E, A>(self: Stream<A, E, R>) => Stream<B, E2 | E, R>
+-  /**
+-   * @category combinators
+-   * @since 1.0.0
+-   */
+   <R, E, A, E2, B = Uint8Array>(
+     self: Stream<A, E, R>,
+     duplex: LazyArg<Duplex>,
+@@ -90,15 +82,7 @@ export const pipeThroughDuplex: {
+  * @since 1.0.0
+  */
+ export const pipeThroughSimple: {
+-  /**
+-   * @category combinators
+-   * @since 1.0.0
+-   */
+   (duplex: LazyArg<Duplex>): <R, E>(self: Stream<string | Uint8Array, E, R>) => Stream<Uint8Array, E | PlatformError, R>
+-  /**
+-   * @category combinators
+-   * @since 1.0.0
+-   */
+   <R, E>(self: Stream<string | Uint8Array, E, R>, duplex: LazyArg<Duplex>): Stream<Uint8Array, PlatformError | E, R>
+ } = internal.pipeThroughSimple
+ 
