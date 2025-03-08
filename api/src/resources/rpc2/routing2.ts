@@ -10,11 +10,11 @@ import type { HttpRouter } from "effect-app/http"
 import { HttpHeaders, HttpServerRequest } from "effect-app/http"
 import { pretty, typedKeysOf, typedValuesOf } from "effect-app/utils"
 import type { Contravariant } from "effect/Types"
-import { logError, reportError } from "../errorReporter.js"
-import { InfraLogger } from "../logger.js"
-import type { Middleware } from "./routing/DynamicMiddleware2.js"
-import { makeRpc } from "./routing/DynamicMiddleware2.js"
-import { determineMethod } from "./routing/utils.js"
+import { logError, reportError } from "@effect-app/infra/errorReporter"
+import { InfraLogger } from "@effect-app/infra/logger"
+import type { Middleware } from "./DynamicMiddleware2.js"
+import { makeRpc } from "./DynamicMiddleware2.js"
+import { determineMethod } from "@effect-app/infra/api/routing/utils"
 
 const logRequestError = logError("Request")
 const reportRequestError = reportError("Request")
@@ -812,14 +812,3 @@ export const RequestCacheLayers = Layer.mergeAll(
   Layer.setRequestCaching(true),
   Layer.setRequestBatching(true)
 )
-
-export const RpcHeadersFromHttpHeaders = Effect
-  .gen(function*() {
-    const httpReq = yield* HttpServerRequest.HttpServerRequest
-    // TODO: only pass Authentication etc, or move headers to actual Rpc Headers
-    yield* FiberRef.update(
-      Rpc.currentHeaders,
-      (headers) => HttpHeaders.merge(httpReq.headers, headers)
-    )
-  })
-  .pipe(Layer.effectDiscard)
