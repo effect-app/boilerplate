@@ -6,8 +6,7 @@ import { BaseConfig, MergedConfig } from "./config.js"
 import { Events } from "./services.js"
 import { RpcSerialization } from "@effect/rpc"
 
-class RootAppRouter extends HttpRouter.Tag("RootAppRouter")<RootAppRouter>() {}
-const AllRoutes = RootAppRouter
+const AllRoutes = HttpRouter.Default
   .use((router) =>
     Effect.gen(function*() {
       const cfg = yield* BaseConfig
@@ -45,21 +44,8 @@ export const makeHttpServer = <E, R, E3, R3>(
             Effect.withSpan("http")
     )
     )),
-    // Layer.provide(
-    //   RootAppRouter.unwrap((root) =>
-    //       root.pipe(
-    //         // TODO: how to get these to activate for the rpc routes?
-    //         MW.RequestContextMiddleware(),
-    //         MW.gzip,
-    //         MW.cors(),
-    //         // we trust proxy and handle the x-forwarded etc headers
-    //         HttpMiddleware.xForwardedHeaders,
-    //         HttpServer.serve(HttpMiddleware.logger)
-    //       )
-    //     )
-    // ),
     Layer.provide(router),
-    //Layer.provide(AllRoutes),
+    Layer.provide(AllRoutes),
     Layer.provide(RpcSerialization.layerJson),
     Layer.provide(Layer.succeed(Test, "no"))
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
