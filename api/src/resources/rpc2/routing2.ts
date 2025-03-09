@@ -2,11 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { NonEmptyReadonlyArray } from "effect-app"
-import { Array, Cause, Duration, Effect, FiberRef, Layer, Predicate, Request, S, Schedule, Schema } from "effect-app"
-import { Rpc, RpcGroup, RpcServer } from "@effect/rpc"
+import { Exit, Mailbox, NonEmptyReadonlyArray, Scope } from "effect-app"
+import { Array, Cause, Duration, Effect, FiberRef, Layer, Predicate, Request, S, Schedule, Schema, Stream } from "effect-app"
+import { Rpc, RpcGroup, RpcSerialization, RpcServer } from "@effect/rpc"
 import type { GetEffectContext, RPCContextMap } from "effect-app/client/req"
-import type { HttpRouter } from "effect-app/http"
+import { HttpRouter, HttpServerResponse } from "effect-app/http"
 import { HttpHeaders, HttpServerRequest } from "effect-app/http"
 import { pretty, typedKeysOf, typedValuesOf } from "effect-app/utils"
 import type { Contravariant } from "effect/Types"
@@ -15,9 +15,171 @@ import { InfraLogger } from "@effect-app/infra/logger"
 import type { Middleware } from "./DynamicMiddleware2.js"
 import { makeRpc } from "./DynamicMiddleware2.js"
 import { determineMethod } from "@effect-app/infra/api/routing/utils"
+import { Protocol } from "@effect/rpc/RpcServer"
+import { constEof, FromClientEncoded, FromServerEncoded, RequestId, ResponseDefectEncoded } from "@effect/rpc/RpcMessage"
+import * as Arr from "effect-app/Array"
+import { HttpApp } from "@effect/platform"
+import { id } from "effect/Fiber"
 
 const logRequestError = logError("Request")
 const reportRequestError = reportError("Request")
+
+const transformBigInt = (response: FromServerEncoded) => {
+  if ("requestId" in response) {
+    ;(response as any).requestId = response.requestId.toString()
+  }
+}
+
+export const makeProtocolWithHttpApp: Effect.Effect<
+  {
+    readonly protocol: Protocol["Type"]
+    readonly httpApp: HttpApp.Default<never, Scope.Scope>
+  },
+  never,
+  RpcSerialization.RpcSerialization
+> = Effect.gen(function*() {
+  const serialization = yield* RpcSerialization.RpcSerialization
+  const isJson = serialization.contentType === "application/json"
+
+  const disconnects = yield* Mailbox.make<number>()
+  let writeRequest!: (clientId: number, message: FromClientEncoded) => Effect.Effect<void>
+
+  let clientId = 0
+
+  const clients = new Map<number, {
+    readonly write: (bytes: FromServerEncoded) => Effect.Effect<void>
+    readonly end: Effect.Effect<void>
+  }>()
+
+  const httpApp: HttpApp.Default<never, Scope.Scope> = Effect.gen(function*() {
+    const request = yield* HttpServerRequest.HttpServerRequest
+    const data = yield* Effect.orDie(request.arrayBuffer)
+    const id = clientId++
+    const mailbox = yield* Mailbox.make<Uint8Array | FromServerEncoded>()
+    const parser = serialization.unsafeMake()
+    const encoder = new TextEncoder()
+
+    const offer = (data: Uint8Array | string) =>
+      typeof data === "string" ? mailbox.offer(encoder.encode(data)) : mailbox.offer(data)
+
+    clients.set(id, {
+      write: (response) => {
+        try {
+          if (!serialization.supportsBigInt) {
+            transformBigInt(response)
+          }
+          return isJson ? mailbox.offer(response) : offer(parser.encode(response))
+        } catch (cause) {
+          return isJson
+            ? mailbox.offer(ResponseDefectEncoded(cause))
+            : offer(parser.encode(ResponseDefectEncoded(cause)))
+        }
+      },
+      end: mailbox.end
+    })
+
+    const requestIds: globalThis.Array<RequestId> = []
+
+    try {
+      const decoded = parser.decode(new Uint8Array(data)) as ReadonlyArray<FromClientEncoded>
+      for (const message of decoded) {
+        if (message._tag === "Request") {
+          // edited: merge request headers into message headers
+          ;(message as any).headers = {...message.headers, ...request.headers}
+          requestIds.push(RequestId(message.id))
+        }
+        yield* writeRequest(id, message)
+      }
+    } catch (cause) {
+      yield* offer(parser.encode(ResponseDefectEncoded(cause)))
+    }
+
+    yield* writeRequest(id, constEof)
+
+    if (isJson) {
+      let done = false
+      yield* Effect.addFinalizer(() => {
+        clients.delete(id)
+        disconnects.unsafeOffer(id)
+        if (done) return Effect.void
+        return Effect.forEach(
+          requestIds,
+          (requestId) => writeRequest(id, { _tag: "Interrupt", requestId }),
+          { discard: true }
+        )
+      })
+      const responses = Arr.empty<FromServerEncoded>()
+      while (true) {
+        const [items, done] = yield* mailbox.takeAll
+        // eslint-disable-next-line no-restricted-syntax
+        responses.push(...items as any)
+        if (done) break
+      }
+      done = true
+      return HttpServerResponse.unsafeJson(responses)
+    }
+
+    return HttpServerResponse.stream(
+      Stream.ensuringWith(Mailbox.toStream(mailbox as Mailbox.ReadonlyMailbox<Uint8Array>), (exit) => {
+        clients.delete(id)
+        disconnects.unsafeOffer(id)
+        if (!Exit.isInterrupted(exit)) return Effect.void
+        return Effect.forEach(
+          requestIds,
+          (requestId) => writeRequest(id, { _tag: "Interrupt", requestId }),
+          { discard: true }
+        )
+      }),
+      { contentType: serialization.contentType }
+    )
+  }).pipe(Effect.interruptible)
+
+  const protocol = yield* Protocol.make((writeRequest_) => {
+    writeRequest = writeRequest_
+    return Effect.succeed({
+      disconnects,
+      send: (clientId, response) => {
+        const client = clients.get(clientId)
+        if (!client) return Effect.void
+        return client.write(response)
+      },
+      end(clientId) {
+        const client = clients.get(clientId)
+        if (!client) return Effect.void
+        return client.end
+      },
+      initialMessage: Effect.succeedNone,
+      supportsAck: false,
+      supportsTransferables: false
+    })
+  })
+
+  return { protocol, httpApp } as const
+})
+
+
+export const makeProtocolHttp = Effect.fnUntraced(function*<I = HttpRouter.Default>(options: {
+  readonly path: HttpRouter.PathInput
+  readonly routerTag?: HttpRouter.HttpRouter.TagClass<I, string, any, any>
+}) {
+  const { httpApp, protocol } = yield* makeProtocolWithHttpApp
+  const router =
+    yield* (options.routerTag ?? HttpRouter.Default as any as HttpRouter.HttpRouter.TagClass<I, string, any, any>)
+  yield* router.post(options.path, httpApp)
+  return protocol
+})
+
+
+export const layerProtocolHttp = <I = HttpRouter.Default>(options: {
+  readonly path: HttpRouter.PathInput
+  readonly routerTag?: HttpRouter.HttpRouter.TagClass<I, string, any, any>
+}): Layer.Layer<Protocol, never, RpcSerialization.RpcSerialization> => {
+  const routerTag = options.routerTag ??
+    HttpRouter.Default as any as HttpRouter.HttpRouter.TagClass<I, string, any, any>
+  return Layer.effect(Protocol, makeProtocolHttp(options)).pipe(
+    Layer.provide(routerTag.Live)
+  )
+}
 
 const optimisticConcurrencySchedule = Schedule.once.pipe(
   Schedule.intersect(Schedule.recurWhile<any>((a) => a?._tag === "OptimisticConcurrencyException"))
@@ -397,7 +559,8 @@ export const makeRouter = <
               ]
             }
 
-            const rpcs = RpcGroup.make(...typedValuesOf(mapped).map((_) => Rpc.fromTaggedRequest(_[0])))
+            const rpcs = RpcGroup.make(...typedValuesOf(mapped).map((_) => { 
+              return Rpc.fromTaggedRequest(_[0]) } ))
             const rpcLayer = (requestLayers: any) =>
               rpcs.toLayer(Effect.gen(function*() {
                 return typedValuesOf(mapped).reduce((acc, [req, handler]) => {
@@ -410,9 +573,13 @@ export const makeRouter = <
                 RPCRouteR<typeof mapped[keyof typeof mapped]>
               >
 
-            return rpcLayer(requestLayers).pipe(
-              Layer.provideMerge(RpcServer
-                .layerProtocolHttp({ path: ("/rpc/" + meta.moduleName) as `/rpc/${typeof meta.moduleName}` }))
+              console.log("path", "/rpc/" + meta.moduleName)
+
+              const impl = rpcLayer(requestLayers)
+              const l = RpcServer.layer(rpcs).pipe(Layer.provide(impl))
+              // TODO: also takes optional a RouterTag..
+            return l.pipe(
+              Layer.provideMerge(layerProtocolHttp({ path: ("/rpc/" + meta.moduleName) as `/rpc/${typeof meta.moduleName}` }))
             )
 
             // const rpcRouter = RpcRouter.make(...typedValuesOf(mapped).map(_ => _[0]) as any) as RpcRouter.RpcRouter<
@@ -489,7 +656,7 @@ export const makeRouter = <
             HttpRouter.HttpRouter.Provided
           >
         >
-        routes: Layer.Layer<
+        routes: (requestLayers: any) => Layer.Layer<
           RouterShape<Rsc>,
           MakeErrors<Make> | GetError<Make["dependencies"]>,
           | GetContext<Make["dependencies"]>
@@ -527,7 +694,7 @@ export const makeRouter = <
             HttpRouter.HttpRouter.Provided
           >
         >
-        routes: Layer.Layer<
+        routes: (requestLayers: any) => Layer.Layer<
           RouterShape<Rsc>,
           MakeErrors<Make> | GetError<Make["dependencies"]>,
           | GetContext<Make["dependencies"]>
@@ -565,7 +732,7 @@ export const makeRouter = <
             HttpRouter.HttpRouter.Provided
           >
         >
-        routes: Layer.Layer<
+        routes: (requestLayers: any) => Layer.Layer<
           RouterShape<Rsc>,
           MakeErrors<Make> | GetError<Make["dependencies"]>,
           | GetContext<Make["dependencies"]>
@@ -603,7 +770,7 @@ export const makeRouter = <
             HttpRouter.HttpRouter.Provided
           >
         >
-        routes: Layer.Layer<
+        routes: (requestLayers: any) => Layer.Layer<
           RouterShape<Rsc>,
           MakeErrors<Make> | GetError<Make["dependencies"]>,
           | GetContext<Make["dependencies"]>
@@ -639,7 +806,7 @@ export const makeRouter = <
             HttpRouter.HttpRouter.Provided
           >
         >
-        routes: Layer.Layer<
+        routes: (requestLayers: any) => Layer.Layer<
           RouterShape<Rsc>,
           MakeErrors<Make> | GetError<Make["dependencies"]>,
           | GetContext<Make["dependencies"]>

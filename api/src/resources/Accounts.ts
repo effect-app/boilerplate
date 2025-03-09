@@ -1,5 +1,5 @@
 import { User } from "#models/User"
-import { NotFoundError } from "effect-app/client"
+import { NotFoundError } from "effect-app/client/errors"
 import { S } from "./lib.js"
 
 export class GetMe extends S.Req<GetMe>()("GetMe", {}, { success: User, failure: NotFoundError }) {}

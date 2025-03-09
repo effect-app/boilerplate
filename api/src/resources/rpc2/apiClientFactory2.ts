@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Rpc } from "@effect/rpc"
-import { RpcResolver, RpcResolverNoStream } from "@effect/rpc"
-import { make, type RpcRouter } from "@effect/rpc/RpcRouter"
+import { type RpcRouter } from "@effect/rpc"
 import { HttpBody, HttpClient, HttpClientRequest, HttpClientResponse } from "effect-app/http"
 import type { RequestResolver, Schema } from "effect-app"
 import { Config, Context, Effect, flow, HashMap, Layer, Option, pipe, Predicate, S, Struct } from "effect-app"
 import { typedKeysOf } from "effect-app/utils"
 import type { Client, Requests } from "effect-app/client/clientFor"
+import { make } from "../lib/schema.js"
 
 // export const make = <R extends RpcRouter<any, any>>(
 //   client: HttpClient.HttpClient

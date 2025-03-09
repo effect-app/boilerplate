@@ -8,12 +8,13 @@ import { makeMiddleware, makeRouter } from "#resources/rpc2/routing2"
 import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
 import type { RequestContext } from "@effect-app/infra/RequestContext"
 import { Rpc } from "@effect/rpc"
-import { Context, Effect, Exit, Layer, Option, type Request, type S } from "effect-app"
-import type { GetEffectContext, RPCContextMap } from "effect-app/client"
+import { Context, Effect, Exit, FiberRef, Layer, Option, type Request, type S } from "effect-app"
+import type { GetEffectContext, RPCContextMap } from "effect-app/client/req"
 import { HttpHeaders, HttpServerRequest } from "effect-app/http"
 import type * as EffectRequest from "effect/Request"
 import { makeUserProfileFromAuthorizationHeader, makeUserProfileFromUserHeader, UserProfile } from "../services/UserProfile.js"
 import { basicRuntime } from "./basicRuntime.js"
+import { Test, Test2 } from "#api/router"
 
 export interface CTX {
   context: RequestContext
@@ -111,10 +112,17 @@ const middleware = makeMiddleware({
         | Exclude<R, GetEffectContext<CTXMap, T["config"]>>
       > =>
         Effect.gen(function* () {
+          console.log("$test", yield* Test)
+          console.log("$test2", yield* FiberRef.get(Test2))
+          // TODO: somehow get the headers from Http and put them in the Rpc headers..
+          // perhaps do this elsewhere
           const httpReq = yield* HttpServerRequest.HttpServerRequest
+          const abc = HttpHeaders.merge(httpReq.headers, headers)
+          console.log(yield* Effect.context())
+          
       
-        return yield* handler(req, HttpHeaders.merge(httpReq.headers, headers)).pipe(
-          Effect.provide(ContextLayer(req, headers))
+        return yield* handler(req, abc).pipe(
+          Effect.provide(ContextLayer(req, abc))
         )
       }) as any
     }
