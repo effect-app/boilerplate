@@ -6194,7 +6194,7 @@ index 0000000000000000000000000000000000000000..80bd3aae0bd0eb2027a32612b3e7c7a2
 \ No newline at end of file
 diff --git a/dist/esm/RpcServer.js b/dist/esm/RpcServer.js
 new file mode 100644
-index 0000000000000000000000000000000000000000..1e4528a38d5da90d4dbabd1e85d145f40004298e
+index 0000000000000000000000000000000000000000..844a5669f05b0fb6b191e4b0bc78d21687f33926
 --- /dev/null
 +++ b/dist/esm/RpcServer.js
 @@ -0,0 +1,845 @@
@@ -6394,7 +6394,7 @@ index 0000000000000000000000000000000000000000..1e4528a38d5da90d4dbabd1e85d145f4
 +    }
 +    //console.log("ctx2", context2)
 +    let eff = effect
-+    effect = Effect.context().pipe(Effect.flatMap(context => Effect.provide(eff, Context.merge(context, entry.context))));
++    effect = Effect.context().pipe(Effect.flatMap(context => Effect.provide(eff, Context.merge(entry.context, context))));
 +    if (!isFork && concurrencySemaphore) {
 +      effect = concurrencySemaphore.withPermits(1)(effect);
 +    }
