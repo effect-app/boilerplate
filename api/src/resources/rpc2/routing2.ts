@@ -640,20 +640,7 @@ export const makeRouter = <
         make: Make
       ): {
         moduleName: ModuleName
-        Router: HttpRouter.HttpRouter.TagClass<
-          RouterShape<Rsc>,
-          `${ModuleName}Router`,
-          never,
-          | Exclude<Context, HttpRouter.HttpRouter.Provided>
-          | Exclude<
-            RPCRouteR<
-              {
-                [K in keyof Filter<Rsc>]: Rpc.Rpc<Rsc[K], _R<ReturnType<MakeHandlers<Make, Filter<Rsc>>[K]["handler"]>>>
-              }[keyof Filter<Rsc>]
-            >,
-            HttpRouter.HttpRouter.Provided
-          >
-        >
+
         routes: (requestLayers: any) => Layer.Layer<
           RouterShape<Rsc>,
           MakeErrors<Make> | GetError<Make["dependencies"]>,
@@ -678,20 +665,7 @@ export const makeRouter = <
         make: Make
       ): {
         moduleName: ModuleName
-        Router: HttpRouter.HttpRouter.TagClass<
-          RouterShape<Rsc>,
-          `${ModuleName}Router`,
-          never,
-          | Exclude<Context, HttpRouter.HttpRouter.Provided>
-          | Exclude<
-            RPCRouteR<
-              {
-                [K in keyof Filter<Rsc>]: Rpc.Rpc<Rsc[K], _R<ReturnType<MakeHandlers<Make, Filter<Rsc>>[K]["handler"]>>>
-              }[keyof Filter<Rsc>]
-            >,
-            HttpRouter.HttpRouter.Provided
-          >
-        >
+
         routes: (requestLayers: any) => Layer.Layer<
           RouterShape<Rsc>,
           MakeErrors<Make> | GetError<Make["dependencies"]>,
@@ -716,20 +690,7 @@ export const makeRouter = <
         make: Make
       ): {
         moduleName: ModuleName
-        Router: HttpRouter.HttpRouter.TagClass<
-          RouterShape<Rsc>,
-          `${ModuleName}Router`,
-          never,
-          | Exclude<Context, HttpRouter.HttpRouter.Provided>
-          | Exclude<
-            RPCRouteR<
-              {
-                [K in keyof Filter<Rsc>]: Rpc.Rpc<Rsc[K], _R<ReturnType<MakeHandlers<Make, Filter<Rsc>>[K]["handler"]>>>
-              }[keyof Filter<Rsc>]
-            >,
-            HttpRouter.HttpRouter.Provided
-          >
-        >
+
         routes: (requestLayers: any) => Layer.Layer<
           RouterShape<Rsc>,
           MakeErrors<Make> | GetError<Make["dependencies"]>,
@@ -754,20 +715,7 @@ export const makeRouter = <
         make: Make
       ): {
         moduleName: ModuleName
-        Router: HttpRouter.HttpRouter.TagClass<
-          RouterShape<Rsc>,
-          `${ModuleName}Router`,
-          never,
-          | Exclude<Context, HttpRouter.HttpRouter.Provided>
-          | Exclude<
-            RPCRouteR<
-              {
-                [K in keyof Filter<Rsc>]: Rpc.Rpc<Rsc[K], _R<ReturnType<MakeHandlers<Make, Filter<Rsc>>[K]["handler"]>>>
-              }[keyof Filter<Rsc>]
-            >,
-            HttpRouter.HttpRouter.Provided
-          >
-        >
+
         routes: (requestLayers: any) => Layer.Layer<
           RouterShape<Rsc>,
           MakeErrors<Make> | GetError<Make["dependencies"]>,
@@ -790,20 +738,7 @@ export const makeRouter = <
         make: Make
       ): {
         moduleName: ModuleName
-        Router: HttpRouter.HttpRouter.TagClass<
-          RouterShape<Rsc>,
-          `${ModuleName}Router`,
-          never,
-          | Exclude<Context, HttpRouter.HttpRouter.Provided>
-          | Exclude<
-            RPCRouteR<
-              {
-                [K in keyof Filter<Rsc>]: Rpc.Rpc<Rsc[K], _R<ReturnType<MakeHandlers<Make, Filter<Rsc>>[K]["handler"]>>>
-              }[keyof Filter<Rsc>]
-            >,
-            HttpRouter.HttpRouter.Provided
-          >
-        >
+
         routes: (requestLayers: any) => Layer.Layer<
           RouterShape<Rsc>,
           MakeErrors<Make> | GetError<Make["dependencies"]>,
