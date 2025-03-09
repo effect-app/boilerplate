@@ -576,7 +576,7 @@ export const makeRouter = <
               console.log("path", "/rpc/" + meta.moduleName)
 
               const impl = rpcLayer(requestLayers)
-              const l = RpcServer.layer(rpcs).pipe(Layer.provide(impl))
+              const l = RpcServer.layer(rpcs, { disableSpanPropagation: true }).pipe(Layer.provide(impl))
               // TODO: also takes optional a RouterTag..
             return l.pipe(
               Layer.provideMerge(layerProtocolHttp({ path: ("/rpc/" + meta.moduleName) as `/rpc/${typeof meta.moduleName}` }))
