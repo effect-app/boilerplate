@@ -6194,10 +6194,10 @@ index 0000000000000000000000000000000000000000..80bd3aae0bd0eb2027a32612b3e7c7a2
 \ No newline at end of file
 diff --git a/dist/esm/RpcServer.js b/dist/esm/RpcServer.js
 new file mode 100644
-index 0000000000000000000000000000000000000000..290fd3aae51fe1a98807c08d8ff7c1bb1b002901
+index 0000000000000000000000000000000000000000..2941b474f6215c41001b84815f90bbf3a682fa8e
 --- /dev/null
 +++ b/dist/esm/RpcServer.js
-@@ -0,0 +1,841 @@
+@@ -0,0 +1,845 @@
 +/**
 + * @since 1.0.0
 + */
@@ -6220,13 +6220,14 @@ index 0000000000000000000000000000000000000000..290fd3aae51fe1a98807c08d8ff7c1bb
 +import * as FiberId from "effect/FiberId";
 +import * as FiberRef from "effect/FiberRef";
 +import * as FiberSet from "effect/FiberSet";
-+import { constant, constTrue, constVoid, identity } from "effect/Function";
++import { constant, constTrue, constVoid, identity, flow } from "effect/Function";
 +import * as Layer from "effect/Layer";
 +import * as Mailbox from "effect/Mailbox";
 +import * as ManagedRuntime from "effect/ManagedRuntime";
 +import * as Option from "effect/Option";
 +import { ArrayFormatter } from "effect/ParseResult";
 +import * as Predicate from "effect/Predicate";
++import * as Runtime from "effect/Runtime";
 +import * as Schema from "effect/Schema";
 +import * as Scope from "effect/Scope";
 +import * as Stream from "effect/Stream";
@@ -6278,7 +6279,8 @@ index 0000000000000000000000000000000000000000..290fd3aae51fe1a98807c08d8ff7c1bb
 +    clients.delete(clientId);
 +    return Effect.void;
 +  });
-+  const write = (clientId, message) => Effect.catchAllDefect(Effect.suspend(() => {
++  const write = (clientId, message) => Effect.runtime().pipe(
++    Effect.flatMap(runtime => Effect.catchAllDefect(Effect.suspend(() => {
 +    if (isShutdown) return Effect.interrupt;
 +    let client = clients.get(clientId);
 +    if (!client) {
@@ -6295,7 +6297,7 @@ index 0000000000000000000000000000000000000000..290fd3aae51fe1a98807c08d8ff7c1bb
 +    switch (message._tag) {
 +      case "Request":
 +        {
-+          return handleRequest(client, message);
++          return handleRequest(client, message, flow(Effect.interruptible, Runtime.runFork(runtime), _ => FiberSet.add(fiberSet, _).pipe(Effect.zipRight(Effect.succeed(_))), Effect.runSync));
 +        }
 +      case "Ack":
 +        {
@@ -6323,7 +6325,7 @@ index 0000000000000000000000000000000000000000..290fd3aae51fe1a98807c08d8ff7c1bb
 +          return sendDefect(client, `Unknown request tag: ${message._tag}`);
 +        }
 +    }
-+  }), defect => sendDefect(clients.get(clientId), defect));
++  }), defect => sendDefect(clients.get(clientId), defect))));
 +  const endClient = client => {
 +    clients.delete(client.id);
 +    const write = options.onFromServer({
@@ -6335,7 +6337,7 @@ index 0000000000000000000000000000000000000000..290fd3aae51fe1a98807c08d8ff7c1bb
 +    }
 +    return write;
 +  };
-+  const handleRequest = (client, request) => {
++  const handleRequest = (client, request, runFork) => {
 +    if (client.fibers.has(request.id)) {
 +      return Effect.interrupt;
 +    }
@@ -6390,7 +6392,9 @@ index 0000000000000000000000000000000000000000..290fd3aae51fe1a98807c08d8ff7c1bb
 +        }
 +      });
 +    }
-+    effect = Effect.locally(effect, FiberRef.currentContext, entry.context);
++    //console.log("ctx2", context2)
++    let eff = effect
++    //effect = Effect.context().pipe(Effect.flatMap(context => Effect.provide(eff, Context.merge(context, entry.context))));
 +    if (!isFork && concurrencySemaphore) {
 +      effect = concurrencySemaphore.withPermits(1)(effect);
 +    }
