@@ -113,13 +113,13 @@ const middleware = makeMiddleware({
         | Exclude<R, GetEffectContext<CTXMap, T["config"]>>
       > =>
         Effect.gen(function*() {
-          console.log("$test", yield* Test)
-          console.log("$test2", yield* FiberRef.get(Test2))
+          // console.log(yield* Effect.context())
+          // console.log("$test", yield* Test)
+          // console.log("$test2", yield* FiberRef.get(Test2))
           // TODO: somehow get the headers from Http and put them in the Rpc headers..
           // perhaps do this elsewhere
           const httpReq = yield* HttpServerRequest.HttpServerRequest
           const abc = HttpHeaders.merge(httpReq.headers, headers)
-          console.log(yield* Effect.context())
 
           return yield* handler(req, abc).pipe(
             Effect.provide(ContextLayer(req, abc))

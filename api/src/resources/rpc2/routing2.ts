@@ -569,8 +569,6 @@ export const makeRouter = <
                 RPCRouteR<typeof mapped[keyof typeof mapped]>
               >
 
-            console.log("path", "/rpc/" + meta.moduleName)
-
             const impl = rpcLayer(requestLayers)
             const l = RpcServer.layer(rpcs, { disableSpanPropagation: true }).pipe(Layer.provide(impl))
             // TODO: also takes optional a RouterTag..
