@@ -1,47 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Rpc } from "@effect/rpc"
-import { type RpcRouter } from "@effect/rpc"
-import { HttpBody, HttpClient, HttpClientRequest, HttpClientResponse } from "effect-app/http"
-import type { RequestResolver, Schema } from "effect-app"
-import { Config, Context, Effect, flow, HashMap, Layer, Option, pipe, Predicate, S, Struct } from "effect-app"
-import { typedKeysOf } from "effect-app/utils"
+import { Rpc, RpcClient, RpcGroup, RpcSerialization } from "@effect/rpc"
+import { Config, Context, Effect, flow, HashMap, Layer, Option, Predicate, S, Struct } from "effect-app"
 import type { Client, Requests } from "effect-app/client/clientFor"
-import { make } from "../lib/schema.js"
-
-// export const make = <R extends RpcRouter<any, any>>(
-//   client: HttpClient.HttpClient
-// ): RequestResolver.RequestResolver<
-//   Rpc.Request<RpcRouter.Request<R>>,
-//   Schema.SerializableWithResult.Context<RpcRouter.Request<R>>
-// > =>
-//   RpcResolverNoStream.make((requests) =>
-//     client
-//       .post("", {
-//         body: HttpBody.unsafeJson(requests)
-//       })
-//       .pipe(
-//         Effect.flatMap((_) =>
-//           pipe(
-//             _,
-//             HttpClientResponse.filterStatus((_) => _ === 200 || _ === 418 || _ === 422)
-//             // Effect.tapErrorCause(() =>
-//             //   _.text.pipe(
-//             //     Effect.orElseSucceed(() => undefined),
-//             //     Effect.flatMap((body) =>
-//             //       Effect.annotateCurrentSpan({ "response.headers": redactUnwrap(_.headers), "response.body": body }).pipe(
-//             //         Effect.andThen(
-//             //           Effect.logError("RPC error", { responseHeaders: redactUnwrap(_.headers), responseBody: body })
-//             //         )
-//             //       )
-//             //     )
-//             //   )
-//             // )
-//           )
-//         ),
-//         Effect.flatMap((_) => _.json),
-//         Effect.scoped
-//       )
-//   )<R>()
+import { HttpClient, HttpClientRequest } from "effect-app/http"
+import { typedKeysOf, typedValuesOf } from "effect-app/utils"
 
 export interface ApiConfig {
   url: string
@@ -95,12 +57,30 @@ const makeApiClientFactory = (config: ApiConfig) =>
       const meta = (resource as any).meta as { moduleName: string }
       if (!meta) throw new Error("No meta defined in Resource!")
 
-      const resolver = flow(
-        make<RpcRouter<any, any>>,
-        (_) => RpcResolver.toClient(_ as any)
+      const rpcs = RpcGroup.make(
+        ...typedValuesOf(filtered).map((_) => {
+          return Rpc.fromTaggedRequest(_ as any)
+        })
       )
 
-      const baseClient = HttpClient.mapRequest(client, HttpClientRequest.appendUrl("/" + meta.moduleName))
+      class TheClient extends Context.Tag(meta.moduleName)<
+        TheClient,
+        RpcClient.RpcClient<RpcGroup.Rpcs<typeof rpcs>>
+      >() {
+        static layer = Layer.scoped(TheClient, RpcClient.make(rpcs))
+      }
+
+      const clientLayer = TheClient.layer.pipe(
+        Layer.provide(
+          RpcClient.layerProtocolHttp({
+            url: "",
+            transformClient: flow(
+              HttpClient.mapRequest(HttpClientRequest.appendUrl("/" + meta.moduleName))
+            )
+          })
+        ),
+        Layer.provide(RpcSerialization.layerJson)
+      )
 
       return (typedKeysOf(filtered)
         .reduce((prev, cur) => {
@@ -117,57 +97,67 @@ const makeApiClientFactory = (config: ApiConfig) =>
             name: requestName
           }
 
-          const client: <Req extends Schema.TaggedRequest.All>(request: Req) => Rpc.Rpc.Result<Req, unknown> =
-            baseClient
-              .pipe(
-                HttpClient.mapRequest(HttpClientRequest.appendUrlParam("action", cur as string)),
-                resolver
-              )
+          const localClient = client
+            .pipe(
+              HttpClient.mapRequest(HttpClientRequest.appendUrlParam("action", cur as string))
+            )
 
           const fields = Struct.omit(Request.fields, "_tag")
           // @ts-expect-error doc
           prev[cur] = Object.keys(fields).length === 0
             ? {
-              handler: client(new Request() as Schema.TaggedRequest.All).pipe(
+              handler: TheClient.pipe(
+                Effect.flatMap((client) => client[cur]!(new Request()) as Effect<any, any, never>),
                 Effect.withSpan("client.request " + requestName, {
                   captureStackTrace: false,
                   attributes: { "request.name": requestName }
                 }),
-                Effect.provide(requestLevelLayers)
+                Effect.provide(requestLevelLayers),
+                Effect.provide(clientLayer), // TODO; make shared runtime for each request
+                Effect.provide(Layer.succeed(HttpClient.HttpClient, localClient))
               ),
               ...requestMeta,
               raw: {
-                handler: client(new Request() as Schema.TaggedRequest.All).pipe(
+                handler: TheClient.pipe(
+                  Effect.flatMap((client) => client[cur]!(new Request()) as Effect<any, any, never>),
                   Effect.flatMap((res) => S.encode(Response)(res)), // TODO,
                   Effect.withSpan("client.request " + requestName, {
                     captureStackTrace: false,
                     attributes: { "request.name": requestName }
                   }),
-                  Effect.provide(requestLevelLayers)
+                  Effect.provide(requestLevelLayers),
+                  Effect.provide(clientLayer), // TODO; make shared runtime for each request
+                  Effect.provide(Layer.succeed(HttpClient.HttpClient, localClient))
                 ),
                 ...requestMeta
               }
             }
             : {
               handler: (req: any) =>
-                client(new Request(req) as Schema.TaggedRequest.All).pipe(
+                TheClient.pipe(
+                  Effect.flatMap((client) => client[cur]!(new Request(req)) as Effect<any, any, never>),
                   Effect.withSpan("client.request " + requestName, {
                     captureStackTrace: false,
                     attributes: { "request.name": requestName }
                   }),
-                  Effect.provide(requestLevelLayers)
+                  Effect.provide(requestLevelLayers),
+                  Effect.provide(clientLayer), // TODO; make shared runtime for each request
+                  Effect.provide(Layer.succeed(HttpClient.HttpClient, localClient))
                 ),
 
               ...requestMeta,
               raw: {
                 handler: (req: any) =>
-                  client(new Request(req) as Schema.TaggedRequest.All).pipe(
+                  TheClient.pipe(
+                    Effect.flatMap((client) => client[cur]!(new Request(req)) as Effect<any, any, never>),
                     Effect.flatMap((res) => S.encode(Response)(res)), // TODO,
                     Effect.withSpan("client.request " + requestName, {
                       captureStackTrace: false,
                       attributes: { "request.name": requestName }
                     }),
-                    Effect.provide(requestLevelLayers)
+                    Effect.provide(requestLevelLayers),
+                    Effect.provide(clientLayer), // TODO; make shared runtime for each request
+                    Effect.provide(Layer.succeed(HttpClient.HttpClient, localClient))
                   ),
 
                 ...requestMeta

@@ -7,8 +7,8 @@ import { WebSdkLive } from "~/utils/observability"
 import "effect-app/builtin"
 import { ref } from "vue"
 import { HttpClient } from "effect-app/http"
-import { ApiClientFactory } from "effect-app/client"
 import { FetchHttpClient } from "@effect/platform"
+import { ApiClientFactory } from "#resources/rpc2/apiClientFactory2"
 
 export const versionMatch = ref(true)
 

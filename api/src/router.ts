@@ -36,6 +36,9 @@ export const makeHttpServer = <E, R>(
   logServer.pipe(
     Layer.provide(HttpRouter.Default.unwrap((root) =>
       root.pipe(
+        // TODO: remove test
+        Effect.provideService(Test, "yes"),
+        Effect.locally(Test2, "yes"),
         MW.RequestContextMiddleware(),
         MW.gzip,
         MW.cors(),

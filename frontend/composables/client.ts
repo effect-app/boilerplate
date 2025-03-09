@@ -4,7 +4,7 @@ import { useIntl } from "./intl"
 import { runtime, type RT } from "~/plugins/runtime"
 import type { Effect } from "effect-app"
 import { clientFor as clientFor_ } from "#resources/lib"
-import type { Requests } from "effect-app/client"
+import type { Requests } from "effect-app/client/clientFor"
 import { OperationsClient } from "#resources/Operations"
 
 export { useToast } from "vue-toastification"
