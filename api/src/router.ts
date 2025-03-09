@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as MW from "#api/lib/middleware"
-import { Console, Context, Effect, FiberRef, flow, Layer } from "effect-app"
+import { RpcSerialization } from "@effect/rpc"
+import { Console, Context, Effect, FiberRef, Layer } from "effect-app"
 import { HttpMiddleware, HttpRouter, HttpServer } from "effect-app/http"
 import { BaseConfig, MergedConfig } from "./config.js"
 import { Events } from "./services.js"
-import { RpcSerialization } from "@effect/rpc"
 
-const AllRoutes = HttpRouter.Default
+const AllRoutes = HttpRouter
+  .Default
   .use((router) =>
     Effect.gen(function*() {
       const cfg = yield* BaseConfig
@@ -26,23 +27,22 @@ const logServer = Effect
   })
   .pipe(Layer.effectDiscard)
 
-  export const Test = Context.GenericTag("test123")
-  export const Test2 = FiberRef.unsafeMake("no")
+export const Test = Context.GenericTag("test123")
+export const Test2 = FiberRef.unsafeMake("no")
 
-export const makeHttpServer = <E, R, E3, R3>(
+export const makeHttpServer = <E, R>(
   router: Layer<never, E, R>
 ) =>
   logServer.pipe(
-    Layer.provide(HttpRouter.Default.serve(flow(
-      Effect.provideService(Test, "yes"), Effect.locally(Test2, "yes"),
-                  MW.RequestContextMiddleware(),
-            MW.gzip,
-            MW.cors(),
-            HttpMiddleware.logger,
-            // we trust proxy and handle the x-forwarded etc headers
-            HttpMiddleware.xForwardedHeaders,
-            Effect.withSpan("http")
-    )
+    Layer.provide(HttpRouter.Default.unwrap((root) =>
+      root.pipe(
+        MW.RequestContextMiddleware(),
+        MW.gzip,
+        MW.cors(),
+        // we trust proxy and handle the x-forwarded etc headers
+        HttpMiddleware.xForwardedHeaders,
+        HttpServer.serve(HttpMiddleware.logger)
+      )
     )),
     Layer.provide(router),
     Layer.provide(AllRoutes),
