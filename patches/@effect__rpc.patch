@@ -5096,10 +5096,10 @@ index b52a11752bd9a0cbb11023afdc9effe576a09a14..625f2db24a9a58c7904a07b67a980d83
 \ No newline at end of file
 diff --git a/dist/esm/RpcClient.js b/dist/esm/RpcClient.js
 new file mode 100644
-index 0000000000000000000000000000000000000000..6387528ba4f22c4da9c7780da17b695ea8664826
+index 0000000000000000000000000000000000000000..ec2d88fc12831a68dc6340a2cc6947dec0de8e37
 --- /dev/null
 +++ b/dist/esm/RpcClient.js
-@@ -0,0 +1,629 @@
+@@ -0,0 +1,630 @@
 +/**
 + * @since 1.0.0
 + */
@@ -5123,6 +5123,7 @@ index 0000000000000000000000000000000000000000..6387528ba4f22c4da9c7780da17b695e
 +import * as Layer from "effect/Layer";
 +import * as Mailbox from "effect/Mailbox";
 +import * as Option from "effect/Option";
++import * as Runtime from "effect/Runtime";
 +import * as Pool from "effect/Pool";
 +import * as Schedule from "effect/Schedule";
 +import * as Schema from "effect/Schema";
@@ -5201,7 +5202,7 @@ index 0000000000000000000000000000000000000000..6387528ba4f22c4da9c7780da17b695e
 +      }));
 +    }
 +    let fiber;
-+    return Effect.onInterrupt(Effect.async(resume => {
++    return Effect.runtime().pipe(Effect.flatMap(runtime => Effect.onInterrupt(Effect.async(resume => {
 +      const entry = {
 +        _tag: "Effect",
 +        rpc,
@@ -5220,7 +5221,7 @@ index 0000000000000000000000000000000000000000..6387528ba4f22c4da9c7780da17b695e
 +        message: request,
 +        context,
 +        discard
-+      })), Effect.runFork);
++      })), Runtime.runFork(runtime));
 +      fiber.addObserver(exit => {
 +        if (exit._tag === "Failure") {
 +          return resume(exit);
@@ -5230,7 +5231,7 @@ index 0000000000000000000000000000000000000000..6387528ba4f22c4da9c7780da17b695e
 +      entries.delete(id);
 +      const ids = Array.from(interruptors).flatMap(id => Array.from(FiberId.toSet(id)));
 +      return Effect.zipRight(Fiber.interrupt(fiber), sendInterrupt(id, ids, context));
-+    });
++    })));
 +  });
 +  const onStreamRequest = Effect.fnUntraced(function* (rpc, middleware, payload, headers, streamBufferSize, context) {
 +    if (isShutdown) {
