@@ -37,8 +37,8 @@ export const makeHttpServer = <E, R>(
     Layer.provide(HttpRouter.Default.unwrap((root) =>
       root.pipe(
         // TODO: remove test
-        Effect.provideService(Test, "yes"),
-        Effect.locally(Test2, "yes"),
+        // Effect.provideService(Test, "yes"),
+        // Effect.locally(Test2, "yes"),
         MW.RequestContextMiddleware(),
         MW.gzip,
         MW.cors(),
@@ -49,7 +49,7 @@ export const makeHttpServer = <E, R>(
     )),
     Layer.provide(router),
     Layer.provide(AllRoutes),
-    Layer.provide(RpcSerialization.layerJson),
-    Layer.provide(Layer.succeed(Test, "no"))
+    Layer.provide(RpcSerialization.layerJson)
+    // Layer.provide(Layer.succeed(Test, "no"))
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   )

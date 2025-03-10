@@ -6,6 +6,7 @@ import { GetHelloWorld } from "#resources/HelloWorld"
 import { getRequestContext } from "@effect-app/infra/api/setupRequest"
 import { generate } from "@effect-app/infra/test"
 import { Effect, S } from "effect-app"
+import { Test } from "./router.js"
 
 export default Router(HelloWorldRsc)({
   dependencies: [UserRepo.Default],
@@ -16,6 +17,8 @@ export default Router(HelloWorldRsc)({
       GetHelloWorld: ({ echo }) =>
         Effect.gen(function*() {
           const context = yield* getRequestContext
+          const test = yield* Test
+          console.log({ test })
           return yield* userRepo
             .tryGetCurrentUser
             .pipe(
