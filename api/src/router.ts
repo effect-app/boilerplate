@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as MW from "#api/lib/middleware"
 import { RpcSerialization } from "@effect/rpc"
-import { Console, Context, Effect, FiberRef, Layer } from "effect-app"
+import { Console, Context, Effect, Layer } from "effect-app"
 import { HttpMiddleware, HttpRouter, HttpServer } from "effect-app/http"
 import { BaseConfig, MergedConfig } from "./config.js"
 import { Events } from "./services.js"
@@ -27,8 +27,7 @@ const logServer = Effect
   })
   .pipe(Layer.effectDiscard)
 
-export const Test = Context.GenericTag("test123")
-export const Test2 = FiberRef.unsafeMake("no")
+export class Test extends Context.Reference<Test>()("test123", { defaultValue: () => "no" }) {}
 
 export const makeHttpServer = <E, R>(
   router: Layer<never, E, R>
@@ -36,9 +35,7 @@ export const makeHttpServer = <E, R>(
   logServer.pipe(
     Layer.provide(HttpRouter.Default.unwrap((root) =>
       root.pipe(
-        // TODO: remove test
-        // Effect.provideService(Test, "yes"),
-        // Effect.locally(Test2, "yes"),
+        Effect.provideService(Test, "yes"),
         MW.RequestContextMiddleware(),
         MW.gzip,
         MW.cors(),
@@ -49,7 +46,7 @@ export const makeHttpServer = <E, R>(
     )),
     Layer.provide(router),
     Layer.provide(AllRoutes),
-    Layer.provide(RpcSerialization.layerJson)
-    // Layer.provide(Layer.succeed(Test, "no"))
+    Layer.provide(RpcSerialization.layerJson),
+    Layer.provide(Layer.succeed(Test, "1"))
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   )
