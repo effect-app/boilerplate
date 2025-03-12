@@ -30,9 +30,6 @@ patchedDependencies:
   '@hebilicious/vue-query-nuxt@0.3.0':
     hash: 3a47c9acff9a26d4adf642cf2f9e201793131837bcf0fba32e1d15545f8fcbc6
     path: patches/@hebilicious__vue-query-nuxt@0.3.0.patch
-  '@phaphoso/eslint-plugin-dprint@0.5.2':
-    hash: eea28b10680421b1694a2c076da66f23967496e57bd21d30294877e30a9a455f
-    path: patches/@phaphoso__eslint-plugin-dprint@0.5.2.patch
   effect:
     hash: 781897251bb1d851db3728b66ffc7521a2ba3b3eaef40559b959d6f2428bb0c9
     path: patches/effect.patch
@@ -117,6 +114,9 @@ importers:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.2(patch_hash=7af373fd9f312fc5d8a2eaa8d73521d9506fdcc3acb360e7da5ef59524637f98))
     devDependencies:
+      '@ben_12/eslint-plugin-dprint':
+        specifier: ^1.1.0
+        version: 1.1.0(@dprint/typescript@0.94.0)(eslint@9.22.0(jiti@2.4.2))
       '@dprint/typescript':
         specifier: ^0.94.0
         version: 0.94.0
@@ -129,9 +129,6 @@ importers:
       '@effect/language-service':
         specifier: ^0.4.0
         version: 0.4.0
-      '@phaphoso/eslint-plugin-dprint':
-        specifier: ^0.5.2
-        version: 0.5.2(patch_hash=eea28b10680421b1694a2c076da66f23967496e57bd21d30294877e30a9a455f)(eslint@9.22.0(jiti@2.4.2))
       '@tsconfig/strictest':
         specifier: ^2.0.5
         version: 2.0.5
@@ -1295,6 +1292,34 @@ packages:
     resolution: {integrity: sha512-emqcG3vHrpxUKTrxcblR36dcrcoRDvKmnL/dCL6ZsHaShW80qxCAcNhzQZrpeM765VzEos+xOi4s+r4IXzTwdQ==}
     engines: {node: '>=6.9.0'}
 
+  '@ben_12/eslint-plugin-dprint@1.1.0':
+    resolution: {integrity: sha512-V85HgF3yVozupn27W6H4S0OZcu+oY/YwEGDzWhEwyi+qtxxzzyjqiRpy4gtf2iB6eMnZawluzoY8n4IzS60UPA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      '@dprint/dockerfile': ^0.3.2
+      '@dprint/json': ^0.20.0
+      '@dprint/markdown': ^0.18.0
+      '@dprint/toml': ^0.7.0
+      '@dprint/typescript': ^0.94.0
+      dprint-plugin-malva: ^0.11.2
+      dprint-plugin-markup: ^0.19.0
+      eslint: '>=7.0.0'
+    peerDependenciesMeta:
+      '@dprint/dockerfile':
+        optional: true
+      '@dprint/json':
+        optional: true
+      '@dprint/markdown':
+        optional: true
+      '@dprint/toml':
+        optional: true
+      '@dprint/typescript':
+        optional: true
+      dprint-plugin-malva:
+        optional: true
+      dprint-plugin-markup:
+        optional: true
+
   '@cloudflare/kv-asset-handler@0.3.4':
     resolution: {integrity: sha512-YLPHc8yASwjNkmcDMQMY35yiWjoKAKnhUbPRszBRS0YgH+IXtsMp61j+yTcnCE3oO2DgP0U3iejLC8FTtKDC8Q==}
     engines: {node: '>=16.13'}
@@ -1312,6 +1337,9 @@ packages:
     resolution: {integrity: sha512-cA/DIPlHClkufLufuIfcXHtZdlyP9U05RuJLvvAfHwJAxyeEC/chKYVc5BVz86RxMIq6czFGpJHoFtTjrfM3YA==}
     cpu: [x64]
     os: [darwin]
+
+  '@dprint/formatter@0.4.1':
+    resolution: {integrity: sha512-IB/GXdlMOvi0UhQQ9mcY15Fxcrc2JPadmo6tqefCNV0bptFq7YBpggzpqYXldBXDa04CbKJ+rDwO2eNRPE2+/g==}
 
   '@dprint/linux-arm64-glibc@0.49.0':
     resolution: {integrity: sha512-UBo3lDJhotT+qza2S48DOPI64MirkJMoFDidh/TJBjokio2TcGd+QUzuB9O7J1+R3AlbwyObcTECjJryCNohHQ==}
@@ -2877,12 +2905,6 @@ packages:
   '@parcel/watcher@2.4.1':
     resolution: {integrity: sha512-HNjmfLQEVRZmHRET336f20H/8kOozUGwk7yajvsonjNxbj2wBTK1WsQuHkD5yYh9RxFGL2EyDHryOihOwUoKDA==}
     engines: {node: '>= 10.0.0'}
-
-  '@phaphoso/eslint-plugin-dprint@0.5.2':
-    resolution: {integrity: sha512-I86DIjCIAIKzdEf0vu0Ctqbp0cm2u1toc94ngm09PuGty58P8w+5WPpR8hm+lQm7+yxLadk/nFhiGEY2eavfYg==}
-    engines: {node: ^10.12.0 || >=12.0.0}
-    peerDependencies:
-      eslint: '>=5.16.0'
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -4757,8 +4779,8 @@ packages:
     resolution: {integrity: sha512-Mv/TDa3nZ9sbc5soK+OoA74BsS3mL37yixCvUAQkiuA4Wz6YtwP/K47n2rv2ovzHZvoiQeA5FTQOschKkEwB0Q==}
     engines: {node: '>= 10.14.2'}
 
-  diff@4.0.2:
-    resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
+  diff@5.2.0:
+    resolution: {integrity: sha512-uIFDxqpRZGZ6ThOk84hEfqWoHx2devRFvpTZcTHur85vImfaxUbTW9Ryh4CpCuDnToOP1CEtXKIgytHBPVff5A==}
     engines: {node: '>=0.3.1'}
 
   diff@7.0.0:
@@ -6069,6 +6091,9 @@ packages:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
     engines: {node: '>=6'}
     hasBin: true
+
+  jsonc-parser@3.3.1:
+    resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
 
   jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
@@ -9768,6 +9793,18 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
+  '@ben_12/eslint-plugin-dprint@1.1.0(@dprint/typescript@0.94.0)(eslint@9.22.0(jiti@2.4.2))':
+    dependencies:
+      '@dprint/formatter': 0.4.1
+      debug: 4.4.0
+      diff: 5.2.0
+      eslint: 9.22.0(jiti@2.4.2)
+      jsonc-parser: 3.3.1
+    optionalDependencies:
+      '@dprint/typescript': 0.94.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@cloudflare/kv-asset-handler@0.3.4':
     dependencies:
       mime: 3.0.0
@@ -9782,6 +9819,8 @@ snapshots:
 
   '@dprint/darwin-x64@0.49.0':
     optional: true
+
+  '@dprint/formatter@0.4.1': {}
 
   '@dprint/linux-arm64-glibc@0.49.0':
     optional: true
@@ -11609,14 +11648,6 @@ snapshots:
       '@parcel/watcher-win32-arm64': 2.4.1
       '@parcel/watcher-win32-ia32': 2.4.1
       '@parcel/watcher-win32-x64': 2.4.1
-
-  '@phaphoso/eslint-plugin-dprint@0.5.2(patch_hash=eea28b10680421b1694a2c076da66f23967496e57bd21d30294877e30a9a455f)(eslint@9.22.0(jiti@2.4.2))':
-    dependencies:
-      debug: 4.4.0
-      diff: 4.0.2
-      eslint: 9.22.0(jiti@2.4.2)
-    transitivePeerDependencies:
-      - supports-color
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -13776,7 +13807,7 @@ snapshots:
 
   diff-sequences@26.6.2: {}
 
-  diff@4.0.2: {}
+  diff@5.2.0: {}
 
   diff@7.0.0: {}
 
@@ -15384,6 +15415,8 @@ snapshots:
       minimist: 1.2.8
 
   json5@2.2.3: {}
+
+  jsonc-parser@3.3.1: {}
 
   jsonfile@6.1.0:
     dependencies:
