@@ -30,9 +30,6 @@ patchedDependencies:
   '@hebilicious/vue-query-nuxt@0.3.0':
     hash: 3a47c9acff9a26d4adf642cf2f9e201793131837bcf0fba32e1d15545f8fcbc6
     path: patches/@hebilicious__vue-query-nuxt@0.3.0.patch
-  '@phaphoso/eslint-plugin-dprint@0.5.2':
-    hash: eea28b10680421b1694a2c076da66f23967496e57bd21d30294877e30a9a455f
-    path: patches/@phaphoso__eslint-plugin-dprint@0.5.2.patch
   effect:
     hash: f7a7f6b963d43dbfe81fc770a01cc89cbcd18845615b69113f6fe8b33d876091
     path: patches/effect.patch
@@ -131,7 +128,7 @@ importers:
         version: 0.4.0
       '@phaphoso/eslint-plugin-dprint':
         specifier: ^0.5.2
-        version: 0.5.2(patch_hash=eea28b10680421b1694a2c076da66f23967496e57bd21d30294877e30a9a455f)(eslint@9.22.0(jiti@2.4.2))
+        version: 0.5.2(eslint@9.22.0(jiti@2.4.2))
       '@tsconfig/strictest':
         specifier: ^2.0.5
         version: 2.0.5
@@ -11222,7 +11219,7 @@ snapshots:
       '@parcel/watcher-win32-ia32': 2.5.1
       '@parcel/watcher-win32-x64': 2.5.1
 
-  '@phaphoso/eslint-plugin-dprint@0.5.2(patch_hash=eea28b10680421b1694a2c076da66f23967496e57bd21d30294877e30a9a455f)(eslint@9.22.0(jiti@2.4.2))':
+  '@phaphoso/eslint-plugin-dprint@0.5.2(eslint@9.22.0(jiti@2.4.2))':
     dependencies:
       debug: 4.4.0
       diff: 4.0.2
