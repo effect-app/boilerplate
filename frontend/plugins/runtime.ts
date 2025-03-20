@@ -5,10 +5,11 @@ import * as Runtime from "effect/Runtime"
 import { Effect, Option } from "effect-app"
 import { WebSdkLive } from "~/utils/observability"
 import "effect-app/builtin"
-import { ref } from "vue"
+import { ref, shallowRef } from "vue"
 import { HttpClient } from "effect-app/http"
 import { FetchHttpClient } from "@effect/platform"
-import { ApiClientFactory } from "#resources/rpc2/apiClientFactory2"
+import { ApiClientFactory } from "effect-app/client/apiClientFactory"
+import { defineNuxtPlugin, useRuntimeConfig } from "nuxt/app"
 
 export const versionMatch = ref(true)
 

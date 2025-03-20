@@ -1,5 +1,4 @@
 import * as Sentry from "@sentry/vue"
-import { BrowserTracing } from "@sentry/tracing"
 
 export default defineNuxtPlugin(nuxtApp => {
   const config = useRuntimeConfig()
@@ -9,12 +8,7 @@ export default defineNuxtPlugin(nuxtApp => {
     normalizeDepth: 5, // default 3
     enabled: config.public.env !== "local-dev",
     dsn: "???",
-    integrations: [
-      new BrowserTracing({
-        //routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-        tracePropagationTargets: ["localhost", /^\//],
-      }),
-    ],
+
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
     // We recommend adjusting this value in production

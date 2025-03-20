@@ -4,7 +4,7 @@
 import { BaseConfig } from "#api/config"
 import { AppLogger } from "#api/lib/logger"
 import { RequestCacheLayers } from "#api/resources/lib"
-import { makeMiddleware, makeRouter } from "#resources/rpc2/routing2"
+import { makeMiddleware, makeRouter } from "@effect-app/infra/api/routing"
 import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
 import type { RequestContext } from "@effect-app/infra/RequestContext"
 import { Context, Effect, Exit, Layer, Option, type Request, type S } from "effect-app"
