@@ -11,10 +11,6 @@ import fc from "fast-check"
 import { Q } from "../lib.js"
 import { UserProfile } from "../UserProfile.js"
 
-export interface UserPersistenceModel extends User.Encoded {
-  _etag: string | undefined
-}
-
 export type UserSeed = "sample" | ""
 
 export class UserRepo extends Effect.Service<UserRepo>()("UserRepo", {
@@ -83,7 +79,15 @@ export class UserRepo extends Effect.Service<UserRepo>()("UserRepo", {
                   .pipe(Option.getOrElse(() => Exit.fail(new NotFoundError({ type: "User", id: r.id }))))
               ), { discard: true })
           ))
-      )
+      ).pipe(
+        Effect.orDie,
+        Effect.catchAllCause((cause) =>
+          Effect.forEach(
+            requests,
+            (request) => Request.failCause(request, cause),
+            { discard: true }
+          )
+        ))
     )
     .pipe(
       RequestResolver.batchN(25),
