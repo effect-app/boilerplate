@@ -4,8 +4,9 @@ import { logJson } from "@effect-app/infra/logger/jsonLogger"
 import { PlatformLogger } from "@effect/platform"
 import { NodeFileSystem } from "@effect/platform-node"
 import { defaultTeardown, type RunMain, type Teardown } from "@effect/platform/Runtime"
+import * as Sentry from "@Sentry/node"
 import { constantCase } from "change-case"
-import { Cause, Effect, Fiber, Layer, ManagedRuntime } from "effect-app"
+import { Cause, Console, Effect, Fiber, Layer, ManagedRuntime } from "effect-app"
 import { dual } from "effect-app/Function"
 import * as ConfigProvider from "effect/ConfigProvider"
 import * as Logger from "effect/Logger"
@@ -125,7 +126,14 @@ export function runMain<A, E>(eff: Effect<A, E, never>, filterReport?: (cause: C
       .pipe(
         Effect.tapErrorCause((cause) => !filterReport || filterReport(cause) ? reportMainError(cause) : Effect.void),
         Effect.ensuring(basicRuntime.disposeEffect),
-        Effect.provide(basicLayer)
+        Effect.provide(basicLayer),
+        Effect.ensuring(
+          Effect
+            .andThen(
+              Console.log("Flushing Sentry"),
+              Effect.promise(() => Sentry.flush(15_000)).pipe(Effect.flatMap((_) => Console.log("Sentry flushed", _)))
+            )
+        )
       ),
     { disablePrettyLogger: true, disableErrorReporting: true }
   )
