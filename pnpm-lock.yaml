@@ -143,8 +143,8 @@ importers:
         specifier: ^1.37.0
         version: 1.37.0(effect@3.14.20(patch_hash=ffe6d96fd342c3a44a239a4eb44ac635b2a37d3e7aef17e54f9e94f259ee5765))(eslint@9.26.0(jiti@2.4.2))(fp-ts@2.16.9)(typescript@5.8.3(patch_hash=7af373fd9f312fc5d8a2eaa8d73521d9506fdcc3acb360e7da5ef59524637f98))
       '@effect/language-service':
-        specifier: ^0.9.2
-        version: 0.9.2
+        specifier: ^0.10.0
+        version: 0.10.0
       '@phaphoso/eslint-plugin-dprint':
         specifier: ^0.5.2
         version: 0.5.2(eslint@9.26.0(jiti@2.4.2))
@@ -1006,8 +1006,8 @@ packages:
       lmdb:
         optional: true
 
-  '@effect/language-service@0.9.2':
-    resolution: {integrity: sha512-z+/soAL/sU6lxPBC2Ug3aJ5XzXp7MQEIWIIZ3AIw3VZDT54bbUE2O0Yl7MDZ2F+d8mM1TEWMoZlJ+OaAYy+ThA==}
+  '@effect/language-service@0.10.0':
+    resolution: {integrity: sha512-bGjLhHflGFxqNXQn7qEGNrVAgWl3wVndbk9Zz+Zg2gK5qsz5mSVaruC88S050oaNqscqslDUVaFOsJZh+avmhQ==}
 
   '@effect/opentelemetry@0.46.17':
     resolution: {integrity: sha512-J1bGboz1Qhvd6NpmJllvX9Mpmv/VdJH0km9YuGxdE8Pt0SunZSv+RmK9rvw8DUPtuoAuQcQE/ODeiS8G/uZ3MA==}
@@ -9574,7 +9574,7 @@ snapshots:
     optionalDependencies:
       ioredis: 5.6.1
 
-  '@effect/language-service@0.9.2': {}
+  '@effect/language-service@0.10.0': {}
 
   '@effect/opentelemetry@0.46.17(@effect/platform@0.80.20(patch_hash=17e8cf7ab52584efff0a7b5a27c0ab3345bcec581602c6ae9e24a660a6d899de)(effect@3.14.20(patch_hash=ffe6d96fd342c3a44a239a4eb44ac635b2a37d3e7aef17e54f9e94f259ee5765)))(@opentelemetry/api@1.9.0)(@opentelemetry/resources@2.0.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-logs@0.200.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-metrics@2.0.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.0.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-node@2.0.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-web@2.0.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.33.0)(effect@3.14.20(patch_hash=ffe6d96fd342c3a44a239a4eb44ac635b2a37d3e7aef17e54f9e94f259ee5765))':
     dependencies:
