@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as MW from "#lib/middleware"
+import { Events } from "#services"
 import { Router } from "@effect-app/infra/api/routing"
 import { reportError } from "@effect-app/infra/errorReporter"
 import { RpcSerialization } from "@effect/rpc"
@@ -7,7 +8,6 @@ import { FiberRef, flow } from "effect"
 import { Console, Effect, Layer } from "effect-app"
 import { HttpMiddleware, HttpRouter, HttpServer } from "effect-app/http"
 import { BaseConfig, MergedConfig } from "./config.js"
-import { Events } from "./services.js"
 
 const prodOrigins: string[] = []
 const demoOrigins: string[] = []

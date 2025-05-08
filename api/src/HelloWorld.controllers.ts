@@ -15,22 +15,21 @@ export default Router(HelloWorldRsc)({
     return match({
       *GetHelloWorld({ echo }) {
         const context = yield* getRequestContext
-        return yield* userRepo
+        const user = yield* userRepo
           .tryGetCurrentUser
           .pipe(
             Effect.catchTags({
               "NotLoggedInError": () => Effect.succeed(null),
               "NotFoundError": () => Effect.succeed(null)
-            }),
-            Effect.andThen((user) =>
-              new GetHelloWorld.success({
-                context,
-                echo,
-                currentUser: user,
-                randomUser: generate(S.A.make(User)).value
-              })
-            )
+            })
           )
+
+        return new GetHelloWorld.success({
+          context,
+          echo,
+          currentUser: user,
+          randomUser: generate(S.A.make(User)).value
+        })
       }
     })
   }
