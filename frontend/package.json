@@ -17,12 +17,12 @@
     "clean": "rm -rf ./.nuxt ./node_modules/.cache"
   },
   "dependencies": {
-    "@effect-app/vue": "^2.42.0",
-    "@effect/platform": "^0.85.2",
-    "@effect/platform-browser": "^0.65.2",
-    "@effect/rpc": "^0.62.4",
+    "@effect-app/vue": "^2.44.2",
+    "@effect/platform": "^0.90.0",
+    "@effect/platform-browser": "^0.70.0",
+    "@effect/rpc": "^0.68.0",
     "@effect/rpc-http": "^0.52.4",
-    "@effect/opentelemetry": "^0.51.2",
+    "@effect/opentelemetry": "^0.56.0",
     "@formatjs/intl": "3.1.6",
     "@hebilicious/vue-query-nuxt": "^0.3.0",
     "@opentelemetry/context-zone": "^2.0.1",
@@ -36,14 +36,15 @@
     "@sentry/tracing": "^7.120.3",
     "@sentry/vite-plugin": "^3.3.1",
     "@sentry/vue": "9.14.0",
-    "@tanstack/vue-query": "^5.81.2",
-    "@tanstack/vue-query-devtools": "^5.81.2",
-    "@vueuse/core": "^13.4.0",
-    "@vueuse/nuxt": "^13.4.0",
+    "@tanstack/vue-form": "^1.12.4",
+    "@tanstack/vue-query": "^5.81.5",
+    "@tanstack/vue-query-devtools": "^5.81.5",
+    "@vueuse/core": "^13.6.0",
+    "@vueuse/nuxt": "^13.6.0",
     "cookie": "^1.0.2",
     "date-fns": "^4.1.0",
-    "effect": "^3.16.8",
-    "effect-app": "^2.41.0",
+    "effect": "^3.17.2",
+    "effect-app": "^2.46.1",
     "highcharts": "^12.3.0",
     "http-proxy-node16": "^1.0.6",
     "mitt": "^3.0.1",
@@ -52,7 +53,7 @@
     "vue-markdown-render": "^2.2.1",
     "vue-timeago3": "^2.3.2",
     "vue-toastification": "^2.0.0-rc.5",
-    "vuetify": "^3.8.10",
+    "vuetify": "^3.9.2",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
@@ -61,11 +62,11 @@
     "@types/cookie": "^1.0.0",
     "@types/http-proxy": "^1.17.16",
     "@types/markdown-it": "^14.1.2",
-    "eslint-plugin-vue": "^10.2.0",
+    "eslint-plugin-vue": "^10.3.0",
     "h3": "^1.15.3",
-    "nuxt": "~3.17.5",
+    "nuxt": "~4.0.1",
     "sass": "^1.89.2",
     "typescript": "~5.8.3",
-    "vue-tsc": "2.2.10"
+    "vue-tsc": "3.0.4"
   }
 }

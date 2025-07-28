@@ -3,7 +3,7 @@
 
 import { BaseConfig } from "#config"
 import { RequestCacheLayers } from "#resources/lib"
-import { makeMiddleware, makeRouter } from "@effect-app/infra/api/routing"
+import { DefaultContextMaker, makeMiddleware, makeRouter } from "@effect-app/infra/api/routing"
 import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
 import type { RequestContext } from "@effect-app/infra/RequestContext"
 import { Context, Effect, Exit, Layer, Option, type Request, type S } from "effect-app"
@@ -38,6 +38,7 @@ const middleware = makeMiddleware({
   contextMap: null as unknown as CTXMap,
   // helper to deal with nested generic lmitations
   context: null as any as HttpServerRequest.HttpServerRequest,
+  contextProvider: DefaultContextMaker,
   execute: Effect.gen(function*() {
     const fakeLogin = true
     // const authConfig = yield* Auth0Config
