@@ -2,7 +2,7 @@ import { RequestContext } from "@effect-app/infra/RequestContext"
 import { S } from "./lib.js"
 import { UserView } from "./views.js"
 
-class Response extends S.Class<Response>()({
+class Response extends S.Class<Response>("Response")({
   now: S.Date.withDefault,
   echo: S.String,
   context: RequestContext,

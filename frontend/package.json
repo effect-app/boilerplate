@@ -17,7 +17,7 @@
     "clean": "rm -rf ./.nuxt ./node_modules/.cache"
   },
   "dependencies": {
-    "@effect-app/vue": "^2.44.2",
+    "@effect-app/vue": "^2.45.2",
     "@effect/platform": "^0.90.0",
     "@effect/platform-browser": "^0.70.0",
     "@effect/rpc": "^0.68.0",
@@ -44,7 +44,7 @@
     "cookie": "^1.0.2",
     "date-fns": "^4.1.0",
     "effect": "^3.17.2",
-    "effect-app": "^2.46.1",
+    "effect-app": "^2.47.2",
     "highcharts": "^12.3.0",
     "http-proxy-node16": "^1.0.6",
     "mitt": "^3.0.1",
@@ -64,7 +64,7 @@
     "@types/markdown-it": "^14.1.2",
     "eslint-plugin-vue": "^10.3.0",
     "h3": "^1.15.3",
-    "nuxt": "~4.0.1",
+    "nuxt": "~3.17.7",
     "sass": "^1.89.2",
     "typescript": "~5.8.3",
     "vue-tsc": "3.0.4"

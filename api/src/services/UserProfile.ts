@@ -4,7 +4,7 @@ import { Context, S } from "effect-app"
 import { UserProfileId } from "effect-app/ids"
 
 export class UserProfile extends Context.assignTag<UserProfile>()(
-  S.Class<UserProfile>()({
+  S.Class<UserProfile>("UserProfile")({
     sub: UserProfileId,
     roles: S.Array(Role).withDefault.pipe(S.fromKey("https://nomizz.com/roles"))
   })

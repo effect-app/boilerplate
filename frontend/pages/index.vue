@@ -3,7 +3,7 @@ import { HelloWorldRsc } from "#resources"
 import { buildFormFromSchema } from "@effect-app/vue/form"
 import { S } from "effect-app"
 
-class Input extends S.Class<Input>()({
+class Input extends S.Class<Input>("Input")({
   title: S.NonEmptyString255,
   name: S.NonEmptyString2k,
   age: S.NonNegativeInt,
