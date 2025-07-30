@@ -31,8 +31,6 @@ export type CTXMap = {
 //   )
 // })
 
-const RequestLayers = Layer.mergeAll(RequestCacheLayers)
-
 const middleware = makeMiddleware<CTXMap, HttpServerRequest.HttpServerRequest>()({
   contextProvider: EmptyContextProvider,
   execute: (maker) =>
@@ -48,11 +46,9 @@ const middleware = makeMiddleware<CTXMap, HttpServerRequest.HttpServerRequest>()
               ? makeUserProfileFromAuthorizationHeader(headers["authorization"])
               : Effect.succeed(undefined))
 
-        const ContextLayer = <Req extends { _tag: string }>(req: Req, headers: any) =>
+        const buildContext = (headers: any) =>
           Effect
             .gen(function*() {
-              yield* Effect.annotateCurrentSpan("request.name", moduleName ? `${moduleName}.${req._tag}` : req._tag)
-
               const config = "config" in schema ? schema.config : undefined
               let ctx = Context.empty()
 
@@ -95,19 +91,19 @@ const middleware = makeMiddleware<CTXMap, HttpServerRequest.HttpServerRequest>()
 
               return ctx as Context.Context<GetEffectContext<CTXMap, typeof schema["config"]>>
             })
-            .pipe(Layer.effectContext, Layer.provide(RequestLayers))
+
         return (req, headers) =>
           Effect.gen(function*() {
-            // console.log(yield* Effect.context())
-            // console.log("$test", yield* Test)
-            // console.log("$test2", yield* FiberRef.get(Test2))
-            // TODO: somehow get the headers from Http and put them in the Rpc headers..
-            // perhaps do this elsewhere
-            const httpReq = yield* HttpServerRequest.HttpServerRequest
-            const abc = HttpHeaders.merge(httpReq.headers, headers)
+            yield* Effect.annotateCurrentSpan("request.name", moduleName ? `${moduleName}.${req._tag}` : req._tag)
 
-            return yield* handler(req, abc).pipe(
-              Effect.provide(ContextLayer(req, abc))
+            const httpReq = yield* HttpServerRequest.HttpServerRequest
+            const allHeaders = HttpHeaders.merge(httpReq.headers, headers)
+
+            return yield* handler(req, allHeaders).pipe(
+              Effect.provide(Layer.provideMerge(
+                Layer.effectContext(buildContext(allHeaders)),
+                RequestCacheLayers
+              ))
             )
           })
       })
