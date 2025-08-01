@@ -7,9 +7,9 @@ import { makeRpcClient, type RPCContextMap } from "effect-app/client/req"
 type CTXMap = {
   // we put `never`, because we can't access this service here in the client, and we also don't need to
   // TODO: a base map for client, that the server extends
-  allowAnonymous: RPCContextMap.Inverted<"userProfile", never, typeof NotLoggedInError>
+  allowAnonymous: RPCContextMap.Inverted<never, typeof NotLoggedInError>
   // TODO: not boolean but `string[]`
-  requireRoles: RPCContextMap.Custom<"", void, typeof UnauthorizedError, Array<string>>
+  requireRoles: RPCContextMap.Custom<void, typeof UnauthorizedError, Array<string>>
 }
 
 export type RequestConfig = {
