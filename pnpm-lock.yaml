@@ -266,8 +266,8 @@ importers:
         specifier: ^12.28.0
         version: 12.28.0
       '@effect-app/infra':
-        specifier: 2.84.0
-        version: 2.84.0(0a0100d47bf653be739732e42be2659b)
+        specifier: 2.85.0
+        version: 2.85.0(0a0100d47bf653be739732e42be2659b)
       '@effect/opentelemetry':
         specifier: 0.56.0
         version: 0.56.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.5(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(@opentelemetry/api@1.9.0)(@opentelemetry/resources@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-logs@0.203.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-metrics@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-node@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-web@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.36.0)(effect@3.17.5(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
@@ -952,8 +952,8 @@ packages:
     peerDependencies:
       effect: 3.17.5
 
-  '@effect-app/infra@2.84.0':
-    resolution: {integrity: sha512-MmdpAeQK6wZIjj+XDy3UikxyPYmx3ADSFEXI3iTtqb7EwohgBoHlPzOH9mo0GwncnMeIqH/Nd5cr2IkHH8DwZw==}
+  '@effect-app/infra@2.85.0':
+    resolution: {integrity: sha512-gKYL5WzvvXB1dNa6zcArBPuCqlZkMkh8Zmt7CllHwvqbahdNxEh3xvOZmIAT/mzFg0Enjf+jgI/alnAQ0UMPxw==}
     peerDependencies:
       '@azure/cosmos': ^4.5.0
       '@azure/service-bus': ^7.9.5
@@ -9396,7 +9396,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@effect-app/infra@2.84.0(0a0100d47bf653be739732e42be2659b)':
+  '@effect-app/infra@2.85.0(0a0100d47bf653be739732e42be2659b)':
     dependencies:
       '@azure/cosmos': 4.5.0
       '@azure/service-bus': 7.9.5

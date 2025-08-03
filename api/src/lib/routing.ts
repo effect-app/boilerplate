@@ -80,8 +80,7 @@ class RequireRoles extends Middleware.Tag<RequireRoles>()("RequireRoles", { dyna
 }
 
 const middleware = makeNewMiddleware<RequestContextMap>()(...DefaultGenericMiddlewares)
-  .addDynamicMiddleware(AllowAnonymous)
-  .addDynamicMiddleware(RequireRoles)
+  .addDynamicMiddleware(AllowAnonymous, RequireRoles)
 
 const baseConfig = basicRuntime.runSync(BaseConfig)
 export const { Router, matchAll, matchFor } = makeRouter(middleware, baseConfig.env !== "prod")
