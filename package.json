@@ -81,7 +81,7 @@
   },
   "dependencies": {
     "date-fns": "^4.1.0",
-    "effect": "3.17.4",
+    "effect": "3.17.5",
     "@effect/experimental": "0.54.3",
     "@effect/opentelemetry": "0.56.0",
     "@effect/platform": "0.90.0",
@@ -119,7 +119,7 @@
     "@typescript-eslint/scope-manager": "^8.38.0",
     "concurrently": "^9.2.0",
     "dprint": "^0.50.1",
-    "effect-app": "^2.50.2",
+    "effect-app": "^2.51.0",
     "enhanced-resolve": "^5.18.2",
     "eslint": "^9.32.0",
     "eslint-import-resolver-typescript": "^4.4.4",

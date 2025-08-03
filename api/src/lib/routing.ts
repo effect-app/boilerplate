@@ -2,29 +2,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { BaseConfig } from "#config"
-import { DefaultGenericMiddlewares, makeMiddleware, makeRouter } from "@effect-app/infra/api/routing"
+import { contextMap, DefaultGenericMiddlewares, makeNewMiddleware, makeRouter, Middleware } from "@effect-app/infra/api/routing"
 import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
-import type { RequestContext } from "@effect-app/infra/RequestContext"
 import { Context, Effect, Exit, Option } from "effect-app"
 import type { RPCContextMap } from "effect-app/client/req"
 import { makeUserProfileFromAuthorizationHeader, UserProfile } from "../services/UserProfile.js"
 import { basicRuntime } from "./basicRuntime.js"
 import { AppLogger } from "./logger.js"
 
-export interface CTX {
-  context: RequestContext
-}
-
-export type CTXMap = {
+export type RequestContextMap = {
   allowAnonymous: RPCContextMap.Inverted<UserProfile, typeof NotLoggedInError>
   // TODO: not boolean but `string[]`
   requireRoles: RPCContextMap.Custom<never, typeof UnauthorizedError, readonly string[]>
 }
 
-class AllowAnonymous extends Effect.Service<AllowAnonymous>()("AllowAnonymous", {
-  effect: Effect.gen(function*() {
-    return {
-      handle: Effect.fn(function*(config: { allowAnonymous?: false }, headers: Record<string, string>) {
+const dynamic = contextMap<RequestContextMap>()
+
+class AllowAnonymous
+  extends Middleware.Tag<AllowAnonymous>()("AllowAnonymous", { dynamic: dynamic("allowAnonymous") })({
+    effect: Effect.gen(function*() {
+      return Effect.fn(function*({ config, headers }) {
         // if (!config?.allowAnonymous) {
         //   yield* Effect.catchAll(
         //     checkJWTI({
@@ -55,39 +52,36 @@ class AllowAnonymous extends Effect.Service<AllowAnonymous>()("AllowAnonymous", 
         }
         return Option.none()
       })
-    }
+    })
   })
-}) {}
+{}
 
-class RequireRoles extends Effect.Service<RequireRoles>()("RequireRoles", {
+class RequireRoles extends Middleware.Tag<RequireRoles>()("RequireRoles", { dynamic: dynamic("requireRoles") })({
   effect: Effect.gen(function*() {
-    return {
-      handle: Effect.fn(
-        function*(config: { requireRoles?: readonly string[] }, _headers: Record<string, string>) {
-          const userProfile = yield* Effect.serviceOption(UserProfile)
-          if (config?.requireRoles) {
-            // TODO
-            if (
-              !userProfile.value
-              || !config.requireRoles.every((role: any) => userProfile.value!.roles.includes(role))
-            ) {
-              return yield* new UnauthorizedError()
-            }
+    return Effect.fn(
+      function*({ config }) {
+        const userProfile = yield* Effect.serviceOption(UserProfile)
+        if (config?.requireRoles) {
+          // TODO
+          if (
+            !userProfile.value
+            || !config.requireRoles.every((role: any) => userProfile.value!.roles.includes(role))
+          ) {
+            return yield* new UnauthorizedError()
           }
-
-          return Option.none<Context<never>>()
         }
-      )
-    }
+
+        return Option.none<Context<never>>()
+      }
+    )
   })
 }) {
   static dependsOn = [AllowAnonymous]
 }
 
-const middleware = makeMiddleware<CTXMap>()({
-  dynamicMiddlewares: { allowAnonymous: AllowAnonymous, requireRoles: RequireRoles },
-  genericMiddlewares: [...DefaultGenericMiddlewares]
-})
+const middleware = makeNewMiddleware<RequestContextMap>()(...DefaultGenericMiddlewares)
+  .addDynamicMiddleware(AllowAnonymous)
+  .addDynamicMiddleware(RequireRoles)
 
 const baseConfig = basicRuntime.runSync(BaseConfig)
 export const { Router, matchAll, matchFor } = makeRouter(middleware, baseConfig.env !== "prod")
