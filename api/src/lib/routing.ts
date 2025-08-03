@@ -56,7 +56,10 @@ class AllowAnonymous
   })
 {}
 
-class RequireRoles extends Middleware.Tag<RequireRoles>()("RequireRoles", { dynamic: dynamic("requireRoles") })({
+class RequireRoles extends Middleware.Tag<RequireRoles>()("RequireRoles", {
+  dynamic: dynamic("requireRoles"),
+  dependsOn: [AllowAnonymous]
+})({
   effect: Effect.gen(function*() {
     return Effect.fn(
       function*({ config }) {
@@ -76,7 +79,6 @@ class RequireRoles extends Middleware.Tag<RequireRoles>()("RequireRoles", { dyna
     )
   })
 }) {
-  static dependsOn = [AllowAnonymous]
 }
 
 const middleware = makeNewMiddleware<RequestContextMap>()(...DefaultGenericMiddlewares)
