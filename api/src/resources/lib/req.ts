@@ -4,12 +4,12 @@ import { Duration, Layer, Request as EffectRequest } from "effect-app"
 import { ApiClientFactory } from "effect-app/client/apiClientFactory"
 import { makeRpcClient, type RPCContextMap } from "effect-app/client/req"
 
-type CTXMap = {
+type RequestContextMap = {
   // we put `never`, because we can't access this service here in the client, and we also don't need to
   // TODO: a base map for client, that the server extends
   allowAnonymous: RPCContextMap.Inverted<never, typeof NotLoggedInError>
   // TODO: not boolean but `string[]`
-  requireRoles: RPCContextMap.Custom<void, typeof UnauthorizedError, Array<string>>
+  requireRoles: RPCContextMap.Custom<never, typeof UnauthorizedError, Array<string>>
 }
 
 export type RequestConfig = {
@@ -19,7 +19,7 @@ export type RequestConfig = {
   allowRoles?: readonly Role[]
 }
 
-export const { TaggedRequest: Req } = makeRpcClient<RequestConfig, CTXMap>({
+export const { TaggedRequest: Req } = makeRpcClient<RequestConfig, RequestContextMap>({
   allowAnonymous: NotLoggedInError,
   requireRoles: UnauthorizedError
 })
