@@ -8,7 +8,7 @@
     "@types/redis",
     "eslint-plugin-codegen",
     "vue-toastification",
-    "@sentry/*",
-    "@tanstack/*"
+    "@tanstack/*",
+    "typescript"
   ]
 }
