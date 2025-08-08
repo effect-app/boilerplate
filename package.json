@@ -10,10 +10,7 @@
       "@effect/platform": "patches/@effect__platform.patch",
       "effect": "patches/effect.patch",
       "ts-plugin-sort-import-suggestions": "patches/ts-plugin-sort-import-suggestions.patch",
-      "@tanstack/query-core": "patches/@tanstack__query-core.patch",
-      "@sentry/core": "patches/@sentry__core.patch",
-      "@sentry/node": "patches/@sentry__node.patch",
-      "@sentry/opentelemetry": "patches/@sentry__opentelemetry.patch"
+      "@tanstack/query-core": "patches/@tanstack__query-core.patch"
     }
   },
   "engines": {
@@ -41,7 +38,7 @@
     "update": "ncu -u && pnpm -r ncu -u",
     "ncu": "ncu",
     "ncu:filters": "bash -c 'for filter in \"$@\"; do ncu -u --filter \"$filter\" && pnpm -r ncu -u --filter \"$filter\"; done' --",
-    "ncu:effect": "pnpm ncu:filters \"effect\" \"@effect/*\" \"@effect-rx/*\" && pnpm ncu:effect-app",
+    "ncu:effect": "pnpm ncu:filters \"effect\" \"@effect/*\" \"@effect-atom/*\" && pnpm ncu:effect-app",
     "ncu:effect-app": "pnpm ncu:filters \"effect-app\" \"@effect-app/*\" && pnpm i",
     "build-libs": "cd libs && pnpm build && cd ../.. && pnpm build",
     "lint:watch": "ESLINT_TS=1 esw -w --changed --clear --ext ts,tsx",
@@ -82,10 +79,10 @@
   "dependencies": {
     "date-fns": "^4.1.0",
     "effect": "3.17.6",
-    "@effect/experimental": "0.54.3",
+    "@effect/experimental": "0.54.4",
     "@effect/opentelemetry": "0.56.1",
     "@effect/platform": "0.90.0",
-    "@effect/platform-node": "0.94.1",
+    "@effect/platform-node": "0.94.2",
     "@opentelemetry/api": "^1.9",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.203.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.203.0",
@@ -105,22 +102,22 @@
     "vue": "^3.5.18"
   },
   "devDependencies": {
-    "@ben_12/eslint-plugin-dprint": "^1.7.0",
+    "@ben_12/eslint-plugin-dprint": "^1.7.1",
     "@dprint/typescript": "^0.95.9",
     "@effect-app/cli": "^1.23.0",
     "@effect-app/eslint-codegen-model": "^1.42.0",
-    "@effect/language-service": "^0.34.0",
+    "@effect/language-service": "^0.35.1",
     "@phaphoso/eslint-plugin-dprint": "^0.5.2",
     "@tsconfig/strictest": "^2.0.5",
     "@types/lodash": "^4.17.20",
-    "@types/node": "~24.1.0",
-    "@typescript-eslint/eslint-plugin": "^8.38.0",
-    "@typescript-eslint/parser": "^8.38.0",
-    "@typescript-eslint/scope-manager": "^8.38.0",
+    "@types/node": "~24.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "@typescript-eslint/scope-manager": "^8.39.0",
     "concurrently": "^9.2.0",
     "dprint": "^0.50.1",
-    "effect-app": "^2.54.1",
-    "enhanced-resolve": "^5.18.2",
+    "effect-app": "^2.54.2",
+    "enhanced-resolve": "^5.18.3",
     "eslint": "^9.32.0",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-import-resolver-webpack": "^0.13.10",
@@ -142,8 +139,8 @@
     "tsc-watch": "^7.1.1",
     "tsx": "^4.20.3",
     "typescript": "~5.8.3",
-    "unplugin-auto-import": "^19.3.0",
-    "vite": "^7.0.6",
+    "unplugin-auto-import": "^20.0.0",
+    "vite": "^7.1.1",
     "vitest": "^3.2.4"
   }
 }

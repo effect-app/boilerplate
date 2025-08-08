@@ -20,13 +20,13 @@
   },
   "devDependencies": {
     "@playwright/test": "~1.54.2",
-    "@types/node": "~24.1.0",
+    "@types/node": "~24.2.0",
     "date-fns": "^4.1.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-import-resolver-webpack": "^0.13.10",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-prettier": "^5.5.3",
+    "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "eslint-plugin-unused-imports": "^4.1.4",
@@ -38,8 +38,8 @@
   },
   "dependencies": {
     "@effect-app-boilerplate/api": "workspace:*",
-    "@effect/platform-node": "0.94.1",
-    "effect-app": "^2.54.1",
+    "@effect/platform-node": "0.94.2",
+    "effect-app": "^2.54.2",
     "@effect/platform": "^0.90.0",
     "effect": "^3.17.6",
     "cross-fetch": "^4.1.0"
