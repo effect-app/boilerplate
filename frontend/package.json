@@ -65,7 +65,7 @@
     "@types/markdown-it": "^14.1.2",
     "eslint-plugin-vue": "^10.4.0",
     "h3": "^1.15.4",
-    "nuxt": "~4.0.3",
+    "nuxt": "~3.17.7",
     "sass": "^1.90.0",
     "typescript": "~5.8.3",
     "vue-tsc": "3.0.5"
