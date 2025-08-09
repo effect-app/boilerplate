@@ -2,6 +2,9 @@
 import { HelloWorldRsc } from "#resources"
 import { buildFormFromSchema } from "@effect-app/vue/form"
 import { S } from "effect-app"
+import { Atom, AtomRpc, useAtomValue } from "@effect-atom/atom-vue"
+import { makeRpcGroup } from "effect-app/client"
+import { RpcClientProtocolLayers } from "~/lib"
 
 class Input extends S.Class<Input>("Input")({
   title: S.NonEmptyString255,
@@ -27,8 +30,15 @@ const makeReq = () => ({
 
 const req = ref(makeReq())
 
-const helloWorldClient = clientFor(HelloWorldRsc)
-const [result] = useSafeQuery(helloWorldClient.GetHelloWorld, req)
+const helloWorldRpcs = makeRpcGroup(HelloWorldRsc)
+const helloWorldAtom = AtomRpc.make(helloWorldRpcs, {
+  runtime: Atom.runtime(RpcClientProtocolLayers("/HelloWorld")),
+})
+
+const result = useAtomValue(() => {
+  console.log("Querying HelloWorld.GetHelloWorld with:", req.value)
+  return helloWorldAtom.query("HelloWorld.GetHelloWorld", req.value)
+})
 
 // onMounted(() => {
 //   setInterval(() => {
