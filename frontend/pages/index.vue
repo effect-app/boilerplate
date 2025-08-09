@@ -35,9 +35,10 @@ const helloWorldAtom = AtomRpc.make(helloWorldRpcs, {
   runtime: Atom.runtime(RpcClientProtocolLayers("/HelloWorld")),
 })
 
-const result = useAtomValue(
-  helloWorldAtom.query("HelloWorld.GetHelloWorld", req.value),
-) // TODO: make reactive based on `req`
+const result = useAtomValue(() => {
+  console.log("Querying HelloWorld.GetHelloWorld with:", req.value)
+  return helloWorldAtom.query("HelloWorld.GetHelloWorld", req.value)
+})
 
 // onMounted(() => {
 //   setInterval(() => {
