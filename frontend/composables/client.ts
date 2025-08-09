@@ -1,7 +1,6 @@
 import { makeClient } from "@effect-app/vue/makeClient"
 import { useToast } from "vue-toastification"
 import { useIntl } from "./intl"
-import { runtime, type RT } from "~/plugins/runtime"
 import type { Effect } from "effect-app"
 import { clientFor as clientFor_ } from "#resources/lib"
 import type { Requests } from "effect-app/client/clientFor"
@@ -18,8 +17,6 @@ export {
   mapHandler,
 } from "@effect-app/vue"
 
-const rt = computed(() => runtime.value?.runtime)
-
 export const run = <A, E>(
   effect: Effect.Effect<A, E, RT>,
   options?:
@@ -27,10 +24,10 @@ export const run = <A, E>(
         readonly signal?: AbortSignal
       }
     | undefined,
-) => runtime.value!.runPromise(effect, options)
+) => runtime.runPromise(effect, options)
 
 export const runSync = <A, E>(effect: Effect.Effect<A, E, RT>) =>
-  runtime.value!.runSync(effect)
+  runtime.runSync(effect)
 
 export const clientFor = <M extends Requests>(m: M) => runSync(clientFor_(m))
 export const useOperationsClient = () => runSync(OperationsClient)
@@ -42,4 +39,4 @@ export const {
   useSafeMutation,
   useSafeMutationWithState,
   useSafeQuery,
-} = makeClient(useIntl, useToast, rt)
+} = makeClient(useIntl, useToast, shallowRef(runtime.runtime)) // TODO

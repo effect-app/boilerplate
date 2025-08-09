@@ -5,15 +5,13 @@ import * as Runtime from "effect/Runtime"
 import { Effect, Option } from "effect-app"
 import { WebSdkLive } from "~/utils/observability"
 import "effect-app/builtin"
-import { ref, shallowRef } from "vue"
+import { ref } from "vue"
 import { HttpClient } from "effect-app/http"
 import { FetchHttpClient } from "@effect/platform"
 import { ApiClientFactory } from "effect-app/client/apiClientFactory"
-import { defineNuxtPlugin, useRuntimeConfig } from "nuxt/app"
+import { type useRuntimeConfig } from "nuxt/app"
 
 export const versionMatch = ref(true)
-
-export const runtime = shallowRef<ReturnType<typeof makeRuntime>>()
 
 function makeRuntime(feVersion: string, disableTracing: boolean) {
   const apiLayers = ApiClientFactory.layer({
@@ -42,23 +40,21 @@ function makeRuntime(feVersion: string, disableTracing: boolean) {
     ),
   )
 
+  const globalLayers = disableTracing
+    ? Layer.empty
+    : WebSdkLive({
+        serviceName: "effect-app-boilerplate-frontend",
+        serviceVersion: feVersion,
+        attributes: {},
+      })
+
   const rt: {
     runtime: Runtime.Runtime<RT>
     clean: () => void
-  } = initializeSync(
-    // TODO: tracing when deployed
-    disableTracing
-      ? apiLayers
-      : apiLayers.pipe(
-          Layer.merge(
-            WebSdkLive({
-              serviceName: "effect-app-boilerplate-frontend",
-              serviceVersion: feVersion,
-              attributes: {},
-            }),
-          ),
-        ),
-  )
+  } = initializeSync(apiLayers.pipe(Layer.provideMerge(globalLayers)))
+
+  //Atom.runtime.addGlobalLayer(globalLayers)
+
   return {
     ...rt,
     runFork: Runtime.runFork(rt.runtime),
@@ -71,13 +67,25 @@ function makeRuntime(feVersion: string, disableTracing: boolean) {
 // TODO: make sure the runtime provides these
 export type RT = ApiClientFactory
 
-export default defineNuxtPlugin(_ => {
-  const config = useRuntimeConfig()
+/*
+  We read the configuration from the global var sent by server, embedded in the html document.
+  The reason for this is, that we want to have the configuration available before the Nuxt app is initialized.
+  Otherwise we can only initialize the runtime in nuxt plugin, script setup or middleware,
+  which means we cannot do anything with the runtime in the root of modules, etc.
 
-  const rt = makeRuntime(
-    config.public.feVersion,
-    config.public.env !== "local-dev" || !config.public.telemetry,
-  )
+  Now we can use things like clientFor, which leverage the runtime, and export clients directly from modules.
+*/
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const config = (globalThis as any).__NUXT__.config as ReturnType<
+  typeof useRuntimeConfig
+>
+const isRemote = config.public.env !== "local-dev"
+const disableTracing = !isRemote || !config.public.telemetry
 
-  runtime.value = rt
-})
+export const runtime = makeRuntime(
+  config.public.feVersion,
+  disableTracing,
+  // config.public.env,
+  // isRemote,
+  // !isRemote && !config.public.telemetry,
+)
