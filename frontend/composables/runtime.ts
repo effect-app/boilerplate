@@ -10,6 +10,7 @@ import { HttpClient } from "effect-app/http"
 import { FetchHttpClient } from "@effect/platform"
 import { ApiClientFactory } from "effect-app/client/apiClientFactory"
 import { type useRuntimeConfig } from "nuxt/app"
+import { Atom } from "@effect-atom/atom-vue"
 
 export const versionMatch = ref(true)
 
@@ -53,7 +54,7 @@ function makeRuntime(feVersion: string, disableTracing: boolean) {
     clean: () => void
   } = initializeSync(apiLayers.pipe(Layer.provideMerge(globalLayers)))
 
-  //Atom.runtime.addGlobalLayer(globalLayers)
+  Atom.runtime.addGlobalLayer(globalLayers)
 
   return {
     ...rt,
