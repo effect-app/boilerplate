@@ -2,7 +2,7 @@
 import { HelloWorldRsc } from "#resources"
 import { buildFormFromSchema } from "@effect-app/vue/form"
 import { S } from "effect-app"
-import { Atom, AtomRpc, useAtomValue } from "@effect-atom/atom-vue"
+import { Atom, AtomRpc, useAtomSet, useAtomValue } from "@effect-atom/atom-vue"
 import { makeRpcGroup } from "effect-app/client"
 import { RpcClientProtocolLayers } from "~/lib"
 
@@ -38,9 +38,20 @@ const helloWorldAtom = AtomRpc.make(helloWorldRpcs, {
 const result = useAtomValue(() => {
   console.log("Recomputing HelloWorld.GetHelloWorld atom with:", req.value)
   return Atom.refreshOnWindowFocus(
-    helloWorldAtom.query("HelloWorld.GetHelloWorld", req.value),
+    helloWorldAtom.query("HelloWorld.GetHelloWorld", req.value, {
+      reactivityKeys: ["echo"],
+    }),
   )
 })
+
+const increment = useAtomSet(() => helloWorldAtom.mutation("HelloWorld.Set"))
+const test = () =>
+  increment({ payload: { echo: "test" }, reactivityKeys: { echo: ["echo"] } })
+
+// const mutation = Effect.fn("MySpan")(function* () {
+//   yield* Effect.logInfo("doing something")
+//   increment({ payload: { echo: "test" }, reactivityKeys: { echo: ["echo"] } })
+// })
 
 // onMounted(() => {
 //   setInterval(() => {
@@ -61,6 +72,7 @@ onMounted(() => {
 <template>
   <div>
     Hi world!
+    <v-btn @click="test()">Test</v-btn>
     <v-form @submit.prevent="form.submit">
       <template v-for="(field, name) in form.fields" :key="name">
         <!-- TODO: field.type text, or via length, or is multiLine -->

@@ -30,6 +30,9 @@ export default Router(HelloWorldRsc)({
           currentUser: user,
           randomUser: generate(S.A.make(User)).value
         })
+      },
+      *Set({ echo }) {
+        yield* Effect.logInfo("Bogus", { echo })
       }
     })
   }
