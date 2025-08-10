@@ -36,8 +36,10 @@ const helloWorldAtom = AtomRpc.make(helloWorldRpcs, {
 })
 
 const result = useAtomValue(() => {
-  console.log("Querying HelloWorld.GetHelloWorld with:", req.value)
-  return helloWorldAtom.query("HelloWorld.GetHelloWorld", req.value)
+  console.log("Recomputing HelloWorld.GetHelloWorld atom with:", req.value)
+  return Atom.refreshOnWindowFocus(
+    helloWorldAtom.query("HelloWorld.GetHelloWorld", req.value),
+  )
 })
 
 // onMounted(() => {
@@ -51,7 +53,7 @@ const result = useAtomValue(() => {
 // })
 
 onMounted(() => {
-  const t = setInterval(() => (req.value = makeReq()), 5000)
+  const t = setInterval(() => (req.value = makeReq()), 10_000)
   return () => clearInterval(t)
 })
 </script>
