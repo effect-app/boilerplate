@@ -8,6 +8,7 @@ import { RpcServer } from "@effect/rpc"
 import { Effect, Layer, S } from "effect-app"
 
 // TODO: make this simpler in one go, similar to effect-app Router?
+// probably just make one global RpcServer and endpoint, but use prefixes on the RpcGroups instead...
 const server = RpcServer
   .layerHttpRouter({
     spanPrefix: "RpcServer." + meta.moduleName,
@@ -44,5 +45,5 @@ export default Layer
         }
       }))
   )
-  // would be kind of nice if we could just pass { effect, dependencies } to toLayerDynamic call, just like Effect.Service?
+  // would be kind of nice if we could just pass { effect, dependencies } to toLayerDynamic call, just like Effect.Service and effect-app Router?
   .pipe(Layer.provide([UserRepo.Default, middleware.Default]))
