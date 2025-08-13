@@ -141,7 +141,7 @@
     "@azure/cosmos": "^4.5.0",
     "@azure/service-bus": "^7.9.5",
     "@azure/storage-blob": "^12.28.0",
-    "@effect-app/infra": "3.0.1",
+    "@effect-app/infra": "3.0.2",
     "effect-app": "^3.0.1",
     "@effect/platform": "^0.90.0",
     "@effect/opentelemetry": "^0.56.1",
