@@ -1,15 +1,8 @@
-import { Role } from "#models/User"
+import { UserProfile } from "#resources/lib"
 import { parseJwt } from "@effect-app/infra/api/routing/schema/jwt"
-import { Context, S } from "effect-app"
-import { UserProfileId } from "effect-app/ids"
+import { S } from "effect-app"
 
-export class UserProfile extends Context.assignTag<UserProfile>("UserProfile")(
-  S.Class<UserProfile>("UserProfile")({
-    sub: UserProfileId,
-    roles: S.Array(Role).withDefault.pipe(S.fromKey("https://nomizz.com/roles"))
-  })
-) {
-}
+export { UserProfile } from "#resources/lib/Userprofile"
 
 export namespace UserProfileService {
   export interface Id {
