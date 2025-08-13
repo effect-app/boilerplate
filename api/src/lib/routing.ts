@@ -2,8 +2,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { BaseConfig } from "#config"
-import { contextMap, DefaultGenericMiddlewares, getConfig, makeMiddleware, makeRouter, Middleware } from "@effect-app/infra/api/routing"
+import { contextMap, DefaultGenericMiddlewaresLive, getConfig, makeMiddleware, makeRouter, Middleware } from "@effect-app/infra/api/routing"
+import { DefaultGenericMiddlewares } from "@effect-app/infra/api/routing/middleware/middleware-native"
 import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
+import { Layer } from "effect"
 import { Effect, Exit, Option } from "effect-app"
 import { RPCContextMap } from "effect-app/client/req"
 import { makeUserProfileFromAuthorizationHeader, UserProfile } from "../services/UserProfile.js"
@@ -20,7 +22,7 @@ export const RequestContextMap = {
 } as const
 const getConf = getConfig<RequestContextMap>()
 
-class AllowAnonymous extends Middleware.Tag<AllowAnonymous>()("AllowAnonymous", {
+class AllowAnonymous extends Middleware.TagService<AllowAnonymous>()("AllowAnonymous", {
   dynamic: contextMap(RequestContextMap, "allowAnonymous")
 })({
   effect: Effect.gen(function*() {
@@ -59,7 +61,7 @@ class AllowAnonymous extends Middleware.Tag<AllowAnonymous>()("AllowAnonymous", 
   })
 }) {}
 
-class RequireRoles extends Middleware.Tag<RequireRoles>()("RequireRoles", {
+class RequireRoles extends Middleware.TagService<RequireRoles>()("RequireRoles", {
   dynamic: contextMap(RequestContextMap, "requireRoles"),
   wrap: true,
   dependsOn: [AllowAnonymous]
@@ -86,10 +88,18 @@ class RequireRoles extends Middleware.Tag<RequireRoles>()("RequireRoles", {
 }) {
 }
 
-const middleware = makeMiddleware(RequestContextMap)
+const mw = makeMiddleware(RequestContextMap)
   .middleware(RequireRoles)
   .middleware(AllowAnonymous)
   .middleware(...DefaultGenericMiddlewares)
+
+const middleware = Object.assign(mw, {
+  Default: mw.layer.pipe(Layer.provide([
+    AllowAnonymous.Default,
+    RequireRoles.Default,
+    DefaultGenericMiddlewaresLive
+  ]))
+})
 
 const baseConfig = basicRuntime.runSync(BaseConfig)
 export const { Router, matchAll } = makeRouter(middleware, baseConfig.env !== "prod")

@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as MW from "#lib/middleware"
 import { Events } from "#services"
-import { Router } from "@effect-app/infra/api/routing"
 import { reportError } from "@effect-app/infra/errorReporter"
 import { RpcSerialization } from "@effect/rpc"
 import { FiberRef, flow } from "effect"
 import { Console, Effect, Layer } from "effect-app"
-import { HttpMiddleware, HttpRouter, HttpServer } from "effect-app/http"
+import { HttpLayerRouter, HttpMiddleware } from "effect-app/http"
 import { BaseConfig, MergedConfig } from "./config.js"
 
 const prodOrigins: string[] = []
@@ -16,44 +15,80 @@ const localOrigins = [
   "http://localhost:4000"
 ]
 
-const RootRoutes = <E, R>(
-  rpcRoutes: Layer<never, E, R>
-) =>
-  HttpRouter
-    .Default
-    .use(Effect.fnUntraced(function*(router) {
-      const cfg = yield* BaseConfig
-      const { env } = yield* BaseConfig
-      const rpcRouter = yield* Router.router
-      const handleEvents = yield* MW.makeEvents
+const CORSMiddleware = Effect
+  .gen(function*() {
+    const { env } = yield* BaseConfig
 
-      const middleware = flow(
-        // MW.authTokenFromCookie(secret),
-        MW.RequestContextMiddleware(),
-        MW.gzip,
+    return HttpLayerRouter.middleware(
+      flow(
         MW.cors({
-          credentials: true,
           allowedOrigins: env === "demo"
             ? (origin) => demoOrigins.includes(origin)
             : env === "prod"
             ? prodOrigins
             : localOrigins
-        }),
-        // we trust proxy and handle the x-forwarded etc headers
-        HttpMiddleware.xForwardedHeaders
-      )
+        })
+      ),
+      // CORS has to be global to respond to OPTIONS
+      { global: true }
+    )
+  })
+  .pipe(Layer.unwrapEffect)
 
-      yield* router.get(
+const GZIPMiddleware = HttpLayerRouter.middleware(MW.gzip)
+const ForwardedHeadersMiddleware = HttpLayerRouter.middleware(HttpMiddleware.xForwardedHeaders)
+
+// const authTokenFromCookie = Effect
+//   .gen(function*() {
+//     const secret = yield* authConfig
+//     return HttpLayerRouter.middleware(MW.authTokenFromCookie(secret)).layer
+//   })
+//   .pipe(Layer.unwrapEffect)
+
+const RequestContextMiddleware = HttpLayerRouter.middleware()(MW.RequestContextMiddleware())
+
+const HealthRoute = HttpLayerRouter
+  .use(
+    Effect.fnUntraced(function*(router) {
+      const cfg = yield* BaseConfig
+
+      // NO authtoken/requestcontext middleware!
+      yield* router.add(
+        "GET",
         "/.well-known/local/server-health",
-        MW.serverHealth(cfg.apiVersion).pipe(Effect.tapErrorCause(reportError("server-health error")))
+        MW
+          .serverHealth(cfg.apiVersion)
+          .pipe(Effect.tapErrorCause(reportError("server-health error")))
       )
-      yield* router.mountApp(
-        "/rpc",
-        rpcRouter.pipe(middleware)
+    })
+  )
+
+const MainMiddleware = [
+  GZIPMiddleware.layer,
+  CORSMiddleware,
+  ForwardedHeadersMiddleware.layer,
+  RequestContextMiddleware.layer
+  // authTokenFromCookie
+] as const
+
+const EventsRoute = HttpLayerRouter
+  .use(
+    Effect.fnUntraced(function*(router) {
+      const handleEvents = yield* MW.makeEvents
+
+      yield* router.add(
+        "GET",
+        "/events",
+        handleEvents.pipe(Effect.tapErrorCause(reportError("events error")))
       )
-      yield* router.get("/events", handleEvents.pipe(Effect.tapErrorCause(reportError("events error")), middleware))
-    }))
-    .pipe(Layer.provide([Events.Default, Router.Live.pipe(Layer.provide(rpcRoutes))]))
+    })
+  )
+  .pipe(Layer.provide([Events.Default, ...MainMiddleware]))
+
+const RootRoutes = Layer.mergeAll(
+  HealthRoute,
+  EventsRoute
+)
 
 const logServer = Effect
   .gen(function*() {
@@ -74,9 +109,14 @@ const ConfigureTracer = Layer.effectDiscard(
 export const makeHttpServer = <E, R>(
   rpcRouter: Layer<never, E, R>
 ) =>
-  logServer.pipe(
-    Layer.provide(HttpRouter.Default.unwrap(HttpServer.serve(HttpMiddleware.logger))),
-    Layer.provide(RootRoutes(rpcRouter)),
-    Layer.provide(RpcSerialization.layerJson),
-    Layer.provide(ConfigureTracer)
+  HttpLayerRouter.serve(
+    logServer.pipe(
+      Layer.provide([
+        rpcRouter.pipe(Layer.provide(MainMiddleware)),
+        RootRoutes
+      ]),
+      Layer.provide(RpcSerialization.layerJson),
+      Layer.provide(ConfigureTracer)
+    ),
+    { middleware: HttpMiddleware.logger }
   )
