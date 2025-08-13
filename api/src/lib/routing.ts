@@ -8,7 +8,8 @@ import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
 import { Layer } from "effect"
 import { Effect, Exit, Option } from "effect-app"
 import { RPCContextMap } from "effect-app/client/req"
-import { makeUserProfileFromAuthorizationHeader, UserProfile } from "../services/UserProfile.js"
+import { type HttpHeaders } from "effect-app/http"
+import { makeUserProfileFromAuthorizationHeader, makeUserProfileFromUserHeader, UserProfile } from "../services/UserProfile.js"
 import { basicRuntime } from "./basicRuntime.js"
 import { AppLogger } from "./logger.js"
 
@@ -26,6 +27,16 @@ class AllowAnonymous extends Middleware.TagService<AllowAnonymous>()("AllowAnony
   dynamic: contextMap(RequestContextMap, "allowAnonymous")
 })({
   effect: Effect.gen(function*() {
+    const fakeLogin = true
+    // const authConfig = yield* Auth0Config
+    const makeUserProfile = fakeLogin
+      ? ((headers: HttpHeaders.Headers) =>
+        headers["x-user"] ? makeUserProfileFromUserHeader(headers["x-user"]) : Effect.succeed(undefined))
+      : ((headers: HttpHeaders.Headers) =>
+        headers["authorization"]
+          ? makeUserProfileFromAuthorizationHeader(headers["authorization"])
+          : Effect.succeed(undefined))
+
     return Effect.fn(function*({ headers, rpc }) {
       const config = getConf(rpc)
       // if (!config?.allowAnonymous) {
@@ -42,9 +53,7 @@ class AllowAnonymous extends Middleware.TagService<AllowAnonymous>()("AllowAnony
       //   )
       // }
 
-      const r = makeUserProfileFromAuthorizationHeader(
-        headers["authorization"]
-      )
+      const r = makeUserProfile(headers)
         .pipe(Effect.exit, basicRuntime.runSync)
       if (!Exit.isSuccess(r)) {
         yield* AppLogger.logWarning("Parsing userInfo failed").pipe(Effect.annotateLogs("r", r))
