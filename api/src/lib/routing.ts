@@ -81,7 +81,7 @@ const RequireRolesLive = Layer.effect(
   })
 )
 
-const middleware = Object.assign(RpcMiddleware, {
+export const middleware = Object.assign(RpcMiddleware, {
   Default: RpcMiddleware.layer.pipe(Layer.provide([
     AllowAnonymousLive,
     RequireRolesLive,
