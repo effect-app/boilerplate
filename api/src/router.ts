@@ -11,10 +11,6 @@ import { BaseConfig, MergedConfig } from "./config.js"
 const prodOrigins: string[] = []
 const demoOrigins: string[] = []
 
-const localOrigins = [
-  "http://localhost:4000"
-]
-
 const CORSMiddleware = Effect
   .gen(function*() {
     const { env } = yield* BaseConfig
@@ -26,7 +22,8 @@ const CORSMiddleware = Effect
             ? (origin) => demoOrigins.includes(origin)
             : env === "prod"
             ? prodOrigins
-            : localOrigins
+            : () => true,
+          credentials: true
         })
       ),
       // CORS has to be global to respond to OPTIONS
