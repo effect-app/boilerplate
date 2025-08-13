@@ -2,31 +2,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { BaseConfig } from "#config"
-import { contextMap, DefaultGenericMiddlewaresLive, getConfig, makeMiddleware, makeRouter, Middleware } from "@effect-app/infra/api/routing"
-import { DefaultGenericMiddlewares } from "@effect-app/infra/api/routing/middleware/middleware-native"
-import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
-import { Layer } from "effect"
-import { Effect, Exit, Option } from "effect-app"
-import { RPCContextMap } from "effect-app/client/req"
+import { AllowAnonymous, getConf, RequireRoles, RpcMiddleware } from "#resources/lib"
+import { makeUserProfileFromAuthorizationHeader, makeUserProfileFromUserHeader, UserProfile } from "#services"
+import { DefaultGenericMiddlewaresLive, makeRouter } from "@effect-app/infra/api/routing"
+import { Effect, Exit, Layer } from "effect"
+import { Option } from "effect-app"
+import { NotLoggedInError, UnauthorizedError } from "effect-app/client"
 import { type HttpHeaders } from "effect-app/http"
-import { makeUserProfileFromAuthorizationHeader, makeUserProfileFromUserHeader, UserProfile } from "../services/UserProfile.js"
 import { basicRuntime } from "./basicRuntime.js"
 import { AppLogger } from "./logger.js"
 
-export type RequestContextMap = {
-  allowAnonymous: RPCContextMap.Inverted<typeof UserProfile, typeof NotLoggedInError>
-  requireRoles: RPCContextMap.Custom<never, typeof UnauthorizedError, readonly string[]>
-}
-export const RequestContextMap = {
-  allowAnonymous: RPCContextMap.makeInverted(UserProfile, NotLoggedInError),
-  requireRoles: RPCContextMap.makeCustom(null as never, UnauthorizedError, Array<string>())
-} as const
-const getConf = getConfig<RequestContextMap>()
-
-class AllowAnonymous extends Middleware.TagService<AllowAnonymous>()("AllowAnonymous", {
-  dynamic: contextMap(RequestContextMap, "allowAnonymous")
-})({
-  effect: Effect.gen(function*() {
+const AllowAnonymousLive = Layer.effect(
+  AllowAnonymous,
+  Effect.gen(function*() {
     const fakeLogin = true
     // const authConfig = yield* Auth0Config
     const makeUserProfile = fakeLogin
@@ -68,14 +56,11 @@ class AllowAnonymous extends Middleware.TagService<AllowAnonymous>()("AllowAnony
       return Option.none()
     })
   })
-}) {}
+)
 
-class RequireRoles extends Middleware.TagService<RequireRoles>()("RequireRoles", {
-  dynamic: contextMap(RequestContextMap, "requireRoles"),
-  wrap: true,
-  dependsOn: [AllowAnonymous]
-})({
-  effect: Effect.gen(function*() {
+const RequireRolesLive = Layer.effect(
+  RequireRoles,
+  Effect.gen(function*() {
     return Effect.fn(
       function*({ next, rpc }) {
         const config = getConf(rpc)
@@ -94,18 +79,12 @@ class RequireRoles extends Middleware.TagService<RequireRoles>()("RequireRoles",
       }
     )
   })
-}) {
-}
+)
 
-const mw = makeMiddleware(RequestContextMap)
-  .middleware(RequireRoles)
-  .middleware(AllowAnonymous)
-  .middleware(...DefaultGenericMiddlewares)
-
-const middleware = Object.assign(mw, {
-  Default: mw.layer.pipe(Layer.provide([
-    AllowAnonymous.Default,
-    RequireRoles.Default,
+const middleware = Object.assign(RpcMiddleware, {
+  Default: RpcMiddleware.layer.pipe(Layer.provide([
+    AllowAnonymousLive,
+    RequireRolesLive,
     DefaultGenericMiddlewaresLive
   ]))
 })
