@@ -4,7 +4,7 @@ import { buildFormFromSchema } from "@effect-app/vue/form"
 import { S } from "effect-app"
 import { Atom, AtomRpc, useAtomSet, useAtomValue } from "@effect-atom/atom-vue"
 import { makeRpcGroup } from "effect-app/client"
-import { RpcClientProtocolLayers } from "~/lib"
+import { RpcClientProtocolLayers } from "~/composables/runtime"
 
 class Input extends S.Class<Input>("Input")({
   title: S.NonEmptyString255,
@@ -31,20 +31,24 @@ const makeReq = () => ({
 const req = ref(makeReq())
 
 const helloWorldRpcs = makeRpcGroup(HelloWorldRsc)
-const helloWorldAtom = AtomRpc.make(helloWorldRpcs, {
-  runtime: Atom.runtime(RpcClientProtocolLayers("/HelloWorld")),
-})
+class HelloWorldClient extends AtomRpc.Tag<HelloWorldClient>()(
+  "HelloWorldClient",
+  {
+    protocol: RpcClientProtocolLayers("/HelloWorld"),
+    group: helloWorldRpcs,
+  },
+) {}
 
 const result = useAtomValue(() => {
   console.log("Recomputing HelloWorld.GetHelloWorld atom with:", req.value)
   return Atom.refreshOnWindowFocus(
-    helloWorldAtom.query("HelloWorld.GetHelloWorld", req.value, {
+    HelloWorldClient.query("HelloWorld.GetHelloWorld", req.value, {
       reactivityKeys: ["echo"],
     }),
   )
 })
 
-const increment = useAtomSet(() => helloWorldAtom.mutation("HelloWorld.Set"))
+const increment = useAtomSet(() => HelloWorldClient.mutation("HelloWorld.Set"))
 const test = () =>
   increment({ payload: { echo: "test" }, reactivityKeys: { echo: ["echo"] } })
 

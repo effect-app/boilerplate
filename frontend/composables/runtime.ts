@@ -10,36 +10,36 @@ import { HttpClient } from "effect-app/http"
 import { FetchHttpClient } from "@effect/platform"
 import { ApiClientFactory } from "effect-app/client/apiClientFactory"
 import { type useRuntimeConfig } from "nuxt/app"
-import { Atom } from "@effect-atom/atom-vue"
+import { Atom } from "@effect-atom/atom"
+import { RpcClient, RpcSerialization } from "@effect/rpc"
 
 export const versionMatch = ref(true)
 
 function makeRuntime(feVersion: string, disableTracing: boolean) {
-  const apiLayers = ApiClientFactory.layer({
-    url: "/api/api",
-    headers: Option.none(),
-  }).pipe(
-    Layer.provide(
-      Layer.effect(
-        HttpClient.HttpClient,
-        Effect.map(
-          HttpClient.HttpClient,
-          HttpClient.tap(r =>
-            Effect.sync(() => {
-              const remoteFeVersion = r.headers["x-fe-version"]
-              if (remoteFeVersion) {
-                versionMatch.value = feVersion === remoteFeVersion
-              }
-            }),
-          ),
-        ),
+  const OurHttpClient = Layer.effect(
+    HttpClient.HttpClient,
+    Effect.map(
+      HttpClient.HttpClient,
+      HttpClient.tap(r =>
+        Effect.sync(() => {
+          const remoteFeVersion = r.headers["x-fe-version"]
+          if (remoteFeVersion) {
+            versionMatch.value = feVersion === remoteFeVersion
+          }
+        }),
       ),
     ),
-    Layer.provide(FetchHttpClient.layer),
-    Layer.provide(
+  ).pipe(
+    Layer.provideMerge(FetchHttpClient.layer),
+    Layer.provideMerge(
       Layer.succeed(FetchHttpClient.RequestInit, { credentials: "include" }),
     ),
   )
+
+  const apiLayers = ApiClientFactory.layer({
+    url: "/api/api",
+    headers: Option.none(),
+  }).pipe(Layer.provide(OurHttpClient))
 
   const globalLayers = disableTracing
     ? Layer.empty
@@ -62,6 +62,7 @@ function makeRuntime(feVersion: string, disableTracing: boolean) {
     runSync: Runtime.runSync(rt.runtime),
     runPromise: Runtime.runPromise(rt.runtime),
     runCallback: Runtime.runCallback(rt.runtime),
+    OurHttpClient,
   }
 }
 
@@ -80,10 +81,7 @@ export type RT = ApiClientFactory
 const config = (globalThis as any).__NUXT__.config as ReturnType<
   typeof useRuntimeConfig
 >
-const isRemote = config.public.env !== "local-dev"
 const disableTracing = false //  !isRemote || !config.public.telemetry
-
-console.log({ isRemote, disableTracing })
 
 export const runtime = makeRuntime(
   config.public.feVersion,
@@ -92,3 +90,11 @@ export const runtime = makeRuntime(
   // isRemote,
   // !isRemote && !config.public.telemetry,
 )
+
+export const RpcClientProtocolLayers = (path: string) =>
+  Layer.provideMerge(
+    RpcClient.layerProtocolHttp({
+      url: "/api/api/rpc" + path,
+    }).pipe(Layer.provide(RpcSerialization.layerJson)),
+    runtime.OurHttpClient,
+  )
