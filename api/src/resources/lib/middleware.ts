@@ -21,7 +21,6 @@ export class AllowAnonymous extends Middleware.Tag<AllowAnonymous>()("AllowAnony
 
 export class RequireRoles extends Middleware.Tag<RequireRoles>()("RequireRoles", {
   dynamic: contextMap(RequestContextMap, "requireRoles"),
-  wrap: true,
   dependsOn: [AllowAnonymous]
 }) {
 }

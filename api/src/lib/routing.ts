@@ -25,7 +25,7 @@ const AllowAnonymousLive = Layer.effect(
           ? makeUserProfileFromAuthorizationHeader(headers["authorization"])
           : Effect.succeed(undefined))
 
-    return Effect.fn(function*({ headers, rpc }) {
+    return Effect.fn(function*(effect, { headers, rpc }) {
       const config = getConf(rpc)
       // if (!config?.allowAnonymous) {
       //   yield* Effect.catchAll(
@@ -49,11 +49,11 @@ const AllowAnonymousLive = Layer.effect(
 
       const userProfile = Option.fromNullable(Exit.isSuccess(r) ? r.value : undefined)
       if (Option.isSome(userProfile)) {
-        return Option.some(userProfile.value)
+        return yield* Effect.provideService(effect, UserProfile, userProfile.value)
       } else if (!config?.allowAnonymous) {
         return yield* new NotLoggedInError({ message: "no auth" })
       }
-      return Option.none()
+      return yield* effect
     })
   })
 )
@@ -62,7 +62,7 @@ const RequireRolesLive = Layer.effect(
   RequireRoles,
   Effect.gen(function*() {
     return Effect.fn(
-      function*({ next, rpc }) {
+      function*(effect, { rpc }) {
         const config = getConf(rpc)
         const userProfile = yield* Effect.serviceOption(UserProfile)
         if (config?.requireRoles) {
@@ -75,7 +75,7 @@ const RequireRolesLive = Layer.effect(
           }
         }
 
-        return yield* next
+        return yield* effect
       }
     )
   })
