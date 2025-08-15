@@ -16,16 +16,19 @@ export class GetHelloWorld extends S.Req<GetHelloWorld>()("GetHelloWorld", {
   echo: S.String
 }, { allowAnonymous: true, allowRoles: ["user"], success: Response }) {}
 
-export const HelloWorldRpc = middlewareGroup(RpcMiddleware)(RpcGroup
-  .make(
-    RpcMiddleware.rpc("Get", {
-      payload: GetHelloWorld.fields,
-      // TODO: add fromTaggedRequeset with config support instead
-      success: GetHelloWorld.success,
-      config: GetHelloWorld.config
-    })
-  ))
-
 // codegen:start {preset: meta, sourcePrefix: src/resources/}
 export const meta = { moduleName: "HelloWorld.alt" } as const
 // codegen:end
+
+export const HelloWorldRpc = Object.assign(
+  middlewareGroup(RpcMiddleware)(RpcGroup
+    .make(
+      RpcMiddleware.rpc("Get", {
+        payload: GetHelloWorld.fields,
+        // TODO: add fromTaggedRequeset with config support instead
+        success: GetHelloWorld.success,
+        config: GetHelloWorld.config
+      })
+    )),
+  { meta } // todo; auto
+)
