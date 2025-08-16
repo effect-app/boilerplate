@@ -1,17 +1,17 @@
-import { NotLoggedInError, RPCContextMap, UnauthorizedError } from "effect-app/client"
-import { contextMap, getConfig, makeMiddleware, Middleware } from "effect-app/rpc"
-import { DefaultGenericMiddlewares } from "effect-app/rpc/middleware-native"
+import { NotLoggedInError, UnauthorizedError } from "effect-app/client"
+import { contextMap, getConfig, makeMiddleware, Middleware, RpcContextMap } from "effect-app/rpc"
 
 // get rid of in resources and frontend
+import { DefaultGenericMiddlewares } from "effect-app/middleware"
 import { UserProfile } from "./Userprofile.js"
 
 export type RequestContextMap = {
-  allowAnonymous: RPCContextMap.Inverted<typeof UserProfile, typeof NotLoggedInError>
-  requireRoles: RPCContextMap.Custom<never, typeof UnauthorizedError, readonly string[]>
+  allowAnonymous: RpcContextMap.Inverted<typeof UserProfile, typeof NotLoggedInError>
+  requireRoles: RpcContextMap.Custom<never, typeof UnauthorizedError, readonly string[]>
 }
 export const RequestContextMap = {
-  allowAnonymous: RPCContextMap.makeInverted(UserProfile, NotLoggedInError),
-  requireRoles: RPCContextMap.makeCustom(null as never, UnauthorizedError, Array<string>())
+  allowAnonymous: RpcContextMap.makeInverted(UserProfile, NotLoggedInError),
+  requireRoles: RpcContextMap.makeCustom(null as never, UnauthorizedError, Array<string>())
 } as const
 export const getConf = getConfig<RequestContextMap>()
 

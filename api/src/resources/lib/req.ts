@@ -1,15 +1,16 @@
 import type { Role } from "#models/User"
 import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
 import { Duration, Layer, Request as EffectRequest } from "effect-app"
+import { makeRpcClient } from "effect-app/client"
 import { ApiClientFactory } from "effect-app/client/apiClientFactory"
-import { makeRpcClient, type RPCContextMap } from "effect-app/client/req"
+import { type RpcContextMap } from "effect-app/rpc"
 
 type RequestContextMap = {
   // we put `never`, because we can't access this service here in the client, and we also don't need to
   // TODO: a base map for client, that the server extends
-  allowAnonymous: RPCContextMap.Inverted<never, typeof NotLoggedInError>
+  allowAnonymous: RpcContextMap.Inverted<never, typeof NotLoggedInError>
   // TODO: not boolean but `string[]`
-  requireRoles: RPCContextMap.Custom<never, typeof UnauthorizedError, Array<string>>
+  requireRoles: RpcContextMap.Custom<never, typeof UnauthorizedError, Array<string>>
 }
 
 export type RequestConfig = {
