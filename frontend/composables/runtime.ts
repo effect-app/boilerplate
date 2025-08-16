@@ -81,8 +81,7 @@ export type RT = ApiClientFactory
 const config = (globalThis as any).__NUXT__.config as ReturnType<
   typeof useRuntimeConfig
 >
-const isRemote = config.public.env !== "local-dev"
-const disableTracing = !isRemote || !config.public.telemetry
+const disableTracing = false //  !isRemote || !config.public.telemetry
 
 export const runtime = makeRuntime(
   config.public.feVersion,

@@ -2,6 +2,9 @@
 import { HelloWorldRsc } from "#resources"
 import { buildFormFromSchema } from "@effect-app/vue/form"
 import { S } from "effect-app"
+import { Atom, AtomRpc, useAtomSet, useAtomValue } from "@effect-atom/atom-vue"
+import { makeRpcGroup } from "effect-app/client"
+import { RpcClientProtocolLayers } from "~/composables/runtime"
 
 class Input extends S.Class<Input>("Input")({
   title: S.NonEmptyString255,
@@ -27,8 +30,32 @@ const makeReq = () => ({
 
 const req = ref(makeReq())
 
-const helloWorldClient = clientFor(HelloWorldRsc)
-const [result] = useSafeQuery(helloWorldClient.GetHelloWorld, req)
+const helloWorldRpcs = makeRpcGroup(HelloWorldRsc)
+class HelloWorldClient extends AtomRpc.Tag<HelloWorldClient>()(
+  "HelloWorldClient",
+  {
+    protocol: RpcClientProtocolLayers("/HelloWorld"),
+    group: helloWorldRpcs,
+  },
+) {}
+
+const result = useAtomValue(() => {
+  console.log("Recomputing HelloWorld.GetHelloWorld atom with:", req.value)
+  return Atom.refreshOnWindowFocus(
+    HelloWorldClient.query("HelloWorld.GetHelloWorld", req.value, {
+      reactivityKeys: ["echo"],
+    }),
+  )
+})
+
+const increment = useAtomSet(() => HelloWorldClient.mutation("HelloWorld.Set"))
+const test = () =>
+  increment({ payload: { echo: "test" }, reactivityKeys: { echo: ["echo"] } })
+
+// const mutation = Effect.fn("MySpan")(function* () {
+//   yield* Effect.logInfo("doing something")
+//   increment({ payload: { echo: "test" }, reactivityKeys: { echo: ["echo"] } })
+// })
 
 // onMounted(() => {
 //   setInterval(() => {
@@ -41,7 +68,7 @@ const [result] = useSafeQuery(helloWorldClient.GetHelloWorld, req)
 // })
 
 onMounted(() => {
-  const t = setInterval(() => (req.value = makeReq()), 5000)
+  const t = setInterval(() => (req.value = makeReq()), 10_000)
   return () => clearInterval(t)
 })
 </script>
@@ -49,6 +76,7 @@ onMounted(() => {
 <template>
   <div>
     Hi world!
+    <v-btn @click="test()">Test</v-btn>
     <v-form @submit.prevent="form.submit">
       <template v-for="(field, name) in form.fields" :key="name">
         <!-- TODO: field.type text, or via length, or is multiLine -->
