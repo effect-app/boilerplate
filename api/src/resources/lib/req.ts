@@ -3,7 +3,7 @@ import { NotLoggedInError, UnauthorizedError } from "@effect-app/infra/errors"
 import { Duration, Layer, Request as EffectRequest } from "effect-app"
 import { makeRpcClient } from "effect-app/client"
 import { ApiClientFactory } from "effect-app/client/apiClientFactory"
-import { type RpcContextMap } from "effect-app/rpc"
+import { type RpcContextMap } from "effect-app/rpc/RpcContextMap"
 
 type RequestContextMap = {
   // we put `never`, because we can't access this service here in the client, and we also don't need to
