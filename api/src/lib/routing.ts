@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { BaseConfig } from "#config"
-import { AllowAnonymous, getConf, RequireRoles, RpcMiddleware } from "#resources/lib"
+import { AllowAnonymous, AppMiddleware, getConf, RequireRoles } from "#resources/lib"
 import { makeUserProfileFromAuthorizationHeader, makeUserProfileFromUserHeader, UserProfile } from "#services"
 import { DefaultGenericMiddlewaresLive, makeRouter } from "@effect-app/infra/api/routing"
 import { Effect, Exit, Layer } from "effect"
@@ -81,13 +80,12 @@ const RequireRolesLive = Layer.effect(
   })
 )
 
-const middleware = Object.assign(RpcMiddleware, {
-  Default: RpcMiddleware.layer.pipe(Layer.provide([
+class AppMiddlewareImpl extends AppMiddleware {
+  static Default = this.layer.pipe(Layer.provide([
     AllowAnonymousLive,
     RequireRolesLive,
     DefaultGenericMiddlewaresLive
   ]))
-})
+}
 
-const baseConfig = basicRuntime.runSync(BaseConfig)
-export const { Router, matchAll } = makeRouter(middleware, baseConfig.env !== "prod")
+export const { Router, matchAll } = makeRouter(AppMiddlewareImpl)
