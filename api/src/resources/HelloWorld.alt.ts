@@ -1,7 +1,6 @@
 import { RequestContext } from "@effect-app/infra/RequestContext"
 import { RpcGroup } from "@effect/rpc"
-import { middlewareGroup } from "effect-app/rpc"
-import { RpcMiddleware, S } from "./lib.js"
+import { AppMiddleware, S } from "./lib.js"
 import { UserView } from "./views.js"
 
 class Response extends S.Class<Response>("Response")({
@@ -21,9 +20,9 @@ export const meta = { moduleName: "HelloWorld.alt" } as const
 // codegen:end
 
 export const HelloWorldRpc = Object.assign(
-  middlewareGroup(RpcMiddleware)(RpcGroup
+  AppMiddleware.Group(RpcGroup
     .make(
-      RpcMiddleware.rpc("Get", {
+      AppMiddleware.rpc("Get", {
         payload: GetHelloWorld.fields,
         // TODO: add fromTaggedRequeset with config support instead
         success: GetHelloWorld.success,

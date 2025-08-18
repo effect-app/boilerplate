@@ -1,8 +1,10 @@
 import { NotLoggedInError, UnauthorizedError } from "effect-app/client"
-import { contextMap, getConfig, makeMiddleware, Middleware, RpcContextMap } from "effect-app/rpc"
 
 // get rid of in resources and frontend
 import { DefaultGenericMiddlewares } from "effect-app/middleware"
+import { MiddlewareMaker, RpcMiddleware } from "effect-app/rpc"
+import { middlewareGroup } from "effect-app/rpc/MiddlewareMaker"
+import { contextMap, getConfig, RpcContextMap } from "effect-app/rpc/RpcContextMap"
 import { UserProfile } from "./Userprofile.js"
 
 export type RequestContextMap = {
@@ -15,16 +17,20 @@ export const RequestContextMap = {
 } as const
 export const getConf = getConfig<RequestContextMap>()
 
-export class AllowAnonymous extends Middleware.Tag<AllowAnonymous>()("AllowAnonymous", {
+export class AllowAnonymous extends RpcMiddleware.Tag<AllowAnonymous>()("AllowAnonymous", {
   dynamic: contextMap(RequestContextMap, "allowAnonymous")
 }) {}
 
-export class RequireRoles extends Middleware.Tag<RequireRoles>()("RequireRoles", {
+export class RequireRoles extends RpcMiddleware.Tag<RequireRoles>()("RequireRoles", {
   dynamic: contextMap(RequestContextMap, "requireRoles"),
   dependsOn: [AllowAnonymous]
 }) {
 }
-export const RpcMiddleware = makeMiddleware(RequestContextMap)
+export class AppMiddleware extends MiddlewareMaker
+  .Tag<AppMiddleware>()("AppMiddleware", RequestContextMap)
   .middleware(RequireRoles)
   .middleware(AllowAnonymous)
   .middleware(...DefaultGenericMiddlewares)
+{
+  static Group = middlewareGroup(this)
+}

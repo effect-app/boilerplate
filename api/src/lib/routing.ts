@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { BaseConfig } from "#config"
-import { AllowAnonymous, getConf, RequireRoles, RpcMiddleware } from "#resources/lib"
+import { AllowAnonymous, AppMiddleware, getConf, RequireRoles } from "#resources/lib"
 import { makeUserProfileFromAuthorizationHeader, makeUserProfileFromUserHeader, UserProfile } from "#services"
 import { type LayerUtils } from "@effect-app/infra/api/layerUtils"
 import { DefaultGenericMiddlewaresLive, makeRouter } from "@effect-app/infra/api/routing"
@@ -12,7 +11,7 @@ import { type RpcSerialization } from "@effect/rpc/RpcSerialization"
 import { Effect, Exit, Layer, type NonEmptyReadonlyArray, Option, type Scope } from "effect-app"
 import { NotLoggedInError, UnauthorizedError } from "effect-app/client"
 import { type HttpHeaders, type HttpLayerRouter } from "effect-app/http"
-import { type HandlersContext, type MiddlewareMakerId } from "effect-app/rpc"
+import { type HandlersContext } from "effect-app/rpc/RpcMiddleware"
 import { type Service } from "effect/Effect"
 import { basicRuntime } from "./basicRuntime.js"
 import { AppLogger } from "./logger.js"
@@ -107,15 +106,19 @@ export const makeServer = <R extends Rpc.Any>(group: RpcGroup.RpcGroup<R> & { me
       protocol: "http"
     })
 
-const MiddlewareDefault = RpcMiddleware.layer.pipe(Layer.provide([
+const MiddlewareDefault = AppMiddleware.layer.pipe(Layer.provide([
   AllowAnonymousLive,
   RequireRolesLive,
   DefaultGenericMiddlewaresLive
 ]))
 
-export const middleware = Object.assign(RpcMiddleware, {
-  Default: MiddlewareDefault,
-  Router: <R extends Rpc.Any>(
+export class AppMiddlewareImpl extends AppMiddleware {
+  static Default = this.layer.pipe(Layer.provide([
+    AllowAnonymousLive,
+    RequireRolesLive,
+    DefaultGenericMiddlewaresLive
+  ]))
+  static Router = <R extends Rpc.Any>(
     group: RpcGroup.RpcGroup<R> & {
       meta: { moduleName: string }
       toLayerDynamic: <
@@ -150,7 +153,7 @@ export const middleware = Object.assign(RpcMiddleware, {
     Effect.Effect.Error<LayerOpts["effect"]>,
     | Exclude<Effect.Effect.Context<LayerOpts["effect"]>, Service.MakeDepsOut<LayerOpts>>
     | Service.MakeDepsIn<LayerOpts>
-    | Exclude<Rpc.Middleware<R>, MiddlewareMakerId>
+    | Exclude<Rpc.Middleware<R>, AppMiddleware>
     | HandlersContext<R, Effect.Effect.Success<LayerOpts["effect"]>>
     | RpcSerialization
     | HttpLayerRouter.HttpRouter
@@ -169,7 +172,6 @@ export const middleware = Object.assign(RpcMiddleware, {
           .pipe(Layer.provide(mergeOptionalDependencies(layerOpts)))
       )
     ) as any
-})
+}
 
-const baseConfig = basicRuntime.runSync(BaseConfig)
-export const { Router, matchAll } = makeRouter(middleware, baseConfig.env !== "prod")
+export const { Router, matchAll } = makeRouter(AppMiddlewareImpl)

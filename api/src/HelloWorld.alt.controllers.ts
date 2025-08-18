@@ -1,4 +1,4 @@
-import { middleware } from "#lib/routing"
+import { AppMiddlewareImpl } from "#lib/routing"
 import { User } from "#models/User"
 import { GetHelloWorld, HelloWorldRpc } from "#resources/HelloWorld.alt"
 import { UserRepo } from "#services"
@@ -6,7 +6,7 @@ import { getRequestContext } from "@effect-app/infra/api/setupRequest"
 import { generate } from "@effect-app/infra/test"
 import { Effect, S } from "effect-app"
 
-export default middleware.Router(HelloWorldRpc)({
+export default AppMiddlewareImpl.Router(HelloWorldRpc)({
   dependencies: [UserRepo.Default],
   effect: Effect.gen(function*() {
     const userRepo = yield* UserRepo
