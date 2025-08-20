@@ -3,8 +3,14 @@ import { useToast } from "vue-toastification"
 import { useIntl } from "./intl"
 import type { Effect } from "effect-app"
 import { clientFor as clientFor_ } from "#resources/lib"
-import type { Requests } from "effect-app/client/clientFor"
+import type {
+  RequestHandler,
+  RequestHandlerWithInput,
+  Requests,
+} from "effect-app/client/clientFor"
 import { OperationsClient } from "#resources/Operations"
+import { useQueryClient } from "@tanstack/vue-query"
+import { makeQueryKey } from "@effect-app/vue"
 
 export { useToast } from "vue-toastification"
 
@@ -31,6 +37,35 @@ export const runSync = <A, E>(effect: Effect.Effect<A, E, RT>) =>
 
 export const clientFor = <M extends Requests>(m: M) => runSync(clientFor_(m))
 export const useOperationsClient = () => runSync(OperationsClient)
+
+export const useUpdateQuery = () => {
+  const queryClient = useQueryClient()
+
+  const f: {
+    <A>(
+      query: RequestHandler<A, any, any, any>,
+      updater: (data: NoInfer<A>) => NoInfer<A>,
+    ): void
+    <I, A>(
+      query: RequestHandlerWithInput<I, A, any, any, any>,
+      input: I,
+      updater: (data: NoInfer<A>) => NoInfer<A>,
+    ): void
+  } = (query: any, updateOrInput: any, updaterMaybe?: any) => {
+    const updater = updaterMaybe !== undefined ? updaterMaybe : updateOrInput
+    const key =
+      updaterMaybe !== undefined
+        ? [...makeQueryKey(query), updateOrInput]
+        : makeQueryKey(query)
+    const data = queryClient.getQueryData(key)
+    if (data) {
+      queryClient.setQueryData(key, updater)
+    } else {
+      console.warn(`Query data for key ${key} not found`, key)
+    }
+  }
+  return f
+}
 
 export const {
   buildFormFromSchema,

@@ -72,7 +72,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@vueuse/nuxt", "@hebilicious/vue-query-nuxt"],
+  modules: ["@vueuse/nuxt"],
 
   // app doesn't need SSR, but also it causes problems with linking schema package.
   ssr: false,
@@ -91,9 +91,13 @@ export default defineNuxtConfig({
         "reconnecting-eventsource",
         "mitt",
         "@tanstack/vue-query",
+        "effect-app/Function",
         "effect-app/utils",
         "@effect-app/vue/routeParams",
         "@effect-app/vue/form",
+        ..."@vue/devtools-core, @vue/devtools-kit, vue-timeago3, date-fns/locale/de, vue-virtual-scroller, vue-toastification, @effect-app/vue, effect/Layer, effect/Runtime, effect/Request, @opentelemetry/semantic-conventions, effect-app/Schema, @effect/platform, effect-app/client/apiClientFactory, effect-app, @tanstack/vue-query-devtools, @effect-app/vue-components, effect-app/Effect, @effect/opentelemetry/WebSdk, @opentelemetry/exporter-trace-otlp-http, @opentelemetry/sdk-trace-web, @sentry/vue, @sentry/browser, @sentry/opentelemetry, @opentelemetry/api, effect-app/client/errors, @effect/platform/HttpClientError, effect, date-fns, effect-app/Operations, effect-app/rpc, change-case, papaparse, effect-app/faker, effect-app/ids, xlsx, effect/Function, @fp-ts/optic"
+          .split(",")
+          .map(_ => _.trim()),
       ],
     },
     plugins: process.env["CI"]

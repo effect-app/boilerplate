@@ -9,7 +9,6 @@
     "eslint-plugin-codegen",
     "vue-toastification",
     "@tanstack/*",
-    "typescript",
-    "nuxt"
+    "typescript"
   ]
 }
