@@ -3,6 +3,7 @@ import { NotLoggedInError, UnauthorizedError } from "effect-app/client"
 // get rid of in resources and frontend
 import { DefaultGenericMiddlewares } from "effect-app/middleware"
 import { MiddlewareMaker, RpcMiddleware } from "effect-app/rpc"
+import { middlewareGroup } from "effect-app/rpc/MiddlewareMaker"
 import { contextMap, getConfig, RpcContextMap } from "effect-app/rpc/RpcContextMap"
 import { UserProfile } from "./Userprofile.js"
 
@@ -30,4 +31,6 @@ export class AppMiddleware extends MiddlewareMaker
   .middleware(RequireRoles)
   .middleware(AllowAnonymous)
   .middleware(...DefaultGenericMiddlewares)
-{}
+{
+  static Group = middlewareGroup(this)
+}

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { HelloWorldRsc } from "#resources"
+import { HelloWorldRpc } from "#resources/HelloWorld.alt"
 import { buildFormFromSchema } from "@effect-app/vue/form"
+import { Atom, AtomRpc } from "@effect-atom/atom"
+import { useAtomValue } from "@effect-atom/atom-vue"
 import { S } from "effect-app"
 
 class Input extends S.Class<Input>("Input")({
@@ -27,8 +29,18 @@ const makeReq = () => ({
 
 const req = ref(makeReq())
 
-const helloWorldClient = clientFor(HelloWorldRsc)
-const [result] = useSafeQuery(helloWorldClient.GetHelloWorld, req)
+class HelloWorldClient extends AtomRpc.Tag<HelloWorldClient>()(
+  "HelloWorldClient",
+  {
+    protocol: RpcClientProtocolLayers("/HelloWorld.alt"),
+    group: HelloWorldRpc,
+  },
+) {}
+
+const result = useAtomValue(() => {
+  console.log("Computing Atom:", req.value)
+  return Atom.refreshOnWindowFocus(HelloWorldClient.query("Get", req.value))
+})
 
 // onMounted(() => {
 //   setInterval(() => {
