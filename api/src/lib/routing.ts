@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { AllowAnonymous, AppMiddleware, getConf, RequireRoles } from "#resources/lib"
+import { AllowAnonymous, AppMiddleware, RequestContextMap, RequireRoles } from "#resources/lib"
 import { makeUserProfileFromAuthorizationHeader, makeUserProfileFromUserHeader, UserProfile } from "#services"
 import { DefaultGenericMiddlewaresLive, makeRouter } from "@effect-app/infra/api/routing"
 import { Effect, Exit, Layer } from "effect"
@@ -25,7 +25,7 @@ const AllowAnonymousLive = Layer.effect(
           : Effect.succeed(undefined))
 
     return Effect.fn(function*(effect, { headers, rpc }) {
-      const config = getConf(rpc)
+      const config = RequestContextMap.getConfig(rpc)
       // if (!config?.allowAnonymous) {
       //   yield* Effect.catchAll(
       //     checkJWTI({
@@ -62,7 +62,7 @@ const RequireRolesLive = Layer.effect(
   Effect.gen(function*() {
     return Effect.fn(
       function*(effect, { rpc }) {
-        const config = getConf(rpc)
+        const config = RequestContextMap.getConfig(rpc)
         const userProfile = yield* Effect.serviceOption(UserProfile)
         if (config?.requireRoles) {
           // TODO
