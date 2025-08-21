@@ -5,6 +5,7 @@ import { UserView } from "./views.js"
 class Response extends S.Class<Response>("Response")({
   now: S.Date.withDefault,
   echo: S.String,
+  state: S.String,
   context: RequestContext,
   currentUser: S.NullOr(UserView),
   randomUser: UserView
@@ -13,6 +14,10 @@ class Response extends S.Class<Response>("Response")({
 export class GetHelloWorld extends S.Req<GetHelloWorld>()("GetHelloWorld", {
   echo: S.String
 }, { allowAnonymous: true, allowRoles: ["user"], success: Response }) {}
+
+export class SetState extends S.Req<SetState>()("SetState", {
+  state: S.String
+}, { allowAnonymous: true, allowRoles: ["user"] }) {}
 
 // codegen:start {preset: meta, sourcePrefix: src/resources/}
 export const meta = { moduleName: "HelloWorld" } as const

@@ -29,6 +29,7 @@ const req = ref(makeReq())
 
 const helloWorldClient = clientFor(HelloWorldRsc)
 const [result] = useSafeQuery(helloWorldClient.GetHelloWorld, req)
+const mutation = useAndHandleMutation(helloWorldClient.SetState, "Set State")
 
 // onMounted(() => {
 //   setInterval(() => {
@@ -67,6 +68,9 @@ onMounted(() => {
           :field="field"
         />
       </template>
+      <v-btn @click="run(mutation({ state: new Date().toISOString() }))">
+        Update State
+      </v-btn>
     </v-form>
 
     <QueryResult v-slot="{ latest, refreshing }" :result="result">
