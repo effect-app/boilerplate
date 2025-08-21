@@ -78,9 +78,10 @@ export type RT = ApiClientFactory
   Now we can use things like clientFor, which leverage the runtime, and export clients directly from modules.
 */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const config = (globalThis as any).__NUXT__.config as ReturnType<
-  typeof useRuntimeConfig
->
+const config = ((globalThis as any).__NUXT__?.config ?? {
+  apiRoot: "http://127.0.0.1:3610", // TODO; why doesnt it work for boilerplate? is it somehow doing SSR anyway?
+  public: { env: "local-dev" },
+}) as ReturnType<typeof useRuntimeConfig>
 const isRemote = config.public.env !== "local-dev"
 const disableTracing = !isRemote || !config.public.telemetry
 
