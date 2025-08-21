@@ -42,8 +42,8 @@ export default defineNuxtConfig({
     "#models": fileURLToPath(new URL("../api/src/models", import.meta.url)),
     ...(localLibs
       ? {
-          effect: getPath("effect") + "/dist/esm",
-          "effect-app": getPath("effect-app") + "/dist",
+          effect: getPath("effect"),
+          "effect-app": getPath("effect-app") + "/src",
           "@effect-app/vue": getPath("@effect-app/vue") + "/src",
           "@effect-app/vue-components": getPath("@effect-app/vue-components"),
         }
