@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { HelloWorldRsc } from "#resources"
 import { buildFormFromSchema } from "@effect-app/vue/form"
-import { S } from "effect-app"
+import { Effect, S } from "effect-app"
 
 class Input extends S.Class<Input>("Input")({
   title: S.NonEmptyString255,
@@ -32,6 +32,18 @@ const [result] = useSafeQuery(helloWorldClient.GetHelloWorld, req)
 const [setStateResult, setState] = useAndHandleMutation(
   helloWorldClient.SetState,
   "Set State",
+  {
+    mapHandler: (mutate, input) =>
+      Effect.gen(function* () {
+        yield* Effect.log("before mutate", {
+          input,
+          span: yield* Effect.currentSpan.pipe(Effect.orDie),
+        })
+        const r = yield* mutate // TODO: expect input, so we can add/customise it?
+        yield* Effect.log("after mutate", { r, input })
+        return r
+      }),
+  },
 )
 
 // onMounted(() => {
