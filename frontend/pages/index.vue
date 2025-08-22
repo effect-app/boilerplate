@@ -2,6 +2,7 @@
 import { HelloWorldRsc } from "#resources"
 import { buildFormFromSchema } from "@effect-app/vue/form"
 import { Effect, S } from "effect-app"
+import { mdiSetAll } from "@mdi/js"
 
 class Input extends S.Class<Input>("Input")({
   title: S.NonEmptyString255,
@@ -26,6 +27,8 @@ const makeReq = () => ({
 })
 
 const req = ref(makeReq())
+
+// we really have a Command pattern, which is a first class citizen that can be shared between buttons etc.
 // considerations
 // - i18n for the action name communicated to the user - it is nice when it's shared with the UI, like button text..
 
@@ -64,6 +67,8 @@ const [setStateResult, setState] = useAndHandleMutation(
         })
         yield* confirmOrInterrupt()
 
+        // simulate slow action to reveal loading/disabled states.
+        yield* Effect.sleep(2 * 1000)
         const r = yield* mutate // TODO: expect input, so we can add/customise it?
 
         yield* Effect.log("after mutate", { r, input })
@@ -91,6 +96,7 @@ onMounted(() => {
 <template>
   <div>
     Hi world!
+    <!-- TODO switch form to OmegaForm... -->
     <v-form @submit.prevent="form.submit">
       <template v-for="(field, name) in form.fields" :key="name">
         <!-- TODO: field.type text, or via length, or is multiLine -->
@@ -109,6 +115,7 @@ onMounted(() => {
           :field="field"
         />
       </template>
+
       <v-btn
         :disabled="setStateResult.loading"
         :loading="setStateResult.loading"
@@ -116,6 +123,14 @@ onMounted(() => {
       >
         {{ setState.action }}
       </v-btn>
+      <!-- alt -->
+      <v-btn
+        :disabled="setStateResult.loading"
+        :loading="setStateResult.loading"
+        :title="setState.action"
+        :icon="mdiSetAll"
+        @click="run(setState({ state: new Date().toISOString() }))"
+      ></v-btn>
     </v-form>
 
     <QueryResult v-slot="{ latest, refreshing }" :result="result">
