@@ -41,7 +41,7 @@ const req = ref(makeReq())
 //    })
 //
 // b) const setStateMutation = useUnsafeMutation(helloWorldClient.SetState)
-//    const setState = Effect.fn("HelloWorld.SetState")(function* (input: HelloWorldRsc.SetState) {
+//    const setState = Effect.fn("HelloWorld.SetState" /* this is duplicate with HelloWorldRsc.SetState auto derived name */)(function* (input: HelloWorldRsc.SetState) {
 //      // do things before
 //      yield* setStateMutation(input)
 //      // do things after

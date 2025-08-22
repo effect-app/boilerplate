@@ -19,7 +19,7 @@ export const useHelloWorld = () => {
   type E = Schema.Type<(typeof HelloWorldRsc.GetHelloWorld)["failure"]>
 
   return {
-    // TODO: make a curry version of `useSafeSuspenseQuery` so we can just `useSafeSuspenseQuery(client.GetHelloWorld`
+    // TODO: make a curry version of `useSafeSuspenseQuery` so we can just `useSafeSuspenseQuery(client.GetHelloWorld)`
     getHelloWorld: (
       arg:
         | Omit<HelloWorldRsc.GetHelloWorld, Cruft>
