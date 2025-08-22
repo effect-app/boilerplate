@@ -31,6 +31,7 @@ const req = ref(makeReq())
 // we really have a Command pattern, which is a first class citizen that can be shared between buttons etc.
 // considerations
 // - i18n for the action name communicated to the user - it is nice when it's shared with the UI, like button text..
+// - able to change the input format, e.g no input required.
 
 // we can do two things..
 // a) const setStateMutation = useAndHandleMutation(helloWorldClient.SetState, "Set State" /* TODO: i18n */)
