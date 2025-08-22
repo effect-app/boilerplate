@@ -26,9 +26,32 @@ const makeReq = () => ({
 })
 
 const req = ref(makeReq())
+// considerations
+// - i18n for the action name communicated to the user - it is nice when it's shared with the UI, like button text..
+
+// we can do two things..
+// a) const setStateMutation = useAndHandleMutation(helloWorldClient.SetState, "Set State" /* TODO: i18n */)
+//    const setState = setStateMutation(function* (mutate, input) { // auto typed input, i however also a weakness...
+//      // do things before
+//      yield* mutate(input)
+//      // do things after
+//    })
+//
+// b) const setStateMutation = useUnsafeMutation(helloWorldClient.SetState)
+//    const setState = Effect.fn("HelloWorld.SetState")(function* (input: HelloWorldRsc.SetState) {
+//      // do things before
+//      yield* setStateMutation(input)
+//      // do things after
+//   })
+//   // to run
+//   run(setState(input), "Set State" /* TODO i18n */) // this now also takes care of error handling/reporting
+
+// todo; check how it would work with Atom
 
 const helloWorldClient = clientFor(HelloWorldRsc)
 const [result] = useSafeQuery(helloWorldClient.GetHelloWorld, req)
+
+// todo; we should use the variant that returns an action Result..
 const [setStateResult, setState] = useAndHandleMutation(
   helloWorldClient.SetState,
   "Set State",
@@ -39,7 +62,10 @@ const [setStateResult, setState] = useAndHandleMutation(
           input,
           span: yield* Effect.currentSpan.pipe(Effect.orDie),
         })
+        yield* confirmOrInterrupt()
+
         const r = yield* mutate // TODO: expect input, so we can add/customise it?
+
         yield* Effect.log("after mutate", { r, input })
         return r
       }),
@@ -83,8 +109,12 @@ onMounted(() => {
           :field="field"
         />
       </template>
-      <v-btn @click="run(setState({ state: new Date().toISOString() }))">
-        Update State
+      <v-btn
+        :disabled="setStateResult.loading"
+        :loading="setStateResult.loading"
+        @click="run(setState({ state: new Date().toISOString() }))"
+      >
+        {{ setState.action }}
       </v-btn>
     </v-form>
 
