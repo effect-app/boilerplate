@@ -53,7 +53,9 @@ const req = ref(makeReq())
 // todo; check how it would work with Atom
 
 const helloWorldClient = clientFor(HelloWorldRsc)
-const [result] = useSafeQuery(helloWorldClient.GetHelloWorld, req)
+const [result] = await run(
+  useSafeSuspenseQuery(helloWorldClient.GetHelloWorld, req),
+)
 
 // todo; we should use the variant that returns an action Result..
 const [setStateResult, setState] = useAndHandleMutation(

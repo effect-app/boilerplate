@@ -39,6 +39,7 @@ export const {
   useSafeMutation,
   useSafeMutationWithState,
   useSafeQuery,
+  useSafeSuspenseQuery,
 } = makeClient(useIntl, useToast, shallowRef(runtime.runtime)) // TODO
 
 export const confirm = (message = "Sind sie Sicher?") =>
