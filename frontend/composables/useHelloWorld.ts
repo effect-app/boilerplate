@@ -17,25 +17,9 @@ export const useHelloWorld = () => {
   // temp
   type A = S.Schema.Type<(typeof HelloWorldRsc.GetHelloWorld)["success"]>
   type E = S.Schema.Type<(typeof HelloWorldRsc.GetHelloWorld)["failure"]>
-
-  return {
-    // TODO: make a curry version of `useSafeSuspenseQuery` so we can just `useSafeSuspenseQuery(client.GetHelloWorld)`
-    getHelloWorld: (
-      arg:
-        | Omit<HelloWorldRsc.GetHelloWorld, Cruft>
-        | WatchSource<Omit<HelloWorldRsc.GetHelloWorld, Cruft>>,
-      options?: QueryObserverOptionsCustom<A, E> & {
-        initialData: A | InitialDataFunction<A>
-      },
-    ) => useSafeSuspenseQuery(client.GetHelloWorld, arg, options),
-
-    // TODO: make a curry version of `useAndHandleMutation`, so we can just `useAndHandleMutation(client.SetState)`
-    // we should then also share state...
-    // todo: fix types
-    setStateMutation: <
-      Eff extends YieldWrap<Effect.Effect<any, SupportedErrors, never>>,
-      AEff,
-    >(
+  const api = client.SetState
+  const setStateMutation = Object.assign(
+    <Eff extends YieldWrap<Effect.Effect<any, SupportedErrors, never>>, AEff>(
       mapHandler: (
         handler: Effect.Effect<void, SupportedErrors, never>,
         input: Omit<HelloWorldRsc.SetState, Cruft>,
@@ -53,10 +37,68 @@ export const useHelloWorld = () => {
         "mapHandler"
       > & { action?: string },
     ) =>
-      useAndHandleMutation(client.SetState, options?.action ?? "Set State", {
+      useAndHandleMutation(api, options?.action ?? "Set State", {
         mapHandler: Effect.fnUntraced(mapHandler),
         ...options,
       }),
+    {
+      with: <
+        Args extends readonly any[],
+        Eff extends YieldWrap<Effect.Effect<any, SupportedErrors, never>>,
+        AEff,
+      >(
+        mapHandler: (
+          handler: (
+            i: Omit<HelloWorldRsc.SetState, Cruft>,
+          ) => Effect.Effect<void, SupportedErrors, never>,
+        ) => (...args: Args) => Generator<Eff, AEff, never>,
+        options?: Omit<
+          MutationOptions<
+            void,
+            UnauthorizedError,
+            never,
+            void,
+            UnauthorizedError,
+            never,
+            Omit<SetState, Cruft>
+          >,
+          "mapHandler"
+        > & { action?: string },
+      ) => {
+        const mut = useAndHandleMutation(
+          api,
+          options?.action ?? "Set State",
+          options,
+        )
+        // todo; write custom useAndHandleMutation stuff.. useUnsafeMutation, etc.
+        // so that we can share the span, etc.
+        // todo: the span should be set with the stacktrace pointing towards where this function was called from!
+        return [
+          mut[0],
+          Object.assign(
+            (...args: Args) => Effect.fn(api.name)(mapHandler(mut[1]))(...args),
+            { action: mut[1].action },
+          ),
+        ] as const
+      },
+    },
+  )
+
+  return {
+    // TODO: make a curry version of `useSafeSuspenseQuery` so we can just `useSafeSuspenseQuery(client.GetHelloWorld)`
+    getHelloWorld: (
+      arg:
+        | Omit<HelloWorldRsc.GetHelloWorld, Cruft>
+        | WatchSource<Omit<HelloWorldRsc.GetHelloWorld, Cruft>>,
+      options?: QueryObserverOptionsCustom<A, E> & {
+        initialData: A | InitialDataFunction<A>
+      },
+    ) => useSafeSuspenseQuery(client.GetHelloWorld, arg, options),
+
+    // TODO: make a curry version of `useAndHandleMutation`, so we can just `useAndHandleMutation(client.SetState)`
+    // we should then also share state...
+    // todo: fix types
+    setStateMutation,
   }
 }
 

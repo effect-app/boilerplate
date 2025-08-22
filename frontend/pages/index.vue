@@ -54,22 +54,27 @@ const { getHelloWorld, setStateMutation } = useHelloWorld()
 const [result] = await run(getHelloWorld(req))
 
 // todo; we should use the variant that returns an action Result..
-const [setStateResult, setState] = setStateMutation(function* (mutate, input) {
-  yield* Effect.log("before mutate", {
-    input,
-    span: yield* Effect.currentSpan.pipe(Effect.orDie),
-  })
-  yield* confirmOrInterrupt()
+const [setStateResult, setState] = setStateMutation.with(
+  mutate =>
+    function* () {
+      const input = { state: new Date().toISOString() }
 
-  // simulate slow action to reveal loading/disabled states.
-  yield* Effect.sleep(2 * 1000)
-  const r = yield* mutate // TODO: expect input, so we can add/customise it?
+      yield* Effect.log("before mutate", {
+        input,
+        span: yield* Effect.currentSpan.pipe(Effect.orDie),
+      })
+      yield* confirmOrInterrupt()
 
-  yield* Effect.log("after mutate", { r, input })
-  return r
-})
+      // simulate slow action to reveal loading/disabled states.
+      yield* Effect.sleep(2 * 1000)
+      const r = yield* mutate(input)
 
-const onSetState = () => run(setState({ state: new Date().toISOString() }))
+      yield* Effect.log("after mutate", { r, input })
+      return r
+    },
+)
+
+const onSetState = () => run(setState())
 
 // onMounted(() => {
 //   setInterval(() => {
