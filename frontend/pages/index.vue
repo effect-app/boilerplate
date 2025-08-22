@@ -69,6 +69,8 @@ const [setStateResult, setState] = setStateMutation(function* (mutate, input) {
   return r
 })
 
+const onSetState = () => run(setState({ state: new Date().toISOString() }))
+
 // onMounted(() => {
 //   setInterval(() => {
 //     // Fallback to the default focus check
@@ -111,7 +113,7 @@ onMounted(() => {
       <v-btn
         :disabled="setStateResult.loading"
         :loading="setStateResult.loading"
-        @click="run(setState({ state: new Date().toISOString() }))"
+        @click="onSetState"
       >
         {{ setState.action }}
       </v-btn>
@@ -121,7 +123,7 @@ onMounted(() => {
         :loading="setStateResult.loading"
         :title="setState.action"
         :icon="mdiSetAll"
-        @click="run(setState({ state: new Date().toISOString() }))"
+        @click="onSetState"
       ></v-btn>
     </v-form>
 
