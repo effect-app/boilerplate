@@ -6,7 +6,7 @@ import type {
   WatchSource,
 } from "@effect-app/vue"
 import type { InitialDataFunction } from "@tanstack/vue-query"
-import { Effect, type Request, type Schema } from "effect-app"
+import { Effect, type S, type Request, type Schema } from "effect-app"
 import type { SupportedErrors, UnauthorizedError } from "effect-app/client"
 import type { YieldWrap } from "effect/dist/dts/Utils"
 
@@ -15,8 +15,8 @@ export const useHelloWorld = () => {
   const client = clientFor(HelloWorldRsc)
 
   // temp
-  type A = Schema.Type<(typeof HelloWorldRsc.GetHelloWorld)["success"]>
-  type E = Schema.Type<(typeof HelloWorldRsc.GetHelloWorld)["failure"]>
+  type A = S.Schema.Type<(typeof HelloWorldRsc.GetHelloWorld)["success"]>
+  type E = S.Schema.Type<(typeof HelloWorldRsc.GetHelloWorld)["failure"]>
 
   return {
     // TODO: make a curry version of `useSafeSuspenseQuery` so we can just `useSafeSuspenseQuery(client.GetHelloWorld)`
@@ -33,11 +33,11 @@ export const useHelloWorld = () => {
     // we should then also share state...
     // todo: fix types
     setStateMutation: <
-      Eff extends YieldWrap<Effect<any, SupportedErrors, never>>,
+      Eff extends YieldWrap<Effect.Effect<any, SupportedErrors, never>>,
       AEff,
     >(
       mapHandler: (
-        handler: Effect<void, SupportedErrors, never>,
+        handler: Effect.Effect<void, SupportedErrors, never>,
         input: Omit<HelloWorldRsc.SetState, Cruft>,
       ) => Generator<Eff, AEff, never>,
       options?: Omit<
