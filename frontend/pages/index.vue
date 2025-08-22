@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { HelloWorldRsc } from "#resources"
 import { buildFormFromSchema } from "@effect-app/vue/form"
 import { Effect, S } from "effect-app"
 import { mdiSetAll } from "@mdi/js"
@@ -51,34 +50,24 @@ const req = ref(makeReq())
 //   run(setState(input), "Set State" /* TODO i18n */) // this now also takes care of error handling/reporting
 
 // todo; check how it would work with Atom
-
-const helloWorldClient = clientFor(HelloWorldRsc)
-const [result] = await run(
-  useSafeSuspenseQuery(helloWorldClient.GetHelloWorld, req),
-)
+const { getHelloWorld, setStateMutation } = useHelloWorld()
+const [result] = await run(getHelloWorld(req))
 
 // todo; we should use the variant that returns an action Result..
-const [setStateResult, setState] = useAndHandleMutation(
-  helloWorldClient.SetState,
-  "Set State",
-  {
-    mapHandler: (mutate, input) =>
-      Effect.gen(function* () {
-        yield* Effect.log("before mutate", {
-          input,
-          span: yield* Effect.currentSpan.pipe(Effect.orDie),
-        })
-        yield* confirmOrInterrupt()
+const [setStateResult, setState] = setStateMutation(function* (mutate, input) {
+  yield* Effect.log("before mutate", {
+    input,
+    span: yield* Effect.currentSpan.pipe(Effect.orDie),
+  })
+  yield* confirmOrInterrupt()
 
-        // simulate slow action to reveal loading/disabled states.
-        yield* Effect.sleep(2 * 1000)
-        const r = yield* mutate // TODO: expect input, so we can add/customise it?
+  // simulate slow action to reveal loading/disabled states.
+  yield* Effect.sleep(2 * 1000)
+  const r = yield* mutate // TODO: expect input, so we can add/customise it?
 
-        yield* Effect.log("after mutate", { r, input })
-        return r
-      }),
-  },
-)
+  yield* Effect.log("after mutate", { r, input })
+  return r
+})
 
 // onMounted(() => {
 //   setInterval(() => {
