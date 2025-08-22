@@ -104,7 +104,7 @@ const ConfigureTracer = Layer.effectDiscard(
   )
 )
 export const makeHttpServer = <E, R>(
-  rpcRouter: Layer<never, E, R>
+  rpcRouter: Layer.Layer<never, E, R>
 ) =>
   HttpLayerRouter.serve(
     logServer.pipe(

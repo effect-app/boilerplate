@@ -17,10 +17,10 @@ export const OperationsClient = Effect.gen(function*() {
   const opsClient = yield* clientFor({ FindOperation, meta })
 
   function refreshAndWaitAForOperation<R2, E2, A2>(
-    refresh: Effect<A2, E2, R2>,
+    refresh: Effect.Effect<A2, E2, R2>,
     cb?: (op: Operation) => void
   ) {
-    return <R, E>(act: Effect<OperationId, E, R>) =>
+    return <R, E>(act: Effect.Effect<OperationId, E, R>) =>
       Effect.tap(
         waitForOperation(
           Effect.tap(act, refresh),
@@ -31,8 +31,8 @@ export const OperationsClient = Effect.gen(function*() {
   }
 
   function refreshAndWaitAForOperation_<R2, E2, A2, R, E>(
-    act: Effect<OperationId, E, R>,
-    refresh: Effect<A2, E2, R2>,
+    act: Effect.Effect<OperationId, E, R>,
+    refresh: Effect.Effect<A2, E2, R2>,
     cb?: (op: Operation) => void
   ) {
     return Effect.tap(
@@ -44,28 +44,28 @@ export const OperationsClient = Effect.gen(function*() {
     )
   }
 
-  function refreshAndWaitForOperation<R2, E2, A2>(refresh: Effect<A2, E2, R2>, cb?: (op: Operation) => void) {
-    return <Req, R, E>(act: (req: Req) => Effect<OperationId, E, R>) => (req: Req) =>
+  function refreshAndWaitForOperation<R2, E2, A2>(refresh: Effect.Effect<A2, E2, R2>, cb?: (op: Operation) => void) {
+    return <Req, R, E>(act: (req: Req) => Effect.Effect<OperationId, E, R>) => (req: Req) =>
       refreshAndWaitAForOperation_(act(req), refresh, cb)
   }
 
   function refreshAndWaitForOperation_<Req, R2, E2, A2, R, E>(
-    act: (req: Req) => Effect<OperationId, E, R>,
-    refresh: Effect<A2, E2, R2>,
+    act: (req: Req) => Effect.Effect<OperationId, E, R>,
+    refresh: Effect.Effect<A2, E2, R2>,
     cb?: (op: Operation) => void
   ) {
     return (req: Req) => refreshAndWaitAForOperation_(act(req), refresh, cb)
   }
 
   function waitForOperation<R, E>(
-    self: Effect<OperationId, E, R>,
+    self: Effect.Effect<OperationId, E, R>,
     cb?: (op: Operation) => void
   ) {
     return Effect.andThen(self, (r) => _waitForOperation(r, cb))
   }
 
   function waitForOperation_(cb?: (op: Operation) => void) {
-    return <Req, R, E>(self: (req: Req) => Effect<OperationId, E, R>) => (req: Req) =>
+    return <Req, R, E>(self: (req: Req) => Effect.Effect<OperationId, E, R>) => (req: Req) =>
       Effect.andThen(self(req), (r) => _waitForOperation(r, cb))
   }
 

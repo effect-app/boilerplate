@@ -120,7 +120,7 @@ const runMainPlatform: RunMain = dual((args) => Effect.isEffect(args[0]), (effec
   }
 })
 
-export function runMain<A, E>(eff: Effect<A, E, never>, filterReport?: (cause: Cause.Cause<E>) => boolean) {
+export function runMain<A, E>(eff: Effect.Effect<A, E, never>, filterReport?: (cause: Cause.Cause<E>) => boolean) {
   return runMainPlatform(
     eff
       .pipe(

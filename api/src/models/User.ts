@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { Context, Effect, Equivalence, pipe, S, type Schema } from "effect-app"
+import { Context, Effect, Equivalence, pipe, S } from "effect-app"
 import { fakerArb } from "effect-app/faker"
 import { UserProfileId } from "effect-app/ids"
 import { AST } from "effect-app/Schema"
@@ -14,10 +14,10 @@ export const FirstName = S
     S.withDefaultMake
   )
 
-export type FirstName = Schema.Type<typeof FirstName>
+export type FirstName = typeof FirstName.Type
 
 export const DisplayName = FirstName
-export type DisplayName = Schema.Type<typeof DisplayName>
+export type DisplayName = typeof DisplayName.Type
 
 S.Array(S.NonEmptyString255).pipe(
   S.annotations({ [AST.ArbitraryAnnotationId]: (): A.LazyArbitrary<Array<string>> => (fc) => fc.tuple() })
@@ -32,7 +32,7 @@ export const LastName = S
     S.withDefaultMake
   )
 
-export type LastName = Schema.Type<typeof LastName>
+export type LastName = typeof LastName.Type
 
 export class FullName extends S.ExtendedClass<FullName, FullName.Encoded>("FullName")({
   firstName: FirstName,
@@ -59,10 +59,10 @@ export const UserId = UserProfileId
 export type UserId = UserProfileId
 
 export const Role = S.withDefaultMake(S.Literal("manager", "user"))
-export type Role = Schema.Type<typeof Role>
+export type Role = S.Schema.Type<typeof Role>
 
 export class UserFromIdResolver
-  extends Context.TagId("UserFromId")<UserFromIdResolver, { get: (userId: UserId) => Effect<User> }>()
+  extends Context.TagId("UserFromId")<UserFromIdResolver, { get: (userId: UserId) => Effect.Effect<User> }>()
 {}
 
 export class User extends S.ExtendedClass<User, User.Encoded>("User")({
@@ -78,7 +78,7 @@ export class User extends S.ExtendedClass<User, User.Encoded>("User")({
   static readonly resolver = UserFromIdResolver
 }
 
-export const UserFromId: Schema<User, string, UserFromIdResolver> = S.transformOrFail(
+export const UserFromId: S.Schema<User, string, UserFromIdResolver> = S.transformOrFail(
   UserId,
   S.typeSchema(User),
   { decode: User.resolver.get, encode: (u) => Effect.succeed(u.id) }

@@ -27,7 +27,7 @@ export const useRouteParamsOption = <NER extends Record<string, S.Schema<any>>>(
     },
     {} as Record<keyof Result, unknown>,
   ) as unknown as {
-    [K in keyof Result]: Result[K] extends Option<infer A>
+    [K in keyof Result]: Result[K] extends Option.Option<infer A>
       ? A | undefined
       : never
   }
