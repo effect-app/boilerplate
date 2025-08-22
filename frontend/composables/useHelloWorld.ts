@@ -8,7 +8,7 @@ import type {
 import type { InitialDataFunction } from "@tanstack/vue-query"
 import { Effect, type S, type Request, type Schema } from "effect-app"
 import type { SupportedErrors, UnauthorizedError } from "effect-app/client"
-import type { YieldWrap } from "effect/dist/dts/Utils"
+import type { YieldWrap } from "effect/Utils"
 
 // please note, this is all super verbose atm because we haven't adjusted the query and mutation helpers yet!
 export const useHelloWorld = () => {
