@@ -9,7 +9,7 @@ import type { InitialDataFunction } from "@tanstack/vue-query"
 import { Effect, type S, type Request, type Schema } from "effect-app"
 import type { SupportedErrors, UnauthorizedError } from "effect-app/client"
 import type { YieldWrap } from "effect/Utils"
-import type { useAndHandleMutationResult } from "./client"
+import { useAndHandleMutationResult } from "./client"
 
 // please note, this is all super verbose atm because we haven't adjusted the query and mutation helpers yet!
 export const useHelloWorld = () => {
@@ -48,7 +48,7 @@ export const useHelloWorld = () => {
         Eff extends YieldWrap<Effect.Effect<any, SupportedErrors, never>>,
         AEff,
       >(
-        mapHandler: (
+        _mapHandler: (
           handler: (
             i: Omit<HelloWorldRsc.SetState, Cruft>,
           ) => Effect.Effect<void, SupportedErrors, never>,
@@ -66,30 +66,32 @@ export const useHelloWorld = () => {
           "mapHandler"
         > & { action?: string },
       ) => {
-        const mut = useAndHandleMutationResult(
-          api,
+        // todo: instead of using `mapHandler` before calling useAndHandleMutationResult
+        // we should make a new useAndHandleMutationResult and build it in natively as replacement to `options: { mapHandler }`
+        // as right now we only wrap the api handler, and not also the query invalidating. while if you want to navigate, you should invalidate queries...
+        // although, perhaps invalidating queries simply should be an async operation?
+        const [result, mutate] = useAndHandleMutationResult(
+          mapHandler(api, handler => Effect.fn(api.name)(_mapHandler(handler))), // todo: the span should be set with the stacktrace pointing towards where this function was called from!
           options?.action ?? "Set State",
           options,
         )
-        // todo; write custom useAndHandleMutationResult stuff.. useUnsafeMutation, etc.
-        // so that we can share the span, etc.
-        // todo: the span should be set with the stacktrace pointing towards where this function was called from!
 
-        const fn = Effect.fn(api.name)(mapHandler(mut[1]))
-        return [
-          mut[0],
-          Object.assign((...args: Args) => fn(...args), {
-            action: mut[1].action,
-            mutate: (...args: Args) => run(fn(...args)),
+        return computed(() =>
+          Object.assign((...args: Args) => mutate(...args), {
+            action: mutate.action,
+            mutate: (...args: Args) => run(mutate(...args)),
+            //}),
+            result: result.value,
+            waiting: result.value.waiting,
           }),
-        ] as const
+        )
       },
     },
   )
 
   return {
     // TODO: make a curry version of `useSafeSuspenseQuery` so we can just `useSafeSuspenseQuery(client.GetHelloWorld)`
-    getHelloWorld: Object.assign(
+    getHelloWorldQuery: Object.assign(
       (
         arg:
           | Omit<HelloWorldRsc.GetHelloWorld, Cruft>
@@ -97,7 +99,12 @@ export const useHelloWorld = () => {
         options?: QueryObserverOptionsCustom<A, E> & {
           initialData: A | InitialDataFunction<A>
         },
-      ) => useSafeSuspenseQuery(client.GetHelloWorld, arg, options),
+      ) =>
+        useSafeSuspenseQuery(client.GetHelloWorld, arg, options).pipe(
+          Effect.map(([result, refresh]) =>
+            computed(() => ({ result: result.value, refresh })),
+          ),
+        ),
       {
         query: (
           arg:
@@ -106,7 +113,14 @@ export const useHelloWorld = () => {
           options?: QueryObserverOptionsCustom<A, E> & {
             initialData: A | InitialDataFunction<A>
           },
-        ) => run(useSafeSuspenseQuery(client.GetHelloWorld, arg, options)),
+        ) =>
+          run(
+            useSafeSuspenseQuery(client.GetHelloWorld, arg, options).pipe(
+              Effect.map(([result, refresh]) =>
+                computed(() => ({ result: result.value, refresh })),
+              ),
+            ),
+          ),
       },
     ),
 
