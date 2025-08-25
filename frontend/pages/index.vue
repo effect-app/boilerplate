@@ -51,9 +51,8 @@ const req = ref(makeReq())
 
 // todo; check how it would work with Atom
 const { getHelloWorld, setStateMutation } = useHelloWorld()
-const [result] = await run(getHelloWorld(req))
+const [result] = await getHelloWorld.query(req)
 
-// todo; we should use the variant that returns an action Result..
 const [setStateResult, setState] = setStateMutation.with(
   mutate =>
     function* () {
@@ -73,8 +72,6 @@ const [setStateResult, setState] = setStateMutation.with(
       return r
     },
 )
-
-const onSetState = () => run(setState())
 
 // onMounted(() => {
 //   setInterval(() => {
@@ -116,19 +113,19 @@ onMounted(() => {
       </template>
 
       <v-btn
-        :disabled="setStateResult.loading"
-        :loading="setStateResult.loading"
-        @click="onSetState"
+        :disabled="setStateResult.waiting"
+        :loading="setStateResult.waiting"
+        @click="setState.mutate"
       >
         {{ setState.action }}
       </v-btn>
       <!-- alt -->
       <v-btn
-        :disabled="setStateResult.loading"
-        :loading="setStateResult.loading"
+        :disabled="setStateResult.waiting"
+        :loading="setStateResult.waiting"
         :title="setState.action"
         :icon="mdiSetAll"
-        @click="onSetState"
+        @click="setState.mutate"
       ></v-btn>
     </v-form>
 
