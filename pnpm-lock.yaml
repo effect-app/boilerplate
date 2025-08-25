@@ -167,8 +167,8 @@ importers:
         specifier: ^0.50.1
         version: 0.50.1
       effect-app:
-        specifier: ^3.1.0
-        version: 3.1.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+        specifier: ^3.2.0
+        version: 3.2.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
       enhanced-resolve:
         specifier: ^5.18.3
         version: 5.18.3
@@ -254,8 +254,8 @@ importers:
         specifier: ^12.28.0
         version: 12.28.0
       '@effect-app/infra':
-        specifier: 3.0.15
-        version: 3.0.15(c260b163de43102f018497a2871fe791)
+        specifier: 3.0.16
+        version: 3.0.16(c260b163de43102f018497a2871fe791)
       '@effect/opentelemetry':
         specifier: 0.56.1
         version: 0.56.1(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(@opentelemetry/api@1.9.0)(@opentelemetry/resources@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-logs@0.203.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-metrics@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-node@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-web@2.0.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.36.0)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
@@ -320,8 +320,8 @@ importers:
         specifier: 3.17.6
         version: 3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)
       effect-app:
-        specifier: ^3.1.0
-        version: 3.1.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+        specifier: ^3.2.0
+        version: 3.2.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -414,8 +414,8 @@ importers:
         specifier: 3.17.6
         version: 3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)
       effect-app:
-        specifier: ^3.1.0
-        version: 3.1.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+        specifier: ^3.2.0
+        version: 3.2.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
     devDependencies:
       '@playwright/test':
         specifier: ~1.54.2
@@ -469,8 +469,8 @@ importers:
   frontend:
     dependencies:
       '@effect-app/vue':
-        specifier: ^2.51.12
-        version: 2.51.12(ef7e67a6745cc26680fd56011803ce82)
+        specifier: ^2.51.14
+        version: 2.51.14(ef7e67a6745cc26680fd56011803ce82)
       '@effect-atom/atom':
         specifier: ^0.1.14
         version: 0.1.14(@effect/experimental@0.54.4(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))(ioredis@5.6.1))(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(@effect/rpc@0.68.3(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
@@ -553,8 +553,8 @@ importers:
         specifier: 3.17.6
         version: 3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)
       effect-app:
-        specifier: ^3.1.0
-        version: 3.1.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+        specifier: ^3.2.0
+        version: 3.2.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
       highcharts:
         specifier: ^12.3.0
         version: 12.3.0
@@ -943,8 +943,8 @@ packages:
     peerDependencies:
       effect: 3.17.6
 
-  '@effect-app/infra@3.0.15':
-    resolution: {integrity: sha512-4AmlkTEsD1qHZJoZ15MaudiXpkFPWCnZggpvtrnYUOrZ0rEsvuiiBCGiNOMgy8y+NoW6Ey8PX72xUipeYU94rw==}
+  '@effect-app/infra@3.0.16':
+    resolution: {integrity: sha512-UjUSi5WytDKGsQGRCBJEkM8GbR4IyMBekKxD07O3ApS1YBwx5gApDRaA/7Lop6p7+XnTyzaRYD8oH8jTcy2f0w==}
     peerDependencies:
       '@azure/cosmos': ^4.5.0
       '@azure/service-bus': ^7.9.5
@@ -963,8 +963,8 @@ packages:
       redis: ^3.1.2
       redlock: ^4.2.0
 
-  '@effect-app/vue@2.51.12':
-    resolution: {integrity: sha512-pTP1BwsoePOdYEnQd1L1J/QiCX8Evh3kPntB9SZpaLF7jYXp6MtDesaC7t6nwEAQGGjNS82HrbHmWPNfzTLu0w==}
+  '@effect-app/vue@2.51.14':
+    resolution: {integrity: sha512-65/onPLg+q4h2ivyX3J4H8EXu+oOuV0APThEivjKgzbNF9LTskV6l/eUYShnJOYP2HL74JILO1R+gNDtkroVng==}
     peerDependencies:
       '@effect-atom/atom': ^0.1.4
       '@effect-atom/atom-vue': ^0.1.3
@@ -4706,8 +4706,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  effect-app@3.1.0:
-    resolution: {integrity: sha512-VQ8fNxjA1MA200j94XkKz0ASwuEnTejUNj5zassfNyjax9VOAFcnnf7MYKPFJN5ej5tO4VJ0jW0QNutNtKg5KQ==}
+  effect-app@3.2.0:
+    resolution: {integrity: sha512-TwtgzuBz0/KyX59DHTs7tllUlaA4BpDYH1msB2fDykUhPJRTkh7j6H6flYv2h8UT4vrhgyoTqMAzvBLK4wSKbQ==}
     peerDependencies:
       '@effect/platform': 0.90.0
       effect: 3.17.6
@@ -9296,7 +9296,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@effect-app/infra@3.0.15(c260b163de43102f018497a2871fe791)':
+  '@effect-app/infra@3.0.16(c260b163de43102f018497a2871fe791)':
     dependencies:
       '@azure/cosmos': 4.5.0
       '@azure/service-bus': 7.9.5
@@ -9313,7 +9313,7 @@ snapshots:
       change-case: 5.4.4
       cross-fetch: 4.1.0
       effect: 3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)
-      effect-app: 3.1.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+      effect-app: 3.2.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
       express: 5.1.0
       express-oauth2-jwt-bearer: 1.6.1
       fast-check: 4.2.0
@@ -9327,7 +9327,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@effect-app/vue@2.51.12(ef7e67a6745cc26680fd56011803ce82)':
+  '@effect-app/vue@2.51.14(ef7e67a6745cc26680fd56011803ce82)':
     dependencies:
       '@effect-atom/atom': 0.1.14(@effect/experimental@0.54.4(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))(ioredis@5.6.1))(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(@effect/rpc@0.68.3(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
       '@effect-atom/atom-vue': 0.1.15(14abb0e8339de443a3ae4d4faf6f40c2)
@@ -9338,7 +9338,7 @@ snapshots:
       '@tanstack/vue-query': 5.83.1(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
       '@vueuse/core': 13.6.0(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
       effect: 3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)
-      effect-app: 3.1.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+      effect-app: 3.2.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
       query-string: 9.2.2
       vue: 3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))
     transitivePeerDependencies:
@@ -13450,7 +13450,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  effect-app@3.1.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)):
+  effect-app@3.2.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)):
     dependencies:
       '@effect/platform': 0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
       '@effect/rpc': 0.68.3(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
