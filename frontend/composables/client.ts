@@ -36,6 +36,7 @@ export const {
   buildFormFromSchema,
   makeUseAndHandleMutation,
   useAndHandleMutation,
+  useAndHandleMutationResult,
   useSafeMutation,
   useSafeMutationWithState,
   useSafeQuery,

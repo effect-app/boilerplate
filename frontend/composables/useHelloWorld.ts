@@ -9,6 +9,7 @@ import type { InitialDataFunction } from "@tanstack/vue-query"
 import { Effect, type S, type Request, type Schema } from "effect-app"
 import type { SupportedErrors, UnauthorizedError } from "effect-app/client"
 import type { YieldWrap } from "effect/Utils"
+import type { useAndHandleMutationResult } from "./client"
 
 // please note, this is all super verbose atm because we haven't adjusted the query and mutation helpers yet!
 export const useHelloWorld = () => {
@@ -37,7 +38,7 @@ export const useHelloWorld = () => {
         "mapHandler"
       > & { action?: string },
     ) =>
-      useAndHandleMutation(api, options?.action ?? "Set State", {
+      useAndHandleMutationResult(api, options?.action ?? "Set State", {
         mapHandler: Effect.fnUntraced(mapHandler),
         ...options,
       }),
@@ -65,20 +66,22 @@ export const useHelloWorld = () => {
           "mapHandler"
         > & { action?: string },
       ) => {
-        const mut = useAndHandleMutation(
+        const mut = useAndHandleMutationResult(
           api,
           options?.action ?? "Set State",
           options,
         )
-        // todo; write custom useAndHandleMutation stuff.. useUnsafeMutation, etc.
+        // todo; write custom useAndHandleMutationResult stuff.. useUnsafeMutation, etc.
         // so that we can share the span, etc.
         // todo: the span should be set with the stacktrace pointing towards where this function was called from!
+
+        const fn = Effect.fn(api.name)(mapHandler(mut[1]))
         return [
           mut[0],
-          Object.assign(
-            (...args: Args) => Effect.fn(api.name)(mapHandler(mut[1]))(...args),
-            { action: mut[1].action },
-          ),
+          Object.assign((...args: Args) => fn(...args), {
+            action: mut[1].action,
+            mutate: (...args: Args) => run(fn(...args)),
+          }),
         ] as const
       },
     },
@@ -86,16 +89,28 @@ export const useHelloWorld = () => {
 
   return {
     // TODO: make a curry version of `useSafeSuspenseQuery` so we can just `useSafeSuspenseQuery(client.GetHelloWorld)`
-    getHelloWorld: (
-      arg:
-        | Omit<HelloWorldRsc.GetHelloWorld, Cruft>
-        | WatchSource<Omit<HelloWorldRsc.GetHelloWorld, Cruft>>,
-      options?: QueryObserverOptionsCustom<A, E> & {
-        initialData: A | InitialDataFunction<A>
+    getHelloWorld: Object.assign(
+      (
+        arg:
+          | Omit<HelloWorldRsc.GetHelloWorld, Cruft>
+          | WatchSource<Omit<HelloWorldRsc.GetHelloWorld, Cruft>>,
+        options?: QueryObserverOptionsCustom<A, E> & {
+          initialData: A | InitialDataFunction<A>
+        },
+      ) => useSafeSuspenseQuery(client.GetHelloWorld, arg, options),
+      {
+        query: (
+          arg:
+            | Omit<HelloWorldRsc.GetHelloWorld, Cruft>
+            | WatchSource<Omit<HelloWorldRsc.GetHelloWorld, Cruft>>,
+          options?: QueryObserverOptionsCustom<A, E> & {
+            initialData: A | InitialDataFunction<A>
+          },
+        ) => run(useSafeSuspenseQuery(client.GetHelloWorld, arg, options)),
       },
-    ) => useSafeSuspenseQuery(client.GetHelloWorld, arg, options),
+    ),
 
-    // TODO: make a curry version of `useAndHandleMutation`, so we can just `useAndHandleMutation(client.SetState)`
+    // TODO: make a curry version of `useAndHandleMutationResult`, so we can just `useAndHandleMutationResult(client.SetState)`
     // we should then also share state...
     // todo: fix types
     setStateMutation,
