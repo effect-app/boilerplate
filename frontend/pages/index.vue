@@ -50,10 +50,10 @@ const req = ref(makeReq())
 //   run(setState(input), "Set State" /* TODO i18n */) // this now also takes care of error handling/reporting
 
 // todo; check how it would work with Atom
-const { getHelloWorld, setStateMutation } = useHelloWorld()
-const [result] = await getHelloWorld.query(req)
+const { getHelloWorldQuery, setStateMutation } = useHelloWorld()
+const helloWorld = await getHelloWorldQuery.query(req)
 
-const [setStateResult, setState] = setStateMutation.with(
+const setState = setStateMutation.with(
   mutate =>
     function* () {
       const input = { state: new Date().toISOString() }
@@ -113,23 +113,23 @@ onMounted(() => {
       </template>
 
       <v-btn
-        :disabled="setStateResult.waiting"
-        :loading="setStateResult.waiting"
+        :disabled="setState.waiting"
+        :loading="setState.waiting"
         @click="setState.mutate"
       >
         {{ setState.action }}
       </v-btn>
       <!-- alt -->
       <v-btn
-        :disabled="setStateResult.waiting"
-        :loading="setStateResult.waiting"
+        :disabled="setState.waiting"
+        :loading="setState.waiting"
         :title="setState.action"
         :icon="mdiSetAll"
         @click="setState.mutate"
       ></v-btn>
     </v-form>
 
-    <QueryResult v-slot="{ latest, refreshing }" :result="result">
+    <QueryResult v-slot="{ latest, refreshing }" :result="helloWorld.result">
       <Delayed v-if="refreshing"><v-progress-circular /></Delayed>
       <div>
         <pre v-html="JSON.stringify(latest, undefined, 2)" />
