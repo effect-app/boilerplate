@@ -26,6 +26,9 @@ export const run = <A, E>(
     | undefined,
 ) => runtime.runPromise(effect, options)
 
+export const runFork = <A, E>(effect: Effect.Effect<A, E, RT>) =>
+  runtime.runFork(effect)
+
 export const runSync = <A, E>(effect: Effect.Effect<A, E, RT>) =>
   runtime.runSync(effect)
 

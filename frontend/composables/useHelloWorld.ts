@@ -9,7 +9,7 @@ import type { InitialDataFunction } from "@tanstack/vue-query"
 import { Effect, type S, type Request, type Schema } from "effect-app"
 import type { SupportedErrors, UnauthorizedError } from "effect-app/client"
 import type { YieldWrap } from "effect/Utils"
-import { useAndHandleMutationResult } from "./client"
+import { runFork, useAndHandleMutationResult } from "./client"
 
 // please note, this is all super verbose atm because we haven't adjusted the query and mutation helpers yet!
 export const useHelloWorld = () => {
@@ -79,7 +79,9 @@ export const useHelloWorld = () => {
         return computed(() =>
           Object.assign((...args: Args) => mutate(...args), {
             action: mutate.action,
-            mutate: (...args: Args) => run(mutate(...args)),
+            mutate: (...args: Args) => {
+              runFork(mutate(...args)) // it's good that error handling is done by `useAndHandleMutationResult`
+            }, // like Atom we could add an optional options: { mode: "value" | "promise" | "promiseExit" } changing the return type from `void` to `Promise<A> (with flattenExit - squash throw), or `Promise<Exit<A, E>>`
             //}),
             result: result.value,
             waiting: result.value.waiting,
