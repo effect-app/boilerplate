@@ -20,7 +20,7 @@
         "./src/config.js"
       ],
       "#lib/*": [
-        "./src/lib/.*.js"
+        "./src/lib/*.js"
       ],
       "#services": [
         "./src/services.js"
