@@ -2,6 +2,7 @@
 import { buildFormFromSchema } from "@effect-app/vue/form"
 import { Effect, S } from "effect-app"
 import { mdiSetAll } from "@mdi/js"
+import { Mutation } from "~/composables/useHelloWorld"
 
 class Input extends S.Class<Input>("Input")({
   title: S.NonEmptyString255,
@@ -50,34 +51,46 @@ const req = ref(makeReq())
 //   run(setState(input), "Set State" /* TODO i18n */) // this now also takes care of error handling/reporting
 
 // todo; check how it would work with Atom
+const withToast = useWithToast()
 const { getHelloWorldQuery, setStateMutation } = useHelloWorld()
 const helloWorld = await getHelloWorldQuery.query(req)
 
 // Pros:
 // - more standard effect
-// - "native" apis instead of various mapHandler options
-// - reuses the Action name / span from the API client action
+// - full control
+// - "native" apis instead of various mapHandler options, mutation options to configure or disable toasts etc
+// - composable
 // Cons:
-// - not composable
-// - don't control the toasts / error handling, except perhaps via options
-const setState = setStateMutation.with(
-  mutate =>
-    function* () {
-      const input = { state: new Date().toISOString() }
+// - have to manually assign the action name
+// - have to manually handle the errors and sucesses, loading states etc.
+const setState = Mutation.fn("HelloWorld.SetState")(
+  function* () {
+    const input = { state: new Date().toISOString() }
 
-      yield* Effect.log("before mutate", {
-        input,
-        span: yield* Effect.currentSpan.pipe(Effect.orDie),
-      })
-      yield* confirmOrInterrupt()
+    yield* Effect.log("before mutate", {
+      input,
+      span: yield* Effect.currentSpan.pipe(Effect.orDie),
+    })
+    yield* confirmOrInterrupt()
 
-      // simulate slow action to reveal loading/disabled states.
-      yield* Effect.sleep(2 * 1000)
-      const r = yield* mutate(input)
+    // simulate slow action to reveal loading/disabled states.
+    yield* Effect.sleep(2 * 1000)
+    const r = yield* setStateMutation(input)
 
-      yield* Effect.log("after mutate", { r, input })
-      return r
-    },
+    yield* Effect.log("after mutate", { r, input })
+    return r
+  },
+  // todo; handle errors, retries, etc.
+
+  // these are potentially reusable across 80% of the mutations?
+  // for those we could create a standard helper?
+  withToast({
+    onWaiting: "laden...",
+    onSuccess: "erledigt",
+    onFailure: (
+      optFailure /* is an Option because it can be Die or interrupt too?  */,
+    ) => "fehler",
+  }),
 )
 
 // onMounted(() => {
