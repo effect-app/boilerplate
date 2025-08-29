@@ -53,6 +53,13 @@ const req = ref(makeReq())
 const { getHelloWorldQuery, setStateMutation } = useHelloWorld()
 const helloWorld = await getHelloWorldQuery.query(req)
 
+// Pros:
+// - more standard effect
+// - "native" apis instead of various mapHandler options
+// - reuses the Action name / span from the API client action
+// Cons:
+// - not composable
+// - don't control the toasts / error handling, except perhaps via options
 const setState = setStateMutation.with(
   mutate =>
     function* () {
