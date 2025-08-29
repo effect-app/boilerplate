@@ -53,25 +53,35 @@ const req = ref(makeReq())
 const { getHelloWorldQuery, setStateMutation } = useHelloWorld()
 const helloWorld = await getHelloWorldQuery.query(req)
 
-const setState = setStateMutation.with(
-  mutate =>
-    function* () {
-      const input = { state: new Date().toISOString() }
-
-      yield* Effect.log("before mutate", {
-        input,
-        span: yield* Effect.currentSpan.pipe(Effect.orDie),
+export const Mutation = {
+  fn:
+    (actionName: string) =>
+    (fn, ...args) => {
+      const handler = Effect.fn(actionName)(fn, ...args)
+      const action = t(actionName)
+      const mut = useMutationUnsafe({ handler, action })
+      return Object.assign(flow(mut, runFork), fn, {
+        action,
       })
-      yield* confirmOrInterrupt()
-
-      // simulate slow action to reveal loading/disabled states.
-      yield* Effect.sleep(2 * 1000)
-      const r = yield* mutate(input)
-
-      yield* Effect.log("after mutate", { r, input })
-      return r
     },
-)
+}
+
+const setState = Mutation.fn("HelloWorld.SetState")(function* () {
+  const input = { state: new Date().toISOString() }
+
+  yield* Effect.log("before mutate", {
+    input,
+    span: yield* Effect.currentSpan.pipe(Effect.orDie),
+  })
+  yield* confirmOrInterrupt()
+
+  // simulate slow action to reveal loading/disabled states.
+  yield* Effect.sleep(2 * 1000)
+  const r = yield* setStateMutation(input)
+
+  yield* Effect.log("after mutate", { r, input })
+  return r
+}) // todo; handle errors.
 
 // onMounted(() => {
 //   setInterval(() => {
