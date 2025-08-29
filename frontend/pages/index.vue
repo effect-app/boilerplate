@@ -57,6 +57,9 @@ const helloWorld = await getHelloWorldQuery.query(req)
 
 // Pros:
 // - more standard effect
+// - full control
+// - "native" apis instead of various mapHandler options, mutation options to configure or disable toasts etc
+// - composable
 // Cons:
 // - have to manually assign the action name
 // - have to manually handle the errors and sucesses, loading states etc.
