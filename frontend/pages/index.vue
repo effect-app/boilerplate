@@ -134,6 +134,7 @@ onMounted(() => {
         :icon="mdiSetAll"
         @click="setState.mutate"
       ></v-btn>
+      <!-- TODO: a form example where we get some state from router, from function, and from form -->
     </v-form>
 
     <QueryResult v-slot="{ latest, refreshing }" :result="helloWorld.result">
