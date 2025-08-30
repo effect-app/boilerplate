@@ -10,7 +10,7 @@ import type { NonEmptyString255, Email } from "effect-app/Schema"
 
 const state = S.Struct({
   title: S.NonEmptyString255,
-  name: S.NonEmptyString255,
+  name: S.NonEmptyString2k,
   age: S.NonNegativeInt,
   email: S.Email,
 })
