@@ -472,7 +472,7 @@ importers:
         specifier: ^2.51.14
         version: 2.51.14(ef7e67a6745cc26680fd56011803ce82)
       '@effect-app/vue-components':
-        specifier: ^0.15.8
+        specifier: ^0.15.5
         version: 0.15.8(5206c2802d519ef3329e7a0688c322f3)
       '@effect-atom/atom':
         specifier: ^0.1.14
