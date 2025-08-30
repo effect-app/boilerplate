@@ -35,6 +35,10 @@ const form = useOmegaForm(state, {
   },
 })
 
+const onReset = () => {
+  form.reset()
+}
+
 const makeReq = () => ({
   echo: "Echo me at: " + new Date().getTime(),
 })
@@ -70,6 +74,7 @@ onMounted(() => {
       <form.Input name="age" label="age" />
       <form.Input name="email" label="email" />
       <v-btn type="submit">Submit</v-btn>
+      <v-btn type="reset" @click="onReset">Clear</v-btn>
       <OmegaErrors />
     </OmegaForm>
 
