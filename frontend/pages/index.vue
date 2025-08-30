@@ -36,6 +36,12 @@ const form = useOmegaForm(state, {
     await Promise.resolve(
       confirm("submitting: " + JSON.stringify(trimmedValue)),
     )
+    form.reset({
+      title: "",
+      name: "",
+      age: 0,
+      email: "",
+    })
   },
 })
 
