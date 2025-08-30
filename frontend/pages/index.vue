@@ -32,12 +32,6 @@ const form = useOmegaForm(state, {
     await Promise.resolve(
       confirm("submitting: " + JSON.stringify(trimmedValue)),
     )
-    form.reset({
-      title: "",
-      name: "",
-      age: 0,
-      email: "",
-    })
   },
 })
 
@@ -70,10 +64,11 @@ onMounted(() => {
   Hi world!
   <div>
     <OmegaForm :form="form" :subscribe="['isDirty', 'isSubmitting']">
-      <template v-for="(field, name) in form.Field" :key="name">
-        <!-- TODO: field.type text, or via length, or is multiLine -->
-        <form.Input :name="name" :label="name" :field="field" />
-      </template>
+      <!-- TODO: field.type text, or via length, or is multiLine -->
+      <form.Input name="title" label="title" />
+      <form.Input name="name" label="name" />
+      <form.Input name="age" label="age" />
+      <form.Input name="email" label="email" />
       <v-btn type="submit">Submit</v-btn>
       <OmegaErrors />
 
