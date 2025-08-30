@@ -71,13 +71,13 @@ onMounted(() => {
       <form.Input name="email" label="email" />
       <v-btn type="submit">Submit</v-btn>
       <OmegaErrors />
-
-      <QueryResult v-slot="{ latest, refreshing }" :result="result">
-        <Delayed v-if="refreshing"><v-progress-circular /></Delayed>
-        <div>
-          <pre v-html="JSON.stringify(latest, undefined, 2)" />
-        </div>
-      </QueryResult>
     </OmegaForm>
+
+    <QueryResult v-slot="{ latest, refreshing }" :result="result">
+      <Delayed v-if="refreshing"><v-progress-circular /></Delayed>
+      <div>
+        <pre v-html="JSON.stringify(latest, undefined, 2)" />
+      </div>
+    </QueryResult>
   </div>
 </template>
