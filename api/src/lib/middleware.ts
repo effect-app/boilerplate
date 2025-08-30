@@ -6,7 +6,7 @@ import z from "zlib"
 
 export * from "@effect-app/infra/api/middlewares"
 
-// codegen:start {preset: barrel, includedpmidd: ./middleware/*.ts}
+// codegen:start {preset: barrel, include: ./middleware/*.ts}
 export * from "./middleware/events.js"
 // codegen:end
 
