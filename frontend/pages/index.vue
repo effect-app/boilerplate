@@ -74,11 +74,11 @@ onMounted(() => {
   Hi world!
   <div>
     <OmegaForm :form="form" :subscribe="['isDirty', 'isSubmitting']">
-      <template v-for="(field, name) in form.fields" :key="name">
+      <template v-for="(field, name) in form.Field" :key="name">
         <!-- TODO: field.type text, or via length, or is multiLine -->
         <form.Input :name="name" :label="name" :field="field" />
       </template>
-      <form.SubmitButton label="Submit" />
+      <v-btn type="submit">Submit</v-btn>
       <OmegaErrors />
 
       <QueryResult v-slot="{ latest, refreshing }" :result="result">
