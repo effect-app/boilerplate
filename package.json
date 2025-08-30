@@ -67,18 +67,13 @@
     "@opentelemetry/sdk-trace-web": "$@opentelemetry/sdk-trace-web",
     "@opentelemetry/semantic-conventions": "$@opentelemetry/semantic-conventions",
     "date-fns": "$date-fns",
-    "effect": "file:../../effect-app/libs/node_modules/effect",
+    "effect": "$effect",
     "@effect/experimental": "$@effect/experimental",
     "@effect/opentelemetry": "$@effect/opentelemetry",
-    "@effect/platform": "file:../../effect-app/libs/node_modules/@effect/platform",
-    "@effect/platform-node": "file:../../effect-app/libs/node_modules/@effect/platform-node",
+    "@effect/platform": "$@effect/platform",
+    "@effect/platform-node": "$@effect/platform-node",
     "fast-check": "$fast-check",
-    "vue": "$vue",
-    "@effect-app/eslint-codegen-model": "file:../../effect-app/libs/packages/eslint-codegen-model",
-    "effect-app": "file:../../effect-app/libs/packages/effect-app",
-    "@effect-app/infra": "file:../../effect-app/libs/packages/infra",
-    "@effect-app/vue": "file:../../effect-app/libs/packages/vue",
-    "@effect-app/vue-components": "file:../../effect-app/libs/packages/vue-components"
+    "vue": "$vue"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
