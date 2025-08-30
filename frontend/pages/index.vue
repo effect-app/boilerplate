@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { HelloWorldRsc } from "#resources"
-import { buildFormFromSchema } from "@effect-app/vue/form"
+import {
+  OmegaForm,
+  OmegaErrors,
+  useOmegaForm,
+} from "@effect-app/vue-components"
 import { S } from "effect-app"
 
 class Input extends S.Class<Input>("Input")({
@@ -17,7 +21,11 @@ const state = ref<typeof Input.Encoded>({
   email: "",
 })
 
-const form = buildFormFromSchema(Input, state, v =>
+// const form = buildFormFromSchema(Input, state, v =>
+//   Promise.resolve(confirm("submitting: " + JSON.stringify(v))),
+// )
+
+const form = useOmegaForm(Input, state, v =>
   Promise.resolve(confirm("submitting: " + JSON.stringify(v))),
 )
 
@@ -48,18 +56,28 @@ onMounted(() => {
 
 <template>
   <div>
+    <OmegaForm :form="form" :subscribe="['isDirty', 'isSubmitting']">
+      <form.Input name="title" label="Title" />
+      <form.Input name="name" label="Name" />
+      <form.Input name="age" label="Age" />
+      <form.Input name="email" label="Email" />
+      <form.SubmitButton label="Submit" />
+      <OmegaErrors />
+    </OmegaForm>
+  </div>
+  <!-- <div>
     Hi world!
     <v-form @submit.prevent="form.submit">
       <template v-for="(field, name) in form.fields" :key="name">
-        <!-- TODO: field.type text, or via length, or is multiLine -->
-        <!-- <TextArea
+         TODO: field.type text, or via length, or is multiLine
+        <TextArea
           v-if="field.type === 'text' && name === 'name'"
           rows="2"
           :label="name"
           placeholder="name, or company and next line: name"
           v-model="state[name]"
           :field="field"
-        /> -->
+        />
         <TextField
           v-model="state[name]"
           :label="name"
@@ -75,5 +93,5 @@ onMounted(() => {
         <pre v-html="JSON.stringify(latest, undefined, 2)" />
       </div>
     </QueryResult>
-  </div>
+  </div> -->
 </template>
