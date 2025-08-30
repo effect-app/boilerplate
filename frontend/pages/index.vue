@@ -1,33 +1,43 @@
 <script setup lang="ts">
 import { HelloWorldRsc } from "#resources"
 import {
+  useOmegaForm,
   OmegaForm,
   OmegaErrors,
-  useOmegaForm,
 } from "@effect-app/vue-components"
 import { S } from "effect-app"
+import type { NonEmptyString255, Email } from "effect-app/Schema"
 
-class Input extends S.Class<Input>("Input")({
+const state = S.Struct({
   title: S.NonEmptyString255,
-  name: S.NonEmptyString2k,
+  name: S.NonEmptyString255,
   age: S.NonNegativeInt,
   email: S.Email,
-}) {}
-
-const state = ref<typeof Input.Encoded>({
-  title: "",
-  name: "",
-  age: 0,
-  email: "",
 })
 
 // const form = buildFormFromSchema(Input, state, v =>
 //   Promise.resolve(confirm("submitting: " + JSON.stringify(v))),
 // )
 
-const form = useOmegaForm(Input, state, v =>
-  Promise.resolve(confirm("submitting: " + JSON.stringify(v))),
-)
+const form = useOmegaForm(state, {
+  defaultValues: {
+    title: "",
+    name: "",
+    age: 0,
+    email: "",
+  },
+  onSubmit: async ({ value }: { value: typeof state.Encoded }) => {
+    const trimmedValue = {
+      title: value.title.trim() as NonEmptyString255,
+      name: value.name.trim() as NonEmptyString255,
+      age: value.age,
+      email: value.email.trim() as Email,
+    }
+    await Promise.resolve(
+      confirm("submitting: " + JSON.stringify(trimmedValue)),
+    )
+  },
+})
 
 const makeReq = () => ({
   echo: "Echo me at: " + new Date().getTime(),
@@ -55,43 +65,22 @@ onMounted(() => {
 </script>
 
 <template>
+  Hi world!
   <div>
     <OmegaForm :form="form" :subscribe="['isDirty', 'isSubmitting']">
-      <form.Input name="title" label="Title" />
-      <form.Input name="name" label="Name" />
-      <form.Input name="age" label="Age" />
-      <form.Input name="email" label="Email" />
+      <template v-for="(field, name) in form.fields" :key="name">
+        <!-- TODO: field.type text, or via length, or is multiLine -->
+        <form.Input :name="name" :label="name" :field="field" />
+      </template>
       <form.SubmitButton label="Submit" />
       <OmegaErrors />
+
+      <QueryResult v-slot="{ latest, refreshing }" :result="result">
+        <Delayed v-if="refreshing"><v-progress-circular /></Delayed>
+        <div>
+          <pre v-html="JSON.stringify(latest, undefined, 2)" />
+        </div>
+      </QueryResult>
     </OmegaForm>
   </div>
-  <!-- <div>
-    Hi world!
-    <v-form @submit.prevent="form.submit">
-      <template v-for="(field, name) in form.fields" :key="name">
-         TODO: field.type text, or via length, or is multiLine
-        <TextArea
-          v-if="field.type === 'text' && name === 'name'"
-          rows="2"
-          :label="name"
-          placeholder="name, or company and next line: name"
-          v-model="state[name]"
-          :field="field"
-        />
-        <TextField
-          v-model="state[name]"
-          :label="name"
-          :placeholder="name"
-          :field="field"
-        />
-      </template>
-    </v-form>
-
-    <QueryResult v-slot="{ latest, refreshing }" :result="result">
-      <Delayed v-if="refreshing"><v-progress-circular /></Delayed>
-      <div>
-        <pre v-html="JSON.stringify(latest, undefined, 2)" />
-      </div>
-    </QueryResult>
-  </div> -->
 </template>
