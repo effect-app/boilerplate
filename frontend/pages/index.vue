@@ -15,10 +15,6 @@ const state = S.Struct({
   email: S.Email,
 })
 
-// const form = buildFormFromSchema(Input, state, v =>
-//   Promise.resolve(confirm("submitting: " + JSON.stringify(v))),
-// )
-
 const form = useOmegaForm(state, {
   defaultValues: {
     title: "",
