@@ -7,8 +7,8 @@ import { reportMessage } from "@effect-app/vue/errorReporter"
 import { OperationFailure, OperationSuccess } from "effect-app/Operations"
 import { SupportedErrors } from "effect-app/client"
 
-export class MutationContext extends Context.Tag("MutationContext")<
-  MutationContext,
+export class CommandContext extends Context.Tag("CommandContext")<
+  CommandContext,
   { action: string }
 >() {}
 
@@ -42,7 +42,7 @@ export interface MessageOpts<
     | undefined
 }
 
-export const useMutation = () => {
+export const useCommand = () => {
   const withToast = useWithToast()
   const { intl } = useIntl()
 
@@ -51,12 +51,12 @@ export const useMutation = () => {
     confirmOrInterrupt: Effect.fnUntraced(function* (
       message: string | undefined = undefined,
     ) {
-      const mutationContext = yield* MutationContext
+      const context = yield* CommandContext
       yield* confirmOrInterrupt(
         message ??
           intl.value.formatMessage(
             { id: "handle.confirmation" },
-            { action: mutationContext.action },
+            { action: context.action },
           ),
       )
     }),
@@ -66,7 +66,7 @@ export const useMutation = () => {
       errorRenderer?: (e: E) => string | undefined, // undefined falls back to default?
     ) =>
       Effect.gen(function* () {
-        const { action } = yield* MutationContext
+        const { action } = yield* CommandContext
 
         const defaultWarnMessage = intl.value.formatMessage(
           { id: "handle.with_warnings" },
@@ -137,10 +137,10 @@ export const useMutation = () => {
         )
       }),
     /**
-     * Define a Mutation function
+     * Define a Command
      * @param actionName The internal name of the action. will be used as Span. will be used to lookup user facing name via intl. `action.${actionName}`
      * @returns A function that can be called to execute the mutation, like directly in a `@click` handler. Error reporting is built-in.
-     * the Effects have access to the `MutationContext` service, which contains the user-facing action name.
+     * the Effects have access to the `CommandContext` service, which contains the user-facing action name.
      * The function also has the following properties:
      * - action: The user-facing name of the action, as defined in the intl messages. Can be used e.g as Button label.
      * - result: The Result of the mutation
@@ -162,7 +162,7 @@ export const useMutation = () => {
           id: `action.${actionName}`,
           defaultMessage: actionName,
         })
-        const mutationContext = { action }
+        const context = { action }
 
         const errorReporter = <A, E, R>(self: Effect.Effect<A, E, R>) =>
           self.pipe(
@@ -202,7 +202,7 @@ export const useMutation = () => {
         const handler = Effect.fn(actionName)(
           fn,
           ...args,
-          Effect.provideService(MutationContext, mutationContext),
+          Effect.provideService(CommandContext, context),
           _ => Effect.annotateCurrentSpan({ action }).pipe(Effect.zipRight(_)),
           errorReporter,
         )

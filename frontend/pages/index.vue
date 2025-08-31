@@ -79,9 +79,9 @@ const helloWorld = await getHelloWorldQuery.query(req)
 // Cons:
 // - have to manually assign the action name
 // - have to manually handle the errors and sucesses, loading states etc.
-const Mutation = useMutation()
+const Command = useCommand()
 
-const setState = Mutation.fn("HelloWorld.SetState")(
+const setState = Command.fn("HelloWorld.SetState")(
   function* () {
     const input = { state: new Date().toISOString() }
 
@@ -91,7 +91,7 @@ const setState = Mutation.fn("HelloWorld.SetState")(
     })
 
     // Are we sure?
-    yield* Mutation.confirmOrInterrupt()
+    yield* Command.confirmOrInterrupt()
     // simulate slow action to reveal loading/disabled states.
     yield* Effect.sleep(2 * 1000)
     const r = yield* setStateMutation(input)
@@ -104,7 +104,7 @@ const setState = Mutation.fn("HelloWorld.SetState")(
   // an idea is that we must remove all failures before the end of the composition.
   // (simply by using an error reporter that then removes the errors after reporting..)
 
-  Mutation.withDefaultToast,
+  Command.withDefaultToast,
 )
 
 // onMounted(() => {
