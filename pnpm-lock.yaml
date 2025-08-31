@@ -471,6 +471,9 @@ importers:
       '@effect-app/vue':
         specifier: ^2.51.14
         version: 2.51.14(ef7e67a6745cc26680fd56011803ce82)
+      '@effect-app/vue-components':
+        specifier: ^0.15.5
+        version: 0.15.8(5206c2802d519ef3329e7a0688c322f3)
       '@effect-atom/atom':
         specifier: ^0.1.14
         version: 0.1.14(@effect/experimental@0.54.4(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))(ioredis@5.6.1))(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(@effect/rpc@0.68.3(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
@@ -963,8 +966,33 @@ packages:
       redis: ^3.1.2
       redlock: ^4.2.0
 
+  '@effect-app/vue-components@0.15.8':
+    resolution: {integrity: sha512-65SMjMCze+pggmHFtzrF5tWCVnhxxGhkcJjwYb6zVg4benti6mF4SA1seareX1SWJzXbjRrfLSXAmODgpfol6A==}
+    peerDependencies:
+      '@mdi/js': ^7.4.47
+      '@tanstack/vue-form': ^1.2.4
+      effect: 3.17.6
+      intl-messageformat: ^10.7.16
+      mdi-js: ^1.0.1
+      primeflex: ^4.0.0
+      primeicons: ^7.0.0
+      primevue: ^4.3.7
+      vue: ^3.5.18
+      vuetify: ^3.9.4
+
   '@effect-app/vue@2.51.14':
     resolution: {integrity: sha512-65/onPLg+q4h2ivyX3J4H8EXu+oOuV0APThEivjKgzbNF9LTskV6l/eUYShnJOYP2HL74JILO1R+gNDtkroVng==}
+    peerDependencies:
+      '@effect-atom/atom': ^0.1.4
+      '@effect-atom/atom-vue': ^0.1.3
+      '@effect/platform': 0.90.0
+      '@effect/platform-browser': ^0.70.0
+      '@sentry/browser': ^10.2.0
+      effect: 3.17.6
+      vue: ^3.5.18
+
+  '@effect-app/vue@2.51.17':
+    resolution: {integrity: sha512-z/PolACt+004Zc8YjL03mfEWIEzIzgCIeTaGXNxG2OkzE6gPqOT7Tu8Cc2KMqoiIlzCaYbOkBu6PJ9YWnSh1fw==}
     peerDependencies:
       '@effect-atom/atom': ^0.1.4
       '@effect-atom/atom-vue': ^0.1.3
@@ -2675,6 +2703,27 @@ packages:
 
   '@poppinss/exception@1.2.2':
     resolution: {integrity: sha512-m7bpKCD4QMlFCjA/nKTs23fuvoVFoA83brRKmObCUNmi/9tVu8Ve3w4YQAnJu4q3Tjf5fr685HYIC/IA2zHRSg==}
+
+  '@primeuix/styled@0.7.2':
+    resolution: {integrity: sha512-tIJ6byZezTYZ9YUICNSidQHOIQOQL3zeUgjwiX0JnBTK3+WCvy4DyCBcrJ94RtiX0WGFZSYNvaGaFkTo4jU8FQ==}
+    engines: {node: '>=12.11.0'}
+
+  '@primeuix/styles@1.2.3':
+    resolution: {integrity: sha512-+KwmQsLTYgVAqFADmO252btz40lstPML6r4QMNjxz4gLNCKVW3kPR0/aCouQx6/21+boXG1P68tu8Zk3FAKr2w==}
+
+  '@primeuix/utils@0.6.1':
+    resolution: {integrity: sha512-tQL/ZOPgCdD+NTimlUmhyD0ey8J1XmpZE4hDHM+/fnuBicVVmlKOd5HpS748LcOVRUKbWjmEPdHX4hi5XZoC1Q==}
+    engines: {node: '>=12.11.0'}
+
+  '@primevue/core@4.3.7':
+    resolution: {integrity: sha512-rYmEZTKs/C2Re+xFluY9R02+n4TcyJshooPPOG6zc23v/bmhrfcqCiS5gNiuXF/lYoOh4y8VTcHF6eZCZW724Q==}
+    engines: {node: '>=12.11.0'}
+    peerDependencies:
+      vue: ^3.5.18
+
+  '@primevue/icons@4.3.7':
+    resolution: {integrity: sha512-CKiOeiJzNSbELwbQdrgWHgmfcAmjNQXqRZtBGb8sUPrB8hjWf9lYMBAbcAuqJbyLFFcC0lFiB80CfBR07FNSHw==}
+    engines: {node: '>=12.11.0'}
 
   '@prisma/instrumentation@6.13.0':
     resolution: {integrity: sha512-b97b0sBycGh89RQcqobSgjGl3jwPaC5cQIOFod6EX1v0zIxlXPmL3ckSXxoHpy+Js0QV/tgCzFvqicMJCtezBA==}
@@ -4712,6 +4761,12 @@ packages:
       '@effect/platform': 0.90.0
       effect: 3.17.6
 
+  effect-app@3.2.3:
+    resolution: {integrity: sha512-lX2OE2IsKj6J1pEi73mbxdVhHDxgNpmpJwroCdZmCWEsHZD4RXzlZtoMyKKpHMGKvoQdAQlaKqoNCxh2VQJ/sQ==}
+    peerDependencies:
+      '@effect/platform': 0.90.0
+      effect: 3.17.6
+
   effect@3.17.6:
     resolution: {integrity: sha512-BDVr3TEI6JpTnsZwDzXlzxDtyMS0cwtfWmhqfL3nl7Be/443+geFYAlVpCy7SCkLCck0NbmFX86LtlCZtCgdxA==}
 
@@ -5488,6 +5543,13 @@ packages:
   highcharts@12.3.0:
     resolution: {integrity: sha512-QIKmaemgheRa1K2Ia9MLj1KLtBU1Tu/VQ6KAMqtMBMsAC4NzcFq6g96LF03ZO3IFFiSifmZx8ItEyRcz4w75cg==}
 
+  highlight.js@10.7.3:
+    resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==}
+
+  highlight.js@11.11.1:
+    resolution: {integrity: sha512-Xwwo44whKBVCYoliBQwaPvtd/2tYFkRQtXDWj1nackaV2JPXx3L0+Jvd8/qCJ2p+ML0/XVkJ2q+Mr+UVdpJK5w==}
+    engines: {node: '>=12.0.0'}
+
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
 
@@ -6188,6 +6250,9 @@ packages:
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
     engines: {node: '>= 0.4'}
+
+  mdi-js@1.0.1:
+    resolution: {integrity: sha512-IVTB5/bo+i7GFUGExa/YRpbVh4pbD3EHVcf4lHEVVWD1Kt46o2XGNxi5PTIph3eSt3kjsSchKtLF7Y9UUuCeHg==}
 
   mdn-data@2.0.28:
     resolution: {integrity: sha512-aylIc7Z9y4yzHYAJNuESG3hfhC+0Ibp/MAMiaOZgNv4pmEdFyfZhhhny4MNiAfWdBQ1RQ2mfDWmM1x8SvGyp8g==}
@@ -7151,6 +7216,16 @@ packages:
   pretty-ms@7.0.1:
     resolution: {integrity: sha512-973driJZvxiGOQ5ONsFhOF/DtzPMOMtgC11kCpUrPGMTgqp2q/1gwzCquocrN33is0VZ5GFHXZYMM9l6h67v2Q==}
     engines: {node: '>=10'}
+
+  primeflex@4.0.0:
+    resolution: {integrity: sha512-UOEZCRjR36+sm5bUpDhS1xbA068l9VC6y1aTNVqQPtXuKIdPTqAWHRUxj3mKAoPrQ9W373ooJJMgNVXfiaw04g==}
+
+  primeicons@7.0.0:
+    resolution: {integrity: sha512-jK3Et9UzwzTsd6tzl2RmwrVY/b8raJ3QZLzoDACj+oTJ0oX7L9Hy+XnVwgo4QVKlKpnP/Ur13SXV/pVh4LzaDw==}
+
+  primevue@4.3.7:
+    resolution: {integrity: sha512-yyknh2kFjSGwRyxqmUUWy/pY4FK1vxoonGH3eQdtd8k/sGl5JpSQ2f0tXpR79lV6dcGf3FZPL1B5JNR11zJfmg==}
+    engines: {node: '>=12.11.0'}
 
   priorityqueuejs@2.0.0:
     resolution: {integrity: sha512-19BMarhgpq3x4ccvVi8k2QpJZcymo/iFUcrhPd4V96kYGovOdTsWwy7fxChYi4QY+m2EnGBWSX9Buakz+tWNQQ==}
@@ -8595,6 +8670,11 @@ packages:
     peerDependencies:
       typescript: '>=5.0.0'
 
+  vue3-highlightjs@1.0.5:
+    resolution: {integrity: sha512-Q4YNPXu0X5VMBnwPVOk+IQf1Ohp9jFdMitEAmzaz8qVVefcQpN6Dx4BnDGKxja3TLDVF+EgL136wC8YzmoCX9w==}
+    peerDependencies:
+      vue: ^3.5.18
+
   vue@3.5.18:
     resolution: {integrity: sha512-7W4Y4ZbMiQ3SEo+m9lnoNpV9xG7QVMLa+/0RFwwiAVkeYoyGXqWE85jabU4pllJNUzqfLShJ5YLptewhCWUgNA==}
     peerDependencies:
@@ -9327,6 +9407,31 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
+  '@effect-app/vue-components@0.15.8(5206c2802d519ef3329e7a0688c322f3)':
+    dependencies:
+      '@effect-app/vue': 2.51.17(ef7e67a6745cc26680fd56011803ce82)
+      '@mdi/js': 7.4.47
+      '@tanstack/vue-form': 1.15.0(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
+      effect: 3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)
+      effect-app: 3.2.3(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+      highlight.js: 11.11.1
+      intl-messageformat: 10.7.16
+      mdi-js: 1.0.1
+      primeflex: 4.0.0
+      primeicons: 7.0.0
+      primevue: 4.3.7(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
+      vue: 3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))
+      vue3-highlightjs: 1.0.5(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
+      vuetify: 3.9.4(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
+    transitivePeerDependencies:
+      - '@effect-atom/atom'
+      - '@effect-atom/atom-vue'
+      - '@effect/platform'
+      - '@effect/platform-browser'
+      - '@sentry/browser'
+      - '@vue/composition-api'
+      - typescript
+
   '@effect-app/vue@2.51.14(ef7e67a6745cc26680fd56011803ce82)':
     dependencies:
       '@effect-atom/atom': 0.1.14(@effect/experimental@0.54.4(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))(ioredis@5.6.1))(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(@effect/rpc@0.68.3(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
@@ -9339,6 +9444,24 @@ snapshots:
       '@vueuse/core': 13.6.0(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
       effect: 3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)
       effect-app: 3.2.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+      query-string: 9.2.2
+      vue: 3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - typescript
+
+  '@effect-app/vue@2.51.17(ef7e67a6745cc26680fd56011803ce82)':
+    dependencies:
+      '@effect-atom/atom': 0.1.14(@effect/experimental@0.54.4(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))(ioredis@5.6.1))(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(@effect/rpc@0.68.3(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+      '@effect-atom/atom-vue': 0.1.15(14abb0e8339de443a3ae4d4faf6f40c2)
+      '@effect/platform': 0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+      '@effect/platform-browser': 0.70.0(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+      '@formatjs/intl': 3.1.6(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))
+      '@sentry/browser': 10.3.0
+      '@tanstack/vue-query': 5.83.1(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
+      '@vueuse/core': 13.6.0(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
+      effect: 3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)
+      effect-app: 3.2.3(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
       query-string: 9.2.2
       vue: 3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))
     transitivePeerDependencies:
@@ -11204,6 +11327,29 @@ snapshots:
       supports-color: 10.0.0
 
   '@poppinss/exception@1.2.2': {}
+
+  '@primeuix/styled@0.7.2':
+    dependencies:
+      '@primeuix/utils': 0.6.1
+
+  '@primeuix/styles@1.2.3':
+    dependencies:
+      '@primeuix/styled': 0.7.2
+
+  '@primeuix/utils@0.6.1': {}
+
+  '@primevue/core@4.3.7(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))':
+    dependencies:
+      '@primeuix/styled': 0.7.2
+      '@primeuix/utils': 0.6.1
+      vue: 3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))
+
+  '@primevue/icons@4.3.7(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))':
+    dependencies:
+      '@primeuix/utils': 0.6.1
+      '@primevue/core': 4.3.7(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
+    transitivePeerDependencies:
+      - vue
 
   '@prisma/instrumentation@6.13.0(@opentelemetry/api@1.9.0)':
     dependencies:
@@ -13465,6 +13611,21 @@ snapshots:
       uuid: 11.1.0
       validator: 13.15.15
 
+  effect-app@3.2.3(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)):
+    dependencies:
+      '@effect/platform': 0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+      '@effect/rpc': 0.68.3(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
+      '@tsconfig/strictest': 2.0.5
+      date-fns: 4.1.0
+      effect: 3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)
+      nanoid: 5.1.5
+      path-parser: 6.1.0
+      query-string: 9.2.2
+      ts-pattern: 5.8.0
+      ts-toolbelt: 9.6.0
+      uuid: 11.1.0
+      validator: 13.15.15
+
   effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059):
     dependencies:
       '@standard-schema/spec': 1.0.0
@@ -14486,6 +14647,10 @@ snapshots:
 
   highcharts@12.3.0: {}
 
+  highlight.js@10.7.3: {}
+
+  highlight.js@11.11.1: {}
+
   hookable@5.5.3: {}
 
   hosted-git-info@2.8.9: {}
@@ -15188,6 +15353,8 @@ snapshots:
   marked@4.3.0: {}
 
   math-intrinsics@1.1.0: {}
+
+  mdi-js@1.0.1: {}
 
   mdn-data@2.0.28: {}
 
@@ -16369,6 +16536,20 @@ snapshots:
   pretty-ms@7.0.1:
     dependencies:
       parse-ms: 2.1.0
+
+  primeflex@4.0.0: {}
+
+  primeicons@7.0.0: {}
+
+  primevue@4.3.7(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))):
+    dependencies:
+      '@primeuix/styled': 0.7.2
+      '@primeuix/styles': 1.2.3
+      '@primeuix/utils': 0.6.1
+      '@primevue/core': 4.3.7(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
+      '@primevue/icons': 4.3.7(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)))
+    transitivePeerDependencies:
+      - vue
 
   priorityqueuejs@2.0.0: {}
 
@@ -17950,6 +18131,11 @@ snapshots:
       '@volar/typescript': 2.4.22
       '@vue/language-core': 3.0.5(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))
       typescript: 5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)
+
+  vue3-highlightjs@1.0.5(vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))):
+    dependencies:
+      highlight.js: 10.7.3
+      vue: 3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))
 
   vue@3.5.18(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb)):
     dependencies:
