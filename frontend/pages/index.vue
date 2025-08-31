@@ -7,7 +7,6 @@ import {
   OmegaErrors,
 } from "@effect-app/vue-components"
 import type { NonEmptyString255, Email } from "effect-app/Schema"
-import { useWithToast } from "~/composables/useWithToast"
 
 const state = S.Struct({
   title: S.NonEmptyString255,
@@ -69,7 +68,6 @@ const req = ref(makeReq())
 //   run(setState(input), "Set State" /* TODO i18n */) // this now also takes care of error handling/reporting
 
 // todo; check how it would work with Atom
-const withToast = useWithToast()
 const { getHelloWorldQuery, setStateMutation } = useHelloWorld()
 const helloWorld = await getHelloWorldQuery.query(req)
 
