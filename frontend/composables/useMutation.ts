@@ -58,14 +58,13 @@ export const useMutation = () => {
           // That's so that you can do a constructor input with the mutation :/
           Request: null as any /* TODO */,
         })
-        return computed(() =>
-          Object.assign(mut, fn, {
-            action,
-            result,
-            mutate: flow(mut, runFork, _ => {}),
-            waiting: result.value.waiting,
-          }),
-        )
+        return computed(() => ({
+          action,
+          result,
+          mutate: flow(mut, runFork, _ => {}),
+          mutation: handler,
+          waiting: result.value.waiting,
+        }))
       },
   }
 }
