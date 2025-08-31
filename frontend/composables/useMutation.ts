@@ -194,12 +194,20 @@ export const useMutation = () => {
         )
 
         const [result, mut] = asResult(handler)
-        return computed(() => ({
-          action,
-          result,
-          mutate: flow(mut, runFork, _ => {}),
-          waiting: result.value.waiting,
-        }))
+        return computed(() =>
+          Object.assign(
+            flow(
+              mut,
+              runFork,
+              _ => {},
+            ) /* make sure always create a new one, or the state won't properly propagate */,
+            {
+              action,
+              result,
+              waiting: result.value.waiting,
+            },
+          ),
+        )
       },
   }
 }

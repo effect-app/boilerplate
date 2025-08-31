@@ -142,7 +142,7 @@ onMounted(() => {
     <v-btn
       :disabled="setState.waiting"
       :loading="setState.waiting"
-      @click="setState.mutate"
+      @click="setState"
     >
       {{ setState.action }}
     </v-btn>
@@ -152,7 +152,7 @@ onMounted(() => {
       :loading="setState.waiting"
       :title="setState.action"
       :icon="mdiSetAll"
-      @click="setState.mutate"
+      @click="setState"
     ></v-btn>
 
     <QueryResult v-slot="{ latest, refreshing }" :result="helloWorld.result">
