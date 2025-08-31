@@ -45,40 +45,9 @@ const makeReq = () => ({
 
 const req = ref(makeReq())
 
-// we really have a Command pattern, which is a first class citizen that can be shared between buttons etc.
-// considerations
-// - i18n for the action name communicated to the user - it is nice when it's shared with the UI, like button text..
-// - able to change the input format, e.g no input required.
-
-// we can do two things..
-// a) const setStateMutation = useAndHandleMutation(helloWorldClient.SetState, "Set State" /* TODO: i18n */)
-//    const setState = setStateMutation(function* (mutate, input) { // auto typed input, i however also a weakness...
-//      // do things before
-//      yield* mutate(input)
-//      // do things after
-//    })
-//
-// b) const setStateMutation = useUnsafeMutation(helloWorldClient.SetState)
-//    const setState = Effect.fn("HelloWorld.SetState" /* this is duplicate with HelloWorldRsc.SetState auto derived name */)(function* (input: HelloWorldRsc.SetState) {
-//      // do things before
-//      yield* setStateMutation(input)
-//      // do things after
-//   })
-//   // to run
-//   run(setState(input), "Set State" /* TODO i18n */) // this now also takes care of error handling/reporting
-
-// todo; check how it would work with Atom
 const { getHelloWorldQuery, setStateMutation } = useHelloWorld()
 const helloWorld = await getHelloWorldQuery.query(req)
 
-// Pros:
-// - more standard effect
-// - full control
-// - "native" apis instead of various mapHandler options, mutation options to configure or disable toasts etc
-// - composable
-// Cons:
-// - have to manually assign the action name
-// - have to manually handle the errors and sucesses, loading states etc.
 const Command = useCommand()
 
 const setState = Command.fn("HelloWorld.SetState")(
@@ -99,12 +68,9 @@ const setState = Command.fn("HelloWorld.SetState")(
     yield* Effect.log("after mutate", { r, input })
     return r
   },
-  // todo; handle errors, retries, etc.
-  // the equivalent of handleMutation in legacy client code.
-  // an idea is that we must remove all failures before the end of the composition.
-  // (simply by using an error reporter that then removes the errors after reporting..)
 
   Command.withDefaultToast,
+  // defects etc are auto reported
 )
 
 // onMounted(() => {
