@@ -7,8 +7,6 @@ import {
   OmegaErrors,
 } from "@effect-app/vue-components"
 import type { NonEmptyString255, Email } from "effect-app/Schema"
-import { confirmOrInterrupt } from "~/composables/client"
-import { useHelloWorld } from "~/composables/useHelloWorld"
 
 const state = S.Struct({
   title: S.NonEmptyString255,
@@ -75,29 +73,38 @@ const helloWorld = await getHelloWorldQuery.query(req)
 
 // Pros:
 // - more standard effect
-// - "native" apis instead of various mapHandler options
-// - reuses the Action name / span from the API client action
+// - full control
+// - "native" apis instead of various mapHandler options, mutation options to configure or disable toasts etc
+// - composable
 // Cons:
-// - not composable
-// - don't control the toasts / error handling, except perhaps via options
-const setState = setStateMutation.with(
-  mutate =>
-    function* () {
-      const input = { state: new Date().toISOString() }
+// - have to manually assign the action name
+// - have to manually handle the errors and sucesses, loading states etc.
+const Mutation = useMutation()
 
-      yield* Effect.log("before mutate", {
-        input,
-        span: yield* Effect.currentSpan.pipe(Effect.orDie),
-      })
-      yield* confirmOrInterrupt()
+const setState = Mutation.fn("HelloWorld.SetState")(
+  function* () {
+    const input = { state: new Date().toISOString() }
 
-      // simulate slow action to reveal loading/disabled states.
-      yield* Effect.sleep(2 * 1000)
-      const r = yield* mutate(input)
+    yield* Effect.log("before mutate", {
+      input,
+      span: yield* Effect.currentSpan.pipe(Effect.orDie),
+    })
 
-      yield* Effect.log("after mutate", { r, input })
-      return r
-    },
+    // Are we sure?
+    yield* Mutation.confirmOrInterrupt()
+    // simulate slow action to reveal loading/disabled states.
+    yield* Effect.sleep(2 * 1000)
+    const r = yield* setStateMutation(input)
+
+    yield* Effect.log("after mutate", { r, input })
+    return r
+  },
+  // todo; handle errors, retries, etc.
+  // the equivalent of handleMutation in legacy client code.
+  // an idea is that we must remove all failures before the end of the composition.
+  // (simply by using an error reporter that then removes the errors after reporting..)
+
+  Mutation.withDefaultToast,
 )
 
 // onMounted(() => {
@@ -133,7 +140,7 @@ onMounted(() => {
     <v-btn
       :disabled="setState.waiting"
       :loading="setState.waiting"
-      @click="setState.mutate"
+      @click="setState"
     >
       {{ setState.action }}
     </v-btn>
@@ -143,7 +150,7 @@ onMounted(() => {
       :loading="setState.waiting"
       :title="setState.action"
       :icon="mdiSetAll"
-      @click="setState.mutate"
+      @click="setState"
     ></v-btn>
 
     <QueryResult v-slot="{ latest, refreshing }" :result="helloWorld.result">
