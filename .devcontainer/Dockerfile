@@ -33,9 +33,9 @@ RUN npm i -g pnpm
 RUN echo 
 
 ENV SHELL=/bin/bash
-RUN curl -L "https://humanlog.io/install.sh" | sh
-COPY humanlog.sh /tmp/
-RUN cat /tmp/humanlog.sh >> ~/.bashrc
+# RUN curl -L "https://humanlog.io/install.sh" | sh
+# COPY humanlog.sh /tmp/
+# RUN cat /tmp/humanlog.sh >> ~/.bashrc
 
 RUN echo 
 
