@@ -60,9 +60,12 @@ export const useMutation = () => {
       message: string | undefined = undefined,
     ) {
       const mutationContext = yield* MutationContext
-      // TODO: i18n
       yield* confirmOrInterrupt(
-        message ?? `${mutationContext.action} - Sind sie Sicher?`,
+        message ??
+          intl.value.formatMessage(
+            { id: "handle.confirmation" },
+            { action: mutationContext.action },
+          ),
       )
     }),
     /** Version of withDefaultToast that automatically includes the action name in the default messages and uses intl */
