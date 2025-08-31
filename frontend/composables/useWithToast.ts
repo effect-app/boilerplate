@@ -30,6 +30,7 @@ export const useWithToast = () => {
         Effect.tapErrorCause(cause =>
           Effect.sync(() => {
             if (Cause.isInterruptedOnly(cause)) {
+              toast.dismiss(toastId)
               return
             }
             toast.error(
