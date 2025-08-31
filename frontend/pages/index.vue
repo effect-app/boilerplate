@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { Effect, S } from "effect-app"
 import { mdiSetAll } from "@mdi/js"
-import { Mutation, useHelloWorld } from "~/composables/useHelloWorld"
+import { useMutation, useHelloWorld } from "~/composables/useHelloWorld"
 import {
   useOmegaForm,
   OmegaForm,
   OmegaErrors,
 } from "@effect-app/vue-components"
 import type { NonEmptyString255, Email } from "effect-app/Schema"
-import { confirmOrInterrupt } from "~/composables/client"
 import { useWithToast } from "~/composables/useWithToast"
 
 const state = S.Struct({
@@ -83,6 +82,8 @@ const helloWorld = await getHelloWorldQuery.query(req)
 // Cons:
 // - have to manually assign the action name
 // - have to manually handle the errors and sucesses, loading states etc.
+const Mutation = useMutation()
+
 const setState = Mutation.fn("HelloWorld.SetState")(
   function* () {
     const input = { state: new Date().toISOString() }
@@ -91,8 +92,9 @@ const setState = Mutation.fn("HelloWorld.SetState")(
       input,
       span: yield* Effect.currentSpan.pipe(Effect.orDie),
     })
-    yield* confirmOrInterrupt()
 
+    // Are we sure?
+    yield* Mutation.confirmOrInterrupt()
     // simulate slow action to reveal loading/disabled states.
     yield* Effect.sleep(2 * 1000)
     const r = yield* setStateMutation(input)
@@ -101,16 +103,11 @@ const setState = Mutation.fn("HelloWorld.SetState")(
     return r
   },
   // todo; handle errors, retries, etc.
+  // the equivalent of handleMutation in legacy client code.
+  // an idea is that we must remove all failures before the end of the composition.
+  // (simply by using an error reporter that then removes the errors after reporting..)
 
-  // these are potentially reusable across 80% of the mutations?
-  // for those we could create a standard helper?
-  withToast({
-    onWaiting: "laden...",
-    onSuccess: "erledigt",
-    onFailure: (
-      optFailure /* is an Option because it can be Die or interrupt too?  */,
-    ) => "fehler",
-  }),
+  Mutation.withDefaultToast,
 )
 
 // onMounted(() => {
