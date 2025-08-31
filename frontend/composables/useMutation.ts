@@ -69,7 +69,10 @@ export const useMutation = () => {
       )
     }),
     /** Version of withDefaultToast that automatically includes the action name in the default messages and uses intl */
-    withDefaultToast: <A, E, R>(self: Effect.Effect<A, E, R>) =>
+    withDefaultToast: <A, E, R>(
+      self: Effect.Effect<A, E, R>,
+      errorRenderer?: (e: E) => string | undefined, // undefined falls back to default?
+    ) =>
       Effect.gen(function* () {
         const { action } = yield* MutationContext
 
@@ -81,7 +84,13 @@ export const useMutation = () => {
           { id: "handle.with_errors" },
           { action },
         )
-        function renderError(e: unknown): string {
+        function renderError(e: E): string {
+          if (errorRenderer) {
+            const m = errorRenderer(e)
+            if (m) {
+              return m
+            }
+          }
           if (!S.is(SupportedErrors)(e) && !S.ParseResult.isParseError(e)) {
             if (typeof e === "object" && e !== null) {
               if ("message" in e) {
@@ -93,7 +102,8 @@ export const useMutation = () => {
             }
             return ""
           }
-          return Match.value(e).pipe(
+          const e2: SupportedErrors | S.ParseResult.ParseError = e
+          return Match.value(e2).pipe(
             Match.tags({
               ParseError: e => {
                 console.warn(e.toString())
