@@ -24,16 +24,19 @@ export const useWithToast = () => {
             typeof options.onSuccess === "string"
               ? options.onSuccess
               : options.onSuccess(a, ...args),
-            { id: toastId },
+            { id: toastId, timeout: 3_000 },
           )
         }),
         Effect.tapErrorCause(cause =>
           Effect.sync(() => {
+            if (Cause.isInterruptedOnly(cause)) {
+              return
+            }
             toast.error(
               typeof options.onFailure === "string"
                 ? options.onFailure
                 : options.onFailure(Cause.failureOption(cause), ...args),
-              { id: toastId },
+              { id: toastId, timeout: 5_000 },
             )
           }),
         ),
