@@ -12,36 +12,6 @@ export class CommandContext extends Context.Tag("CommandContext")<
   { action: string }
 >() {}
 
-export interface MessageOpts<
-  A,
-  E,
-  I = void,
-  A2 = A,
-  E2 = E,
-  ESuccess = never,
-  RSuccess = never,
-  EError = never,
-  RError = never,
-  EDefect = never,
-  RDefect = never,
-> {
-  /** set to `undefined` to use default message */
-  successMessage?:
-    | ((a: A2, i: I) => Effect.Effect<string | undefined, ESuccess, RSuccess>)
-    | undefined
-  /** set to `undefined` to use default message */
-  failMessage?:
-    | ((e: E2, i: I) => Effect.Effect<string | undefined, EError, RError>)
-    | undefined
-  /** set to `undefined` to use default message */
-  defectMessage?:
-    | ((
-        e: Cause.Cause<E2>,
-        i: I,
-      ) => Effect.Effect<string | undefined, EDefect, RDefect>)
-    | undefined
-}
-
 export const useCommand = () => {
   const withToast = useWithToast()
   const { intl } = useIntl()
