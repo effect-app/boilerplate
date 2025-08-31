@@ -147,7 +147,10 @@ export const useMutation = () => {
         fn: (...args: Args) => Generator<Eff, AEff, never>,
         ...args: any[] // TODO
       ) => {
-        const action = actionName // TODO: translate t(actionName)
+        const action = intl.value.formatMessage({
+          id: `action.${actionName}`,
+          defaultMessage: actionName,
+        })
         const mutationContext = { action }
 
         const errorReporter = <A, E, R>(self: Effect.Effect<A, E, R>) =>

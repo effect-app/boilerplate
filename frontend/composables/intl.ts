@@ -2,6 +2,8 @@ import { makeIntl } from "@effect-app/vue"
 
 const messages = {
   de: {
+    "action.HelloWorld.SetState": "Hallo Welt Zustand setzen",
+
     "handle.confirmation": "{action} bestätigen?",
     "handle.waiting": "{action} wird ausgeführt...",
     "handle.success": "{action} erfolgreich",
@@ -25,6 +27,8 @@ const messages = {
     "validation.failed": "Ungültige Eingabe",
   },
   en: {
+    "action.HelloWorld.SetState": "Set Hello World State",
+
     "handle.confirmation": "Confirm {action}?",
     "handle.waiting": "{action} executing...",
     "handle.success": "{action} Success",
