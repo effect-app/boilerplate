@@ -1,13 +1,4 @@
-import {
-  Cause,
-  Context,
-  type Exit,
-  Effect,
-  Option,
-  flow,
-  Match,
-  S,
-} from "effect-app"
+import { Cause, Context, Effect, Option, flow, Match, S } from "effect-app"
 import type { YieldWrap } from "effect/Utils"
 import { runFork } from "./client"
 import { asResult, reportRuntimeError } from "@effect-app/vue"
@@ -146,8 +137,7 @@ export const useMutation = () => {
       }),
     fn:
       (actionName: string) =>
-      // TODO constrain Args
-      // TODO constrain final result type to have never E, and Exit<A,E> in A.
+      // TODO constrain/type Args
       <
         Eff extends YieldWrap<Effect.Effect<any, any, any>>,
         AEff,
@@ -159,11 +149,8 @@ export const useMutation = () => {
         const action = actionName // TODO: translate t(actionName)
         const mutationContext = { action }
 
-        const errorReporter = <A, E, R, E2>(
-          self: Effect.Effect<Exit.Exit<A, E>, E2, R>,
-        ) =>
+        const errorReporter = <A, E, R>(self: Effect.Effect<A, E, R>) =>
           self.pipe(
-            Effect.flatten,
             Effect.catchAllCause(
               Effect.fnUntraced(function* (cause) {
                 if (Cause.isInterruptedOnly(cause)) {
@@ -205,7 +192,7 @@ export const useMutation = () => {
           errorReporter,
         ) // todo; args
 
-        const [result, mut] = asResult(i => handler(i).pipe(Effect.flatten)) // flatten only because we expect already Exit<A,E> in fn/args.
+        const [result, mut] = asResult(handler)
         return computed(() => ({
           action,
           result,

@@ -50,8 +50,6 @@ export const useWithToast = () => {
             toast.error(t, { id: toastId, timeout: 5_000 })
           }),
         ),
-        // move the A, E into an Exit<A, E>, in the A channel
-        Effect.exit,
       )
     })
 }
