@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Cause, Context, Effect, Option, flow, Match, S } from "effect-app"
 import type { YieldWrap } from "effect/Utils"
 import { runFork } from "./client"
@@ -120,7 +121,7 @@ export const useMutation = () => {
                   { id: "handle.unexpected_error" },
                   {
                     action,
-                    error: "-", // TODO Cause.pretty(cause), // will be reported to Sentry/Otel anyway..
+                    error: "-", // TODO consider again Cause.pretty(cause), // will be reported to Sentry/Otel anyway..
                   },
                 ),
               onSome: e =>
@@ -190,14 +191,13 @@ export const useMutation = () => {
           Effect.provideService(MutationContext, mutationContext),
           _ => Effect.annotateCurrentSpan({ action }).pipe(Effect.zipRight(_)),
           errorReporter,
-        ) // todo; args
+        )
 
         const [result, mut] = asResult(handler)
         return computed(() => ({
           action,
           result,
           mutate: flow(mut, runFork, _ => {}),
-          mutation: handler,
           waiting: result.value.waiting,
         }))
       },
