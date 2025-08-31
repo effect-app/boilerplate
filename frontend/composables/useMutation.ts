@@ -136,6 +136,17 @@ export const useMutation = () => {
           }),
         )
       }),
+    /**
+     * Define a Mutation function
+     * @param actionName The internal name of the action. will be used as Span. will be used to lookup user facing name via intl. `action.${actionName}`
+     * @returns A function that can be called to execute the mutation, like directly in a `@click` handler. Error reporting is built-in.
+     * the Effects have access to the `MutationContext` service, which contains the user-facing action name.
+     * The function also has the following properties:
+     * - action: The user-facing name of the action, as defined in the intl messages. Can be used e.g as Button label.
+     * - result: The Result of the mutation
+     * - waiting: Whether the mutation is currently in progress. (shorthand for .result.waiting). Can be used e.g as Button loading/disabled state.
+     * Reporting status to the user is recommended to use the `withDefaultToast` helper, or render the .result inline
+     */
     fn:
       (actionName: string) =>
       // TODO constrain/type Args
