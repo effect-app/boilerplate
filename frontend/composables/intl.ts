@@ -2,6 +2,7 @@ import { makeIntl } from "@effect-app/vue"
 
 const messages = {
   de: {
+    "handle.waiting": "{action} wird ausgeführt...",
     "handle.success": "{action} erfolgreich",
     "handle.with_errors": "{action} fehlgeschlagen",
     "handle.with_warnings": "{action} erfolgreich, mit Warnungen",
@@ -23,6 +24,7 @@ const messages = {
     "validation.failed": "Ungültige Eingabe",
   },
   en: {
+    "handle.waiting": "{action} executing...",
     "handle.success": "{action} Success",
     "handle.with_errors": "{action} Failed",
     "handle.with_warnings": "{action}, with warnings",

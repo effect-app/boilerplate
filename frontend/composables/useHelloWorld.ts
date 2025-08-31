@@ -10,7 +10,6 @@ export const useHelloWorld = () => {
   // temp
   type A = S.Schema.Type<(typeof HelloWorldRsc.GetHelloWorld)["success"]>
   type E = S.Schema.Type<(typeof HelloWorldRsc.GetHelloWorld)["failure"]>
-  const api = client.SetState
 
   return {
     // TODO: make a curry version of `useSafeSuspenseQuery` so we can just `useSafeSuspenseQuery(client.GetHelloWorld)`
@@ -47,10 +46,7 @@ export const useHelloWorld = () => {
       },
     ),
 
-    // TODO: make a curry version of `useAndHandleMutationResult`, so we can just `useAndHandleMutationResult(client.SetState)`
-    // we should then also share state...
-    // todo: fix types
-    setStateMutation: api.handler,
+    setStateMutation: useUnsafeMutation(client.SetState), // useUnsafeMutation resets cache etc
   }
 }
 

@@ -3,7 +3,12 @@ import { Cause, Effect, type Option } from "effect-app"
 type ToastOptions<A, E, Args extends ReadonlyArray<unknown>> = {
   onWaiting: string | ((...args: Args) => string)
   onSuccess: string | ((a: A, ...args: Args) => string)
-  onFailure: string | ((error: Option.Option<E>, ...args: Args) => string)
+  onFailure:
+    | string
+    | ((
+        error: Option.Option<E>,
+        ...args: Args
+      ) => string | { level: "warn" | "error"; message: string })
 }
 
 export const useWithToast = () => {
@@ -33,14 +38,20 @@ export const useWithToast = () => {
               toast.dismiss(toastId)
               return
             }
-            toast.error(
+            const t =
               typeof options.onFailure === "string"
                 ? options.onFailure
-                : options.onFailure(Cause.failureOption(cause), ...args),
-              { id: toastId, timeout: 5_000 },
-            )
+                : options.onFailure(Cause.failureOption(cause), ...args)
+            if (typeof t === "object") {
+              return t.level === "warn"
+                ? toast.warning(t.message, { id: toastId, timeout: 5_000 })
+                : toast.error(t.message, { id: toastId, timeout: 5_000 })
+            }
+            toast.error(t, { id: toastId, timeout: 5_000 })
           }),
         ),
+        // move the A, E into an Exit<A, E>, in the A channel
+        Effect.exit,
       )
     })
 }
