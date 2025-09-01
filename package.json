@@ -103,7 +103,7 @@
   "devDependencies": {
     "@ben_12/eslint-plugin-dprint": "^1.7.1",
     "@dprint/typescript": "^0.95.9",
-    "@effect-app/cli": "^1.23.0",
+    "@effect-app/cli": "^1.23.6",
     "@effect-app/eslint-codegen-model": "^1.42.0",
     "@effect/language-service": "^0.35.1",
     "@phaphoso/eslint-plugin-dprint": "^0.5.2",
@@ -115,7 +115,7 @@
     "@typescript-eslint/scope-manager": "^8.39.0",
     "concurrently": "^9.2.0",
     "dprint": "^0.50.1",
-    "effect-app": "^3.2.0",
+    "effect-app": "^3.2.3",
     "enhanced-resolve": "^5.18.3",
     "eslint": "^9.32.0",
     "eslint-import-resolver-typescript": "^4.4.4",
