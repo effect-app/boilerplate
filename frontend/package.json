@@ -6,7 +6,7 @@
     "build": "nuxt build",
     "compile": "([ ! -d './.nuxt' ] && nuxt prepare || echo 'no prepare') && vue-tsc --noEmit",
     "watch": "pnpm compile -w",
-    "dev": "PORT=4000 effect-app-cli watch nuxt dev --host",
+    "dev": "PORT=4000 nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "start": "node .output/server/index.mjs",
