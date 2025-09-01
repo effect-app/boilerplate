@@ -176,21 +176,17 @@ export const useCommand = () => {
             ),
           )
 
-        const handler = Effect.fn(actionName)(
-          fn,
-          ...(combinators as [any]),
-        ) as (
-          ...args: Args
-        ) => Effect.Effect<AEff, $WrappedEffectError, CommandContext>
-
-        const [result, mut] = asResult((...args: Args) =>
-          handler(...args).pipe(
-            Effect.provideService(CommandContext, context),
-            _ =>
-              Effect.annotateCurrentSpan({ action }).pipe(Effect.zipRight(_)),
-            errorReporter,
-          ),
+        const handler = flow(
+          Effect.fn(actionName)(fn, ...(combinators as [any])) as (
+            ...args: Args
+          ) => Effect.Effect<AEff, $WrappedEffectError, CommandContext>,
+          Effect.provideService(CommandContext, context),
+          _ => Effect.annotateCurrentSpan({ action }).pipe(Effect.zipRight(_)),
+          errorReporter,
         )
+
+        const [result, mut] = asResult(handler)
+
         return computed(() =>
           Object.assign(
             flow(
