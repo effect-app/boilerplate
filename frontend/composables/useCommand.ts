@@ -14,6 +14,7 @@ export interface Command<A, Args extends ReadonlyArray<any>> {
     result: Result.Result<void | A, never>
     waiting: boolean
   }>
+  handler: (...a: Args) => Effect.Effect<void | A, never, never>
   set: (...args: Args) => void
 }
 
