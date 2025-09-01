@@ -121,7 +121,7 @@ export const useCommand = () => {
       (actionName: string) =>
       // TODO constrain/type Args
       <
-        Eff extends YieldWrap<Effect.Effect<any, any, CommandContext>>,
+        Eff extends YieldWrap<Effect.Effect<any, any, CommandContext | RT>>,
         AEff,
         Args extends Array<any>,
         $WrappedEffectError = Eff extends YieldWrap<
@@ -132,8 +132,8 @@ export const useCommand = () => {
       >(
         fn: (...args: Args) => Generator<Eff, AEff, never>,
         ...combinators: ((
-          e: Effect.Effect<AEff, $WrappedEffectError, CommandContext>,
-        ) => Effect.Effect<AEff, $WrappedEffectError, CommandContext>)[]
+          e: Effect.Effect<AEff, $WrappedEffectError, CommandContext | RT>,
+        ) => Effect.Effect<AEff, $WrappedEffectError, CommandContext | RT>)[]
       ) => {
         const action = intl.value.formatMessage({
           id: `action.${actionName}`,
@@ -179,7 +179,7 @@ export const useCommand = () => {
         const handler = flow(
           Effect.fn(actionName)(fn, ...(combinators as [any])) as (
             ...args: Args
-          ) => Effect.Effect<AEff, $WrappedEffectError, CommandContext>,
+          ) => Effect.Effect<AEff, $WrappedEffectError, CommandContext | RT>,
           Effect.provideService(CommandContext, context),
           _ => Effect.annotateCurrentSpan({ action }).pipe(Effect.zipRight(_)),
           errorReporter,
@@ -191,7 +191,6 @@ export const useCommand = () => {
           Object.assign(
             flow(
               mut,
-              // TODO: why does `asResult` put void in the R type parameter???
               runFork,
               _ => {},
             ) /* make sure always create a new one, or the state won't properly propagate */,
