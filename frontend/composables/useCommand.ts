@@ -6,6 +6,7 @@ import { asResult, reportRuntimeError } from "@effect-app/vue"
 import { reportMessage } from "@effect-app/vue/errorReporter"
 import { OperationFailure, OperationSuccess } from "effect-app/Operations"
 import { SupportedErrors } from "effect-app/client"
+import { Object } from "#resources/lib/schema"
 
 export class CommandContext extends Context.Tag("CommandContext")<
   CommandContext,
@@ -119,7 +120,7 @@ export const useCommand = () => {
      */
     fn:
       (actionName: string) =>
-      // TODO constrain/type Args
+      // TODO constrain/type combinators
       <
         Eff extends YieldWrap<Effect.Effect<any, any, CommandContext | RT>>,
         AEff,
@@ -177,14 +178,14 @@ export const useCommand = () => {
             ),
           )
 
-        const handler = flow(
-          Effect.fn(actionName)(fn, ...(combinators as [any])) as (
-            ...args: Args
-          ) => Effect.Effect<AEff, $WrappedEffectError, CommandContext | RT>,
+        const handler = Effect.fn(actionName)(
+          fn,
+          ...(combinators as [any]),
+          // all must be within the Effect.fn to fit within the Span
           Effect.provideService(CommandContext, context),
           _ => Effect.annotateCurrentSpan({ action }).pipe(Effect.zipRight(_)),
           errorReporter,
-        )
+        ) as (...args: Args) => Effect.Effect<AEff, $WrappedEffectError, RT>
 
         const [result, mut] = asResult(handler)
 
