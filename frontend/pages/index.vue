@@ -50,8 +50,7 @@ const helloWorld = await getHelloWorldQuery.query(req)
 
 const Command = useCommand()
 
-const temp = Command.fn("HelloWorld.SetState")
-const setState = temp(
+const setState = Command.fn("HelloWorld.SetState")(
   function* () {
     const input = { state: new Date().toISOString() }
 
@@ -71,7 +70,6 @@ const setState = temp(
   },
 
   Command.withDefaultToast,
-
   // defects etc are auto reported
 )
 
