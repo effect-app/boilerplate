@@ -6,7 +6,6 @@ import { asResult, reportRuntimeError } from "@effect-app/vue"
 import { reportMessage } from "@effect-app/vue/errorReporter"
 import { OperationFailure, OperationSuccess } from "effect-app/Operations"
 import { SupportedErrors } from "effect-app/client"
-import { Object } from "#resources/lib/schema"
 
 export class CommandContext extends Context.Tag("CommandContext")<
   CommandContext,
