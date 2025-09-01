@@ -50,7 +50,8 @@ const helloWorld = await getHelloWorldQuery.query(req)
 
 const Command = useCommand()
 
-const setState = Command.fn("HelloWorld.SetState")(
+const temp = Command.fn("HelloWorld.SetState")
+const { get: HWState, set: setHWState} = temp(
   function* () {
     const input = { state: new Date().toISOString() }
 
@@ -104,19 +105,19 @@ onMounted(() => {
     </OmegaForm>
 
     <v-btn
-      :disabled="setState.waiting"
-      :loading="setState.waiting"
-      @click="setState"
+      :disabled="HWState.waiting"
+      :loading="HWState.waiting"
+      @click="setHWState"
     >
-      {{ setState.action }}
+      {{ HWState.action }}
     </v-btn>
     <!-- alt -->
     <v-btn
-      :disabled="setState.waiting"
-      :loading="setState.waiting"
-      :title="setState.action"
+      :disabled="HWState.waiting"
+      :loading="HWState.waiting"
+      :title="HWState.action"
       :icon="mdiSetAll"
-      @click="setState"
+      @click="setHWState"
     ></v-btn>
 
     <QueryResult v-slot="{ latest, refreshing }" :result="helloWorld.result">

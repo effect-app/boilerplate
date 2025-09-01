@@ -1,11 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Cause, Context, Effect, Option, flow, Match, S } from "effect-app"
+import type * as Result from "@effect-atom/atom/Result"
 import type { YieldWrap } from "effect/Utils"
 import { runFork } from "./client"
 import { asResult, reportRuntimeError } from "@effect-app/vue"
 import { reportMessage } from "@effect-app/vue/errorReporter"
 import { OperationFailure, OperationSuccess } from "effect-app/Operations"
 import { SupportedErrors } from "effect-app/client"
+
+export interface Command<A, Args extends ReadonlyArray<any>> {
+  get: ComputedRef<{
+    action: string
+    result: Result.Result<void | A, never>
+    waiting: boolean
+  }>
+  set: (...args: Args) => void
+}
 
 export class CommandContext extends Context.Tag("CommandContext")<
   CommandContext,
