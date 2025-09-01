@@ -130,9 +130,10 @@ export const useCommand = () => {
           ? E
           : never,
       >(
-        fn: (...args: Args) => Generator<Eff, AEff, never>,
+        fn: (...args: Args) => Generator<Eff, AEff, CommandContext | RT>,
+        // TODO: combinators can freely take A, E, R and change it to whatever they want, as long as the end result Requires not more than CommandContext | RT
         ...combinators: ((
-          e: Effect.Effect<AEff, $WrappedEffectError, CommandContext | RT>,
+          e: Effect.Effect<AEff, $WrappedEffectError, CommandContext>,
         ) => Effect.Effect<AEff, $WrappedEffectError, CommandContext | RT>)[]
       ) => {
         const action = intl.value.formatMessage({
