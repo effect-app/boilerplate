@@ -31,8 +31,8 @@ export const useCommand = () => {
       )
     }),
     /** Version of withDefaultToast that automatically includes the action name in the default messages and uses intl */
-    withDefaultToast: <A, E, R>(
-      self: Effect.Effect<A, E, R>,
+    withDefaultToast: <A, E>(
+      self: Effect.Effect<A, E, CommandContext>,
       errorRenderer?: (e: E) => string | undefined, // undefined falls back to default?
     ) =>
       Effect.gen(function* () {
@@ -110,7 +110,7 @@ export const useCommand = () => {
      * Define a Command
      * @param actionName The internal name of the action. will be used as Span. will be used to lookup user facing name via intl. `action.${actionName}`
      * @returns A function that can be called to execute the mutation, like directly in a `@click` handler. Error reporting is built-in.
-     * the Effects have access to the `CommandContext` service, which contains the user-facing action name.
+     * the Effects **only** have access to the `CommandContext` service, which contains the user-facing action name.
      * The function also has the following properties:
      * - action: The user-facing name of the action, as defined in the intl messages. Can be used e.g as Button label.
      * - result: The Result of the mutation
