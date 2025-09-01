@@ -1,6 +1,6 @@
 import { Cause, Effect, type Option } from "effect-app"
 
-type ToastOptions<A, E, Args extends ReadonlyArray<unknown>> = {
+export interface ToastOptions<A, E, Args extends ReadonlyArray<unknown>> {
   onWaiting: string | ((...args: Args) => string)
   onSuccess: string | ((a: A, ...args: Args) => string)
   onFailure:

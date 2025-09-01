@@ -121,12 +121,19 @@ export const useCommand = () => {
       (actionName: string) =>
       // TODO constrain/type Args
       <
-        Eff extends YieldWrap<Effect.Effect<any, any, any>>,
+        Eff extends YieldWrap<Effect.Effect<any, any, CommandContext>>,
         AEff,
         Args extends Array<any>,
+        $WrappedEffectError = Eff extends YieldWrap<
+          Effect.Effect<infer _, infer E, infer __>
+        >
+          ? E
+          : never,
       >(
         fn: (...args: Args) => Generator<Eff, AEff, never>,
-        ...args: any[] // TODO
+        ...combinators: ((
+          e: Effect.Effect<AEff, $WrappedEffectError, CommandContext>,
+        ) => Effect.Effect<AEff, $WrappedEffectError, CommandContext>)[]
       ) => {
         const action = intl.value.formatMessage({
           id: `action.${actionName}`,
@@ -171,13 +178,19 @@ export const useCommand = () => {
 
         const handler = Effect.fn(actionName)(
           fn,
-          ...args,
-          Effect.provideService(CommandContext, context),
-          _ => Effect.annotateCurrentSpan({ action }).pipe(Effect.zipRight(_)),
-          errorReporter,
-        )
+          ...(combinators as [any]),
+        ) as (
+          ...args: Args
+        ) => Effect.Effect<AEff, $WrappedEffectError, CommandContext>
 
-        const [result, mut] = asResult(handler)
+        const [result, mut] = asResult((...args: Args) =>
+          handler(...args).pipe(
+            Effect.provideService(CommandContext, context),
+            _ =>
+              Effect.annotateCurrentSpan({ action }).pipe(Effect.zipRight(_)),
+            errorReporter,
+          ),
+        )
         return computed(() =>
           Object.assign(
             flow(
