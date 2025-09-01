@@ -195,6 +195,7 @@ export const useCommand = () => {
           Object.assign(
             flow(
               mut,
+              // TODO: why does `asResult` put void in the R type parameter???
               runFork,
               _ => {},
             ) /* make sure always create a new one, or the state won't properly propagate */,
