@@ -177,6 +177,8 @@ export const useCommand = () => {
             ),
           )
 
+        // TODO: override span stack set by Effect.fn as it points here instead of to the caller of Command.fn.
+        // perhaps copying Effect.fn implementation is better than using it?
         const handler = Effect.fn(actionName)(
           fn,
           ...(combinators as [any]),
