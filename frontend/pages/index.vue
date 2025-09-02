@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Effect, S } from "effect-app"
+import { Effect, pipe, S } from "effect-app"
 import { mdiSetAll } from "@mdi/js"
 import {
   useOmegaForm,
@@ -7,6 +7,7 @@ import {
   OmegaErrors,
 } from "@effect-app/vue-components"
 import type { NonEmptyString255, Email } from "effect-app/Schema"
+import { CommandDraft } from "../composables/useCommand"
 
 const state = S.Struct({
   title: S.NonEmptyString255,
@@ -50,8 +51,8 @@ const helloWorld = await getHelloWorldQuery.query(req)
 
 const Command = useCommand()
 
-const setState = Command.fn("HelloWorld.SetState")(
-  function* () {
+const setState = pipe(
+  Command.fn("HelloWorld.SetState")(function* () {
     const input = { state: new Date().toISOString() }
 
     yield* Effect.log("before mutate", {
@@ -67,10 +68,10 @@ const setState = Command.fn("HelloWorld.SetState")(
 
     yield* Effect.log("after mutate", { r, input })
     return r
-  },
-
-  Command.withDefaultToast,
+  }),
+  Command.withDefaultToast(),
   // defects etc are auto reported
+  CommandDraft.build,
 )
 
 // onMounted(() => {
