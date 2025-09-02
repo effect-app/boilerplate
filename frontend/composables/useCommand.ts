@@ -66,6 +66,50 @@ export class CommandContext extends Context.Tag("CommandContext")<
 >() {}
 
 /**
+ * Represents a command in draft state that can be composed with combinators.
+ *
+ * @template Args - The arguments array type for the command handler
+ * @template ALastIC - Return type of the last inner combinator
+ * @template ELastIC - Error type of the last inner combinator
+ * @template RLastIC - Requirements type of the last inner combinator
+ * @template ALastOC - Return type of the last outer combinator
+ * @template ELastOC - Error type of the last outer combinator
+ * @template RLastOC - Requirements type of the last outer combinator
+ * @template mode - Whether the draft is in "inner" or "outer" combinator mode
+ */
+export interface CommandDraft<
+  Args extends ReadonlyArray<any>,
+  // we really just need to keep track of the last inner and outer combinators' params
+  ALastIC,
+  ELastIC,
+  RLastIC,
+  ALastOC = ALastIC,
+  ELastOC = ELastIC,
+  RLastOC = Exclude<RLastIC, CommandContext>, // provided by the in between provideService
+  // we let the user add inner combinators until they add an outer combinator
+  // because mixing inner and outer combinators can lead to too complex/unsafe type relationships
+  mode extends "inner" | "outer" = "inner",
+> {
+  actionName: string
+  action: string
+  handlerE: (...args: Args) => Effect.Effect<any, any, any>
+  innerCombinators: ((
+    e: Effect.Effect<any, any, any>,
+  ) => Effect.Effect<any, any, any>)[]
+  outerCombinators: ((
+    e: Effect.Effect<any, any, any>,
+  ) => Effect.Effect<any, any, any>)[]
+
+  ALastIC?: Covariant<ALastIC>
+  ELastIC?: Covariant<ELastIC>
+  RLastIC?: Covariant<RLastIC>
+  ALastOC?: Covariant<ALastOC>
+  ELastOC?: Covariant<ELastOC>
+  RLastOC?: Covariant<RLastOC>
+  mode?: Covariant<mode>
+}
+
+/**
  * Namespace containing the command draft system for building composable commands.
  *
  * The CommandDraft system provides a type-safe, fluent API for building commands
@@ -75,50 +119,48 @@ export class CommandContext extends Context.Tag("CommandContext")<
  * 3. Add outer combinators (run outside the command context)
  * 4. Build final command
  */
-export namespace CommandDraft {
-  /**
-   * Represents a command in draft state that can be composed with combinators.
-   *
-   * @template Args - The arguments array type for the command handler
-   * @template ALastIC - Return type of the last inner combinator
-   * @template ELastIC - Error type of the last inner combinator
-   * @template RLastIC - Requirements type of the last inner combinator
-   * @template ALastOC - Return type of the last outer combinator
-   * @template ELastOC - Error type of the last outer combinator
-   * @template RLastOC - Requirements type of the last outer combinator
-   * @template mode - Whether the draft is in "inner" or "outer" combinator mode
-   */
-  export interface CommandDraft<
-    Args extends ReadonlyArray<any>,
-    // we really just need to keep track of the last inner and outer combinators' params
-    ALastIC,
-    ELastIC,
-    RLastIC,
-    ALastOC = ALastIC,
-    ELastOC = ELastIC,
-    RLastOC = Exclude<RLastIC, CommandContext>, // provided by the in between provideService
-    // we let the user add inner combinators until they add an outer combinator
-    // because mixing inner and outer combinators can lead to too complex/unsafe type relationships
-    mode extends "inner" | "outer" = "inner",
-  > {
-    actionName: string
-    action: string
-    handlerE: (...args: Args) => Effect.Effect<any, any, any>
-    innerCombinators: ((
-      e: Effect.Effect<any, any, any>,
-    ) => Effect.Effect<any, any, any>)[]
-    outerCombinators: ((
-      e: Effect.Effect<any, any, any>,
-    ) => Effect.Effect<any, any, any>)[]
+export namespace CommandDraft {}
 
-    ALastIC?: Covariant<ALastIC>
-    ELastIC?: Covariant<ELastIC>
-    RLastIC?: Covariant<RLastIC>
-    ALastOC?: Covariant<ALastOC>
-    ELastOC?: Covariant<ELastOC>
-    RLastOC?: Covariant<RLastOC>
-    mode?: Covariant<mode>
-  }
+// TODOS
+// 2) proper Command definiton instead of nested refs merged with updater fn
+export interface CommandI<A, Args extends ReadonlyArray<any>> {
+  get: ComputedRef<{
+    action: string
+    result: Result.Result<void | A, never>
+    waiting: boolean
+  }>
+  set: (...args: Args) => void
+}
+
+/**
+ * Composable that provides command creation utilities with internationalization and toast integration.
+ *
+ * Returns an object containing:
+ * - fn: Creates a new command draft from an action name and handler
+ * - withDefaultToast: Adds automatic toast notifications to commands
+ * - confirmOrInterrupt: Utility for confirmation dialogs within commands
+ *
+ * The returned utilities automatically integrate with the application's i18n system
+ * and toast notification system.
+ *
+ * @returns Command creation utilities with i18n and toast integration
+ *
+ * @example
+ * ```ts
+ * const cmd = useCommand()
+ *
+ * const saveData = pipe(
+ *   cmd.fn("saveData")(function* (data: SaveRequest) {
+ *     return yield* dataService.save(data)
+ *   }),
+ *   cmd.withDefaultToast(),
+ *   CommandDraft.build
+ * )
+ * ```
+ */
+export const useCommand = () => {
+  const withToast = useWithToast()
+  const { intl } = useIntl()
 
   /**
    * Creates a properly typed `CommandDraft` from the provided configuration.
@@ -131,12 +173,7 @@ export namespace CommandDraft {
    * @param cd - The command draft configuration
    * @returns A properly typed `CommandDraft`
    */
-  export const make = <
-    Args extends ReadonlyArray<any>,
-    AHandler,
-    EHandler,
-    RHandler,
-  >(
+  const make = <Args extends ReadonlyArray<any>, AHandler, EHandler, RHandler>(
     cd: CommandDraft<Args, AHandler, EHandler, RHandler> & {
       // so that AHandler, EHandler, RHandler gets properly inferred
       handlerE: (...args: Args) => Effect.Effect<AHandler, EHandler, RHandler>
@@ -166,7 +203,7 @@ export namespace CommandDraft {
    * )
    * ```
    */
-  export const withCombinator = dual<
+  const withCombinator = dual<
     <
       Args extends ReadonlyArray<any>,
       ALastIC,
@@ -271,7 +308,7 @@ export namespace CommandDraft {
    * )
    * ```
    */
-  export const withOuterCombinator = dual<
+  const withOuterCombinator = dual<
     <
       Args extends ReadonlyArray<any>,
       ALastIC,
@@ -359,7 +396,7 @@ export namespace CommandDraft {
    * )
    * ```
    */
-  export const withErrorReporter = <
+  const withErrorReporter = <
     Args extends ReadonlyArray<any>,
     ALastIC,
     ELastIC,
@@ -444,7 +481,7 @@ export namespace CommandDraft {
    * cmd.waiting // Check if executing
    * ```
    */
-  export const buildWithoutDefaultErrorReporter = <
+  const buildWithoutDefaultErrorReporter = <
     Args extends ReadonlyArray<any>,
     ALastIC,
     ELastIC,
@@ -526,7 +563,7 @@ export namespace CommandDraft {
    * </button>
    * ```
    */
-  export const build = <
+  const build = <
     Args extends ReadonlyArray<any>,
     ALastIC,
     ELastIC,
@@ -546,53 +583,6 @@ export namespace CommandDraft {
       "inner" | "outer" // <-- both can be built
     >,
   ) => pipe(cd, withErrorReporter, buildWithoutDefaultErrorReporter)
-}
-
-// TODOS
-// 2) proper Command definiton instead of nested refs merged with updater fn
-export interface CommandI<A, Args extends ReadonlyArray<any>> {
-  get: ComputedRef<{
-    action: string
-    result: Result.Result<void | A, never>
-    waiting: boolean
-  }>
-  set: (...args: Args) => void
-}
-
-/**
- * Composable that provides command creation utilities with internationalization and toast integration.
- *
- * Returns an object containing:
- * - fn: Creates a new command draft from an action name and handler
- * - withDefaultToast: Adds automatic toast notifications to commands
- * - confirmOrInterrupt: Utility for confirmation dialogs within commands
- *
- * The returned utilities automatically integrate with the application's i18n system
- * and toast notification system.
- *
- * @returns Command creation utilities with i18n and toast integration
- *
- * @example
- * ```ts
- * const cmd = useCommand()
- *
- * const saveData = pipe(
- *   cmd.fn("saveData")(function* (data: SaveRequest) {
- *     return yield* dataService.save(data)
- *   }),
- *   cmd.withDefaultToast(),
- *   CommandDraft.build
- * )
- * ```
- */
-export const useCommand = () => {
-  const withToast = useWithToast()
-  const { intl } = useIntl()
-
-  // NOTE:
-  // confirmOrInterrupt, fn and withDefaultToast depend on intl and withToast
-  // so I keep their definitions here
-  // maybe we should move everything inside here to have just one namespace (?) tbconsidered
 
   /**
    * Creates a new command draft from an action name and handler function.
@@ -639,7 +629,7 @@ export const useCommand = () => {
         ...args: Args
       ) => Effect.Effect<AEff, $EEff, $REff>
 
-      return CommandDraft.make({
+      return make({
         actionName,
         action,
         handlerE,
@@ -687,7 +677,7 @@ export const useCommand = () => {
     errorRenderer?: (e: ELastIC) => string | undefined, // undefined falls back to default?
   ) => {
     return (
-      cd: CommandDraft.CommandDraft<
+      cd: CommandDraft<
         Args,
         ALastIC,
         ELastIC,
@@ -698,7 +688,7 @@ export const useCommand = () => {
         "inner"
       >,
     ) =>
-      CommandDraft.withCombinator(
+      withCombinator(
         cd,
         Effect.fn(function* (self) {
           const { action } = cd
@@ -815,22 +805,22 @@ export const useCommand = () => {
     }),
     withDefaultToast,
     fn,
+    build,
+    buildWithoutDefaultErrorReporter,
+    make,
+    withCombinator,
+    withOuterCombinator,
+    withErrorReporter,
   }
 }
 
 class MyTag extends Context.Tag("MyTag")<MyTag, { mytag: string }>() {}
 class MyTag2 extends Context.Tag("MyTag2")<MyTag2, { mytag2: string }>() {}
 
-// useCommand().build(addOuterCombinatorTest1Fail)
-// useCommand().build(addOuterCombinatorTest1Ok)
-
-// const addInnerCombinatorTestFail = Command.withCombinator(
-//   addOuterCombinatorTest1Ok,
-//   x => x,
-// )
+const Cmd = useCommand()
 
 const pipeTest1 = pipe(
-  CommandDraft.make({
+  Cmd.make({
     actionName: "actionName",
     action: "action",
     handlerE: Effect.fnUntraced(function* ({ some: str }: { some: string }) {
@@ -849,20 +839,20 @@ const pipeTest1 = pipe(
     innerCombinators: [],
     outerCombinators: [],
   }),
-  CommandDraft.withCombinator(self =>
+  Cmd.withCombinator(self =>
     self.pipe(
       Effect.catchTag("InvalidStateError", e =>
         Effect.succeed([-1 as number, e.message] as const),
       ),
     ),
   ),
-  CommandDraft.withCombinator(self =>
+  Cmd.withCombinator(self =>
     self.pipe(
       Effect.map(([f]) => f),
       Effect.provideService(MyTag, { mytag: "inner" }),
     ),
   ),
-  CommandDraft.withOuterCombinator(self =>
+  Cmd.withOuterCombinator(self =>
     self.pipe(
       Effect.andThen(n =>
         MyTag.pipe(Effect.andThen(service => ({ tag: service.mytag, n }))),
@@ -877,18 +867,16 @@ const pipeTest1 = pipe(
   //     Effect.provideService(MyTag, { mytag: "test" }),
   //   ),
   // ),
-  CommandDraft.withErrorReporter,
+  Cmd.withErrorReporter,
   //
   // fail because MyTag has not been provided
-  // CommandDraft.build,
+  // Cmd.buildWithoutDefaultErrorReporter,
   //
-  CommandDraft.withOuterCombinator(self =>
+  Cmd.withOuterCombinator(self =>
     self.pipe(Effect.provideService(MyTag, { mytag: "outer" })),
   ),
-  CommandDraft.buildWithoutDefaultErrorReporter,
+  Cmd.buildWithoutDefaultErrorReporter,
 )
-
-const Cmd = useCommand()
 
 const pipeTest2 = pipe(
   Cmd.fn("actionName")(function* ({ some: str }: { some: string }) {
@@ -904,7 +892,7 @@ const pipeTest2 = pipe(
       return [str.length, str] as const
     }
   }),
-  CommandDraft.withCombinator(self =>
+  Cmd.withCombinator(self =>
     self.pipe(
       Effect.provideService(MyTag, { mytag: "inner" }),
       Effect.catchTag("InvalidStateError", e =>
@@ -913,5 +901,5 @@ const pipeTest2 = pipe(
     ),
   ),
   Cmd.withDefaultToast(),
-  CommandDraft.build,
+  Cmd.build,
 )
