@@ -298,7 +298,7 @@ namespace CommandDraft {
     )
   }
 
-  export const buildWithoutErrorReporter = <
+  export const buildWithoutDefaultErrorReporter = <
     Args extends ReadonlyArray<any>,
     ALastIC,
     ELastIC,
@@ -369,7 +369,7 @@ namespace CommandDraft {
       RLastOC,
       "inner" | "outer" // <-- both can be built
     >,
-  ) => pipe(cd, withErrorReporter, buildWithoutErrorReporter)
+  ) => pipe(cd, withErrorReporter, buildWithoutDefaultErrorReporter)
 }
 
 // TODO: wip
@@ -551,7 +551,7 @@ const pipeTest = pipe(
   CommandDraft.make({
     actionName: "actionName",
     action: "action",
-    handlerE: Effect.fnUntraced(function* (str: string) {
+    handlerE: Effect.fnUntraced(function* ({ some: str }: { some: string }) {
       yield* MyTag
       yield* CommandContext
 
@@ -600,5 +600,5 @@ const pipeTest = pipe(
   CommandDraft.withOuterCombinator(self =>
     self.pipe(Effect.provideService(MyTag, { mytag: "outern" })),
   ),
-  CommandDraft.build,
+  CommandDraft.buildWithoutDefaultErrorReporter,
 )
