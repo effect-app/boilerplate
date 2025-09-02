@@ -10,7 +10,6 @@ import {
   pipe,
 } from "effect-app"
 import type * as Result from "@effect-atom/atom/Result"
-import type { YieldWrap } from "effect/Utils"
 import { runFork } from "./client"
 import { asResult, reportRuntimeError } from "@effect-app/vue"
 import { reportMessage } from "@effect-app/vue/errorReporter"
@@ -19,6 +18,7 @@ import { InvalidStateError, SupportedErrors } from "effect-app/client"
 import type { RT } from "./runtime"
 import type { Covariant } from "effect/Types"
 import { dual } from "effect/Function"
+import type { YieldWrap } from "effect/Utils"
 
 /**
  * Define a Command
@@ -387,11 +387,14 @@ export const useCommand = () => {
   const withToast = useWithToast()
   const { intl } = useIntl()
 
+  // fn and withDefaultToast depend on intl and withToast
+  // so I keep their definitions here
+
   const fn =
     (actionName: string) =>
     <
       Args extends Array<any>,
-      Eff extends YieldWrap<Effect.Effect<any, any, CommandContext | RT>>,
+      Eff extends YieldWrap<Effect.Effect<any, any, any>>,
       AEff,
       $EEff = Eff extends YieldWrap<Effect.Effect<infer _, infer E, infer __>>
         ? E
@@ -400,7 +403,7 @@ export const useCommand = () => {
         ? R
         : never,
     >(
-      handler: (...args: Args) => Generator<Eff, AEff, CommandContext | RT>,
+      handler: (...args: Args) => Generator<Eff, AEff, any>,
     ) => {
       const action = intl.value.formatMessage({
         id: `action.${actionName}`,
@@ -538,6 +541,7 @@ export const useCommand = () => {
 }
 
 class MyTag extends Context.Tag("MyTag")<MyTag, { mytag: string }>() {}
+class MyTag2 extends Context.Tag("MyTag2")<MyTag2, { mytag2: string }>() {}
 
 // useCommand().build(addOuterCombinatorTest1Fail)
 // useCommand().build(addOuterCombinatorTest1Ok)
@@ -554,6 +558,9 @@ const pipeTest = pipe(
     handlerE: Effect.fnUntraced(function* ({ some: str }: { some: string }) {
       yield* MyTag
       yield* CommandContext
+
+      // won't build at the end of the pipeline because it is not provided
+      // yield* MyTag2
 
       if (str.length < 3) {
         return yield* new InvalidStateError("too short")
