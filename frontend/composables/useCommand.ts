@@ -250,7 +250,8 @@ export namespace CommandDraft {
 
   /**
    * Adds an outer combinator to the command draft. Outer combinators run after all inner
-   * combinators and do not have access to the CommandContext service.
+   * combinators and do not have access to the CommandContext service. They share the main
+   * span but not the inner annotations (see `build` function for execution order).
    *
    * Outer combinators are executed in FIFO order - the last added combinator runs last.
    * Once an outer combinator is added, the draft switches to "outer" mode and no more
