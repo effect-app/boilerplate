@@ -47,9 +47,6 @@ import type { YieldWrap } from "effect/Utils"
  * ```
  */
 
-// TODOS
-// 2) proper Command definiton instead of nested refs merged with updater fn
-
 /**
  * Context service that provides the user-facing action name to command effects.
  * This context is automatically provided during command execution and contains
@@ -124,7 +121,7 @@ export namespace CommandDraft {
   }
 
   /**
-   * Creates a properly typed CommandDraft from the provided configuration.
+   * Creates a properly typed `CommandDraft` from the provided configuration.
    * This function primarily serves to ensure proper type inference.
    *
    * @template Args - The arguments array type for the command handler
@@ -132,7 +129,7 @@ export namespace CommandDraft {
    * @template EHandler - Error type of the handler effect
    * @template RHandler - Requirements type of the handler effect
    * @param cd - The command draft configuration
-   * @returns A properly typed CommandDraft
+   * @returns A properly typed `CommandDraft`
    */
   export const make = <
     Args extends ReadonlyArray<any>,
@@ -552,7 +549,8 @@ export namespace CommandDraft {
   ) => pipe(cd, withErrorReporter, buildWithoutDefaultErrorReporter)
 }
 
-// TODO: wip
+// TODOS
+// 2) proper Command definiton instead of nested refs merged with updater fn
 export interface CommandI<A, Args extends ReadonlyArray<any>> {
   get: ComputedRef<{
     action: string
