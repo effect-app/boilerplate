@@ -580,7 +580,7 @@ const pipeTest = pipe(
   CommandDraft.withOuterCombinator(self =>
     self.pipe(
       Effect.andThen(n =>
-        MyTag.pipe(Effect.andThen(service => service.mytag + n)),
+        MyTag.pipe(Effect.andThen(service => ({ tag: service.mytag, n }))),
       ),
     ),
   ),
@@ -598,7 +598,7 @@ const pipeTest = pipe(
   // CommandDraft.build,
   //
   CommandDraft.withOuterCombinator(self =>
-    self.pipe(Effect.provideService(MyTag, { mytag: "outern" })),
+    self.pipe(Effect.provideService(MyTag, { mytag: "outer" })),
   ),
   CommandDraft.buildWithoutDefaultErrorReporter,
 )
