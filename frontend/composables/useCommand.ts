@@ -41,7 +41,7 @@ export class CommandContext extends Context.Tag("CommandContext")<
   { action: string }
 >() {}
 
-namespace Command {
+namespace CommandDraft {
   export interface CommandDraft<
     Args extends ReadonlyArray<any>,
     // we really just need to keep track of the last inner and outer combinators' params
@@ -74,7 +74,7 @@ namespace Command {
     mode?: Covariant<mode>
   }
 
-  export function make<
+  export const make = <
     Args extends ReadonlyArray<any>,
     AHandler,
     EHandler,
@@ -84,7 +84,7 @@ namespace Command {
       // so that AHandler, EHandler, RHandler gets properly inferred
       handlerE: (...args: Args) => Effect.Effect<AHandler, EHandler, RHandler>
     },
-  ): CommandDraft<Args, AHandler, EHandler, RHandler> {
+  ): CommandDraft<Args, AHandler, EHandler, RHandler> => {
     return cd
   }
 
@@ -241,7 +241,7 @@ namespace Command {
       }) as any,
   )
 
-  export function withErrorReporter<
+  export const withErrorReporter = <
     Args extends ReadonlyArray<any>,
     ALastIC,
     ELastIC,
@@ -260,7 +260,7 @@ namespace Command {
       RLastOC,
       "inner" | "outer"
     >,
-  ) {
+  ) => {
     return withOuterCombinator(cd, self =>
       self.pipe(
         Effect.catchAllCause(
@@ -338,7 +338,7 @@ export const useCommand = () => {
         ...args: Args
       ) => Effect.Effect<AEff, $EEff, $REff>
 
-      return Command.make({
+      return CommandDraft.make({
         actionName,
         action,
         handlerE,
@@ -348,7 +348,16 @@ export const useCommand = () => {
     }
 
   const build = <Args extends ReadonlyArray<any>, A, E, R extends RT>(
-    cd: Command.CommandDraft<Args, any, any, any, A, E, R, "inner" | "outer">,
+    cd: CommandDraft.CommandDraft<
+      Args,
+      any,
+      any,
+      any,
+      A,
+      E,
+      R,
+      "inner" | "outer"
+    >,
   ) => {
     const context = { action: cd.action }
 
@@ -391,7 +400,7 @@ export const useCommand = () => {
     ELastOC,
     RLastOC,
   >(
-    cd: Command.CommandDraft<
+    cd: CommandDraft.CommandDraft<
       Args,
       ALastIC,
       ELastIC,
@@ -403,7 +412,7 @@ export const useCommand = () => {
     >,
     errorRenderer?: (e: ELastIC) => string | undefined, // undefined falls back to default?
   ) => {
-    return Command.withCombinator(
+    return CommandDraft.withCombinator(
       cd,
       Effect.fn(function* (self) {
         const { action } = cd
@@ -503,63 +512,23 @@ export const useCommand = () => {
       E,
       R extends RT,
     >(
-      cd: Command.CommandDraft<Args, any, any, any, A, E, R, "inner" | "outer">,
+      cd: CommandDraft.CommandDraft<
+        Args,
+        any,
+        any,
+        any,
+        A,
+        E,
+        R,
+        "inner" | "outer"
+      >,
     ) => {
-      return build(Command.withErrorReporter(cd))
+      return build(CommandDraft.withErrorReporter(cd))
     },
   }
 }
 
 class MyTag extends Context.Tag("MyTag")<MyTag, { mytag: string }>() {}
-
-const commandTest = Command.make({
-  actionName: "actionName",
-  action: "action",
-  handlerE: Effect.fnUntraced(function* (str: string) {
-    yield* MyTag
-    yield* CommandContext
-
-    if (str.length < 3) {
-      return yield* new InvalidStateError("too short")
-    } else {
-      return [str.length, str] as const
-    }
-  }),
-  innerCombinators: [],
-  outerCombinators: [],
-})
-
-const addInnerCombinatorTest1 = Command.withCombinator(commandTest, x =>
-  x.pipe(
-    Effect.catchTag("InvalidStateError", e =>
-      Effect.succeed([-1 as number, e.message] as const),
-    ),
-  ),
-)
-
-const addInnerCombinatorTest2 = Command.withCombinator(
-  addInnerCombinatorTest1,
-  x =>
-    x.pipe(
-      Effect.map(([f, s]) => f),
-      Effect.provideService(MyTag, { mytag: "test" }),
-    ),
-)
-
-const addOuterCombinatorTest1Fail = Command.withOuterCombinator(
-  addInnerCombinatorTest2,
-  x =>
-    x.pipe(
-      Effect.andThen(n =>
-        MyTag.pipe(Effect.andThen(service => service.mytag + n)),
-      ),
-    ),
-)
-
-const addOuterCombinatorTest1Ok = Command.withOuterCombinator(
-  addInnerCombinatorTest2,
-  x => x.pipe(Effect.andThen(n => n * 10)),
-)
 
 // useCommand().build(addOuterCombinatorTest1Fail)
 // useCommand().build(addOuterCombinatorTest1Ok)
@@ -569,8 +538,10 @@ const addOuterCombinatorTest1Ok = Command.withOuterCombinator(
 //   x => x,
 // )
 
+const cmd = useCommand()
+
 const pipeTest = pipe(
-  Command.make({
+  CommandDraft.make({
     actionName: "actionName",
     action: "action",
     handlerE: Effect.fnUntraced(function* (str: string) {
@@ -586,24 +557,41 @@ const pipeTest = pipe(
     innerCombinators: [],
     outerCombinators: [],
   }),
-  Command.withCombinator(self =>
+  CommandDraft.withCombinator(self =>
     self.pipe(
       Effect.catchTag("InvalidStateError", e =>
         Effect.succeed([-1 as number, e.message] as const),
       ),
     ),
   ),
-  Command.withCombinator(self =>
+  CommandDraft.withCombinator(self =>
     self.pipe(
       Effect.map(([f]) => f),
-      Effect.provideService(MyTag, { mytag: "test" }),
+      Effect.provideService(MyTag, { mytag: "inner" }),
     ),
   ),
-  Command.withOuterCombinator(self =>
+  CommandDraft.withOuterCombinator(self =>
     self.pipe(
       Effect.andThen(n =>
         MyTag.pipe(Effect.andThen(service => service.mytag + n)),
       ),
     ),
   ),
+  // fail because you cannot add inner combinators after outer combinators
+  //
+  // Command.withCombinator(self =>
+  //   self.pipe(
+  //     Effect.map(([f]) => f),
+  //     Effect.provideService(MyTag, { mytag: "test" }),
+  //   ),
+  // ),
+  CommandDraft.withErrorReporter,
+  //
+  // fail because MyTag has not been provided
+  // cmd.build,
+  //
+  CommandDraft.withOuterCombinator(self =>
+    self.pipe(Effect.provideService(MyTag, { mytag: "outern" })),
+  ),
+  cmd.build,
 )
