@@ -17,6 +17,7 @@ import { reportMessage } from "@effect-app/vue/errorReporter"
 import { OperationFailure, OperationSuccess } from "effect-app/Operations"
 import { InvalidStateError, SupportedErrors } from "effect-app/client"
 import type { RT } from "./runtime"
+import type { Covariant } from "effect/Types"
 
 // TODOS
 // 1) rewrite withToast and errorReporter as combinators
@@ -59,6 +60,14 @@ namespace CommandDraft {
     handlerE: (...args: Args) => Effect.Effect<AHandler, EHandler, RHandler>
     innerCombinators: ICs
     outerCombinators: OCs
+
+    mode?: Covariant<mode>
+    ALastIC?: Covariant<$ALastIC>
+    ELastIC?: Covariant<$ELastIC>
+    RLastIC?: Covariant<$RLastIC>
+    ALastOC?: Covariant<$ALastOC>
+    ELastOC?: Covariant<$ELastOC>
+    RLastOC?: Covariant<$RLastOC>
   }
 
   export function make<
@@ -136,7 +145,7 @@ namespace CommandDraft {
       handlerE: cd.handlerE,
       innerCombinators: [...cd.innerCombinators, inner] as any,
       outerCombinators: cd.outerCombinators,
-    })
+    }) as any
   }
 
   export function addOuterCombinator<
@@ -199,7 +208,7 @@ namespace CommandDraft {
       handlerE: cd.handlerE,
       innerCombinators: cd.innerCombinators,
       outerCombinators: [...cd.outerCombinators, outer] as any,
-    })
+    }) as any
   }
 }
 
@@ -528,4 +537,27 @@ const addInnerCombinatorTest2 = CommandDraft.addInnerCombinator(
       Effect.map(([f, s]) => f),
       Effect.provideService(MyTag, { mytag: "test" }),
     ),
+)
+
+const addOuterCombinatorTest1Fail = CommandDraft.addOuterCombinator(
+  addInnerCombinatorTest2,
+  x =>
+    x.pipe(
+      Effect.andThen(n =>
+        MyTag.pipe(Effect.andThen(service => service.mytag + n)),
+      ),
+    ),
+)
+
+const addOuterCombinatorTest1Ok = CommandDraft.addOuterCombinator(
+  addInnerCombinatorTest2,
+  x => x.pipe(Effect.andThen(n => n * 10)),
+)
+
+useCommand().build(addOuterCombinatorTest1Fail)
+useCommand().build(addOuterCombinatorTest1Ok)
+
+const addInnerCombinatorTestFail = CommandDraft.addInnerCombinator(
+  addOuterCombinatorTest1Ok,
+  x => x,
 )
