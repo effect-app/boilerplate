@@ -500,8 +500,6 @@ export namespace CommandDraft {
    * Builds the final command from a draft with default error reporting included.
    * This is the most common way to build commands as it automatically adds error reporting.
    *
-   * Equivalent to: `pipe(cd, withErrorReporter, buildWithoutDefaultErrorReporter)`
-   *
    * The built command returns a computed ref containing:
    * - A function that executes the command when called
    * - action: The internationalized action name
@@ -591,8 +589,10 @@ export const useCommand = () => {
   const withToast = useWithToast()
   const { intl } = useIntl()
 
-  // fn and withDefaultToast depend on intl and withToast
+  // NOTE:
+  // confirmOrInterrupt, fn and withDefaultToast depend on intl and withToast
   // so I keep their definitions here
+  // maybe we should move everything inside here to have just one namespace (?) tbconsidered
 
   /**
    * Creates a new command draft from an action name and handler function.
