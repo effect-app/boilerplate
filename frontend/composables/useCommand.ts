@@ -1,3 +1,4 @@
+/* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Cause,
@@ -21,26 +22,75 @@ import { dual } from "effect/Function"
 import type { YieldWrap } from "effect/Utils"
 
 /**
- * Define a Command
- * @param actionName The internal name of the action. will be used as Span. will be used to lookup user facing name via intl. `action.${actionName}`
- * @returns A function that can be called to execute the mutation, like directly in a `@click` handler. Error reporting is built-in.
- * the Effects **only** have access to the `CommandContext` service, which contains the user-facing action name.
- * The function also has the following properties:
- * - action: The user-facing name of the action, as defined in the intl messages. Can be used e.g as Button label.
- * - result: The Result of the mutation
- * - waiting: Whether the mutation is currently in progress. (shorthand for .result.waiting). Can be used e.g as Button loading/disabled state.
- * Reporting status to the user is recommended to use the `withDefaultToast` helper, or render the .result inline
+ * Command system for building type-safe, composable mutation handlers with built-in error reporting and state management.
+ *
+ * This module provides a fluent API for creating commands that can be executed directly in click handlers.
+ * Commands support inner and outer combinators for customizing behavior, automatic error reporting,
+ * toast notifications, and state tracking.
+ *
+ * @example
+ * ```ts
+ * const cmd = useCommand()
+ *
+ * const deleteUser = pipe(
+ *   cmd.fn("deleteUser")(function* (userId: string) {
+ *     return yield* userService.delete(userId)
+ *   }),
+ *   cmd.withDefaultToast(),
+ *   CommandDraft.build
+ * )
+ *
+ * // Usage in component
+ * <button @click="deleteUser('123')" :disabled="deleteUser.waiting">
+ *   {{ deleteUser.action }}
+ * </button>
+ * ```
  */
 
 // TODOS
 // 2) proper Command definiton instead of nested refs merged with updater fn
 
+/**
+ * Context service that provides the user-facing action name to command effects.
+ * This context is automatically provided during command execution and contains
+ * the internationalized action name.
+ *
+ * @example
+ * ```ts
+ * function* myCommandEffect() {
+ *   const { action } = yield* CommandContext
+ *   console.log(`Executing ${action}`)
+ * }
+ * ```
+ */
 export class CommandContext extends Context.Tag("CommandContext")<
   CommandContext,
   { action: string }
 >() {}
 
+/**
+ * Namespace containing the command draft system for building composable commands.
+ *
+ * The CommandDraft system provides a type-safe, fluent API for building commands
+ * with inner and outer combinators. Commands are built in stages:
+ * 1. Create initial draft with handler
+ * 2. Add inner combinators (run inside the command context)
+ * 3. Add outer combinators (run outside the command context)
+ * 4. Build final command
+ */
 export namespace CommandDraft {
+  /**
+   * Represents a command in draft state that can be composed with combinators.
+   *
+   * @template Args - The arguments array type for the command handler
+   * @template ALastIC - Return type of the last inner combinator
+   * @template ELastIC - Error type of the last inner combinator
+   * @template RLastIC - Requirements type of the last inner combinator
+   * @template ALastOC - Return type of the last outer combinator
+   * @template ELastOC - Error type of the last outer combinator
+   * @template RLastOC - Requirements type of the last outer combinator
+   * @template mode - Whether the draft is in "inner" or "outer" combinator mode
+   */
   export interface CommandDraft<
     Args extends ReadonlyArray<any>,
     // we really just need to keep track of the last inner and outer combinators' params
@@ -73,6 +123,17 @@ export namespace CommandDraft {
     mode?: Covariant<mode>
   }
 
+  /**
+   * Creates a properly typed CommandDraft from the provided configuration.
+   * This function primarily serves to ensure proper type inference.
+   *
+   * @template Args - The arguments array type for the command handler
+   * @template AHandler - Return type of the handler effect
+   * @template EHandler - Error type of the handler effect
+   * @template RHandler - Requirements type of the handler effect
+   * @param cd - The command draft configuration
+   * @returns A properly typed CommandDraft
+   */
   export const make = <
     Args extends ReadonlyArray<any>,
     AHandler,
@@ -87,7 +148,27 @@ export namespace CommandDraft {
     return cd
   }
 
-  // add a new inner combinators which runs after the last inner combinator
+  /**
+   * Adds an inner combinator to the command draft. Inner combinators run after the handler
+   * but before outer combinators, and have access to the CommandContext service.
+   *
+   * Inner combinators are executed in FIFO order - the last added combinator runs last.
+   * Inner combinators cannot be added after outer combinators have been added.
+   *
+   * @param inner - The inner combinator function that transforms the effect
+   * @param cd - The command draft in "inner" mode
+   * @returns A new command draft with the inner combinator added
+   *
+   * @example
+   * ```ts
+   * const draft = pipe(
+   *   myDraft,
+   *   CommandDraft.withCombinator(effect =>
+   *     effect.pipe(Effect.map(result => result.toUpperCase()))
+   *   )
+   * )
+   * ```
+   */
   export const withCombinator = dual<
     <
       Args extends ReadonlyArray<any>,
@@ -170,8 +251,28 @@ export namespace CommandDraft {
     }),
   )
 
-  // will add a new outer combinator which runs after all the inner combinators and
-  // after the last outer combinator
+  /**
+   * Adds an outer combinator to the command draft. Outer combinators run after all inner
+   * combinators and do not have access to the CommandContext service.
+   *
+   * Outer combinators are executed in FIFO order - the last added combinator runs last.
+   * Once an outer combinator is added, the draft switches to "outer" mode and no more
+   * inner combinators can be added.
+   *
+   * @param outer - The outer combinator function that transforms the effect
+   * @param cd - The command draft in "inner" or "outer" mode
+   * @returns A new command draft in "outer" mode with the outer combinator added
+   *
+   * @example
+   * ```ts
+   * const draft = pipe(
+   *   myDraft,
+   *   CommandDraft.withOuterCombinator(effect =>
+   *     effect.pipe(Effect.timeout(5000))
+   *   )
+   * )
+   * ```
+   */
   export const withOuterCombinator = dual<
     <
       Args extends ReadonlyArray<any>,
@@ -240,6 +341,26 @@ export namespace CommandDraft {
       }) as any,
   )
 
+  /**
+   * Adds automatic error reporting to the command draft. This outer combinator
+   * catches all failures and reports them through the application's error reporting system.
+   *
+   * Handles different types of errors:
+   * - Interruptions: Logged as info
+   * - Known failures: Reported with action context
+   * - Runtime errors: Reported with full error details
+   *
+   * @param cd - The command draft to add error reporting to
+   * @returns A new command draft with error reporting added as an outer combinator
+   *
+   * @example
+   * ```ts
+   * const draft = pipe(
+   *   myDraft,
+   *   CommandDraft.withErrorReporter
+   * )
+   * ```
+   */
   export const withErrorReporter = <
     Args extends ReadonlyArray<any>,
     ALastIC,
@@ -297,6 +418,34 @@ export namespace CommandDraft {
     )
   }
 
+  /**
+   * Builds the final command from a draft without adding default error reporting.
+   * Use this when you want to handle errors manually or have already added custom error handling.
+   *
+   * The built command returns a computed ref containing:
+   * - A function that executes the command when called
+   * - action: The internationalized action name
+   * - result: The result state of the command execution
+   * - waiting: Boolean indicating if the command is currently executing
+   *
+   * @template Args - The arguments array type for the command handler
+   * @template RLastOC - Requirements type (must extend RT - no other dependencies allowed)
+   * @param cd - The command draft to build (can be in "inner" or "outer" mode)
+   * @returns A computed ref with the executable command and its state
+   *
+   * @example
+   * ```ts
+   * const myCommand = pipe(
+   *   myDraft,
+   *   CommandDraft.buildWithoutDefaultErrorReporter
+   * )
+   *
+   * // Usage
+   * const cmd = myCommand.value
+   * cmd("argument") // Execute command
+   * cmd.waiting // Check if executing
+   * ```
+   */
   export const buildWithoutDefaultErrorReporter = <
     Args extends ReadonlyArray<any>,
     ALastIC,
@@ -349,6 +498,38 @@ export namespace CommandDraft {
     )
   }
 
+  /**
+   * Builds the final command from a draft with default error reporting included.
+   * This is the most common way to build commands as it automatically adds error reporting.
+   *
+   * Equivalent to: `pipe(cd, withErrorReporter, buildWithoutDefaultErrorReporter)`
+   *
+   * The built command returns a computed ref containing:
+   * - A function that executes the command when called
+   * - action: The internationalized action name
+   * - result: The result state of the command execution
+   * - waiting: Boolean indicating if the command is currently executing
+   *
+   * @template Args - The arguments array type for the command handler
+   * @template RLastOC - Requirements type (must extend RT - no other dependencies allowed)
+   * @param cd - The command draft to build (can be in "inner" or "outer" mode)
+   * @returns A computed ref with the executable command and its state
+   *
+   * @example
+   * ```ts
+   * const deleteUser = pipe(
+   *   cmd.fn("deleteUser")(function* (userId: string) {
+   *     return yield* userService.delete(userId)
+   *   }),
+   *   CommandDraft.build
+   * )
+   *
+   * // Usage in component
+   * <button @click="deleteUser('123')" :disabled="deleteUser.waiting">
+   *   {{ deleteUser.action }}
+   * </button>
+   * ```
+   */
   export const build = <
     Args extends ReadonlyArray<any>,
     ALastIC,
@@ -381,6 +562,32 @@ export interface CommandI<A, Args extends ReadonlyArray<any>> {
   set: (...args: Args) => void
 }
 
+/**
+ * Composable that provides command creation utilities with internationalization and toast integration.
+ *
+ * Returns an object containing:
+ * - fn: Creates a new command draft from an action name and handler
+ * - withDefaultToast: Adds automatic toast notifications to commands
+ * - confirmOrInterrupt: Utility for confirmation dialogs within commands
+ *
+ * The returned utilities automatically integrate with the application's i18n system
+ * and toast notification system.
+ *
+ * @returns Command creation utilities with i18n and toast integration
+ *
+ * @example
+ * ```ts
+ * const cmd = useCommand()
+ *
+ * const saveData = pipe(
+ *   cmd.fn("saveData")(function* (data: SaveRequest) {
+ *     return yield* dataService.save(data)
+ *   }),
+ *   cmd.withDefaultToast(),
+ *   CommandDraft.build
+ * )
+ * ```
+ */
 export const useCommand = () => {
   const withToast = useWithToast()
   const { intl } = useIntl()
@@ -388,6 +595,27 @@ export const useCommand = () => {
   // fn and withDefaultToast depend on intl and withToast
   // so I keep their definitions here
 
+  /**
+   * Creates a new command draft from an action name and handler function.
+   *
+   * The action name is used for:
+   * - Span naming in tracing
+   * - Looking up the internationalized action name via `action.${actionName}` key
+   *
+   * @param actionName - The internal action name for tracing and i18n lookup
+   * @returns A curried function that accepts a generator handler and returns a CommandDraft
+   *
+   * @example
+   * ```ts
+   * const cmd = useCommand()
+   *
+   * const deleteUser = cmd.fn("deleteUser")(function* (userId: string) {
+   *   const { action } = yield* CommandContext
+   *   console.log(`Executing: ${action}`)
+   *   return yield* userService.delete(userId)
+   * })
+   * ```
+   */
   const fn =
     (actionName: string) =>
     <
@@ -421,6 +649,33 @@ export const useCommand = () => {
       })
     }
 
+  /**
+   * Adds automatic toast notifications to a command draft for success, failure, and waiting states.
+   *
+   * Provides default internationalized messages for:
+   * - Waiting state: Shows "Processing {action}..." message
+   * - Success state: Shows "Success: {action}" with optional operation message
+   * - Failure state: Shows appropriate error message based on error type
+   *
+   * @param errorRenderer - Optional custom error renderer function. Return undefined to use default rendering.
+   * @returns A function that accepts a CommandDraft and returns it with toast notifications added
+   *
+   * @example
+   * ```ts
+   * const cmd = useCommand()
+   *
+   * const saveUser = pipe(
+   *   cmd.fn("saveUser")(function* (user: User) {
+   *     return yield* userService.save(user)
+   *   }),
+   *   cmd.withDefaultToast((error) => {
+   *     if (error._tag === "ValidationError") return "Please check your input"
+   *     return undefined // Use default error rendering
+   *   }),
+   *   CommandDraft.build
+   * )
+   * ```
+   */
   const withDefaultToast = <
     Args extends ReadonlyArray<any>,
     ALastIC,
@@ -525,7 +780,28 @@ export const useCommand = () => {
   }
 
   return {
-    /** Version of confirmOrInterrupt that automatically includes the action name in the default messages */
+    /**
+     * Utility for showing confirmation dialogs within command effects.
+     * Automatically includes the action name in default confirmation messages.
+     *
+     * Can be used within command handlers to request user confirmation before
+     * proceeding with potentially destructive operations. Uses the CommandContext
+     * to access the current action name for messaging.
+     *
+     * @param message - Optional custom confirmation message. If not provided, uses default i18n message.
+     * @yields The confirmation dialog effect
+     * @throws Interrupts the command if user cancels
+     *
+     * @example
+     * ```ts
+     * const cmd = useCommand()
+     *
+     * const deleteUser = cmd.fn("deleteUser")(function* (userId: string) {
+     *   yield* cmd.confirmOrInterrupt("Are you sure you want to delete this user?")
+     *   return yield* userService.delete(userId)
+     * })
+     * ```
+     */
     confirmOrInterrupt: Effect.fnUntraced(function* (
       message: string | undefined = undefined,
     ) {
@@ -538,7 +814,6 @@ export const useCommand = () => {
           ),
       )
     }),
-    /** Version of withDefaultToast that automatically includes the action name in the default messages and uses intl */
     withDefaultToast,
     fn,
   }
