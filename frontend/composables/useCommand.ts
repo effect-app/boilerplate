@@ -432,92 +432,98 @@ export const useCommand = () => {
     ELastOC,
     RLastOC,
   >(
-    cd: CommandDraft.CommandDraft<
-      Args,
-      ALastIC,
-      ELastIC,
-      RLastIC,
-      ALastOC,
-      ELastOC,
-      RLastOC,
-      "inner"
-    >,
     errorRenderer?: (e: ELastIC) => string | undefined, // undefined falls back to default?
   ) => {
-    return CommandDraft.withCombinator(
-      cd,
-      Effect.fn(function* (self) {
-        const { action } = cd
+    return (
+      cd: CommandDraft.CommandDraft<
+        Args,
+        ALastIC,
+        ELastIC,
+        RLastIC,
+        ALastOC,
+        ELastOC,
+        RLastOC,
+        "inner"
+      >,
+    ) =>
+      CommandDraft.withCombinator(
+        cd,
+        Effect.fn(function* (self) {
+          const { action } = cd
 
-        const defaultWarnMessage = intl.value.formatMessage(
-          { id: "handle.with_warnings" },
-          { action },
-        )
-        const defaultErrorMessage = intl.value.formatMessage(
-          { id: "handle.with_errors" },
-          { action },
-        )
-        function renderError(e: ELastIC): string {
-          if (errorRenderer) {
-            const m = errorRenderer(e)
-            if (m) {
-              return m
-            }
-          }
-          if (!S.is(SupportedErrors)(e) && !S.ParseResult.isParseError(e)) {
-            if (typeof e === "object" && e !== null) {
-              if ("message" in e) {
-                return `${e.message}`
-              }
-              if ("_tag" in e) {
-                return `${e._tag}`
-              }
-            }
-            return ""
-          }
-          const e2: SupportedErrors | S.ParseResult.ParseError = e
-          return Match.value(e2).pipe(
-            Match.tags({
-              ParseError: e => {
-                console.warn(e.toString())
-                return intl.value.formatMessage({ id: "validation.failed" })
-              },
-            }),
-            Match.orElse(e => `${e.message ?? e._tag ?? e}`),
+          const defaultWarnMessage = intl.value.formatMessage(
+            { id: "handle.with_warnings" },
+            { action },
           )
-        }
+          const defaultErrorMessage = intl.value.formatMessage(
+            { id: "handle.with_errors" },
+            { action },
+          )
+          function renderError(e: ELastIC): string {
+            if (errorRenderer) {
+              const m = errorRenderer(e)
+              if (m) {
+                return m
+              }
+            }
+            if (!S.is(SupportedErrors)(e) && !S.ParseResult.isParseError(e)) {
+              if (typeof e === "object" && e !== null) {
+                if ("message" in e) {
+                  return `${e.message}`
+                }
+                if ("_tag" in e) {
+                  return `${e._tag}`
+                }
+              }
+              return ""
+            }
+            const e2: SupportedErrors | S.ParseResult.ParseError = e
+            return Match.value(e2).pipe(
+              Match.tags({
+                ParseError: e => {
+                  console.warn(e.toString())
+                  return intl.value.formatMessage({ id: "validation.failed" })
+                },
+              }),
+              Match.orElse(e => `${e.message ?? e._tag ?? e}`),
+            )
+          }
 
-        return yield* self.pipe(
-          withToast({
-            onWaiting: intl.value.formatMessage(
-              { id: "handle.waiting" },
-              { action },
-            ),
-            onSuccess: a =>
-              intl.value.formatMessage({ id: "handle.success" }, { action }) +
-              (S.is(OperationSuccess)(a) && a.message ? "\n" + a.message : ""),
-            onFailure: Option.match({
-              onNone: () =>
-                intl.value.formatMessage(
-                  { id: "handle.unexpected_error" },
-                  {
-                    action,
-                    error: "-", // TODO consider again Cause.pretty(cause), // will be reported to Sentry/Otel anyway..
-                  },
-                ),
-              onSome: e =>
-                S.is(OperationFailure)(e)
-                  ? {
-                      level: "warn",
-                      message:
-                        defaultWarnMessage + e.message ? "\n" + e.message : "",
-                    }
-                  : `${defaultErrorMessage}:\n` + renderError(e),
+          return yield* self.pipe(
+            withToast({
+              onWaiting: intl.value.formatMessage(
+                { id: "handle.waiting" },
+                { action },
+              ),
+              onSuccess: a =>
+                intl.value.formatMessage({ id: "handle.success" }, { action }) +
+                (S.is(OperationSuccess)(a) && a.message
+                  ? "\n" + a.message
+                  : ""),
+              onFailure: Option.match({
+                onNone: () =>
+                  intl.value.formatMessage(
+                    { id: "handle.unexpected_error" },
+                    {
+                      action,
+                      error: "-", // TODO consider again Cause.pretty(cause), // will be reported to Sentry/Otel anyway..
+                    },
+                  ),
+                onSome: e =>
+                  S.is(OperationFailure)(e)
+                    ? {
+                        level: "warn",
+                        message:
+                          defaultWarnMessage + e.message
+                            ? "\n" + e.message
+                            : "",
+                      }
+                    : `${defaultErrorMessage}:\n` + renderError(e),
+              }),
             }),
-          }),
-        )
-      }),
-    )
+          )
+        }),
+      )
   }
 
   return {
@@ -551,7 +557,7 @@ class MyTag2 extends Context.Tag("MyTag2")<MyTag2, { mytag2: string }>() {}
 //   x => x,
 // )
 
-const pipeTest = pipe(
+const pipeTest1 = pipe(
   CommandDraft.make({
     actionName: "actionName",
     action: "action",
@@ -608,4 +614,32 @@ const pipeTest = pipe(
     self.pipe(Effect.provideService(MyTag, { mytag: "outer" })),
   ),
   CommandDraft.buildWithoutDefaultErrorReporter,
+)
+
+const Cmd = useCommand()
+
+const pipeTest2 = pipe(
+  Cmd.fn("actionName")(function* ({ some: str }: { some: string }) {
+    yield* MyTag
+    yield* CommandContext
+
+    // won't build at the end of the pipeline because it is not provided
+    // yield* MyTag2
+
+    if (str.length < 3) {
+      return yield* new InvalidStateError("too short")
+    } else {
+      return [str.length, str] as const
+    }
+  }),
+  CommandDraft.withCombinator(self =>
+    self.pipe(
+      Effect.provideService(MyTag, { mytag: "inner" }),
+      Effect.catchTag("InvalidStateError", e =>
+        Effect.succeed([-1 as number, e.message] as const),
+      ),
+    ),
+  ),
+  Cmd.withDefaultToast(),
+  CommandDraft.build,
 )
