@@ -18,6 +18,7 @@ import { OperationFailure, OperationSuccess } from "effect-app/Operations"
 import { InvalidStateError, SupportedErrors } from "effect-app/client"
 import type { RT } from "./runtime"
 import type { Covariant } from "effect/Types"
+import { dual } from "effect/Function"
 
 /**
  * Define a Command
@@ -88,87 +89,157 @@ namespace Command {
   }
 
   // add a new inner combinators which runs after the last inner combinator
-  export function withCombinator<
-    Args extends ReadonlyArray<any>,
-    ALastIC,
-    ELastIC,
-    RLastIC,
-    ALastOC,
-    ELastOC,
-    RLastOC,
-    AIC,
-    EIC,
-    RIC,
-  >(
-    cd: CommandDraft<
-      Args,
+  export const withCombinator = dual<
+    <
+      Args extends ReadonlyArray<any>,
       ALastIC,
       ELastIC,
       RLastIC,
       ALastOC,
       ELastOC,
       RLastOC,
-      "inner" // <-- cannot add inner combinators after having added an outer combinator
+      AIC,
+      EIC,
+      RIC,
+    >(
+      inner: (
+        e: Effect.Effect<ALastIC, ELastIC, RLastIC>,
+      ) => Effect.Effect<AIC, EIC, RIC>,
+    ) => (
+      cd: CommandDraft<
+        Args,
+        ALastIC,
+        ELastIC,
+        RLastIC,
+        ALastOC,
+        ELastOC,
+        RLastOC,
+        "inner" // <-- cannot add inner combinators after having added an outer combinator
+      >,
+    ) => CommandDraft<
+      Args,
+      AIC,
+      EIC,
+      RIC,
+      AIC,
+      EIC,
+      Exclude<RIC, CommandContext>, // provided by the in between provideService
+      "inner"
     >,
-    inner: (
-      e: Effect.Effect<ALastIC, ELastIC, RLastIC>,
-    ) => Effect.Effect<AIC, EIC, RIC>,
-  ): CommandDraft<
-    Args,
-    AIC,
-    EIC,
-    RIC,
-    AIC,
-    EIC,
-    Exclude<RIC, CommandContext>, // provided by the in between provideService
-    "inner"
-  > {
-    return make({
+    <
+      Args extends ReadonlyArray<any>,
+      ALastIC,
+      ELastIC,
+      RLastIC,
+      ALastOC,
+      ELastOC,
+      RLastOC,
+      AIC,
+      EIC,
+      RIC,
+    >(
+      cd: CommandDraft<
+        Args,
+        ALastIC,
+        ELastIC,
+        RLastIC,
+        ALastOC,
+        ELastOC,
+        RLastOC,
+        "inner" // <-- cannot add inner combinators after having added an outer combinator
+      >,
+      inner: (
+        e: Effect.Effect<ALastIC, ELastIC, RLastIC>,
+      ) => Effect.Effect<AIC, EIC, RIC>,
+    ) => CommandDraft<
+      Args,
+      AIC,
+      EIC,
+      RIC,
+      AIC,
+      EIC,
+      Exclude<RIC, CommandContext>, // provided by the in between provideService
+      "inner"
+    >
+  >(2, (cd, inner) =>
+    make({
       actionName: cd.actionName,
       action: cd.action,
       handlerE: cd.handlerE,
       innerCombinators: [...cd.innerCombinators, inner] as any,
       outerCombinators: cd.outerCombinators,
-    }) as any
-  }
+    }),
+  )
 
   // will add a new outer combinator which runs after all the inner combinators and
   // after the last outer combinator
-  export function withOuterCombinator<
-    Args extends ReadonlyArray<any>,
-    ALastIC,
-    ELastIC,
-    RLastIC,
-    ALastOC,
-    ELastOC,
-    RLastOC,
-    AOC,
-    EOC,
-    ROC,
-  >(
-    cd: CommandDraft<
-      Args,
+  export const withOuterCombinator = dual<
+    <
+      Args extends ReadonlyArray<any>,
       ALastIC,
       ELastIC,
       RLastIC,
       ALastOC,
       ELastOC,
       RLastOC,
-      "inner" | "outer" // <-- whatever input is fine...
-    >,
-    outer: (
-      e: Effect.Effect<ALastOC, ELastOC, RLastOC>,
-    ) => Effect.Effect<AOC, EOC, ROC>,
-    // ...but "outer" mode is forced as output
-  ): CommandDraft<Args, ALastIC, ELastIC, RLastIC, AOC, EOC, ROC, "outer"> {
-    return make({
-      actionName: cd.actionName,
-      action: cd.action,
-      handlerE: cd.handlerE,
-      innerCombinators: cd.innerCombinators,
-      outerCombinators: [...cd.outerCombinators, outer] as any,
-    }) as any
-  }
+      AOC,
+      EOC,
+      ROC,
+    >(
+      outer: (
+        e: Effect.Effect<ALastOC, ELastOC, RLastOC>,
+      ) => Effect.Effect<AOC, EOC, ROC>,
+    ) => (
+      cd: CommandDraft<
+        Args,
+        ALastIC,
+        ELastIC,
+        RLastIC,
+        ALastOC,
+        ELastOC,
+        RLastOC,
+        "inner" | "outer" // <-- whatever input is fine...
+      >,
+      // ...but "outer" mode is forced as output
+    ) => CommandDraft<Args, ALastIC, ELastIC, RLastIC, AOC, EOC, ROC, "outer">,
+    <
+      Args extends ReadonlyArray<any>,
+      ALastIC,
+      ELastIC,
+      RLastIC,
+      ALastOC,
+      ELastOC,
+      RLastOC,
+      AOC,
+      EOC,
+      ROC,
+    >(
+      cd: CommandDraft<
+        Args,
+        ALastIC,
+        ELastIC,
+        RLastIC,
+        ALastOC,
+        ELastOC,
+        RLastOC,
+        "inner" | "outer" // <-- whatever input is fine...
+      >,
+      outer: (
+        e: Effect.Effect<ALastOC, ELastOC, RLastOC>,
+      ) => Effect.Effect<AOC, EOC, ROC>,
+      // ...but "outer" mode is forced as output
+    ) => CommandDraft<Args, ALastIC, ELastIC, RLastIC, AOC, EOC, ROC, "outer">
+  >(
+    2,
+    (cd, outer) =>
+      make({
+        actionName: cd.actionName,
+        action: cd.action,
+        handlerE: cd.handlerE,
+        innerCombinators: cd.innerCombinators,
+        outerCombinators: [...cd.outerCombinators, outer] as any,
+      }) as any,
+  )
 
   export function withErrorReporter<
     Args extends ReadonlyArray<any>,
@@ -490,10 +561,49 @@ const addOuterCombinatorTest1Ok = Command.withOuterCombinator(
   x => x.pipe(Effect.andThen(n => n * 10)),
 )
 
-useCommand().build(addOuterCombinatorTest1Fail)
-useCommand().build(addOuterCombinatorTest1Ok)
+// useCommand().build(addOuterCombinatorTest1Fail)
+// useCommand().build(addOuterCombinatorTest1Ok)
 
-const addInnerCombinatorTestFail = Command.withCombinator(
-  addOuterCombinatorTest1Ok,
-  x => x,
+// const addInnerCombinatorTestFail = Command.withCombinator(
+//   addOuterCombinatorTest1Ok,
+//   x => x,
+// )
+
+const pipeTest = pipe(
+  Command.make({
+    actionName: "actionName",
+    action: "action",
+    handlerE: Effect.fnUntraced(function* (str: string) {
+      yield* MyTag
+      yield* CommandContext
+
+      if (str.length < 3) {
+        return yield* new InvalidStateError("too short")
+      } else {
+        return [str.length, str] as const
+      }
+    }),
+    innerCombinators: [],
+    outerCombinators: [],
+  }),
+  Command.withCombinator(self =>
+    self.pipe(
+      Effect.catchTag("InvalidStateError", e =>
+        Effect.succeed([-1 as number, e.message] as const),
+      ),
+    ),
+  ),
+  Command.withCombinator(self =>
+    self.pipe(
+      Effect.map(([f]) => f),
+      Effect.provideService(MyTag, { mytag: "test" }),
+    ),
+  ),
+  Command.withOuterCombinator(self =>
+    self.pipe(
+      Effect.andThen(n =>
+        MyTag.pipe(Effect.andThen(service => service.mytag + n)),
+      ),
+    ),
+  ),
 )
