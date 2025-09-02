@@ -297,6 +297,79 @@ namespace CommandDraft {
       ),
     )
   }
+
+  export const buildWithoutErrorReporter = <
+    Args extends ReadonlyArray<any>,
+    ALastIC,
+    ELastIC,
+    RLastIC,
+    ALastOC,
+    ELastOC,
+    RLastOC extends RT, // no other dependencies are allowed
+  >(
+    cd: CommandDraft<
+      Args,
+      ALastIC,
+      ELastIC,
+      RLastIC,
+      ALastOC,
+      ELastOC,
+      RLastOC,
+      "inner" | "outer" // <-- both can be built
+    >,
+  ) => {
+    const context = { action: cd.action }
+
+    const theHandler = pipe(
+      cd.handlerE,
+      ...(cd.innerCombinators as [any]),
+      Effect.provideService(CommandContext, context),
+      _ =>
+        Effect.annotateCurrentSpan({ action: cd.action }).pipe(
+          Effect.zipRight(_),
+        ),
+      ...(cd.outerCombinators as [any]),
+      Effect.withSpan(cd.actionName),
+    ) as any as (...args: Args) => Effect.Effect<ALastOC, ELastOC, RLastOC>
+
+    const [result, mut] = asResult(theHandler)
+
+    return computed(() =>
+      Object.assign(
+        flow(
+          mut,
+          runFork,
+          _ => {},
+        ) /* make sure always create a new one, or the state won't properly propagate */,
+        {
+          action: cd.action,
+          result,
+          waiting: result.value.waiting,
+        },
+      ),
+    )
+  }
+
+  export const build = <
+    Args extends ReadonlyArray<any>,
+    ALastIC,
+    ELastIC,
+    RLastIC,
+    ALastOC,
+    ELastOC,
+    RLastOC extends RT, // no other dependencies are allowed
+  >(
+    cd: CommandDraft<
+      Args,
+      ALastIC,
+      ELastIC,
+      RLastIC,
+      ALastOC,
+      ELastOC,
+      RLastOC,
+      "inner" | "outer" // <-- both can be built
+    >,
+  ) => pipe(cd, withErrorReporter, buildWithoutErrorReporter)
 }
 
 // TODO: wip
@@ -346,50 +419,6 @@ export const useCommand = () => {
         outerCombinators: [],
       })
     }
-
-  const build = <Args extends ReadonlyArray<any>, A, E, R extends RT>(
-    cd: CommandDraft.CommandDraft<
-      Args,
-      any,
-      any,
-      any,
-      A,
-      E,
-      R,
-      "inner" | "outer"
-    >,
-  ) => {
-    const context = { action: cd.action }
-
-    const theHandler = pipe(
-      cd.handlerE,
-      ...(cd.innerCombinators as [any]),
-      Effect.provideService(CommandContext, context),
-      _ =>
-        Effect.annotateCurrentSpan({ action: cd.action }).pipe(
-          Effect.zipRight(_),
-        ),
-      ...(cd.outerCombinators as [any]),
-      Effect.withSpan(cd.actionName),
-    ) as any as (...args: Args) => Effect.Effect<A, E, R>
-
-    const [result, mut] = asResult(theHandler)
-
-    return computed(() =>
-      Object.assign(
-        flow(
-          mut,
-          runFork,
-          _ => {},
-        ) /* make sure always create a new one, or the state won't properly propagate */,
-        {
-          action: cd.action,
-          result,
-          waiting: result.value.waiting,
-        },
-      ),
-    )
-  }
 
   const withDefaultToast = <
     Args extends ReadonlyArray<any>,
@@ -505,26 +534,6 @@ export const useCommand = () => {
     /** Version of withDefaultToast that automatically includes the action name in the default messages and uses intl */
     withDefaultToast,
     fn,
-    build,
-    buildWithErrorReporter: <
-      Args extends ReadonlyArray<any>,
-      A,
-      E,
-      R extends RT,
-    >(
-      cd: CommandDraft.CommandDraft<
-        Args,
-        any,
-        any,
-        any,
-        A,
-        E,
-        R,
-        "inner" | "outer"
-      >,
-    ) => {
-      return build(CommandDraft.withErrorReporter(cd))
-    },
   }
 }
 
@@ -537,8 +546,6 @@ class MyTag extends Context.Tag("MyTag")<MyTag, { mytag: string }>() {}
 //   addOuterCombinatorTest1Ok,
 //   x => x,
 // )
-
-const cmd = useCommand()
 
 const pipeTest = pipe(
   CommandDraft.make({
@@ -588,10 +595,10 @@ const pipeTest = pipe(
   CommandDraft.withErrorReporter,
   //
   // fail because MyTag has not been provided
-  // cmd.build,
+  // CommandDraft.build,
   //
   CommandDraft.withOuterCombinator(self =>
     self.pipe(Effect.provideService(MyTag, { mytag: "outern" })),
   ),
-  cmd.build,
+  CommandDraft.build,
 )
