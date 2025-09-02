@@ -33,15 +33,14 @@ import type { YieldWrap } from "effect/Utils"
  */
 
 // TODOS
-// 2) proper Command definiton
-// 3) various tests, here/on libs
+// 2) proper Command definiton instead of nested refs merged with updater fn
 
 export class CommandContext extends Context.Tag("CommandContext")<
   CommandContext,
   { action: string }
 >() {}
 
-namespace CommandDraft {
+export namespace CommandDraft {
   export interface CommandDraft<
     Args extends ReadonlyArray<any>,
     // we really just need to keep track of the last inner and outer combinators' params
@@ -379,7 +378,6 @@ export interface CommandI<A, Args extends ReadonlyArray<any>> {
     result: Result.Result<void | A, never>
     waiting: boolean
   }>
-  handler: (...a: Args) => Effect.Effect<void | A, never, never>
   set: (...args: Args) => void
 }
 
