@@ -1,13 +1,209 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Cause, Context, Effect, Option, flow, Match, S } from "effect-app"
+import {
+  Cause,
+  Context,
+  Effect,
+  Option,
+  flow,
+  Match,
+  S,
+  pipe,
+} from "effect-app"
 import type * as Result from "@effect-atom/atom/Result"
 import type { YieldWrap } from "effect/Utils"
 import { runFork } from "./client"
 import { asResult, reportRuntimeError } from "@effect-app/vue"
 import { reportMessage } from "@effect-app/vue/errorReporter"
 import { OperationFailure, OperationSuccess } from "effect-app/Operations"
-import { SupportedErrors } from "effect-app/client"
+import { InvalidStateError, SupportedErrors } from "effect-app/client"
+import type { RT } from "./runtime"
 
+// TODOS
+// 1) rewrite withToast and errorReporter as combinators
+// 2) proper Command definiton
+// 3) various tests, here/on libs
+
+export class CommandContext extends Context.Tag("CommandContext")<
+  CommandContext,
+  { action: string }
+>() {}
+
+namespace CommandDraft {
+  export interface CommandDraft<
+    Args extends ReadonlyArray<any>,
+    // TODO: we may do not want to keep track of the original types of the handler
+    AHandler,
+    EHandler,
+    RHandler,
+    // TODO: we may do not want to keep track of the actual types of inner combinators
+    ICs extends ((
+      e: Effect.Effect<any, any, any>,
+    ) => Effect.Effect<any, any, any>)[],
+    // TODO: we may do not want to keep track of the actual types of outer combinators
+    OCs extends ((
+      e: Effect.Effect<any, any, any>,
+    ) => Effect.Effect<any, any, any>)[],
+    // we let the user add inner combinators until they add an outer combinator
+    // because mixing inner and outer combinators can lead to too complex/unsafe type relationships
+    mode extends "inner" | "outer" = "inner",
+    // we really just need to keep track of the last inner and outer combinators' params
+    $ALastIC = AHandler,
+    $ELastIC = EHandler,
+    $RLastIC = RHandler,
+    $ALastOC = $ALastIC,
+    $ELastOC = $ELastIC,
+    $RLastOC = Exclude<$RLastIC, CommandContext>, // provided by the in between provideService
+  > {
+    actionName: string
+    action: string
+    handlerE: (...args: Args) => Effect.Effect<AHandler, EHandler, RHandler>
+    innerCombinators: ICs
+    outerCombinators: OCs
+  }
+
+  export function make<
+    Args extends ReadonlyArray<any>,
+    AHandler,
+    EHandler,
+    RHandler,
+    ICs extends ((
+      e: Effect.Effect<any, any, any>,
+    ) => Effect.Effect<any, any, any>)[],
+    OCs extends ((
+      e: Effect.Effect<any, any, any>,
+    ) => Effect.Effect<any, any, any>)[],
+  >(cd: CommandDraft<Args, AHandler, EHandler, RHandler, ICs, OCs>) {
+    return cd
+  }
+
+  export function addInnerCombinator<
+    Args extends ReadonlyArray<any>,
+    AHandler,
+    EHandler,
+    RHandler,
+    ICs extends ((
+      e: Effect.Effect<any, any, any>,
+    ) => Effect.Effect<any, any, any>)[],
+    OCs extends ((
+      e: Effect.Effect<any, any, any>,
+    ) => Effect.Effect<any, any, any>)[],
+    ALastIC,
+    ELastIC,
+    RLastIC,
+    ALastOC,
+    ELastOC,
+    RLastOC,
+    AIC,
+    EIC,
+    RIC,
+  >(
+    cd: CommandDraft<
+      Args,
+      AHandler,
+      EHandler,
+      RHandler,
+      ICs,
+      OCs,
+      "inner",
+      ALastIC,
+      ELastIC,
+      RLastIC,
+      ALastOC,
+      ELastOC,
+      RLastOC
+    >,
+    inner: (
+      e: Effect.Effect<ALastIC, ELastIC, RLastIC>,
+    ) => Effect.Effect<AIC, EIC, RIC>,
+  ): CommandDraft<
+    Args,
+    AHandler,
+    EHandler,
+    RHandler,
+    ICs,
+    OCs,
+    "inner",
+    AIC,
+    EIC,
+    RIC,
+    AIC,
+    EIC,
+    Exclude<RIC, CommandContext> // provided by the in between provideService
+  > {
+    return make({
+      actionName: cd.actionName,
+      action: cd.action,
+      handlerE: cd.handlerE,
+      innerCombinators: [...cd.innerCombinators, inner] as any,
+      outerCombinators: cd.outerCombinators,
+    })
+  }
+
+  export function addOuterCombinator<
+    Args extends ReadonlyArray<any>,
+    AHandler,
+    EHandler,
+    RHandler,
+    ICs extends ((
+      e: Effect.Effect<any, any, any>,
+    ) => Effect.Effect<any, any, any>)[],
+    OCs extends ((
+      e: Effect.Effect<any, any, any>,
+    ) => Effect.Effect<any, any, any>)[],
+    ALastIC,
+    ELastIC,
+    RLastIC,
+    ALastOC,
+    ELastOC,
+    RLastOC,
+    AOC,
+    EOC,
+    ROC,
+  >(
+    cd: CommandDraft<
+      Args,
+      AHandler,
+      EHandler,
+      RHandler,
+      ICs,
+      OCs,
+      "inner" | "outer",
+      ALastIC,
+      ELastIC,
+      RLastIC,
+      ALastOC,
+      ELastOC,
+      RLastOC
+    >,
+    outer: (
+      e: Effect.Effect<ALastOC, ELastOC, RLastOC>,
+    ) => Effect.Effect<AOC, EOC, ROC>,
+  ): CommandDraft<
+    Args,
+    AHandler,
+    EHandler,
+    RHandler,
+    ICs,
+    OCs,
+    "outer",
+    ALastIC,
+    ELastIC,
+    RLastIC,
+    AOC,
+    EOC,
+    ROC
+  > {
+    return make({
+      actionName: cd.actionName,
+      action: cd.action,
+      handlerE: cd.handlerE,
+      innerCombinators: cd.innerCombinators,
+      outerCombinators: [...cd.outerCombinators, outer] as any,
+    })
+  }
+}
+
+// TODO: wip
 export interface Command<A, Args extends ReadonlyArray<any>> {
   get: ComputedRef<{
     action: string
@@ -17,11 +213,6 @@ export interface Command<A, Args extends ReadonlyArray<any>> {
   handler: (...a: Args) => Effect.Effect<void | A, never, never>
   set: (...args: Args) => void
 }
-
-export class CommandContext extends Context.Tag("CommandContext")<
-  CommandContext,
-  { action: string }
->() {}
 
 export const useCommand = () => {
   const withToast = useWithToast()
@@ -128,7 +319,7 @@ export const useCommand = () => {
      * - waiting: Whether the mutation is currently in progress. (shorthand for .result.waiting). Can be used e.g as Button loading/disabled state.
      * Reporting status to the user is recommended to use the `withDefaultToast` helper, or render the .result inline
      */
-    fn:
+    fnOld:
       (actionName: string) =>
       // TODO constrain/type combinators
       <
@@ -216,5 +407,125 @@ export const useCommand = () => {
           ),
         )
       },
+
+    fn:
+      (actionName: string) =>
+      <
+        Args extends Array<any>,
+        Eff extends YieldWrap<Effect.Effect<any, any, CommandContext | RT>>,
+        AEff,
+        $EEff = Eff extends YieldWrap<Effect.Effect<infer _, infer E, infer __>>
+          ? E
+          : never,
+        $REff = Eff extends YieldWrap<Effect.Effect<infer _, infer __, infer R>>
+          ? R
+          : never,
+      >(
+        handler: (...args: Args) => Generator<Eff, AEff, CommandContext | RT>,
+      ) => {
+        const action = intl.value.formatMessage({
+          id: `action.${actionName}`,
+          defaultMessage: actionName,
+        })
+
+        const handlerE = Effect.fnUntraced(handler) as (
+          ...args: Args
+        ) => Effect.Effect<AEff, $EEff, $REff>
+
+        return CommandDraft.make({
+          actionName,
+          action,
+          handlerE,
+          innerCombinators: [],
+          outerCombinators: [],
+        })
+      },
+
+    build: <Args extends ReadonlyArray<any>, A, E, R extends RT>(
+      cd: CommandDraft.CommandDraft<
+        Args,
+        any,
+        any,
+        any,
+        any,
+        any,
+        "inner" | "outer",
+        any,
+        any,
+        any,
+        A,
+        E,
+        R
+      >,
+    ) => {
+      const context = { action: cd.action }
+
+      const theHandler = pipe(
+        cd.handlerE,
+        ...(cd.innerCombinators as [any]),
+        Effect.provideService(CommandContext, context),
+        _ =>
+          Effect.annotateCurrentSpan({ action: cd.action }).pipe(
+            Effect.zipRight(_),
+          ),
+        ...(cd.outerCombinators as [any]),
+        Effect.withSpan(cd.actionName),
+      ) as any as (...args: Args) => Effect.Effect<A, E, R>
+
+      const [result, mut] = asResult(theHandler)
+
+      return computed(() =>
+        Object.assign(
+          flow(
+            mut,
+            runFork,
+            _ => {},
+          ) /* make sure always create a new one, or the state won't properly propagate */,
+          {
+            action: cd.action,
+            result,
+            waiting: result.value.waiting,
+          },
+        ),
+      )
+    },
   }
 }
+
+class MyTag extends Context.Tag("MyTag")<MyTag, { mytag: string }>() {}
+
+const commandTest = CommandDraft.make({
+  actionName: "actionName",
+  action: "action",
+  handlerE: Effect.fnUntraced(function* (str: string) {
+    yield* MyTag
+    yield* CommandContext
+
+    if (str.length < 3) {
+      return yield* new InvalidStateError("too short")
+    } else {
+      return [str.length, str] as const
+    }
+  }),
+  innerCombinators: [],
+  outerCombinators: [],
+})
+
+const addInnerCombinatorTest1 = CommandDraft.addInnerCombinator(
+  commandTest,
+  x =>
+    x.pipe(
+      Effect.catchTag("InvalidStateError", e =>
+        Effect.succeed([-1 as number, e.message] as const),
+      ),
+    ),
+)
+
+const addInnerCombinatorTest2 = CommandDraft.addInnerCombinator(
+  addInnerCombinatorTest1,
+  x =>
+    x.pipe(
+      Effect.map(([f, s]) => f),
+      Effect.provideService(MyTag, { mytag: "test" }),
+    ),
+)
