@@ -125,8 +125,8 @@ importers:
         specifier: ^0.95.9
         version: 0.95.9
       '@effect-app/cli':
-        specifier: ^1.23.6
-        version: 1.23.6(851357d1fb9a3d50428622e5266ceb42)
+        specifier: ^1.23.17
+        version: 1.23.17(851357d1fb9a3d50428622e5266ceb42)
       '@effect-app/eslint-codegen-model':
         specifier: ^1.42.0
         version: 1.42.0(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))(eslint@9.32.0(jiti@2.5.1))(fp-ts@2.16.9)(typescript@5.9.2(patch_hash=4da39002aa330f7dbf9edc26f352af8d58449ccbc0187226424b67941df916eb))
@@ -937,8 +937,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@effect-app/cli@1.23.6':
-    resolution: {integrity: sha512-SBUXw1tFGeITkx4LTOKL4iQmsi9dxLxX0X+RJLGjbX8/N86d4IRZIZDtpDxaMXDY26RIWPj7FSFUpMS/3uWQIg==}
+  '@effect-app/cli@1.23.17':
+    resolution: {integrity: sha512-538h/tJrk4C9TDEJLYUav0+4fMkBflqOO6tj+uj08g/mC0eK2Nu+zsHWJs28W0fyRsaFIP6Zu0yrT8+dbQw06Q==}
     hasBin: true
 
   '@effect-app/eslint-codegen-model@1.42.0':
@@ -9366,7 +9366,7 @@ snapshots:
   '@dprint/win32-x64@0.50.1':
     optional: true
 
-  '@effect-app/cli@1.23.6(851357d1fb9a3d50428622e5266ceb42)':
+  '@effect-app/cli@1.23.17(851357d1fb9a3d50428622e5266ceb42)':
     dependencies:
       '@effect/cli': 0.69.2(@effect/platform@0.90.0(patch_hash=b5dab0686ec1508dd53620597593e96386f5da74e5d94bf3addcd67ca1054d92)(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(@effect/printer-ansi@0.45.0(@effect/typeclass@0.36.0(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(@effect/printer@0.45.0(@effect/typeclass@0.36.0(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059)))(effect@3.17.6(patch_hash=9c28b2f83f93326763cbf171eadd65ded6753b406afbd7f3fa93aa9c331b2059))
       '@effect/platform-node': 0.94.2(5d6a620fe628c7c3fb609b15ecbe6bdc)
