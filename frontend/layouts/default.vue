@@ -37,7 +37,9 @@ const router = useRouter()
       </QueryResult>
     </v-app-bar>
     <v-main>
-      <slot />
+      <ErrorBoundary>
+        <slot />
+      </ErrorBoundary>
     </v-main>
 
     <v-footer app>
