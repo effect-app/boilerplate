@@ -1,7 +1,7 @@
 import { makeClient } from "@effect-app/vue/makeClient"
 import { useToast } from "vue-toastification"
 import { useIntl } from "./intl"
-import type { Effect } from "effect-app"
+import { Effect } from "effect-app"
 import { clientFor as clientFor_ } from "#resources/lib"
 import { OperationsClient } from "#resources/Operations"
 import type { Requests } from "effect-app/client"
@@ -26,6 +26,9 @@ export const run = <A, E>(
     | undefined,
 ) => runtime.runPromise(effect, options)
 
+export const runFork = <A, E>(effect: Effect.Effect<A, E, RT>) =>
+  runtime.runFork(effect)
+
 export const runSync = <A, E>(effect: Effect.Effect<A, E, RT>) =>
   runtime.runSync(effect)
 
@@ -36,7 +39,18 @@ export const {
   buildFormFromSchema,
   makeUseAndHandleMutation,
   useAndHandleMutation,
+  useAndHandleMutationResult,
   useSafeMutation,
   useSafeMutationWithState,
   useSafeQuery,
+  useSafeSuspenseQuery,
+  useUnsafeMutation,
 } = makeClient(useIntl, useToast, shallowRef(runtime.runtime)) // TODO
+
+export const confirm = (message = "Sind sie Sicher?") =>
+  Effect.sync(() => window.confirm(message))
+
+export const confirmOrInterrupt = (message = "Sind sie Sicher?") =>
+  confirm(message).pipe(
+    Effect.flatMap(result => (result ? Effect.void : Effect.interrupt)),
+  )

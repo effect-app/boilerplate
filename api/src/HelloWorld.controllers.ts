@@ -7,6 +7,7 @@ import { getRequestContext } from "@effect-app/infra/api/setupRequest"
 import { generate } from "@effect-app/infra/test"
 import { Effect, S } from "effect-app"
 
+let state: string = "initial"
 export default Router(HelloWorldRsc)({
   dependencies: [UserRepo.Default],
   *effect(match) {
@@ -27,9 +28,13 @@ export default Router(HelloWorldRsc)({
         return new GetHelloWorld.success({
           context,
           echo,
+          state,
           currentUser: user,
           randomUser: generate(S.A.make(User)).value
         })
+      },
+      *SetState(req) {
+        state = req.state
       }
     })
   }

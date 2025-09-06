@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { HelloWorldRsc } from "#resources"
+import { Effect, S } from "effect-app"
+import { mdiSetAll } from "@mdi/js"
 import {
   useOmegaForm,
   OmegaForm,
   OmegaErrors,
 } from "@effect-app/vue-components"
-import { S } from "effect-app"
 import type { NonEmptyString255, Email } from "effect-app/Schema"
 
 const state = S.Struct({
@@ -45,8 +45,33 @@ const makeReq = () => ({
 
 const req = ref(makeReq())
 
-const helloWorldClient = clientFor(HelloWorldRsc)
-const [result] = useSafeQuery(helloWorldClient.GetHelloWorld, req)
+const { getHelloWorldQuery, setStateMutation } = useHelloWorld()
+const helloWorld = await getHelloWorldQuery.query(req)
+
+const Command = useCommand()
+
+const setState = Command.fn("HelloWorld.SetState")(
+  function* () {
+    const input = { state: new Date().toISOString() }
+
+    yield* Effect.log("before mutate", {
+      input,
+      span: yield* Effect.currentSpan.pipe(Effect.orDie),
+    })
+
+    // Are we sure?
+    yield* Command.confirmOrInterrupt()
+    // simulate slow action to reveal loading/disabled states.
+    yield* Effect.sleep(2 * 1000)
+    const r = yield* setStateMutation(input)
+
+    yield* Effect.log("after mutate", { r, input })
+    return r
+  },
+
+  Command.withDefaultToast,
+  // defects etc are auto reported
+)
 
 // onMounted(() => {
 //   setInterval(() => {
@@ -78,7 +103,23 @@ onMounted(() => {
       <OmegaErrors />
     </OmegaForm>
 
-    <QueryResult v-slot="{ latest, refreshing }" :result="result">
+    <v-btn
+      :disabled="setState.waiting"
+      :loading="setState.waiting"
+      @click="setState"
+    >
+      {{ setState.action }}
+    </v-btn>
+    <!-- alt -->
+    <v-btn
+      :disabled="setState.waiting"
+      :loading="setState.waiting"
+      :title="setState.action"
+      :icon="mdiSetAll"
+      @click="setState"
+    ></v-btn>
+
+    <QueryResult v-slot="{ latest, refreshing }" :result="helloWorld.result">
       <Delayed v-if="refreshing"><v-progress-circular /></Delayed>
       <div>
         <pre v-html="JSON.stringify(latest, undefined, 2)" />
