@@ -63,13 +63,16 @@ const commanderLayer = Commander.Default.pipe(
   Layer.provide([intlLayer, toastLayer]),
 )
 
+const globalLayers = Effect.sync(() => useRuntime().globalLayers).pipe(
+  Layer.unwrapEffect,
+)
 const viewLayers = Layer.mergeAll(Router.Default, intlLayer, toastLayer)
 const provideLayers = Layer.mergeAll(
   commanderLayer,
   viewLayers,
   WithToast.Default.pipe(Layer.provide(toastLayer)),
   Confirm.Default.pipe(Layer.provide(intlLayer)),
-)
+).pipe(Layer.provideMerge(globalLayers))
 
 export const {
   buildFormFromSchema,
