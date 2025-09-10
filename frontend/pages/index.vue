@@ -52,9 +52,9 @@ const [helloWorld] = await getHelloWorldQuery(req)
 const Command = useCommand()
 
 const setState = Command.fn("HelloWorld.SetState")(
-  function* () {
+  function* (fail: boolean) {
     // all state happens to be generated within the command but you're free to accept whichever parameters you like
-    const input = { state: new Date().toISOString() }
+    const input = { state: new Date().toISOString(), fail }
 
     yield* Effect.log("before mutate", {
       input,
@@ -109,9 +109,16 @@ onMounted(() => {
       <OmegaErrors />
     </OmegaForm>
 
-    <CommandButton :command="setState" />
+    <CommandButton :command="setState" :input="[false]" />
     <!-- alt -->
-    <CommandButton :command="setState" empty :icon="mdiSetAll" />
+    <CommandButton
+      :command="setState"
+      empty
+      :icon="mdiSetAll"
+      :input="[false]"
+    />
+
+    <CommandButton :command="setState" :input="[true]">Fail test</CommandButton>
 
     <QueryResult v-slot="{ latest, refreshing }" :result="helloWorld">
       <Delayed v-if="refreshing"><v-progress-circular /></Delayed>

@@ -1,4 +1,5 @@
 import { RequestContext } from "@effect-app/infra/RequestContext"
+import { InvalidStateError } from "effect-app/client"
 import { S } from "./lib.js"
 import { UserView } from "./views.js"
 
@@ -16,8 +17,9 @@ export class GetHelloWorld extends S.Req<GetHelloWorld>()("GetHelloWorld", {
 }, { allowAnonymous: true, allowRoles: ["user"], success: Response }) {}
 
 export class SetState extends S.Req<SetState>()("SetState", {
-  state: S.String
-}, { allowAnonymous: true, allowRoles: ["user"] }) {}
+  state: S.String,
+  fail: S.Boolean
+}, { failure: InvalidStateError, allowAnonymous: true, allowRoles: ["user"] }) {}
 
 // codegen:start {preset: meta, sourcePrefix: src/resources/}
 export const meta = { moduleName: "HelloWorld" } as const

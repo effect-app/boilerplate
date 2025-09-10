@@ -35,7 +35,9 @@ export default Router(HelloWorldRsc)({
         })
       },
       *SetState(req) {
-        return yield* new InvalidStateError("Heute nicht möglich")
+        if (req.fail) {
+          return yield* new InvalidStateError("Heute nicht möglich")
+        }
         state = req.state
       }
     })
