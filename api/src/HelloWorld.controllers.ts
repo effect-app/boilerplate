@@ -6,7 +6,9 @@ import { UserRepo } from "#services"
 import { getRequestContext } from "@effect-app/infra/api/setupRequest"
 import { generate } from "@effect-app/infra/test"
 import { Effect, S } from "effect-app"
+import { InvalidStateError } from "effect-app/client"
 
+let state: string = "initial"
 export default Router(HelloWorldRsc)({
   dependencies: [UserRepo.Default],
   *effect(match) {
@@ -27,9 +29,16 @@ export default Router(HelloWorldRsc)({
         return new GetHelloWorld.success({
           context,
           echo,
+          state,
           currentUser: user,
           randomUser: generate(S.A.make(User)).value
         })
+      },
+      *SetState(req) {
+        if (req.fail) {
+          return yield* new InvalidStateError("Heute nicht möglich")
+        }
+        state = req.state
       }
     })
   }
