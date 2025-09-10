@@ -7,6 +7,7 @@ import {
   OmegaErrors,
 } from "@effect-app/vue-components"
 import type { NonEmptyString255, Email } from "effect-app/Schema"
+import { useHelloWorld } from "~/composables/useHelloWorld"
 
 const state = S.Struct({
   title: S.NonEmptyString255,
@@ -46,7 +47,7 @@ const makeReq = () => ({
 const req = ref(makeReq())
 
 const { getHelloWorldQuery, setStateMutation } = useHelloWorld()
-const helloWorld = await getHelloWorldQuery.query(req)
+const [helloWorld] = await getHelloWorldQuery(req)
 
 const Command = useCommand()
 
@@ -69,7 +70,7 @@ const setState = Command.fn("HelloWorld.SetState")(
     return r
   },
 
-  Command.withDefaultToast,
+  Command.withDefaultToast(),
   // defects etc are auto reported
 )
 
@@ -119,7 +120,7 @@ onMounted(() => {
       @click="setState"
     ></v-btn>
 
-    <QueryResult v-slot="{ latest, refreshing }" :result="helloWorld.result">
+    <QueryResult v-slot="{ latest, refreshing }" :result="helloWorld">
       <Delayed v-if="refreshing"><v-progress-circular /></Delayed>
       <div>
         <pre v-html="JSON.stringify(latest, undefined, 2)" />

@@ -1,0 +1,6 @@
+
+[submodule "doc"]
+	path = doc
+	url = ../boilerplate.wiki.git
+	branch = master
+  update = merge

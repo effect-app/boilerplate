@@ -45,6 +45,12 @@ Add to keybinds:
 }
 ```
 
+## Documentation
+
+The project uses a git submodule (`doc/`) that references the GitHub wiki. Use `effa wiki sync` to initialize/update the documentation submodule.
+
+**Note**: When using this boilerplate for a new project, update the submodule reference in `.gitmodules` to point to your project's wiki and reconfigure the git submodule with `git submodule set-url doc <new-wiki-url>`.
+
 ## Framework documentation
 
 [WIP](https://github.com/effect-ts-app/docs)
