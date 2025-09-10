@@ -53,6 +53,7 @@ const Command = useCommand()
 
 const setState = Command.fn("HelloWorld.SetState")(
   function* () {
+    // all state happens to be generated within the command but you're free to accept whichever parameters you like
     const input = { state: new Date().toISOString() }
 
     yield* Effect.log("before mutate", {
@@ -62,11 +63,15 @@ const setState = Command.fn("HelloWorld.SetState")(
 
     // Are we sure?
     yield* Command.confirmOrInterrupt()
+
+    // act if we are sure
+    const r = yield* setStateMutation(input)
     // simulate slow action to reveal loading/disabled states.
     yield* Effect.sleep(2 * 1000)
-    const r = yield* setStateMutation(input)
 
     yield* Effect.log("after mutate", { r, input })
+    // Do something... route somewhere, close a dialog, etc
+
     return r
   },
 
