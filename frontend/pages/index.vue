@@ -104,21 +104,9 @@ onMounted(() => {
       <OmegaErrors />
     </OmegaForm>
 
-    <v-btn
-      :disabled="setState.waiting"
-      :loading="setState.waiting"
-      @click="setState"
-    >
-      {{ setState.action }}
-    </v-btn>
+    <CommandButton :command="setState" />
     <!-- alt -->
-    <v-btn
-      :disabled="setState.waiting"
-      :loading="setState.waiting"
-      :title="setState.action"
-      :icon="mdiSetAll"
-      @click="setState"
-    ></v-btn>
+    <CommandButton :command="setState" empty :icon="mdiSetAll" />
 
     <QueryResult v-slot="{ latest, refreshing }" :result="helloWorld">
       <Delayed v-if="refreshing"><v-progress-circular /></Delayed>

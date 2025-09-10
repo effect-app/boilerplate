@@ -1,20 +1,12 @@
 import { makeIntl } from "@effect-app/vue"
+import { DefaultIntl } from "@effect-app/vue/experimental/commander"
 
 const messages = {
   de: {
     "action.HelloWorld.SetState": "Hallo Welt Zustand setzen",
 
-    "handle.confirmation": "{action} bestätigen?",
-    "handle.waiting": "{action} wird ausgeführt...",
-    "handle.success": "{action} erfolgreich",
-    "handle.with_errors": "{action} fehlgeschlagen",
-    "handle.with_warnings": "{action} erfolgreich, mit Warnungen",
-    "handle.error_response":
-      "Die Anfrage war nicht erfolgreich:\n{error}\nWir wurden benachrichtigt und werden das Problem in Kürze beheben.",
-    "handle.response_error":
-      "Die Antwort konnte nicht verarbeitet werden:\n{error}",
-    "handle.request_error":
-      "Die Anfrage konnte nicht gesendet werden:\n{error}",
+    ...DefaultIntl.de,
+
     "handle.unexpected_error": "Unerwarteter Fehler:\n{error}",
 
     "validation.empty": `Das Feld darf nicht leer sein`,
@@ -29,15 +21,8 @@ const messages = {
   en: {
     "action.HelloWorld.SetState": "Set Hello World State",
 
-    "handle.confirmation": "Confirm {action}?",
-    "handle.waiting": "{action} executing...",
-    "handle.success": "{action} Success",
-    "handle.with_errors": "{action} Failed",
-    "handle.with_warnings": "{action}, with warnings",
-    "handle.error_response":
-      "There was an error in processing the response:\n{error}\nWe have been notified and will fix the problem shortly.",
-    "handle.request_error": "There was an error in the request:\n{error}",
-    "handle.response_error": "The request was not successful:\n{error}",
+    ...DefaultIntl.en,
+
     "handle.unexpected_error": "Unexpected Error:\n{error}",
 
     "validation.empty": "The field cannot be empty",
