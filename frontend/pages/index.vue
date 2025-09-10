@@ -46,7 +46,7 @@ const makeReq = () => ({
 const req = ref(makeReq())
 
 const helloWorldClient = clientFor(HelloWorldRsc)
-const [result] = useSafeQuery(helloWorldClient.GetHelloWorld, req)
+const [result] = await useSuspenseQuery(helloWorldClient.GetHelloWorld)(req)
 
 // onMounted(() => {
 //   setInterval(() => {
