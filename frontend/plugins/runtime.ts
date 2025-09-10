@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { initializeSync } from "@effect-app/vue/runtime"
 import * as Layer from "effect/Layer"
-import { Effect, Option } from "effect-app"
+import { Effect, Logger, LogLevel, Option } from "effect-app"
 import { WebSdkLive } from "~/utils/observability"
 import "effect-app/builtin"
 import { ref } from "vue"
@@ -11,6 +10,7 @@ import { ApiClientFactory } from "effect-app/client/apiClientFactory"
 import { useRuntimeConfig } from "nuxt/app"
 import { Atom } from "@effect-atom/atom"
 import { RpcClient, RpcSerialization } from "@effect/rpc"
+import { initializeAsync } from "@effect-app/vue"
 
 export const versionMatch = ref(true)
 
@@ -40,21 +40,23 @@ async function makeRuntime(feVersion: string, disableTracing: boolean) {
     headers: Option.none(),
   }).pipe(Layer.provide(OurHttpClient))
 
-  const globalLayers = disableTracing
-    ? Layer.empty
-    : WebSdkLive({
-        serviceName: "effect-app-boilerplate-frontend",
-        serviceVersion: feVersion,
-        attributes: {},
-      })
+  const globalLayers = (
+    disableTracing
+      ? Layer.empty
+      : WebSdkLive({
+          serviceName: "effect-app-boilerplate-frontend",
+          serviceVersion: feVersion,
+          attributes: {},
+        })
+  ).pipe(Layer.provideMerge(Logger.minimumLogLevel(LogLevel.Debug)))
 
-  const rt = await initializeSync(
+  const rt = await initializeAsync(
     apiLayers.pipe(Layer.provideMerge(globalLayers)),
   )
 
   Atom.runtime.addGlobalLayer(globalLayers)
 
-  return Object.assign(rt, { OurHttpClient })
+  return Object.assign(rt, { OurHttpClient, globalLayers })
 }
 
 // TODO: make sure the runtime provides these

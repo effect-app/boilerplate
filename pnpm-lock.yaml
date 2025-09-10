@@ -469,11 +469,11 @@ importers:
   frontend:
     dependencies:
       '@effect-app/vue':
-        specifier: ^2.60.0
-        version: 2.60.0(86622e9a1c3db53f4f2a060bf925b361)
+        specifier: ^2.60.7
+        version: 2.60.7(86622e9a1c3db53f4f2a060bf925b361)
       '@effect-app/vue-components':
-        specifier: ^0.20.0
-        version: 0.20.0(de49717a34e83c31d15a1cf9642c7e9c)
+        specifier: ^0.20.7
+        version: 0.20.7(de49717a34e83c31d15a1cf9642c7e9c)
       '@effect-atom/atom':
         specifier: ^0.1.22
         version: 0.1.22(@effect/experimental@0.54.6(@effect/platform@0.90.8(patch_hash=6ab80f3cd6344e7daa3784a987f3a7d163f0db97baa2534c4e3b3b57afc44c33)(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2)))(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2))(ioredis@5.6.1))(@effect/platform@0.90.8(patch_hash=6ab80f3cd6344e7daa3784a987f3a7d163f0db97baa2534c4e3b3b57afc44c33)(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2)))(@effect/rpc@0.69.2(@effect/platform@0.90.8(patch_hash=6ab80f3cd6344e7daa3784a987f3a7d163f0db97baa2534c4e3b3b57afc44c33)(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2)))(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2)))(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2))
@@ -962,8 +962,8 @@ packages:
       redis: ^3.1.2
       redlock: ^4.2.0
 
-  '@effect-app/vue-components@0.20.0':
-    resolution: {integrity: sha512-oR9Vbz2FPPoGPi0pS5PGLJd8XqujRvaZtLaTYn32lA73rwX5NA2/YB0KuPgIDOlQqLFQ/infhUJAZ4qzVhnafg==}
+  '@effect-app/vue-components@0.20.7':
+    resolution: {integrity: sha512-6Sm050h/V+U0Prcl38Tk7ATXTla/MlVhFErZONlRCtYGKkcJLcWHcbPHk55GCTSv3jqcBt96bgB+cpeDikUCiw==}
     peerDependencies:
       '@mdi/js': ^7.4.47
       effect: 3.17.13
@@ -975,8 +975,8 @@ packages:
       vue: ^3.5.21
       vuetify: ^3.9.7
 
-  '@effect-app/vue@2.60.0':
-    resolution: {integrity: sha512-yDEbVNaccyL0vruN8zYtRsdSKh3qbiljRjKRcZehHJoW5n2JkqMhGFU7MtGgwdY1gSqsD34S/JNxBrueQcv5LA==}
+  '@effect-app/vue@2.60.7':
+    resolution: {integrity: sha512-4XvZanJCMEVts87O23pYZhVbXZdAlxVJ13JeU2cZ/+zvJtAKlT5t42Wv0ewi/gFSD8XspKkheueQUzPcP5FE4A==}
     peerDependencies:
       '@effect-atom/atom': ^0.1.22
       '@effect-atom/atom-vue': ^0.1.20
@@ -9622,9 +9622,9 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@effect-app/vue-components@0.20.0(de49717a34e83c31d15a1cf9642c7e9c)':
+  '@effect-app/vue-components@0.20.7(de49717a34e83c31d15a1cf9642c7e9c)':
     dependencies:
-      '@effect-app/vue': 2.60.0(86622e9a1c3db53f4f2a060bf925b361)
+      '@effect-app/vue': 2.60.7(86622e9a1c3db53f4f2a060bf925b361)
       '@mdi/js': 7.4.47
       '@opentelemetry/api': 1.9.0
       '@tanstack/vue-form': 1.19.5(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
@@ -9648,7 +9648,7 @@ snapshots:
       - '@vue/composition-api'
       - typescript
 
-  '@effect-app/vue@2.60.0(86622e9a1c3db53f4f2a060bf925b361)':
+  '@effect-app/vue@2.60.7(86622e9a1c3db53f4f2a060bf925b361)':
     dependencies:
       '@effect-atom/atom': 0.1.22(@effect/experimental@0.54.6(@effect/platform@0.90.8(patch_hash=6ab80f3cd6344e7daa3784a987f3a7d163f0db97baa2534c4e3b3b57afc44c33)(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2)))(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2))(ioredis@5.6.1))(@effect/platform@0.90.8(patch_hash=6ab80f3cd6344e7daa3784a987f3a7d163f0db97baa2534c4e3b3b57afc44c33)(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2)))(@effect/rpc@0.69.2(@effect/platform@0.90.8(patch_hash=6ab80f3cd6344e7daa3784a987f3a7d163f0db97baa2534c4e3b3b57afc44c33)(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2)))(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2)))(effect@3.17.13(patch_hash=df600697c619ed6ebecb7834703859278fdbdc931d55d19f5990d8536e428ad2))
       '@effect-atom/atom-vue': 0.1.20(30a78fdbacfe68f6d1a75b440117f98c)
