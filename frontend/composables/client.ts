@@ -97,13 +97,26 @@ export type ToCamel<S extends string | number | symbol> = S extends string
   : never
 
 const mapQuery = <M extends Requests>(
-  client: RequestHandlers<never, never, Omit<M, "meta">>,
+  client: RequestHandlers<
+    never,
+    never,
+    Omit<M, "meta">,
+    M["meta"]["moduleName"]
+  >,
 ) => {
   const queries = Struct.keys(client).reduce(
     (acc, key) => {
-      ;(acc as any)[camelCase(key) + "Query"] = useQuery(client[key] as any)
-      ;(acc as any)[camelCase(key) + "SuspenseQuery"] = useSuspenseQuery(
-        client[key] as any,
+      ;(acc as any)[camelCase(key) + "Query"] = Object.assign(
+        useQuery(client[key] as any),
+        {
+          action: client[key].name,
+        },
+      )
+      ;(acc as any)[camelCase(key) + "SuspenseQuery"] = Object.assign(
+        useSuspenseQuery(client[key] as any),
+        {
+          action: client[key].name,
+        },
       )
       return acc
     },
@@ -113,16 +126,18 @@ const mapQuery = <M extends Requests>(
         infer A,
         infer E,
         infer _R,
-        infer Request
+        infer Request,
+        infer Name
       >
-        ? ReturnType<typeof useQuery<I, E, A, Request>>
+        ? ReturnType<typeof useQuery<I, E, A, Request, Name>> & { action: Name }
         : (typeof client)[Key] extends RequestHandler<
               infer A,
               infer E,
               infer _R,
-              infer Request
+              infer Request,
+              infer Name
             >
-          ? ReturnType<typeof useQuery<E, A, Request>>
+          ? ReturnType<typeof useQuery<E, A, Request, Name>> & { action: Name }
           : never
     } & {
       // todo: or suspense as an Option?
@@ -131,16 +146,22 @@ const mapQuery = <M extends Requests>(
         infer A,
         infer E,
         infer _R,
-        infer Request
+        infer Request,
+        infer Name
       >
-        ? ReturnType<typeof useSuspenseQuery<I, E, A, Request>>
+        ? ReturnType<typeof useSuspenseQuery<I, E, A, Request, Name>> & {
+            action: Name
+          }
         : (typeof client)[Key] extends RequestHandler<
               infer A,
               infer E,
               infer _R,
-              infer Request
+              infer Request,
+              infer Name
             >
-          ? ReturnType<typeof useSuspenseQuery<E, A, Request>>
+          ? ReturnType<typeof useSuspenseQuery<E, A, Request, Name>> & {
+              action: Name
+            }
           : never
     },
   )
@@ -148,12 +169,20 @@ const mapQuery = <M extends Requests>(
 }
 
 const mapMutation = <M extends Requests>(
-  client: RequestHandlers<never, never, Omit<M, "meta">>,
+  client: RequestHandlers<
+    never,
+    never,
+    Omit<M, "meta">,
+    M["meta"]["moduleName"]
+  >,
 ) => {
   const mutations = Struct.keys(client).reduce(
     (acc, key) => {
-      ;(acc as any)[camelCase(key) + "Mutation"] = useMutation(
-        client[key] as any,
+      ;(acc as any)[camelCase(key) + "Mutation"] = Object.assign(
+        useMutation(client[key] as any),
+        {
+          action: client[key].name,
+        },
       )
       return acc
     },
@@ -163,16 +192,22 @@ const mapMutation = <M extends Requests>(
         infer A,
         infer E,
         infer R,
-        infer Request
+        infer Request,
+        infer Name
       >
-        ? ReturnType<typeof useMutation<I, E, A, R, Request>>
+        ? ReturnType<typeof useMutation<I, E, A, R, Request, Name>> & {
+            action: Name
+          }
         : (typeof client)[Key] extends RequestHandler<
               infer A,
               infer E,
               infer R,
-              infer Request
+              infer Request,
+              infer Name
             >
-          ? ReturnType<typeof useMutation<E, A, R, Request>>
+          ? ReturnType<typeof useMutation<E, A, R, Request, Name>> & {
+              action: Name
+            }
           : never
     },
   )
@@ -182,7 +217,12 @@ const mapMutation = <M extends Requests>(
 // make available .query, .suspense and .mutate for each operation
 // and a .helpers with all mutations and queries
 export const mapClient = <M extends Requests>(
-  client: RequestHandlers<never, never, Omit<M, "meta">>,
+  client: RequestHandlers<
+    never,
+    never,
+    Omit<M, "meta">,
+    M["meta"]["moduleName"]
+  >,
 ) => {
   const extended = Struct.keys(client).reduce(
     (acc, key) => {
@@ -201,16 +241,18 @@ export const mapClient = <M extends Requests>(
           infer A,
           infer E,
           infer _R,
-          infer Request
+          infer Request,
+          infer Name
         >
-          ? ReturnType<typeof useQuery<I, E, A, Request>>
+          ? ReturnType<typeof useQuery<I, E, A, Request, Name>>
           : (typeof client)[Key] extends RequestHandler<
                 infer A,
                 infer E,
                 infer _R,
-                infer Request
+                infer Request,
+                infer Name
               >
-            ? ReturnType<typeof useQuery<E, A, Request>>
+            ? ReturnType<typeof useQuery<E, A, Request, Name>>
             : never
         // TODO or suspense as Option?
         suspense: (typeof client)[Key] extends RequestHandlerWithInput<
@@ -218,32 +260,36 @@ export const mapClient = <M extends Requests>(
           infer A,
           infer E,
           infer _R,
-          infer Request
+          infer Request,
+          infer Name
         >
-          ? ReturnType<typeof useSuspenseQuery<I, E, A, Request>>
+          ? ReturnType<typeof useSuspenseQuery<I, E, A, Request, Name>>
           : (typeof client)[Key] extends RequestHandler<
                 infer A,
                 infer E,
                 infer _R,
-                infer Request
+                infer Request,
+                infer Name
               >
-            ? ReturnType<typeof useSuspenseQuery<E, A, Request>>
+            ? ReturnType<typeof useSuspenseQuery<E, A, Request, Name>>
             : never
         mutate: (typeof client)[Key] extends RequestHandlerWithInput<
           infer I,
           infer A,
           infer E,
           infer R,
-          infer Request
+          infer Request,
+          infer Name
         >
-          ? ReturnType<typeof useMutation<I, E, A, R, Request>>
+          ? ReturnType<typeof useMutation<I, E, A, R, Request, Name>>
           : (typeof client)[Key] extends RequestHandler<
                 infer A,
                 infer E,
                 infer R,
-                infer Request
+                infer Request,
+                infer Name
               >
-            ? ReturnType<typeof useMutation<E, A, R, Request>>
+            ? ReturnType<typeof useMutation<E, A, R, Request, Name>>
             : never
       }
     },
