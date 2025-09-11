@@ -1,17 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Effect } from "effect-app"
-import type {
-  RouteLocationAsPath,
-  RouteLocationAsRelative,
-  RouteLocationAsRelativeTyped,
-  RouteLocationAsString,
-  RouteLocationNormalizedLoaded,
-  RouteLocationRaw,
-  RouteLocationResolved,
-  RouteMap,
-  RouteRecordNameGeneric,
-  RouteRecordRaw,
-} from "vue-router"
+import type { RouteLocationAsPath, RouteLocationAsRelative, RouteLocationAsRelativeTyped, RouteLocationAsString, RouteLocationNormalizedLoaded, RouteLocationRaw, RouteLocationResolved, RouteMap, RouteRecordNameGeneric, RouteRecordRaw } from "vue-router"
 
 /**
  * Effectified version of `useRouter`
@@ -24,14 +13,14 @@ export const useEffectRouter = () => {
     current,
     replace: (to: RouteLocationRaw) => Effect.promise(() => r.replace(to)),
     push: (to: RouteLocationRaw) => Effect.promise(() => r.push(to)),
-    isReady: Effect.promise(() => r.isReady()),
+    isReady: Effect.promise(() => r.isReady())
   }
   return effectified
 }
 
 export class Router extends Effect.Service<Router>()("Router", {
   sync: useEffectRouter,
-  accessors: true,
+  accessors: true
 }) {
   static readonly addRoute: {
     /**
@@ -42,7 +31,7 @@ export class Router extends Effect.Service<Router>()("Router", {
      */
     (
       parentName: NonNullable<RouteRecordNameGeneric>,
-      route: RouteRecordRaw,
+      route: RouteRecordRaw
     ): Effect.Effect<void, never, Router>
     /**
      * Add a new {@link RouteRecordRaw | route record} to the router.
@@ -50,8 +39,7 @@ export class Router extends Effect.Service<Router>()("Router", {
      * @param route - Route Record to add
      */
     (route: RouteRecordRaw): Effect.Effect<void, never, Router>
-  } = ((...args: any[]) =>
-    Router.use(_ => _.addRoute(...(args as [any, any])))) as any
+  } = ((...args: any[]) => Router.use((_) => _.addRoute(...(args as [any, any])))) as any
 
   static override readonly resolve: {
     /**
@@ -65,11 +53,11 @@ export class Router extends Effect.Service<Router>()("Router", {
      */
     <Name extends keyof RouteMap = keyof RouteMap>(
       to: RouteLocationAsRelativeTyped<RouteMap, Name>,
-      currentLocation?: RouteLocationNormalizedLoaded,
+      currentLocation?: RouteLocationNormalizedLoaded
     ): Effect.Effect<RouteLocationResolved<Name>, never, Router>
     (
       to: RouteLocationAsString | RouteLocationAsRelative | RouteLocationAsPath,
-      currentLocation?: RouteLocationNormalizedLoaded,
+      currentLocation?: RouteLocationNormalizedLoaded
     ): Effect.Effect<RouteLocationResolved, never, Router>
-  } = (...args: any[]) => Router.use(_ => _.resolve(...(args as [any, any])))
+  } = (...args: any[]) => Router.use((_) => _.resolve(...(args as [any, any])))
 }

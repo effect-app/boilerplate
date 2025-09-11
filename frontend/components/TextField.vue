@@ -4,16 +4,20 @@
     v-bind="$props"
     :model-value="convertIn(props.modelValue as any, field.type)"
     :required="field.metadata.required"
-    :rules="
-      props.extraRules ? [...props.extraRules, ...field.rules] : field.rules
-    "
+    :rules="props.extraRules ? [...props.extraRules, ...field.rules] : field.rules"
     color="primary"
-    @update:model-value="value => convertOut(value, updateValue, field.type)"
+    @update:model-value="(value) => convertOut(value, updateValue, field.type)"
   >
     <!-- pass down slots -->
     <!-- @vue-skip -->
-    <template v-for="(_, name) in $slots" #[name]="slotData">
-      <slot :name="name" v-bind="slotData" />
+    <template
+      v-for="(_, name) in $slots"
+      #[name]="slotData"
+    >
+      <slot
+        :name="name"
+        v-bind="slotData"
+      />
     </template>
   </v-text-field>
 </template>
@@ -21,11 +25,12 @@
 import type { FieldInfo } from "@/composables/form"
 import { VTextField } from "vuetify/components"
 
-export interface Fields
-  extends /* @vue-ignore */ Omit<
+export interface Fields extends
+  /* @vue-ignore */ Omit<
     InstanceType<typeof VTextField>["$props"],
     "modelValue" | "update:modelValue"
-  > {
+  >
+{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   field: FieldInfo<any>
   extraRules?: InstanceType<typeof VTextField>["$props"]["rules"]

@@ -12,25 +12,25 @@ const config = useRuntimeConfig()
     {{
       Cause.failureOrCause(cause).pipe(
         Either.match({
-          onLeft: error =>
+          onLeft: (error) =>
             Match.value(error as SupportedErrors).pipe(
               Match.tags({
                 NotFoundError: () => "Nicht gefunden",
                 NotLoggedInError: () => "Sie mussen eingelogt sein",
 
                 UnauthorizedError: () =>
-                  "Sie sind nicht berechtigt, diese Aktion auszuführen",
+                  "Sie sind nicht berechtigt, diese Aktion auszuführen"
               }),
               Match.orElse(
                 () =>
-                  "Es ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem in Kürze beheben. Versuchen Sie es erneut.",
-              ),
+                  "Es ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem in Kürze beheben. Versuchen Sie es erneut."
+              )
             ),
-          onRight: cause =>
+          onRight: (cause) =>
             Cause.isInterrupted(cause)
               ? "Die Anfrage wurde unterbrochen"
-              : "Es ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem in Kürze beheben. Versuchen Sie es erneut.",
-        }),
+              : "Es ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem in Kürze beheben. Versuchen Sie es erneut."
+        })
       )
     }}
     <div v-if="config.public.env !== 'prod'">

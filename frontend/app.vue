@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useIntl } from "./composables/intl"
 import { provideIntl } from "@effect-app/vue-components"
+import { useIntl } from "./composables/intl"
 
 const intl = useIntl()
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

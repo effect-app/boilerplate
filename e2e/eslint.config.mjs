@@ -1,4 +1,4 @@
-import { augmentedConfig } from "../eslint.base.config.mjs"
+import { augmentedConfig } from "@effect-app/eslint-shared-config/eslint.base.config"
 
 import path from "node:path"
 import { fileURLToPath } from "node:url"

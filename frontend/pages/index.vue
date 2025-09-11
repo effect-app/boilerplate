@@ -1,19 +1,15 @@
 <script setup lang="ts">
-import { Effect, S } from "effect-app"
+import { OmegaErrors, OmegaForm, useOmegaForm } from "@effect-app/vue-components"
 import { mdiSetAll } from "@mdi/js"
-import {
-  useOmegaForm,
-  OmegaForm,
-  OmegaErrors,
-} from "@effect-app/vue-components"
-import type { NonEmptyString255, Email } from "effect-app/Schema"
+import { Effect, S } from "effect-app"
+import type { Email, NonEmptyString255 } from "effect-app/Schema"
 import { useHelloWorld } from "~/composables/useHelloWorld"
 
 const state = S.Struct({
   title: S.NonEmptyString255,
   name: S.NonEmptyString2k,
   age: S.NonNegativeInt,
-  email: S.Email,
+  email: S.Email
 })
 
 const form = useOmegaForm(state, {
@@ -21,19 +17,19 @@ const form = useOmegaForm(state, {
     title: "",
     name: "",
     age: 0,
-    email: "",
+    email: ""
   },
   onSubmit: async ({ value }: { value: typeof state.Encoded }) => {
     const trimmedValue = {
       title: value.title.trim() as NonEmptyString255,
       name: value.name.trim() as NonEmptyString255,
       age: value.age,
-      email: value.email.trim() as Email,
+      email: value.email.trim() as Email
     }
     await Promise.resolve(
-      confirm("submitting: " + JSON.stringify(trimmedValue)),
+      confirm("submitting: " + JSON.stringify(trimmedValue))
     )
-  },
+  }
 })
 
 const onReset = () => {
@@ -41,7 +37,7 @@ const onReset = () => {
 }
 
 const makeReq = () => ({
-  echo: "Echo me at: " + new Date().getTime(),
+  echo: "Echo me at: " + new Date().getTime()
 })
 
 const req = ref(makeReq())
@@ -52,13 +48,13 @@ const [helloWorld] = await getHelloWorldQuery(req)
 const Command = useCommand()
 
 const setState = Command.fn("HelloWorld.SetState")(
-  function* (fail: boolean) {
+  function*(fail: boolean) {
     // all state happens to be generated within the command but you're free to accept whichever parameters you like
     const input = { state: new Date().toISOString(), fail }
 
     yield* Effect.log("before mutate", {
       input,
-      span: yield* Effect.currentSpan.pipe(Effect.orDie),
+      span: yield* Effect.currentSpan.pipe(Effect.orDie)
     })
 
     // Are we sure?
@@ -74,8 +70,7 @@ const setState = Command.fn("HelloWorld.SetState")(
 
     return r
   },
-
-  Command.withDefaultToast(),
+  Command.withDefaultToast()
   // defects etc are auto reported
 )
 
@@ -98,18 +93,43 @@ onMounted(() => {
 <template>
   Hi world!
   <div>
-    <OmegaForm :form="form" :subscribe="['isDirty', 'isSubmitting']">
+    <OmegaForm
+      :form="form"
+      :subscribe="['isDirty', 'isSubmitting']"
+    >
       <!-- TODO: field.type text, or via length, or is multiLine -->
-      <form.Input name="title" label="title" />
-      <form.Input name="name" label="name" />
-      <form.Input name="age" label="age" />
-      <form.Input name="email" label="email" />
-      <v-btn type="submit">Submit</v-btn>
-      <v-btn type="reset" @click="onReset">Clear</v-btn>
+      <form.Input
+        name="title"
+        label="title"
+      />
+      <form.Input
+        name="name"
+        label="name"
+      />
+      <form.Input
+        name="age"
+        label="age"
+      />
+      <form.Input
+        name="email"
+        label="email"
+      />
+      <v-btn type="submit">
+        Submit
+      </v-btn>
+      <v-btn
+        type="reset"
+        @click="onReset"
+      >
+        Clear
+      </v-btn>
       <OmegaErrors />
     </OmegaForm>
 
-    <CommandButton :command="setState" :input="[false]" />
+    <CommandButton
+      :command="setState"
+      :input="[false]"
+    />
     <!-- alt -->
     <CommandButton
       :command="setState"
@@ -118,10 +138,20 @@ onMounted(() => {
       :input="[false]"
     />
 
-    <CommandButton :command="setState" :input="[true]">Fail test</CommandButton>
+    <CommandButton
+      :command="setState"
+      :input="[true]"
+    >
+      Fail test
+    </CommandButton>
 
-    <QueryResult v-slot="{ latest, refreshing }" :result="helloWorld">
-      <Delayed v-if="refreshing"><v-progress-circular /></Delayed>
+    <QueryResult
+      v-slot="{ latest, refreshing }"
+      :result="helloWorld"
+    >
+      <Delayed v-if="refreshing">
+        <v-progress-circular />
+      </Delayed>
       <div>
         <pre v-html="JSON.stringify(latest, undefined, 2)" />
       </div>

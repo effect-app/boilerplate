@@ -1,4 +1,4 @@
-export default defineNuxtRouteMiddleware(_ => {
+export default defineNuxtRouteMiddleware((_) => {
   const userId = getUserId()
 
   if (!userId.value) {

@@ -2,7 +2,10 @@
   <div>
     <FixedNuxtErrorBoundary @error="handleError">
       <template #error="{ error }">
-        <slot name="error" :error="error as E">
+        <slot
+          name="error"
+          :error="error as E"
+        >
           <p>
             An unexpected error occurred
             <span v-if="config.public.env !== 'prod'">{{ error }}</span>
@@ -45,15 +48,15 @@ type Props = WithGuard | WithOnError
 
 const props = withDefaults(defineProps<Props>(), {
   timeout: 500,
-  guard: undefined,
+  guard: undefined
 })
 
 const handleError = (error: Error) => {
   // if a custom error handler is provided, and it returns true, we consider the error handled
   if (
-    "errorHandler" in props &&
-    props.errorHandler &&
-    props.errorHandler(error)
+    "errorHandler" in props
+    && props.errorHandler
+    && props.errorHandler(error)
   ) {
     return
   }

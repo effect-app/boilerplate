@@ -1,7 +1,14 @@
 <template>
-  <slot v-if="error" v-bind="{ error, clearError }" name="error" />
+  <slot
+    v-if="error"
+    v-bind="{ error, clearError }"
+    name="error"
+  />
 
-  <slot v-else name="default" />
+  <slot
+    v-else
+    name="default"
+  />
 </template>
 
 <script setup lang="ts">
@@ -11,7 +18,7 @@ import { onErrorCaptured, shallowRef } from "vue"
 
 defineOptions({
   name: "NuxtErrorBoundary",
-  inheritAttrs: false,
+  inheritAttrs: false
 })
 
 const emit = defineEmits<{
@@ -19,7 +26,9 @@ const emit = defineEmits<{
 }>()
 
 defineSlots<{
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error(props: { error: Error; clearError: () => void }): any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   default(): any
 }>()
 
@@ -50,10 +59,11 @@ if (import.meta.client) {
     // e.g when we run useSafeSuspenseQuery, and we navigate away before a query is finished, we get a CancelledError
     // if we however render it here instead of the default slot, we will show the cancellation error of the previous page, instead of rendering the new page
     if (
-      Runtime.isFiberFailure(error.value) &&
-      Cause.isInterruptedOnly(error.value[Runtime.FiberFailureCauseId])
-    )
+      Runtime.isFiberFailure(error.value)
+      && Cause.isInterruptedOnly(error.value[Runtime.FiberFailureCauseId])
+    ) {
       return
+    }
 
     emit("error", err)
 

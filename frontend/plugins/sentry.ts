@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/vue"
 
-export default defineNuxtPlugin(nuxtApp => {
+export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig()
   Sentry.init({
     app: nuxtApp.vueApp,
@@ -16,15 +16,15 @@ export default defineNuxtPlugin(nuxtApp => {
     beforeSend(event, hint) {
       if (
         // skip handled errors
-        hint.originalException &&
-        typeof hint.originalException === "object" &&
-        "name" in hint.originalException &&
-        hint.originalException["name"] === "HandledError"
+        hint.originalException
+        && typeof hint.originalException === "object"
+        && "name" in hint.originalException
+        && hint.originalException["name"] === "HandledError"
       ) {
         console.warn("Sentry: skipped HandledError", hint.originalException)
         return null
       }
       return event
-    },
+    }
   })
 })

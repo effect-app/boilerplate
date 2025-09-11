@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { AccountsRsc } from "#resources"
-import { useRouter } from "vue-router"
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
+import { useRouter } from "vue-router"
 
 const accountsClient = clientFor(AccountsRsc)
 const [userResult] = useQuery(accountsClient.GetMe)()
 
 const appConfig = {
-  title: "@effect-app/boilerplate",
+  title: "@effect-app/boilerplate"
 }
 
 useHead({
-  title: appConfig.title,
+  title: appConfig.title
 })
 
 const router = useRouter()
@@ -21,7 +21,9 @@ const router = useRouter()
   <v-app>
     <v-app-bar app>
       <v-app-bar-title>
-        <NuxtLink :to="{ name: 'index' }">Home</NuxtLink>
+        <NuxtLink :to="{ name: 'index' }">
+          Home
+        </NuxtLink>
       </v-app-bar-title>
 
       <div>{{ router.currentRoute.value.name }}</div>

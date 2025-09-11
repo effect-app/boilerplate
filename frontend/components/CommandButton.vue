@@ -1,4 +1,11 @@
-<script setup lang="ts" generic="I extends NonEmptyReadonlyArray<any> = never">
+<script
+  setup
+  lang="ts"
+  generic="
+  I extends NonEmptyReadonlyArray<any> =
+    never
+"
+>
 import type { NonEmptyReadonlyArray } from "effect/Array"
 import type { VBtn } from "vuetify/components"
 
@@ -8,28 +15,28 @@ type VBtnProps = VBtn["$props"]
 interface ButtonProps extends VBtnProps {}
 
 const props = defineProps<
-  (
+  & (
     | {
-        input: NoInfer<I>
-        command: {
-          handle: (...input: I) => void
-          waiting: boolean
-          action: string
-        }
-        empty?: boolean
-        title?: string // why isn't it part of VBtnProps??
+      input: NoInfer<I>
+      command: {
+        handle: (...input: I) => void
+        waiting: boolean
+        action: string
       }
+      empty?: boolean
+      title?: string // why isn't it part of VBtnProps??
+    }
     | {
-        command: {
-          handle: () => void
-          waiting: boolean
-          action: string
-        }
-        empty?: boolean
-        title?: string // why isn't it part of VBtnProps??
+      command: {
+        handle: () => void
+        waiting: boolean
+        action: string
       }
-  ) &
-    ButtonProps
+      empty?: boolean
+      title?: string // why isn't it part of VBtnProps??
+    }
+  )
+  & ButtonProps
 >()
 </script>
 <template>
@@ -39,13 +46,11 @@ const props = defineProps<
     :loading="command.waiting"
     :disabled="command.waiting || disabled"
     :title="title"
-    @click="
-      command.handle(
-        ...((`input` in props && props.input
-          ? props.input
-          : []) as unknown as I),
-      )
-    "
+    @click="command.handle(
+      ...((`input` in props && props.input
+        ? props.input
+        : []) as unknown as I)
+    )"
   >
     <slot>
       <span>{{ command.action }}</span>
@@ -57,12 +62,10 @@ const props = defineProps<
     :loading="command.waiting"
     :disabled="command.waiting || disabled"
     :title="title ?? command.action"
-    @click="
-      command.handle(
-        ...((`input` in props && props.input
-          ? props.input
-          : []) as unknown as I),
-      )
-    "
+    @click="command.handle(
+      ...((`input` in props && props.input
+        ? props.input
+        : []) as unknown as I)
+    )"
   />
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <Suspender :error-handler="_ => true">
+  <Suspender :error-handler="(_) => true">
     <template #error="{ error }">
       <v-container>
         <div>
@@ -12,8 +12,12 @@
             <span v-if="config.public.env !== 'prod'">{{ error }}</span>
           </p>
         </div>
-        <br />
-        <div><v-btn @click="reload()">Seite neu laden</v-btn></div>
+        <br>
+        <div>
+          <v-btn @click="reload()">
+            Seite neu laden
+          </v-btn>
+        </div>
       </v-container>
     </template>
     <slot />

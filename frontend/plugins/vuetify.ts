@@ -6,7 +6,7 @@ import { aliases, mdi } from "vuetify/iconsets/mdi-svg"
 
 import "vuetify/styles"
 
-export default defineNuxtPlugin(nuxtApp => {
+export default defineNuxtPlugin((nuxtApp) => {
   const vuetify = createVuetify({
     theme: {
       defaultTheme: "dark",
@@ -15,15 +15,15 @@ export default defineNuxtPlugin(nuxtApp => {
           colors: {
             primary: "#EBF857",
             secondary: "#03A9F4",
-            warning: "#E91E63",
-          },
-        },
+            warning: "#E91E63"
+          }
+        }
       },
       variations: {
         colors: ["primary", "secondary"],
         lighten: 1,
-        darken: 2,
-      },
+        darken: 2
+      }
     },
     components,
     directives,
@@ -31,17 +31,17 @@ export default defineNuxtPlugin(nuxtApp => {
       defaultSet: "mdi",
       aliases,
       sets: {
-        mdi,
-      },
+        mdi
+      }
     },
     display: {
       thresholds: {
         xs: 340,
         sm: 540,
         md: 800,
-        lg: 1280,
-      },
-    },
+        lg: 1280
+      }
+    }
   })
 
   nuxtApp.vueApp.use(vuetify)
