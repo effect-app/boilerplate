@@ -4,7 +4,7 @@ import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
 import { useRouter } from "vue-router"
 
 const accountsClient = clientFor(AccountsRsc)
-const [userResult] = useQuery(accountsClient.GetMe)()
+const [userResult] = accountsClient.GetMe.query()
 
 const appConfig = {
   title: "@effect-app/boilerplate"
