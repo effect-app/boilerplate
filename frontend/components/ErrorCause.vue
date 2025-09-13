@@ -18,8 +18,7 @@ const config = useRuntimeConfig()
                 NotFoundError: () => "Nicht gefunden",
                 NotLoggedInError: () => "Sie mussen eingelogt sein",
 
-                UnauthorizedError: () =>
-                  "Sie sind nicht berechtigt, diese Aktion auszuführen"
+                UnauthorizedError: () => "Sie sind nicht berechtigt, diese Aktion auszuführen"
               }),
               Match.orElse(
                 () =>

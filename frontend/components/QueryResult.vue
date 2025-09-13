@@ -19,10 +19,8 @@
                 Match.value(error as SupportedErrors).pipe(
                   Match.tags({
                     NotFoundError: () => "Nicht gefunden",
-                    NotLoggedInError: () =>
-                      "Sie mussen eingelogt sein",
-                    UnauthorizedError: () =>
-                      "Sie sind nicht berechtigt, diese Aktion auszuführen"
+                    NotLoggedInError: () => "Sie mussen eingelogt sein",
+                    UnauthorizedError: () => "Sie sind nicht berechtigt, diese Aktion auszuführen"
                   }),
                   Match.orElse(
                     () =>
@@ -55,6 +53,5 @@ import Delayed from "./Delayed.vue"
 defineProps<{ result: Result.Result<A, E> }>()
 const config = useRuntimeConfig()
 
-const getLatest = (result: Result.Result<A, E>): A | null =>
-  Option.getOrNull(Result.value(result))
+const getLatest = (result: Result.Result<A, E>): A | null => Option.getOrNull(Result.value(result))
 </script>

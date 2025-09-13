@@ -1,10 +1,7 @@
 <script
   setup
   lang="ts"
-  generic="
-  I extends NonEmptyReadonlyArray<any> =
-    never
-"
+  generic="I extends NonEmptyReadonlyArray<any> = never"
 >
 import type { NonEmptyReadonlyArray } from "effect/Array"
 import type { VBtn } from "vuetify/components"

@@ -17,11 +17,11 @@
     "clean": "rm -rf ./.nuxt ./node_modules/.cache"
   },
   "dependencies": {
-    "@effect-app/vue": "^2.69.1",
-    "@effect-app/vue-components": "^0.23.13",
+    "@effect-app/vue": "^2.70.1",
+    "@effect-app/vue-components": "^0.24.1",
     "@effect-atom/atom": "^0.1.22",
     "@effect-atom/atom-vue": "^0.1.20",
-    "@effect/platform": "^0.90.8",
+    "@effect/platform": "^0.90.9",
     "@effect/platform-browser": "^0.70.0",
     "@effect/rpc": "^0.69.2",
     "@effect/rpc-http": "^0.52.4",
@@ -46,7 +46,7 @@
     "cookie": "^1.0.2",
     "date-fns": "^4.1.0",
     "effect": "^3.17.13",
-    "effect-app": "^3.5.0",
+    "effect-app": "^3.6.0",
     "highcharts": "^12.4.0",
     "http-proxy-node16": "^1.0.6",
     "mitt": "^3.0.1",
@@ -55,7 +55,7 @@
     "vue-markdown-render": "^2.3.0",
     "vue-timeago3": "^2.3.2",
     "vue-toastification": "^2.0.0-rc.5",
-    "vuetify": "^3.9.7",
+    "vuetify": "^3.10.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
@@ -67,9 +67,9 @@
     "eslint": "^9.35.0",
     "dprint": "^0.50.1",
     "h3": "^1.15.4",
-    "nuxt": "~4.1.1",
+    "nuxt": "~4.1.2",
     "sass": "^1.92.1",
     "typescript": "~5.9.2",
-    "vue-tsc": "3.0.6"
+    "vue-tsc": "3.0.7"
   }
 }
