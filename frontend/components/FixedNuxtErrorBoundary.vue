@@ -12,8 +12,10 @@
 </template>
 
 <script setup lang="ts">
+import { onNuxtReady, useNuxtApp, useRouter } from "#imports"
 import { captureException } from "@sentry/browser"
 import { Cause, Runtime } from "effect-app"
+import { isFiberFailure } from "effect/Runtime"
 import { onErrorCaptured, shallowRef } from "vue"
 
 defineOptions({
@@ -46,7 +48,13 @@ if (import.meta.client) {
   ) {
     const [err, instance, info] = args
     // PRO: log that we hit the error boundary
-    console.warn("NuxtErrorBoundary caught error", err, instance, info)
+    console.warn(
+      "NuxtErrorBoundary caught error",
+      err,
+      instance,
+      info,
+      isFiberFailure(err) ? Cause.pretty(err[Runtime.FiberFailureCauseId]) : undefined
+    )
 
     // PRO: we don't handle native event handlers the same way we handle setup errors,
     // because these errors should only get reported, not take over the page.
@@ -56,11 +64,11 @@ if (import.meta.client) {
     }
 
     // PRO: don't render interruptions..
-    // e.g when we run useSafeSuspenseQuery, and we navigate away before a query is finished, we get a CancelledError
+    // e.g when we run useSuspenseQuery, and we navigate away before a query is finished, we get a CancelledError
     // if we however render it here instead of the default slot, we will show the cancellation error of the previous page, instead of rendering the new page
     if (
-      Runtime.isFiberFailure(error.value)
-      && Cause.isInterruptedOnly(error.value[Runtime.FiberFailureCauseId])
+      Runtime.isFiberFailure(err)
+      && Cause.isInterruptedOnly(err[Runtime.FiberFailureCauseId])
     ) {
       return
     }
