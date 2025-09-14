@@ -1,7 +1,6 @@
-import { makeIntl } from "@effect-app/vue"
 import { DefaultIntl } from "@effect-app/vue/experimental/commander"
 
-const messages = {
+export const messages = {
   de: {
     "action.HelloWorld.SetState": "Hallo Welt Zustand setzen",
 
@@ -32,4 +31,4 @@ const messages = {
   }
 } as const
 
-export const { LocaleContext, useIntl } = makeIntl(messages, "de")
+export const useIntl = () => useNuxtApp().$useIntl()
