@@ -7,8 +7,6 @@ const messages = {
 
     ...DefaultIntl.de,
 
-    "handle.unexpected_error": "Unerwarteter Fehler:\n{error}",
-
     "validation.empty": `Das Feld darf nicht leer sein`,
     "validation.number.max":
       "Der Wert sollte {isExclusive, select, true {kleiner als} other {höchstens}} {maximum} sein",
@@ -23,8 +21,6 @@ const messages = {
     "action.HelloWorld.SetState": "Set Hello World State",
 
     ...DefaultIntl.en,
-
-    "handle.unexpected_error": "Unexpected Error:\n{error}",
 
     "validation.empty": "The field cannot be empty",
     "validation.number.max": "The value should be {isExclusive, select, true {smaller than} other {at most}} {maximum}",
