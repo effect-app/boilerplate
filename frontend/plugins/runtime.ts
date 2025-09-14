@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Effect, Logger, LogLevel, Option } from "effect-app"
+import { Effect, Option } from "effect-app"
 import * as Layer from "effect/Layer"
 import { WebSdkLive } from "~/utils/observability"
 import "effect-app/builtin"
@@ -46,7 +46,7 @@ async function makeRuntime(feVersion: string, disableTracing: boolean) {
     })
     .pipe(Layer.provide(OurHttpClient))
 
-  const globalLayers = (
+  const globalLayers = apiLayers.pipe(Layer.provideMerge(
     disableTracing
       ? Layer.empty
       : WebSdkLive({
@@ -54,12 +54,9 @@ async function makeRuntime(feVersion: string, disableTracing: boolean) {
         serviceVersion: feVersion,
         attributes: {}
       })
-  )
-    .pipe(Layer.provideMerge(Logger.minimumLogLevel(LogLevel.Debug)))
+  )) // .pipe(Layer.provideMerge(Logger.minimumLogLevel(LogLevel.Debug)))
 
-  const rt = await initializeAsync(
-    apiLayers.pipe(Layer.provideMerge(globalLayers))
-  )
+  const rt = await initializeAsync(globalLayers)
 
   Atom.runtime.addGlobalLayer(globalLayers)
 
