@@ -131,8 +131,8 @@ importers:
         specifier: ^1.44.0
         version: 1.44.0(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       '@effect-app/eslint-shared-config':
-        specifier: ^0.2.0
-        version: 0.2.0(dprint@0.50.2)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))(webpack@5.101.3)
+        specifier: ^0.2.1
+        version: 0.2.1(dprint@0.50.2)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))(webpack@5.101.3)
       '@effect/language-service':
         specifier: ^0.40.0
         version: 0.40.0
@@ -457,11 +457,11 @@ importers:
   frontend:
     dependencies:
       '@effect-app/vue':
-        specifier: ^2.78.0
-        version: 2.78.0(405bea486429c6dfdb0d930842277644)
+        specifier: ^2.79.0
+        version: 2.79.0(405bea486429c6dfdb0d930842277644)
       '@effect-app/vue-components':
-        specifier: ^0.26.0
-        version: 0.26.0(58772d8f0c06ae57f87a95bb06076b06)
+        specifier: ^0.27.2
+        version: 0.27.2(58772d8f0c06ae57f87a95bb06076b06)
       '@effect-atom/atom':
         specifier: ^0.1.22
         version: 0.1.22(@effect/experimental@0.54.6(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(ioredis@5.7.0))(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(@effect/rpc@0.69.2(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
@@ -926,8 +926,8 @@ packages:
     peerDependencies:
       effect: 3.17.13
 
-  '@effect-app/eslint-shared-config@0.2.0':
-    resolution: {integrity: sha512-TFcg9TR7cMSIM5EmLQX3frOFEVkw82F3k0LcrE5oKbtC7vSZOffRm4l5VXUYhZ77nD/hCPQYOjo9X1S1H/mWKA==}
+  '@effect-app/eslint-shared-config@0.2.1':
+    resolution: {integrity: sha512-py7+dkpeD2Osef+czznZj8fGMY/xyxnHjRMNbl9taumiFeW7m4Cajs2y3pLWJnOk+p54iV+hVNyfmAx2EAVP9g==}
     peerDependencies:
       dprint: ^0.50.2
       eslint: ^9.35.0
@@ -955,8 +955,8 @@ packages:
       redis: ^3.1.2
       redlock: ^4.2.0
 
-  '@effect-app/vue-components@0.26.0':
-    resolution: {integrity: sha512-5g8nyWBpnPXun+kQxotL9ZyAK16bWZXkpZlM9EYASeD5BU+Iiyg35ypz03G+LTe3ZtydYECx/pCo/tiW9g/edg==}
+  '@effect-app/vue-components@0.27.2':
+    resolution: {integrity: sha512-fDa7rwiISqiqI1XkQ6pD938D0xXeJi4wAziRvVL+TY1g6mvplYa/0zy076aKcXEnvh6pKjcbe/GJh2UWhtOVhQ==}
     peerDependencies:
       '@mdi/js': ^7.4.47
       effect: 3.17.13
@@ -968,8 +968,8 @@ packages:
       vue: ^3.5.21
       vuetify: ^3.10.1
 
-  '@effect-app/vue@2.78.0':
-    resolution: {integrity: sha512-fR/K/tRGqPc4Yg7axJ8jDkFnegz7KJ/JxUd9HUBbnxKYa/Y/5+Q0dEKkhDMnTgyOG9zU+tV02S/FF4W8RKPjVA==}
+  '@effect-app/vue@2.79.0':
+    resolution: {integrity: sha512-2B1JwU7BSzef2z96U1mnGeMUFlM2ASX2UhGXwviZTEm6ReXL1p0eGhGjGith11PXNwBkEdPPFXRbLrjK8PPlOg==}
     peerDependencies:
       '@effect-atom/atom': ^0.1.22
       '@effect-atom/atom-vue': ^0.1.20
@@ -9039,7 +9039,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@effect-app/eslint-shared-config@0.2.0(dprint@0.50.2)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))(webpack@5.101.3)':
+  '@effect-app/eslint-shared-config@0.2.1(dprint@0.50.2)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))(webpack@5.101.3)':
     dependencies:
       '@dprint/formatter': 0.4.1
       '@dprint/typescript': 0.95.11
@@ -9108,9 +9108,9 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@effect-app/vue-components@0.26.0(58772d8f0c06ae57f87a95bb06076b06)':
+  '@effect-app/vue-components@0.27.2(58772d8f0c06ae57f87a95bb06076b06)':
     dependencies:
-      '@effect-app/vue': 2.78.0(405bea486429c6dfdb0d930842277644)
+      '@effect-app/vue': 2.79.0(405bea486429c6dfdb0d930842277644)
       '@mdi/js': 7.4.47
       '@opentelemetry/api': 1.9.0
       '@tanstack/vue-form': 1.19.5(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
@@ -9134,7 +9134,7 @@ snapshots:
       - '@vue/composition-api'
       - typescript
 
-  '@effect-app/vue@2.78.0(405bea486429c6dfdb0d930842277644)':
+  '@effect-app/vue@2.79.0(405bea486429c6dfdb0d930842277644)':
     dependencies:
       '@effect-atom/atom': 0.1.22(@effect/experimental@0.54.6(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(ioredis@5.7.0))(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(@effect/rpc@0.69.2(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       '@effect-atom/atom-vue': 0.1.20(fc633f8239ba3ab18db023454da5a044)

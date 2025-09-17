@@ -105,7 +105,7 @@
     "@dprint/typescript": "^0.95.11",
     "@effect-app/cli": "^1.25.0",
     "@effect-app/eslint-codegen-model": "^1.44.0",
-    "@effect-app/eslint-shared-config": "^0.2.0",
+    "@effect-app/eslint-shared-config": "^0.2.1",
     "@effect/language-service": "^0.40.0",
     "@phaphoso/eslint-plugin-dprint": "^0.5.2",
     "@tsconfig/strictest": "^2.0.5",
