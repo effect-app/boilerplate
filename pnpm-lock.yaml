@@ -110,29 +110,29 @@ importers:
         version: 8.0.0
       vite-node:
         specifier: ^3.2.4
-        version: 3.2.4(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+        version: 3.2.4(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
       vite-tsconfig-paths:
         specifier: ^5.1.4
-        version: 5.1.4(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
+        version: 5.1.4(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
       vue:
         specifier: ^3.5.21
         version: 3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
     devDependencies:
       '@ben_12/eslint-plugin-dprint':
-        specifier: ^1.7.5
-        version: 1.7.5(@dprint/typescript@0.95.11)(dprint-plugin-malva@0.14.3)(dprint-plugin-markup@0.23.4)(dprint-plugin-yaml@0.5.1)(eslint@9.35.0(jiti@2.5.1))
+        specifier: ^1.7.6
+        version: 1.7.6(@dprint/typescript@0.95.11)(dprint-plugin-malva@0.14.3)(dprint-plugin-markup@0.23.4)(dprint-plugin-yaml@0.5.1)(eslint@9.35.0(jiti@2.5.1))
       '@dprint/typescript':
         specifier: ^0.95.11
         version: 0.95.11
       '@effect-app/cli':
-        specifier: ^1.24.0
-        version: 1.24.0(592442ee9a6c3ee13c41516862f44662)
+        specifier: ^1.25.0
+        version: 1.25.0(592442ee9a6c3ee13c41516862f44662)
       '@effect-app/eslint-codegen-model':
-        specifier: ^1.43.0
-        version: 1.43.0(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+        specifier: ^1.44.0
+        version: 1.44.0(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       '@effect-app/eslint-shared-config':
-        specifier: ^0.1.1
-        version: 0.1.1(dprint@0.50.1)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))(webpack@5.101.3)
+        specifier: ^0.2.0
+        version: 0.2.0(dprint@0.50.2)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))(webpack@5.101.3)
       '@effect/language-service':
         specifier: ^0.40.0
         version: 0.40.0
@@ -146,32 +146,32 @@ importers:
         specifier: ^4.17.20
         version: 4.17.20
       '@types/node':
-        specifier: ~24.3.3
-        version: 24.3.3
+        specifier: ~24.5.1
+        version: 24.5.1
       '@typescript-eslint/eslint-plugin':
-        specifier: ^8.43.0
-        version: 8.43.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+        specifier: ^8.44.0
+        version: 8.44.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       '@typescript-eslint/parser':
-        specifier: ^8.43.0
-        version: 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+        specifier: ^8.44.0
+        version: 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       '@typescript-eslint/scope-manager':
-        specifier: ^8.43.0
-        version: 8.43.0
+        specifier: ^8.44.0
+        version: 8.44.0
       '@vue/eslint-config-prettier':
         specifier: ^10.2.0
         version: 10.2.0(@types/eslint@9.6.1)(eslint@9.35.0(jiti@2.5.1))(prettier@3.6.2)
       '@vue/eslint-config-typescript':
         specifier: ^14.6.0
-        version: 14.6.0(eslint-plugin-vue@10.4.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1))))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+        version: 14.6.0(eslint-plugin-vue@10.4.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1))))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       concurrently:
         specifier: ^9.2.1
         version: 9.2.1
       dprint:
-        specifier: ^0.50.1
-        version: 0.50.1
+        specifier: ^0.50.2
+        version: 0.50.2
       effect-app:
-        specifier: ^3.6.1
-        version: 3.6.1(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
+        specifier: ^3.7.0
+        version: 3.7.0(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       enhanced-resolve:
         specifier: ^5.18.3
         version: 5.18.3
@@ -189,7 +189,7 @@ importers:
         version: 0.17.0(patch_hash=976e78798a0da613a33b2a0ab43a31863dc355721545f2235e0b4922f2f409d7)
       eslint-plugin-import:
         specifier: ^2.32.0
-        version: 2.32.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1))
+        version: 2.32.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1))
       eslint-plugin-prettier-vue:
         specifier: ^5.0.0
         version: 5.0.0
@@ -201,7 +201,7 @@ importers:
         version: 2.0.0(eslint@9.35.0(jiti@2.5.1))
       eslint-plugin-unused-imports:
         specifier: ^4.2.0
-        version: 4.2.0(@typescript-eslint/eslint-plugin@8.43.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))
+        version: 4.2.0(@typescript-eslint/eslint-plugin@8.44.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))
       eslint-watch:
         specifier: ^8.0.0
         version: 8.0.0(eslint@9.35.0(jiti@2.5.1))
@@ -237,10 +237,10 @@ importers:
         version: 20.1.0(@nuxt/kit@4.1.2(magicast@0.3.5))(@vueuse/core@13.9.0(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))))
       vite:
         specifier: ^7.1.5
-        version: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+        version: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
       vitest:
         specifier: ^3.2.4
-        version: 3.2.4(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+        version: 3.2.4(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
 
   api:
     dependencies:
@@ -257,8 +257,8 @@ importers:
         specifier: ^12.28.0
         version: 12.28.0
       '@effect-app/infra':
-        specifier: 3.1.1
-        version: 3.1.1(5d9f4a5d0cc5e25fa7aa376fb1e96e44)
+        specifier: 3.2.0
+        version: 3.2.0(63e3bf3b94d09eb33fd9462f998d8d91)
       '@effect/opentelemetry':
         specifier: 0.56.6
         version: 0.56.6(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(@opentelemetry/api@1.9.0)(@opentelemetry/resources@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-logs@0.205.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-metrics@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-node@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-web@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
@@ -276,7 +276,7 @@ importers:
         version: 0.52.4(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       '@effect/vitest':
         specifier: ^0.25.1
-        version: 0.25.1(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(vitest@3.2.4(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
+        version: 0.25.1(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(vitest@3.2.4(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
       '@formatjs/cli':
         specifier: ^6.7.2
         version: 6.7.2(@vue/compiler-core@3.5.21)(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
@@ -299,11 +299,11 @@ importers:
         specifier: ^8.1.5
         version: 8.1.5
       '@sentry/node':
-        specifier: 10.11.0
-        version: 10.11.0
+        specifier: 10.12.0
+        version: 10.12.0
       '@sentry/opentelemetry':
-        specifier: 10.11.0
-        version: 10.11.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
+        specifier: 10.12.0
+        version: 10.12.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
       connect:
         specifier: ^3.7.0
         version: 3.7.0
@@ -323,8 +323,8 @@ importers:
         specifier: 3.17.13
         version: 3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)
       effect-app:
-        specifier: ^3.6.1
-        version: 3.6.1(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
+        specifier: ^3.7.0
+        version: 3.7.0(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -393,8 +393,8 @@ importers:
         specifier: ^4.1.8
         version: 4.1.8
       dprint:
-        specifier: ^0.50.1
-        version: 0.50.1
+        specifier: ^0.50.2
+        version: 0.50.2
       eslint:
         specifier: ^9.35.0
         version: 9.35.0(jiti@2.5.1)
@@ -417,14 +417,14 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       dprint:
-        specifier: ^0.50.1
-        version: 0.50.1
+        specifier: ^0.50.2
+        version: 0.50.2
       effect:
         specifier: 3.17.13
         version: 3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)
       effect-app:
-        specifier: ^3.6.1
-        version: 3.6.1(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
+        specifier: ^3.7.0
+        version: 3.7.0(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       eslint:
         specifier: ^9.35.0
         version: 9.35.0(jiti@2.5.1)
@@ -433,8 +433,8 @@ importers:
         specifier: ~1.55.0
         version: 1.55.0
       '@types/node':
-        specifier: ~24.3.3
-        version: 24.3.3
+        specifier: ~24.5.1
+        version: 24.5.1
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -457,11 +457,11 @@ importers:
   frontend:
     dependencies:
       '@effect-app/vue':
-        specifier: ^2.77.16
-        version: 2.77.16(99ff990d0902620d114c43a89dda529d)
+        specifier: ^2.78.0
+        version: 2.78.0(405bea486429c6dfdb0d930842277644)
       '@effect-app/vue-components':
-        specifier: ^0.25.31
-        version: 0.25.31(b7ced32d5adbe6ed744d319430254208)
+        specifier: ^0.26.0
+        version: 0.26.0(58772d8f0c06ae57f87a95bb06076b06)
       '@effect-atom/atom':
         specifier: ^0.1.22
         version: 0.1.22(@effect/experimental@0.54.6(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(ioredis@5.7.0))(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(@effect/rpc@0.69.2(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
@@ -502,11 +502,11 @@ importers:
         specifier: ^0.24.0
         version: 0.24.0(@opentelemetry/api@1.9.0)
       '@sentry/browser':
-        specifier: 10.11.0
-        version: 10.11.0
+        specifier: 10.12.0
+        version: 10.12.0
       '@sentry/opentelemetry':
-        specifier: 10.11.0
-        version: 10.11.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
+        specifier: 10.12.0
+        version: 10.12.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
       '@sentry/opentelemetry-node':
         specifier: ^7.114.0
         version: 7.114.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
@@ -517,8 +517,8 @@ importers:
         specifier: ^4.3.0
         version: 4.3.0
       '@sentry/vue':
-        specifier: 10.11.0
-        version: 10.11.0(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
+        specifier: 10.12.0
+        version: 10.12.0(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       '@tanstack/vue-form':
         specifier: ^1.12.4
         version: 1.19.5(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
@@ -533,7 +533,7 @@ importers:
         version: 13.9.0(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       '@vueuse/nuxt':
         specifier: ^13.9.0
-        version: 13.9.0(magicast@0.3.5)(nuxt@4.1.2(@azure/cosmos@4.5.1)(@azure/storage-blob@12.28.0)(@parcel/watcher@2.5.1)(@types/node@24.3.3)(@vue/compiler-sfc@3.5.21)(db0@0.3.2)(eslint@9.35.0(jiti@2.5.1))(ioredis@5.7.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
+        version: 13.9.0(magicast@0.3.5)(nuxt@4.1.2(@azure/cosmos@4.5.1)(@azure/storage-blob@12.28.0)(@parcel/watcher@2.5.1)(@types/node@24.5.1)(@vue/compiler-sfc@3.5.21)(db0@0.3.2)(eslint@9.35.0(jiti@2.5.1))(ioredis@5.7.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       cookie:
         specifier: ^1.0.2
         version: 1.0.2
@@ -544,8 +544,8 @@ importers:
         specifier: 3.17.13
         version: 3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)
       effect-app:
-        specifier: ^3.6.1
-        version: 3.6.1(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
+        specifier: ^3.7.0
+        version: 3.7.0(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       highcharts:
         specifier: ^12.4.0
         version: 12.4.0
@@ -571,8 +571,8 @@ importers:
         specifier: ^2.0.0-rc.5
         version: 2.0.0-rc.5(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       vuetify:
-        specifier: ^3.10.0
-        version: 3.10.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
+        specifier: ^3.10.1
+        version: 3.10.1(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       xlsx:
         specifier: ^0.18.5
         version: 0.18.5
@@ -593,8 +593,8 @@ importers:
         specifier: ^14.1.2
         version: 14.1.2
       dprint:
-        specifier: ^0.50.1
-        version: 0.50.1
+        specifier: ^0.50.2
+        version: 0.50.2
       eslint:
         specifier: ^9.35.0
         version: 9.35.0(jiti@2.5.1)
@@ -603,7 +603,7 @@ importers:
         version: 1.15.4
       nuxt:
         specifier: ~4.1.2
-        version: 4.1.2(@azure/cosmos@4.5.1)(@azure/storage-blob@12.28.0)(@parcel/watcher@2.5.1)(@types/node@24.3.3)(@vue/compiler-sfc@3.5.21)(db0@0.3.2)(eslint@9.35.0(jiti@2.5.1))(ioredis@5.7.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1)
+        version: 4.1.2(@azure/cosmos@4.5.1)(@azure/storage-blob@12.28.0)(@parcel/watcher@2.5.1)(@types/node@24.5.1)(@vue/compiler-sfc@3.5.21)(db0@0.3.2)(eslint@9.35.0(jiti@2.5.1))(ioredis@5.7.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1)
       sass:
         specifier: ^1.92.1
         version: 1.92.1
@@ -824,8 +824,8 @@ packages:
     resolution: {integrity: sha512-bkFqkLhh3pMBUQQkpVgWDWq/lqzc2678eUyDlTBhRqhCHFguYYGM0Efga7tYk4TogG/3x0EEl66/OQ+WGbWB/Q==}
     engines: {node: '>=6.9.0'}
 
-  '@ben_12/eslint-plugin-dprint@1.7.5':
-    resolution: {integrity: sha512-BR6NdO4MfMj1ldhpWHSHbMfeKztckTn7mTVW1YtXbBKo77Sl5s5CY0uyqJMzNHWM5A/BLP6We8/jClv+AQ1vSQ==}
+  '@ben_12/eslint-plugin-dprint@1.7.6':
+    resolution: {integrity: sha512-5LOUWh71aCt5g6zci2wjrqo6Ti2BHneStKlYB28I3etDnvvG8KcJk2vF8QXxY1T9w170YNNg3gjImucl1erzPg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       '@dprint/dockerfile': ^0.3.3
@@ -835,7 +835,7 @@ packages:
       '@dprint/typescript': ^0.95.11
       dprint-plugin-graphql: ^0.2.3
       dprint-plugin-malva: ^0.14.3
-      dprint-plugin-markup: ^0.23.3
+      dprint-plugin-markup: ^0.23.4
       dprint-plugin-yaml: ^0.5.1
       eslint: '>=7.0.0'
     peerDependenciesMeta:
@@ -866,77 +866,77 @@ packages:
     resolution: {integrity: sha512-Y6+WUMsTFWE5jb20IFP4YGa5IrGY/+a/FbOSjDF/wz9gepU2hwCYSXRHP/vPwBvwcY3SVMASt4yXxbXNXigmZQ==}
     engines: {node: '>=18'}
 
-  '@dprint/darwin-arm64@0.50.1':
-    resolution: {integrity: sha512-NNKf3dxXn567pd/hpCVLHLbC0dI7s3YvQnUEwjRTOAQVMp6O7/ME+Tg1RPGsDP1IB+Y2fIYSM4qmG02zQrqjAQ==}
+  '@dprint/darwin-arm64@0.50.2':
+    resolution: {integrity: sha512-4d08INZlTxbPW9LK9W8+93viN543/qA2Kxn4azVnPW/xCb2Im03UqJBz8mMm3nJZdtNnK3uTVG3ib1VW+XJisw==}
     cpu: [arm64]
     os: [darwin]
 
-  '@dprint/darwin-x64@0.50.1':
-    resolution: {integrity: sha512-PcY75U3UC/0CLOxWzE0zZJZ2PxzUM5AX2baYL1ovgDGCfqO1H0hINiyxfx/8ncGgPojWBkLs+zrcFiGnXx7BQg==}
+  '@dprint/darwin-x64@0.50.2':
+    resolution: {integrity: sha512-ZXWPBwdLojhdBATq+bKwJvB7D8bIzrD6eR/Xuq9UYE7evQazUiR069d9NPF0iVuzTo6wNf9ub9SXI7qDl11EGA==}
     cpu: [x64]
     os: [darwin]
 
   '@dprint/formatter@0.4.1':
     resolution: {integrity: sha512-IB/GXdlMOvi0UhQQ9mcY15Fxcrc2JPadmo6tqefCNV0bptFq7YBpggzpqYXldBXDa04CbKJ+rDwO2eNRPE2+/g==}
 
-  '@dprint/linux-arm64-glibc@0.50.1':
-    resolution: {integrity: sha512-q0TOGy9FsoSKsEQ4sIMKyFweF5M8rW1S5OfwJDNRR2TU2riWByU9TKYIZUzg53iuwYKRypr/kJ5kdbl516afRQ==}
+  '@dprint/linux-arm64-glibc@0.50.2':
+    resolution: {integrity: sha512-marxQzRw8atXAnaawwZHeeUaaAVewrGTlFKKcDASGyjPBhc23J5fHPUPremm8xCbgYZyTlokzrV8/1rDRWhJcw==}
     cpu: [arm64]
     os: [linux]
 
-  '@dprint/linux-arm64-musl@0.50.1':
-    resolution: {integrity: sha512-XRtxN2cA9rc06WFzzVPDIZYGGLmUXqpVf3F0XhhHV77ikQLJZ5reF4xBOQ+0HjJ/zy8W/HzuGDAHedWyCrRf9g==}
+  '@dprint/linux-arm64-musl@0.50.2':
+    resolution: {integrity: sha512-oGDq44ydzo0ZkJk6RHcUzUN5sOMT5HC6WA8kHXI6tkAsLUkaLO2DzZFfW4aAYZUn+hYNpQfQD8iGew0sjkyLyg==}
     cpu: [arm64]
     os: [linux]
 
-  '@dprint/linux-riscv64-glibc@0.50.1':
-    resolution: {integrity: sha512-vAk/eYhSjA3LJ/yuYgxkHamiK8+m6YdqVBO/Ka+i16VxyjQyOdcMKBkrLCIqSxgyXd6b8raf9wM59HJbaIpoOg==}
+  '@dprint/linux-riscv64-glibc@0.50.2':
+    resolution: {integrity: sha512-QMmZoZYWsXezDcC03fBOwPfxhTpPEyHqutcgJ0oauN9QcSXGji9NSZITMmtLz2Ki3T1MIvdaLd1goGzNSvNqTQ==}
     cpu: [riscv64]
     os: [linux]
 
-  '@dprint/linux-x64-glibc@0.50.1':
-    resolution: {integrity: sha512-EpW5KLekaq4hXmKBWWtfBgZ244S4C+vFmMOd1YaGi8+f0hmPTJzVWLdIgpO2ZwfPQ5iycaVI/JS514PQmXPOvg==}
+  '@dprint/linux-x64-glibc@0.50.2':
+    resolution: {integrity: sha512-KMeHEzb4teQJChTgq8HuQzc+reRNDnarOTGTQovAZ9WNjOtKLViftsKWW5HsnRHtP5nUIPE9rF1QLjJ/gUsqvw==}
     cpu: [x64]
     os: [linux]
 
-  '@dprint/linux-x64-musl@0.50.1':
-    resolution: {integrity: sha512-assISBbaKKL8LkjrIy/5tpE157MVW6HbyIKAjTtg3tPNM3lDn1oH3twuGtK9WBsN/VoEP3QMZVauolcUJT/VOg==}
+  '@dprint/linux-x64-musl@0.50.2':
+    resolution: {integrity: sha512-qM37T7H69g5coBTfE7SsA+KZZaRBky6gaUhPgAYxW+fOsoVtZSVkXtfTtQauHTpqqOEtbxfCtum70Hz1fr1teg==}
     cpu: [x64]
     os: [linux]
 
   '@dprint/typescript@0.95.11':
     resolution: {integrity: sha512-eYPrFvR4+ScHMGGirTWS4uY4XTfxTY/VoVUzvDN9sKZUyvwTDW1wV1mbZj7dRFc8pV4HexvPfW5oKLShFSXr4w==}
 
-  '@dprint/win32-arm64@0.50.1':
-    resolution: {integrity: sha512-ZeaRMQYoFjrsO3lvI1SqzDWDGH1GGXWmNSeXvcFuAf2OgYQJWMBlLotCKiHNJ3uyYneoyhTg2tv9QkApNkZV4Q==}
+  '@dprint/win32-arm64@0.50.2':
+    resolution: {integrity: sha512-kuGVHGoxLwssVDsodefUIYQRoO2fQncurH/xKgXiZwMPOSzFcgUzYJQiyqmJEp+PENhO9VT1hXUHZtlyCAWBUQ==}
     cpu: [arm64]
     os: [win32]
 
-  '@dprint/win32-x64@0.50.1':
-    resolution: {integrity: sha512-pMm8l/hRZ9zYylKw/yCaYkSV3btYB9UyMDbWqyxNthkQ1gckWrk17VTI6WjwwQuHD4Iaz5JgAYLS36hlUzWkxA==}
+  '@dprint/win32-x64@0.50.2':
+    resolution: {integrity: sha512-N3l9k31c3IMfVXqL0L6ygIhJFvCIrfQ+Z5Jph6RnCcBO6oDYWeYhAv/qBk1vLsF2y/e79TKsR1tvaEwnrQ03XA==}
     cpu: [x64]
     os: [win32]
 
-  '@effect-app/cli@1.24.0':
-    resolution: {integrity: sha512-VEPV4jUjup9xvDDxrdRplyyRQf5OixUjvH57ou9soAtvXmpJ0aXOJwSjL2AggQQBj9nJ/13DM3ETQfzyhJcXPw==}
+  '@effect-app/cli@1.25.0':
+    resolution: {integrity: sha512-7d7ys6Om/vbLDQB05WLhbRj0e8ef+1KZTv5H2uTR+MWb71B2QDviMOAMz36aQNegx0WjE2voL/bsVhMq9dkVeg==}
     hasBin: true
 
-  '@effect-app/eslint-codegen-model@1.43.0':
-    resolution: {integrity: sha512-6UBarykd9S6RVdwSTubVWntQdBCyNsKCNjzbd/jQDIYYeHD5khZ4kB3kbOpcrX8ZphdpamQO8x3/jKuD7zGAMw==}
+  '@effect-app/eslint-codegen-model@1.44.0':
+    resolution: {integrity: sha512-Gu8C0F9AhSnA/G/xj6Ztsy54fqNXbZrAypYA+NvVLyy3hq2l6uuvg7HLuc7B8ykY4jleCCvufb4CeZeoIKEhFA==}
     peerDependencies:
       effect: 3.17.13
 
-  '@effect-app/eslint-shared-config@0.1.1':
-    resolution: {integrity: sha512-Rr+5s5vjY5sFkv+h44XgyU2fCi0i3qLC0KcyMBTDWOJ3e8GevJFejdkQX4/SOrPQk6C2+2DmAHCJuFAdyrxnEw==}
+  '@effect-app/eslint-shared-config@0.2.0':
+    resolution: {integrity: sha512-TFcg9TR7cMSIM5EmLQX3frOFEVkw82F3k0LcrE5oKbtC7vSZOffRm4l5VXUYhZ77nD/hCPQYOjo9X1S1H/mWKA==}
     peerDependencies:
-      dprint: ^0.50.1
+      dprint: ^0.50.2
       eslint: ^9.35.0
       typescript: ~5.9.2
     bundledDependencies:
       - '@ben_12/eslint-plugin-dprint'
 
-  '@effect-app/infra@3.1.1':
-    resolution: {integrity: sha512-fKzyMUnuvRKf6qpsUBASvRr2hT7dQI4gGByYYf2ujuPPuohAtsDryxuRObTlCedDY+q/8R6/y85Eonn8bjQLFQ==}
+  '@effect-app/infra@3.2.0':
+    resolution: {integrity: sha512-I9MydF9/EpGorIQsVXyCDH4NNpuDqR8YQ4+VbqEclfKGjOjfppNpyxwPMmu499fNzgDTfcypN+UdoAQeeYFXqQ==}
     peerDependencies:
       '@azure/cosmos': ^4.5.1
       '@azure/service-bus': ^7.9.5
@@ -947,16 +947,16 @@ packages:
       '@effect/vitest': ^0.25.1
       '@sendgrid/helpers': ^8.0.0
       '@sendgrid/mail': ^8.1.5
-      '@sentry/node': 10.11.0
-      '@sentry/opentelemetry': 10.11.0
+      '@sentry/node': 10.12.0
+      '@sentry/opentelemetry': 10.12.0
       effect: 3.17.13
       express: ^5.1.0
       jwt-decode: ^4.0.0
       redis: ^3.1.2
       redlock: ^4.2.0
 
-  '@effect-app/vue-components@0.25.31':
-    resolution: {integrity: sha512-q4eQ7LrXPzrU0yOxLhgAolCUKzhOyRz9m/9ASB/Dx6t+T71bYAX/rGG9MD1OaF6BfqZXGNvEnLGLtIAYDl66RQ==}
+  '@effect-app/vue-components@0.26.0':
+    resolution: {integrity: sha512-5g8nyWBpnPXun+kQxotL9ZyAK16bWZXkpZlM9EYASeD5BU+Iiyg35ypz03G+LTe3ZtydYECx/pCo/tiW9g/edg==}
     peerDependencies:
       '@mdi/js': ^7.4.47
       effect: 3.17.13
@@ -966,16 +966,16 @@ packages:
       primeicons: ^7.0.0
       primevue: ^4.3.9
       vue: ^3.5.21
-      vuetify: ^3.10.0
+      vuetify: ^3.10.1
 
-  '@effect-app/vue@2.77.16':
-    resolution: {integrity: sha512-Yj7nednDPsXwJgtaiNkBDTpNToAJ0hY/qP5THbv1iKHrLXGL0Whdo1umHdEQm1fXdlES39CSEAhXrAd9ah4ELw==}
+  '@effect-app/vue@2.78.0':
+    resolution: {integrity: sha512-fR/K/tRGqPc4Yg7axJ8jDkFnegz7KJ/JxUd9HUBbnxKYa/Y/5+Q0dEKkhDMnTgyOG9zU+tV02S/FF4W8RKPjVA==}
     peerDependencies:
       '@effect-atom/atom': ^0.1.22
       '@effect-atom/atom-vue': ^0.1.20
       '@effect/platform': 0.90.9
       '@effect/platform-browser': ^0.70.0
-      '@sentry/browser': ^10.11.0
+      '@sentry/browser': ^10.12.0
       effect: 3.17.13
       vue: ^3.5.21
 
@@ -1607,10 +1607,6 @@ packages:
     peerDependencies:
       vue: ^3.5.21
 
-  '@opentelemetry/api-logs@0.203.0':
-    resolution: {integrity: sha512-9B9RU0H7Ya1Dx/Rkyc4stuBZSGVQF27WigitInx2QQoj6KUpEFYPKoWjdFTunJYxmXmh17HeBvbMa1EhGyPmqQ==}
-    engines: {node: '>=8.0.0'}
-
   '@opentelemetry/api-logs@0.204.0':
     resolution: {integrity: sha512-DqxY8yoAaiBPivoJD4UtgrMS8gEmzZ5lnaxzPojzLVHBGqPxgWm4zcuvcUHZiqQ6kRX2Klel2r9y8cA2HAtqpw==}
     engines: {node: '>=8.0.0'}
@@ -1667,12 +1663,6 @@ packages:
   '@opentelemetry/core@0.25.0':
     resolution: {integrity: sha512-8OTWF4vfCENU112XB5ElLqf0eq/FhsY0SBvvY65vB3+fbZ2Oi+CPsRASrUZWGtC9MJ5rK2lBlY+/jI4a/NPPBg==}
     engines: {node: '>=8.5.0'}
-    peerDependencies:
-      '@opentelemetry/api': ^1.9
-
-  '@opentelemetry/core@2.0.1':
-    resolution: {integrity: sha512-MaZk9SJIDgo1peKevlbhP6+IwIiNPNmswNL4AF0WaQJLbHXjr9SrZMgS12+iqr9ToV4ZVosCcc0f8Rg67LXjxw==}
-    engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
@@ -1755,8 +1745,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-amqplib@0.50.0':
-    resolution: {integrity: sha512-kwNs/itehHG/qaQBcVrLNcvXVPW0I4FCOVtw3LHMLdYIqD7GJ6Yv2nX+a4YHjzbzIeRYj8iyMp0Bl7tlkidq5w==}
+  '@opentelemetry/instrumentation-amqplib@0.51.0':
+    resolution: {integrity: sha512-XGmjYwjVRktD4agFnWBWQXo9SiYHKBxR6Ag3MLXwtLE4R99N3a08kGKM5SC1qOFKIELcQDGFEFT9ydXMH00Luw==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1791,8 +1781,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-connect@0.47.0':
-    resolution: {integrity: sha512-pjenvjR6+PMRb6/4X85L4OtkQCootgb/Jzh/l/Utu3SJHBid1F+gk9sTGU2FWuhhEfV6P7MZ7BmCdHXQjgJ42g==}
+  '@opentelemetry/instrumentation-connect@0.48.0':
+    resolution: {integrity: sha512-OMjc3SFL4pC16PeK+tDhwP7MRvDPalYCGSvGqUhX5rASkI2H0RuxZHOWElYeXkV0WP+70Gw6JHWac/2Zqwmhdw==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1809,8 +1799,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-dataloader@0.21.1':
-    resolution: {integrity: sha512-hNAm/bwGawLM8VDjKR0ZUDJ/D/qKR3s6lA5NV+btNaPVm2acqhPcT47l2uCVi+70lng2mywfQncor9v8/ykuyw==}
+  '@opentelemetry/instrumentation-dataloader@0.22.0':
+    resolution: {integrity: sha512-bXnTcwtngQsI1CvodFkTemrrRSQjAjZxqHVc+CJZTDnidT0T6wt3jkKhnsjU/Kkkc0lacr6VdRpCu2CUWa0OKw==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1827,8 +1817,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-express@0.52.0':
-    resolution: {integrity: sha512-W7pizN0Wh1/cbNhhTf7C62NpyYw7VfCFTYg0DYieSTrtPBT1vmoSZei19wfKLnrMsz3sHayCg0HxCVL2c+cz5w==}
+  '@opentelemetry/instrumentation-express@0.53.0':
+    resolution: {integrity: sha512-r/PBafQmFYRjuxLYEHJ3ze1iBnP2GDA1nXOSS6E02KnYNZAVjj6WcDA1MSthtdAUUK0XnotHvvWM8/qz7DMO5A==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1845,8 +1835,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-fs@0.23.0':
-    resolution: {integrity: sha512-Puan+QopWHA/KNYvDfOZN6M/JtF6buXEyD934vrb8WhsX1/FuM7OtoMlQyIqAadnE8FqqDL4KDPiEfCQH6pQcQ==}
+  '@opentelemetry/instrumentation-fs@0.24.0':
+    resolution: {integrity: sha512-HjIxJ6CBRD770KNVaTdMXIv29Sjz4C1kPCCK5x1Ujpc6SNnLGPqUVyJYZ3LUhhnHAqdbrl83ogVWjCgeT4Q0yw==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1857,8 +1847,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-generic-pool@0.47.0':
-    resolution: {integrity: sha512-UfHqf3zYK+CwDwEtTjaD12uUqGGTswZ7ofLBEdQ4sEJp9GHSSJMQ2hT3pgBxyKADzUdoxQAv/7NqvL42ZI+Qbw==}
+  '@opentelemetry/instrumentation-generic-pool@0.48.0':
+    resolution: {integrity: sha512-TLv/On8pufynNR+pUbpkyvuESVASZZKMlqCm4bBImTpXKTpqXaJJ3o/MUDeMlM91rpen+PEv2SeyOKcHCSlgag==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1869,8 +1859,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-graphql@0.51.0':
-    resolution: {integrity: sha512-LchkOu9X5DrXAnPI1+Z06h/EH/zC7D6sA86hhPrk3evLlsJTz0grPrkL/yUJM9Ty0CL/y2HSvmWQCjbJEz/ADg==}
+  '@opentelemetry/instrumentation-graphql@0.52.0':
+    resolution: {integrity: sha512-3fEJ8jOOMwopvldY16KuzHbRhPk8wSsOTSF0v2psmOCGewh6ad+ZbkTx/xyUK9rUdUMWAxRVU0tFpj4Wx1vkPA==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1887,8 +1877,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-hapi@0.50.0':
-    resolution: {integrity: sha512-5xGusXOFQXKacrZmDbpHQzqYD1gIkrMWuwvlrEPkYOsjUqGUjl1HbxCsn5Y9bUXOCgP1Lj6A4PcKt1UiJ2MujA==}
+  '@opentelemetry/instrumentation-hapi@0.51.0':
+    resolution: {integrity: sha512-qyf27DaFNL1Qhbo/da+04MSCw982B02FhuOS5/UF+PMhM61CcOiu7fPuXj8TvbqyReQuJFljXE6UirlvoT/62g==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1899,8 +1889,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-http@0.203.0':
-    resolution: {integrity: sha512-y3uQAcCOAwnO6vEuNVocmpVzG3PER6/YZqbPbbffDdJ9te5NkHEkfSMNzlC3+v7KlE+WinPGc3N7MR30G1HY2g==}
+  '@opentelemetry/instrumentation-http@0.204.0':
+    resolution: {integrity: sha512-1afJYyGRA4OmHTv0FfNTrTAzoEjPQUYgd+8ih/lX0LlZBnGio/O80vxA0lN3knsJPS7FiDrsDrWq25K7oAzbkw==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1923,8 +1913,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-kafkajs@0.13.0':
-    resolution: {integrity: sha512-FPQyJsREOaGH64hcxlzTsIEQC4DYANgTwHjiB7z9lldmvua1LRMVn3/FfBlzXoqF179B0VGYviz6rn75E9wsDw==}
+  '@opentelemetry/instrumentation-kafkajs@0.14.0':
+    resolution: {integrity: sha512-kbB5yXS47dTIdO/lfbbXlzhvHFturbux4EpP0+6H78Lk0Bn4QXiZQW7rmZY1xBCY16mNcCb8Yt0mhz85hTnSVA==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1935,8 +1925,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-knex@0.48.0':
-    resolution: {integrity: sha512-V5wuaBPv/lwGxuHjC6Na2JFRjtPgstw19jTFl1B1b6zvaX8zVDYUDaR5hL7glnQtUSCMktPttQsgK4dhXpddcA==}
+  '@opentelemetry/instrumentation-knex@0.49.0':
+    resolution: {integrity: sha512-NKsRRT27fbIYL4Ix+BjjP8h4YveyKc+2gD6DMZbr5R5rUeDqfC8+DTfIt3c3ex3BIc5Vvek4rqHnN7q34ZetLQ==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1947,8 +1937,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-koa@0.51.0':
-    resolution: {integrity: sha512-XNLWeMTMG1/EkQBbgPYzCeBD0cwOrfnn8ao4hWgLv0fNCFQu1kCsJYygz2cvKuCs340RlnG4i321hX7R8gj3Rg==}
+  '@opentelemetry/instrumentation-koa@0.52.0':
+    resolution: {integrity: sha512-JJSBYLDx/mNSy8Ibi/uQixu2rH0bZODJa8/cz04hEhRaiZQoeJ5UrOhO/mS87IdgVsHrnBOsZ6vDu09znupyuA==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1959,8 +1949,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-lru-memoizer@0.48.0':
-    resolution: {integrity: sha512-KUW29wfMlTPX1wFz+NNrmE7IzN7NWZDrmFWHM/VJcmFEuQGnnBuTIdsP55CnBDxKgQ/qqYFp4udQFNtjeFosPw==}
+  '@opentelemetry/instrumentation-lru-memoizer@0.49.0':
+    resolution: {integrity: sha512-ctXu+O/1HSadAxtjoEg2w307Z5iPyLOMM8IRNwjaKrIpNAthYGSOanChbk1kqY6zU5CrpkPHGdAT6jk8dXiMqw==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1977,8 +1967,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-mongodb@0.56.0':
-    resolution: {integrity: sha512-YG5IXUUmxX3Md2buVMvxm9NWlKADrnavI36hbJsihqqvBGsWnIfguf0rUP5Srr0pfPqhQjUP+agLMsvu0GmUpA==}
+  '@opentelemetry/instrumentation-mongodb@0.57.0':
+    resolution: {integrity: sha512-KD6Rg0KSHWDkik+qjIOWoksi1xqSpix8TSPfquIK1DTmd9OTFb5PHmMkzJe16TAPVEuElUW8gvgP59cacFcrMQ==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -1989,8 +1979,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-mongoose@0.50.0':
-    resolution: {integrity: sha512-Am8pk1Ct951r4qCiqkBcGmPIgGhoDiFcRtqPSLbJrUZqEPUsigjtMjoWDRLG1Ki1NHgOF7D0H7d+suWz1AAizw==}
+  '@opentelemetry/instrumentation-mongoose@0.51.0':
+    resolution: {integrity: sha512-gwWaAlhhV2By7XcbyU3DOLMvzsgeaymwP/jktDC+/uPkCmgB61zurwqOQdeiRq9KAf22Y2dtE5ZLXxytJRbEVA==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -2001,8 +1991,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-mysql2@0.50.0':
-    resolution: {integrity: sha512-PoOMpmq73rOIE3nlTNLf3B1SyNYGsp7QXHYKmeTZZnJ2Ou7/fdURuOhWOI0e6QZ5gSem18IR1sJi6GOULBQJ9g==}
+  '@opentelemetry/instrumentation-mysql2@0.51.0':
+    resolution: {integrity: sha512-zT2Wg22Xn43RyfU3NOUmnFtb5zlDI0fKcijCj9AcK9zuLZ4ModgtLXOyBJSSfO+hsOCZSC1v/Fxwj+nZJFdzLQ==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -2013,8 +2003,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-mysql@0.49.0':
-    resolution: {integrity: sha512-QU9IUNqNsrlfE3dJkZnFHqLjlndiU39ll/YAAEvWE40sGOCi9AtOF6rmEGzJ1IswoZ3oyePV7q2MP8SrhJfVAA==}
+  '@opentelemetry/instrumentation-mysql@0.50.0':
+    resolution: {integrity: sha512-duKAvMRI3vq6u9JwzIipY9zHfikN20bX05sL7GjDeLKr2qV0LQ4ADtKST7KStdGcQ+MTN5wghWbbVdLgNcB3rA==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -2043,8 +2033,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-pg@0.55.0':
-    resolution: {integrity: sha512-yfJ5bYE7CnkW/uNsnrwouG/FR7nmg09zdk2MSs7k0ZOMkDDAE3WBGpVFFApGgNu2U+gtzLgEzOQG4I/X+60hXw==}
+  '@opentelemetry/instrumentation-pg@0.57.0':
+    resolution: {integrity: sha512-dWLGE+r5lBgm2A8SaaSYDE3OKJ/kwwy5WLyGyzor8PLhUL9VnJRiY6qhp4njwhnljiLtzeffRtG2Mf/YyWLeTw==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -2061,8 +2051,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-redis@0.51.0':
-    resolution: {integrity: sha512-uL/GtBA0u72YPPehwOvthAe+Wf8k3T+XQPBssJmTYl6fzuZjNq8zTfxVFhl9nRFjFVEe+CtiYNT0Q3AyqW1Z0A==}
+  '@opentelemetry/instrumentation-redis@0.53.0':
+    resolution: {integrity: sha512-WUHV8fr+8yo5RmzyU7D5BIE1zwiaNQcTyZPwtxlfr7px6NYYx7IIpSihJK7WA60npWynfxxK1T67RAVF0Gdfjg==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -2097,8 +2087,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-tedious@0.22.0':
-    resolution: {integrity: sha512-XrrNSUCyEjH1ax9t+Uo6lv0S2FCCykcF7hSxBMxKf7Xn0bPRxD3KyFUZy25aQXzbbbUHhtdxj3r2h88SfEM3aA==}
+  '@opentelemetry/instrumentation-tedious@0.23.0':
+    resolution: {integrity: sha512-3TMTk/9VtlRonVTaU4tCzbg4YqW+Iq/l5VnN2e5whP6JgEg/PKfrGbqQ+CxQWNLfLaQYIUgEZqAn5gk/inh1uQ==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -2109,8 +2099,8 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
-  '@opentelemetry/instrumentation-undici@0.14.0':
-    resolution: {integrity: sha512-2HN+7ztxAReXuxzrtA3WboAKlfP5OsPA57KQn2AdYZbJ3zeRPcLXyW4uO/jpLE6PLm0QRtmeGCmfYpqRlwgSwg==}
+  '@opentelemetry/instrumentation-undici@0.15.0':
+    resolution: {integrity: sha512-sNFGA/iCDlVkNjzTzPRcudmI11vT/WAfAguRdZY9IspCw02N4WSC72zTuQhSMheh2a1gdeM9my1imnKRvEEvEg==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -2123,12 +2113,6 @@ packages:
 
   '@opentelemetry/instrumentation-winston@0.50.0':
     resolution: {integrity: sha512-RKcbKIwwKzT6RnNPo5yU6Zus5DYSysK5zr8dL+LU/8Qh8icV/U2rghFJzMI+t01GeirhwSJeuuWB28AdZvSnLQ==}
-    engines: {node: ^18.19.0 || >=20.6.0}
-    peerDependencies:
-      '@opentelemetry/api': ^1.9
-
-  '@opentelemetry/instrumentation@0.203.0':
-    resolution: {integrity: sha512-ke1qyM+3AK2zPuBPb6Hk/GCsc5ewbLvPNkEuELx/JmANeEp6ZjnZ+wypPAJSucTw0wvCGrUaibDSdcrGFoWxKQ==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.9
@@ -2706,8 +2690,8 @@ packages:
     resolution: {integrity: sha512-7EaVz7yS4KlAWppPsFEl9r2ia94LZStNjO2qiXolz0lvRYjZu6W66Or96sTr7GJhIIoE+qRnn3T9A/LeUmke6Q==}
     engines: {node: '>=12.11.0'}
 
-  '@prisma/instrumentation@6.14.0':
-    resolution: {integrity: sha512-Po/Hry5bAeunRDq0yAQueKookW3glpP+qjjvvyOfm6dI2KG5/Y6Bgg3ahyWd7B0u2E+Wf9xRk2rtdda7ySgK1A==}
+  '@prisma/instrumentation@6.15.0':
+    resolution: {integrity: sha512-6TXaH6OmDkMOQvOxwLZ8XS51hU2v4A3vmE2pSijCIiGRJYyNeMcL6nMHQMyYdZRD8wl7LF3Wzc+AMPMV/9Oo7A==}
     peerDependencies:
       '@opentelemetry/api': ^1.9
 
@@ -2952,20 +2936,20 @@ packages:
     resolution: {integrity: sha512-W+YuMnkVs4+HA/bgfto4VHKcPKLc7NiZ50/NH2pzO6UHCCFuq8/GNB98YJlLEr/ESDyzAaDr7lVE7hoBwFTT3Q==}
     engines: {node: '>=12.*'}
 
-  '@sentry-internal/browser-utils@10.11.0':
-    resolution: {integrity: sha512-fnMlz5ntap6x4vRsLOHwPqXh7t82StgAiRt+EaqcMX0t9l8C0w0df8qwrONKXvE5GdHWTNFJj5qR15FERSkg3Q==}
+  '@sentry-internal/browser-utils@10.12.0':
+    resolution: {integrity: sha512-dozbx389jhKynj0d657FsgbBVOar7pX3mb6GjqCxslXF0VKpZH2Xks0U32RgDY/nK27O+o095IWz7YvjVmPkDw==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/feedback@10.11.0':
-    resolution: {integrity: sha512-ADey51IIaa29kepb8B7aSgSGSrcyT7QZdRsN1rhitefzrruHzpSUci5c2EPIvmWfKJq8Wnvukm9BHXZXAAIOzA==}
+  '@sentry-internal/feedback@10.12.0':
+    resolution: {integrity: sha512-0+7ceO6yQPPqfxRc9ue/xoPHKcnB917ezPaehGQNfAFNQB9PNTG1y55+8mRu0Fw+ANbZeCt/HyoCmXuRdxmkpg==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/replay-canvas@10.11.0':
-    resolution: {integrity: sha512-brWQ90IYQyZr44IpTprlmvbtz4l2ABzLdpP94Egh12Onf/q6n4CjLKaA25N5kX0uggHqX1Rs7dNaG0mP3ETHhA==}
+  '@sentry-internal/replay-canvas@10.12.0':
+    resolution: {integrity: sha512-W/z1/+69i3INNfPjD1KuinSNaRQaApjzwb37IFmiyF440F93hxmEYgXHk3poOlYYaigl2JMYbysGPWOiXnqUXA==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/replay@10.11.0':
-    resolution: {integrity: sha512-t4M2bxMp2rKGK/l7bkVWjN+xVw9H9V12jAeXmO/Fskz2RcG1ZNLQnKSx/W/zCRMk8k7xOQFsfiApq+zDN+ziKA==}
+  '@sentry-internal/replay@10.12.0':
+    resolution: {integrity: sha512-/1093gSNGN5KlOBsuyAl33JkzGiG38kCnxswQLZWpPpR6LBbR1Ddb18HjhDpoQNNEZybJBgJC3a5NKl43C2TSQ==}
     engines: {node: '>=18'}
 
   '@sentry-internal/tracing@7.120.4':
@@ -2976,8 +2960,8 @@ packages:
     resolution: {integrity: sha512-OuxqBprXRyhe8Pkfyz/4yHQJc5c3lm+TmYWSSx8u48g5yKewSQDOxkiLU5pAk3WnbLPy8XwU/PN+2BG0YFU9Nw==}
     engines: {node: '>= 14'}
 
-  '@sentry/browser@10.11.0':
-    resolution: {integrity: sha512-qemaKCJKJHHCyGBpdLq23xL5u9Xvir20XN7YFTnHcEq4Jvj0GoWsslxKi5cQB2JvpYn62WxTiDgVLeQlleZhSg==}
+  '@sentry/browser@10.12.0':
+    resolution: {integrity: sha512-lKyaB2NFmr7SxPjmMTLLhQ7xfxaY3kdkMhpzuRI5qwOngtKt4+FtvNYHRuz+PTtEFv4OaHhNNbRn6r91gWguQg==}
     engines: {node: '>=18'}
 
   '@sentry/bundler-plugin-core@4.3.0':
@@ -3036,8 +3020,8 @@ packages:
     engines: {node: '>= 10'}
     hasBin: true
 
-  '@sentry/core@10.11.0':
-    resolution: {integrity: sha512-39Rxn8cDXConx3+SKOCAhW+/hklM7UDaz+U1OFzFMDlT59vXSpfI6bcXtNiFDrbOxlQ2hX8yAqx8YRltgSftoA==}
+  '@sentry/core@10.12.0':
+    resolution: {integrity: sha512-Jrf0Yo7DvmI/ZQcvBnA0xKNAFkJlVC/fMlvcin+5IrFNRcqOToZ2vtF+XqTgjRZymXQNE8s1QTD7IomPHk0TAw==}
     engines: {node: '>=18'}
 
   '@sentry/core@7.114.0':
@@ -3048,20 +3032,20 @@ packages:
     resolution: {integrity: sha512-TXu3Q5kKiq8db9OXGkWyXUbIxMMuttB5vJ031yolOl5T/B69JRyAoKuojLBjRv1XX583gS1rSSoX8YXX7ATFGA==}
     engines: {node: '>=8'}
 
-  '@sentry/node-core@10.11.0':
-    resolution: {integrity: sha512-dkVZ06F+W5W0CsD47ATTTOTTocmccT/ezrF9idspQq+HVOcjoKSU60WpWo22NjtVNdSYKLnom0q1LKRoaRA/Ww==}
+  '@sentry/node-core@10.12.0':
+    resolution: {integrity: sha512-ki+pX4YyVVMhue1Qso0Kiz862ragDe1PgRc/AgtUJ0jc75s5PTvQw6N+9DAtSahL8t078+8rC7UzyGdLTPCl5w==}
     engines: {node: '>=18'}
     peerDependencies:
       '@opentelemetry/api': ^1.9
-      '@opentelemetry/context-async-hooks': ^1.30.1 || ^2.0.0
-      '@opentelemetry/core': ^1.30.1 || ^2.0.0
+      '@opentelemetry/context-async-hooks': ^1.30.1 || ^2.1.0
+      '@opentelemetry/core': ^1.30.1 || ^2.1.0
       '@opentelemetry/instrumentation': '>=0.57.1 <1'
       '@opentelemetry/resources': ^2.1.0
       '@opentelemetry/sdk-trace-base': ^2.1.0
       '@opentelemetry/semantic-conventions': ^1.37.0
 
-  '@sentry/node@10.11.0':
-    resolution: {integrity: sha512-Tbcjr3iQAEjYi7/QIpdS8afv/LU1TwDTiy5x87MSpVEoeFcZ7f2iFC4GV0fhB3p4qDuFdL2JGVsIIrzapp8Y4A==}
+  '@sentry/node@10.12.0':
+    resolution: {integrity: sha512-rnrNKJkG8rbm1NZaYAhTfLqGmZmiOjv9Y6apa1G9+hsfAqdK4SGFa/s22WG//qVnvqW4aDXR883Dvc0236op+g==}
     engines: {node: '>=18'}
 
   '@sentry/opentelemetry-node@7.114.0':
@@ -3073,13 +3057,13 @@ packages:
       '@opentelemetry/sdk-trace-base': ^2.1.0
       '@opentelemetry/semantic-conventions': ^1.37.0
 
-  '@sentry/opentelemetry@10.11.0':
-    resolution: {integrity: sha512-BY2SsVlRKICzNUO9atUy064BZqYnhV5A/O+JjEx0kj7ylq+oZd++zmGkks00rSwaJE220cVcVhpwqxcFUpc2hw==}
+  '@sentry/opentelemetry@10.12.0':
+    resolution: {integrity: sha512-bkUfLVpu0qTfCrQsz7uE/ch0kCJSV2KlFtguWPLMG2m0JOLDI+iivLm2nbp+Bg16FopZojKs5P8aevCSl+ilEw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@opentelemetry/api': ^1.9
-      '@opentelemetry/context-async-hooks': ^1.30.1 || ^2.0.0
-      '@opentelemetry/core': ^1.30.1 || ^2.0.0
+      '@opentelemetry/context-async-hooks': ^1.30.1 || ^2.1.0
+      '@opentelemetry/core': ^1.30.1 || ^2.1.0
       '@opentelemetry/sdk-trace-base': ^2.1.0
       '@opentelemetry/semantic-conventions': ^1.37.0
 
@@ -3107,8 +3091,8 @@ packages:
     resolution: {integrity: sha512-MeTAHMmTOgBPMAjeW7/ONyXwgScZdaFFtNiALKcAODnVqC7eoHdSRIWeH5mkLr2Dvs7nqtBaDpKxRjUBgfm9LQ==}
     engines: {node: '>= 14'}
 
-  '@sentry/vue@10.11.0':
-    resolution: {integrity: sha512-uXPXce4QCEuutG3b7FEcA+fhvXCgVPA/iFyeBMdagtjKGRLWgM0nRgVww/WGrltq8414aq7dAiBTWmPKAoaslw==}
+  '@sentry/vue@10.12.0':
+    resolution: {integrity: sha512-6o5TOEw++nvID34sxTIZZ19HagsEzrgkWHTmBvrx3ftwLcZ/5+5F9eLx51bbPaURjHwf7hjkMxCpyW66v2gXJA==}
     engines: {node: '>=18'}
     peerDependencies:
       pinia: 2.x || 3.x
@@ -3314,8 +3298,8 @@ packages:
   '@types/node@22.18.1':
     resolution: {integrity: sha512-rzSDyhn4cYznVG+PCzGe1lwuMYJrcBS1fc3JqSa2PvtABwWo+dZ1ij5OVok3tqfpEBCBoaR4d7upFJk73HRJDw==}
 
-  '@types/node@24.3.3':
-    resolution: {integrity: sha512-GKBNHjoNw3Kra1Qg5UXttsY5kiWMEfoHq2TmXb+b1rcm6N7B3wTrFYIf/oSZ1xNQ+hVVijgLkiDZh7jRRsh+Gw==}
+  '@types/node@24.5.1':
+    resolution: {integrity: sha512-/SQdmUP2xa+1rdx7VwB9yPq8PaKej8TD5cQ+XfKDPWWC+VDJU4rvVVagXqKUzhKjtFoNA8rXDJAkCxQPAe00+Q==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -3332,9 +3316,6 @@ packages:
 
   '@types/pg-pool@2.0.6':
     resolution: {integrity: sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==}
-
-  '@types/pg@8.15.4':
-    resolution: {integrity: sha512-I6UNVBAoYbvuWkkU3oosC8yxqH21f4/Jc4DK71JLG3dT2mdlGe1z+ep/LQGXaKaOgcvUrsQoPRqfgtMcvZiJhg==}
 
   '@types/pg@8.15.5':
     resolution: {integrity: sha512-LF7lF6zWEKxuT3/OR8wAZGzkg4ENGXFNyiV/JeOt9z5B+0ZVwbql9McqX5c/WStFq1GaGso7H1AzP/qSzmlCKQ==}
@@ -3387,63 +3368,63 @@ packages:
   '@types/yargs@15.0.19':
     resolution: {integrity: sha512-2XUaGVmyQjgyAZldf0D0c14vvo/yv0MhQBSTJcejMMaitsn3nxCB6TmH4G0ZQf+uxROOa9mpanoSm8h6SG/1ZA==}
 
-  '@typescript-eslint/eslint-plugin@8.43.0':
-    resolution: {integrity: sha512-8tg+gt7ENL7KewsKMKDHXR1vm8tt9eMxjJBYINf6swonlWgkYn5NwyIgXpbbDxTNU5DgpDFfj95prcTq2clIQQ==}
+  '@typescript-eslint/eslint-plugin@8.44.0':
+    resolution: {integrity: sha512-EGDAOGX+uwwekcS0iyxVDmRV9HX6FLSM5kzrAToLTsr9OWCIKG/y3lQheCq18yZ5Xh78rRKJiEpP0ZaCs4ryOQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      '@typescript-eslint/parser': ^8.43.0
+      '@typescript-eslint/parser': ^8.44.0
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/parser@8.43.0':
-    resolution: {integrity: sha512-B7RIQiTsCBBmY+yW4+ILd6mF5h1FUwJsVvpqkrgpszYifetQ2Ke+Z4u6aZh0CblkUGIdR59iYVyXqqZGkZ3aBw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: '>=4.8.4 <6.0.0'
-
-  '@typescript-eslint/project-service@8.43.0':
-    resolution: {integrity: sha512-htB/+D/BIGoNTQYffZw4uM4NzzuolCoaA/BusuSIcC8YjmBYQioew5VUZAYdAETPjeed0hqCaW7EHg+Robq8uw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
-
-  '@typescript-eslint/scope-manager@8.43.0':
-    resolution: {integrity: sha512-daSWlQ87ZhsjrbMLvpuuMAt3y4ba57AuvadcR7f3nl8eS3BjRc8L9VLxFLk92RL5xdXOg6IQ+qKjjqNEimGuAg==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@typescript-eslint/tsconfig-utils@8.43.0':
-    resolution: {integrity: sha512-ALC2prjZcj2YqqL5X/bwWQmHA2em6/94GcbB/KKu5SX3EBDOsqztmmX1kMkvAJHzxk7TazKzJfFiEIagNV3qEA==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
-
-  '@typescript-eslint/type-utils@8.43.0':
-    resolution: {integrity: sha512-qaH1uLBpBuBBuRf8c1mLJ6swOfzCXryhKND04Igr4pckzSEW9JX5Aw9AgW00kwfjWJF0kk0ps9ExKTfvXfw4Qg==}
+  '@typescript-eslint/parser@8.44.0':
+    resolution: {integrity: sha512-VGMpFQGUQWYT9LfnPcX8ouFojyrZ/2w3K5BucvxL/spdNehccKhB4jUyB1yBCXpr2XFm0jkECxgrpXBW2ipoAw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/types@8.43.0':
-    resolution: {integrity: sha512-vQ2FZaxJpydjSZJKiSW/LJsabFFvV7KgLC5DiLhkBcykhQj8iK9BOaDmQt74nnKdLvceM5xmhaTF+pLekrxEkw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@typescript-eslint/typescript-estree@8.43.0':
-    resolution: {integrity: sha512-7Vv6zlAhPb+cvEpP06WXXy/ZByph9iL6BQRBDj4kmBsW98AqEeQHlj/13X+sZOrKSo9/rNKH4Ul4f6EICREFdw==}
+  '@typescript-eslint/project-service@8.44.0':
+    resolution: {integrity: sha512-ZeaGNraRsq10GuEohKTo4295Z/SuGcSq2LzfGlqiuEvfArzo/VRrT0ZaJsVPuKZ55lVbNk8U6FcL+ZMH8CoyVA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/utils@8.43.0':
-    resolution: {integrity: sha512-S1/tEmkUeeswxd0GGcnwuVQPFWo8NzZTOMxCvw8BX7OMxnNae+i8Tm7REQen/SwUIPoPqfKn7EaZ+YLpiB3k9g==}
+  '@typescript-eslint/scope-manager@8.44.0':
+    resolution: {integrity: sha512-87Jv3E+al8wpD+rIdVJm/ItDBe/Im09zXIjFoipOjr5gHUhJmTzfFLuTJ/nPTMc2Srsroy4IBXwcTCHyRR7KzA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@typescript-eslint/tsconfig-utils@8.44.0':
+    resolution: {integrity: sha512-x5Y0+AuEPqAInc6yd0n5DAcvtoQ/vyaGwuX5HE9n6qAefk1GaedqrLQF8kQGylLUb9pnZyLf+iEiL9fr8APDtQ==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      typescript: '>=4.8.4 <6.0.0'
+
+  '@typescript-eslint/type-utils@8.44.0':
+    resolution: {integrity: sha512-9cwsoSxJ8Sak67Be/hD2RNt/fsqmWnNE1iHohG8lxqLSNY8xNfyY7wloo5zpW3Nu9hxVgURevqfcH6vvKCt6yg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/visitor-keys@8.43.0':
-    resolution: {integrity: sha512-T+S1KqRD4sg/bHfLwrpF/K3gQLBM1n7Rp7OjjikjTEssI2YJzQpi5WXoynOaQ93ERIuq3O8RBTOUYDKszUCEHw==}
+  '@typescript-eslint/types@8.44.0':
+    resolution: {integrity: sha512-ZSl2efn44VsYM0MfDQe68RKzBz75NPgLQXuGypmym6QVOWL5kegTZuZ02xRAT9T+onqvM6T8CdQk0OwYMB6ZvA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@typescript-eslint/typescript-estree@8.44.0':
+    resolution: {integrity: sha512-lqNj6SgnGcQZwL4/SBJ3xdPEfcBuhCG8zdcwCPgYcmiPLgokiNDKlbPzCwEwu7m279J/lBYWtDYL+87OEfn8Jw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      typescript: '>=4.8.4 <6.0.0'
+
+  '@typescript-eslint/utils@8.44.0':
+    resolution: {integrity: sha512-nktOlVcg3ALo0mYlV+L7sWUD58KG4CMj1rb2HUVOO4aL3K/6wcD+NERqd0rrA5Vg06b42YhF6cFxeixsp9Riqg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0
+      typescript: '>=4.8.4 <6.0.0'
+
+  '@typescript-eslint/visitor-keys@8.44.0':
+    resolution: {integrity: sha512-zaz9u8EJ4GBmnehlrpoKvj/E3dNbuQ7q0ucyZImm3cLqJ8INTc970B1qEqDX/Rzq65r3TvVTN7kHWPBoyW7DWw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@typespec/ts-http-runtime@0.3.0':
@@ -4632,8 +4613,8 @@ packages:
   dprint-plugin-yaml@0.5.1:
     resolution: {integrity: sha512-6q1C75Z492QV/6yCXEsgZ6sQQFZwJcdu10rifB2qNS59ltAYsMNiK1xPWeDDMxjv6UBnQJyd/psCuAiucdRNgA==}
 
-  dprint@0.50.1:
-    resolution: {integrity: sha512-s+kUyQp2rGpwsM3vVmXySOY3v1NjYyRpKfQZdP4rfNTz6zQuICSO6nqIXNm3YdK1MwNFR/EXSFMuE1YPuulhow==}
+  dprint@0.50.2:
+    resolution: {integrity: sha512-+0Fzg+17jsMMUouK00/Fara5YtGOuE76EAJINHB8VpkXHd0n00rMXtw/03qorOgz23eo8Y0UpYvNZBJJo3aNtw==}
     hasBin: true
 
   dunder-proto@1.0.1:
@@ -4649,8 +4630,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  effect-app@3.6.1:
-    resolution: {integrity: sha512-04QOwBxRseCBa7vSaKbwW/cIm75yc3uaGEoMC6Wb8g7wH4sY5zppMMEzMumVg+cS7DFNA4gwheweM6JdN27C5Q==}
+  effect-app@3.7.0:
+    resolution: {integrity: sha512-i85QbNQmaqgy/vmke+ZE6Dfta4E18GmFw0AZnzQvRGgdhqS7vBFE72EKkW8cTWCja1/IqizrhHViHOvhQsGCKA==}
     peerDependencies:
       '@effect/platform': 0.90.9
       effect: 3.17.13
@@ -7929,8 +7910,8 @@ packages:
     resolution: {integrity: sha512-3KS2b+kL7fsuk/eJZ7EQdnEmQoaho/r6KUef7hxvltNA5DR8NAUM+8wJMbJyZ4G9/7i3v5zPBIMN5aybAh2/Jg==}
     engines: {node: '>= 0.4'}
 
-  typescript-eslint@8.43.0:
-    resolution: {integrity: sha512-FyRGJKUGvcFekRRcBKFBlAhnp4Ng8rhe8tuvvkR9OiU0gfd4vyvTRQHEckO6VDlH57jbeUQem2IpqPq9kLJH+w==}
+  typescript-eslint@8.44.0:
+    resolution: {integrity: sha512-ib7mCkYuIzYonCq9XWF5XNw+fkj2zg629PSa9KNIQ47RXFF763S5BIX4wqz1+FLPogTZoiw8KmCiRPRa8bL3qw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
@@ -7966,8 +7947,8 @@ packages:
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
-  undici-types@7.10.0:
-    resolution: {integrity: sha512-t5Fy/nfn+14LuOc2KNYg75vZqClpAiqscVvMygNnlsHBFpSXdJaYtXMcdNLpl/Qvc3P2cB3s6lOV51nqsFq4ag==}
+  undici-types@7.12.0:
+    resolution: {integrity: sha512-goOacqME2GYyOZZfb5Lgtu+1IDmAlAEu5xnD3+xTzS10hT0vzpf0SPjkXwAw9Jm+4n/mQGDP3LO8CPbYROeBfQ==}
 
   undici@7.16.0:
     resolution: {integrity: sha512-QEg3HPMll0o3t2ourKwOeUAZ159Kn9mx5pnzHRQO8+Wixmh88YdZRiIwat0iNzNNXn0yoEtXJqFpyW7eM8BV7g==}
@@ -8376,9 +8357,8 @@ packages:
       typescript:
         optional: true
 
-  vuetify@3.10.0:
-    resolution: {integrity: sha512-cgtssO0yriqwEdOd6jGfUqUUztunxYPDhyY+iog0Q8i5WEa+3+eQ/dGpXeFoU80qMVm0k6uPd8aJpc5wEVXu3g==}
-    engines: {node: ^12.20 || >=14.13}
+  vuetify@3.10.1:
+    resolution: {integrity: sha512-4mQcdANVTgGC9TgsTEzueTe/OXvEvdCLwrJFJDeDYrNlNJmcH6jAeefEl0z1j5z7CH/AQM4NQDoQ+tMqZPOK/g==}
     peerDependencies:
       typescript: '>=4.7'
       vite-plugin-vuetify: '>=2.1.0'
@@ -8970,7 +8950,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@ben_12/eslint-plugin-dprint@1.7.5(@dprint/typescript@0.95.11)(dprint-plugin-malva@0.14.3)(dprint-plugin-markup@0.23.4)(dprint-plugin-yaml@0.5.1)(eslint@9.35.0(jiti@2.5.1))':
+  '@ben_12/eslint-plugin-dprint@1.7.6(@dprint/typescript@0.95.11)(dprint-plugin-malva@0.14.3)(dprint-plugin-markup@0.23.4)(dprint-plugin-yaml@0.5.1)(eslint@9.35.0(jiti@2.5.1))':
     dependencies:
       '@dprint/formatter': 0.4.1
       debug: 4.4.1(supports-color@5.5.0)
@@ -8994,38 +8974,38 @@ snapshots:
       gonzales-pe: 4.3.0
       node-source-walk: 7.0.1
 
-  '@dprint/darwin-arm64@0.50.1':
+  '@dprint/darwin-arm64@0.50.2':
     optional: true
 
-  '@dprint/darwin-x64@0.50.1':
+  '@dprint/darwin-x64@0.50.2':
     optional: true
 
   '@dprint/formatter@0.4.1': {}
 
-  '@dprint/linux-arm64-glibc@0.50.1':
+  '@dprint/linux-arm64-glibc@0.50.2':
     optional: true
 
-  '@dprint/linux-arm64-musl@0.50.1':
+  '@dprint/linux-arm64-musl@0.50.2':
     optional: true
 
-  '@dprint/linux-riscv64-glibc@0.50.1':
+  '@dprint/linux-riscv64-glibc@0.50.2':
     optional: true
 
-  '@dprint/linux-x64-glibc@0.50.1':
+  '@dprint/linux-x64-glibc@0.50.2':
     optional: true
 
-  '@dprint/linux-x64-musl@0.50.1':
+  '@dprint/linux-x64-musl@0.50.2':
     optional: true
 
   '@dprint/typescript@0.95.11': {}
 
-  '@dprint/win32-arm64@0.50.1':
+  '@dprint/win32-arm64@0.50.2':
     optional: true
 
-  '@dprint/win32-x64@0.50.1':
+  '@dprint/win32-x64@0.50.2':
     optional: true
 
-  '@effect-app/cli@1.24.0(592442ee9a6c3ee13c41516862f44662)':
+  '@effect-app/cli@1.25.0(592442ee9a6c3ee13c41516862f44662)':
     dependencies:
       '@effect/cli': 0.69.2(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(@effect/printer-ansi@0.45.0(@effect/typeclass@0.36.0(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(@effect/printer@0.45.0(@effect/typeclass@0.36.0(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       '@effect/platform-node': 0.96.1(d3ac1e8d4a45617cdf4358238bb75332)
@@ -9041,11 +9021,11 @@ snapshots:
       - effect
       - utf-8-validate
 
-  '@effect-app/eslint-codegen-model@1.43.0(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
+  '@effect-app/eslint-codegen-model@1.44.0(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
     dependencies:
       '@babel/generator': 7.28.3
       '@babel/parser': 7.28.4
-      '@typescript-eslint/utils': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/utils': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       effect: 3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)
       eslint-plugin-codegen: 0.17.0(patch_hash=976e78798a0da613a33b2a0ab43a31863dc355721545f2235e0b4922f2f409d7)
       glob: 8.1.0
@@ -9059,18 +9039,18 @@ snapshots:
       - supports-color
       - typescript
 
-  '@effect-app/eslint-shared-config@0.1.1(dprint@0.50.1)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))(webpack@5.101.3)':
+  '@effect-app/eslint-shared-config@0.2.0(dprint@0.50.2)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))(webpack@5.101.3)':
     dependencies:
       '@dprint/formatter': 0.4.1
       '@dprint/typescript': 0.95.11
-      '@effect-app/eslint-codegen-model': 1.43.0(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@effect-app/eslint-codegen-model': 1.44.0(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(eslint@9.35.0(jiti@2.5.1))(fp-ts@2.16.11)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       '@eslint/compat': 1.3.2(eslint@9.35.0(jiti@2.5.1))
       '@eslint/eslintrc': 3.3.1
       '@eslint/js': 9.35.0
-      '@typescript-eslint/eslint-plugin': 8.43.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/parser': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@vue/eslint-config-typescript': 14.6.0(eslint-plugin-vue@10.4.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1))))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      dprint: 0.50.1
+      '@typescript-eslint/eslint-plugin': 8.44.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/parser': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@vue/eslint-config-typescript': 14.6.0(eslint-plugin-vue@10.4.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1))))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      dprint: 0.50.2
       dprint-plugin-malva: 0.14.3
       dprint-plugin-markup: 0.23.4
       dprint-plugin-yaml: 0.5.1
@@ -9079,15 +9059,15 @@ snapshots:
       eslint-import-resolver-webpack: 0.13.10(eslint-plugin-import@2.32.0)(webpack@5.101.3)
       eslint-plugin-codegen: 0.17.0(patch_hash=976e78798a0da613a33b2a0ab43a31863dc355721545f2235e0b4922f2f409d7)
       eslint-plugin-formatjs: 5.4.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1))
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.35.0(jiti@2.5.1))
       eslint-plugin-sort-destructure-keys: 2.0.0(eslint@9.35.0(jiti@2.5.1))
-      eslint-plugin-unused-imports: 4.2.0(@typescript-eslint/eslint-plugin@8.43.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))
-      eslint-plugin-vue: 10.4.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))
+      eslint-plugin-unused-imports: 4.2.0(@typescript-eslint/eslint-plugin@8.44.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))
+      eslint-plugin-vue: 10.4.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))
       eslint-watch: 8.0.0(eslint@9.35.0(jiti@2.5.1))
       jsonc-parser: 3.3.1
       typescript: 5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)
-      typescript-eslint: 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      typescript-eslint: 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
     transitivePeerDependencies:
       - effect
       - eslint-plugin-import-x
@@ -9097,7 +9077,7 @@ snapshots:
       - vue-eslint-parser
       - webpack
 
-  '@effect-app/infra@3.1.1(5d9f4a5d0cc5e25fa7aa376fb1e96e44)':
+  '@effect-app/infra@3.2.0(63e3bf3b94d09eb33fd9462f998d8d91)':
     dependencies:
       '@azure/cosmos': 4.5.1
       '@azure/service-bus': 7.9.5
@@ -9105,16 +9085,16 @@ snapshots:
       '@effect/platform': 0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       '@effect/rpc': 0.69.2(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       '@effect/sql': 0.44.2(@effect/experimental@0.54.6(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(ioredis@5.7.0))(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
-      '@effect/vitest': 0.25.1(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(vitest@3.2.4(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
+      '@effect/vitest': 0.25.1(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(vitest@3.2.4(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
       '@faker-js/faker': 8.4.1
       '@sendgrid/helpers': 8.0.0
       '@sendgrid/mail': 8.1.5
-      '@sentry/node': 10.11.0
-      '@sentry/opentelemetry': 10.11.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
+      '@sentry/node': 10.12.0
+      '@sentry/opentelemetry': 10.12.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
       change-case: 5.4.4
       cross-fetch: 4.1.0
       effect: 3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)
-      effect-app: 3.6.1(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
+      effect-app: 3.7.0(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       express: 5.1.0
       express-oauth2-jwt-bearer: 1.7.1
       fast-check: 4.3.0
@@ -9128,14 +9108,14 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@effect-app/vue-components@0.25.31(b7ced32d5adbe6ed744d319430254208)':
+  '@effect-app/vue-components@0.26.0(58772d8f0c06ae57f87a95bb06076b06)':
     dependencies:
-      '@effect-app/vue': 2.77.16(99ff990d0902620d114c43a89dda529d)
+      '@effect-app/vue': 2.78.0(405bea486429c6dfdb0d930842277644)
       '@mdi/js': 7.4.47
       '@opentelemetry/api': 1.9.0
       '@tanstack/vue-form': 1.19.5(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       effect: 3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)
-      effect-app: 3.6.1(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
+      effect-app: 3.7.0(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       highlight.js: 11.11.1
       intl-messageformat: 10.7.16
       mdi-js: 1.0.1
@@ -9144,7 +9124,7 @@ snapshots:
       primevue: 4.3.9(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       vue: 3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       vue3-highlightjs: 1.0.5(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
-      vuetify: 3.10.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
+      vuetify: 3.10.1(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
     transitivePeerDependencies:
       - '@effect-atom/atom'
       - '@effect-atom/atom-vue'
@@ -9154,20 +9134,20 @@ snapshots:
       - '@vue/composition-api'
       - typescript
 
-  '@effect-app/vue@2.77.16(99ff990d0902620d114c43a89dda529d)':
+  '@effect-app/vue@2.78.0(405bea486429c6dfdb0d930842277644)':
     dependencies:
       '@effect-atom/atom': 0.1.22(@effect/experimental@0.54.6(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(ioredis@5.7.0))(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(@effect/rpc@0.69.2(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       '@effect-atom/atom-vue': 0.1.20(fc633f8239ba3ab18db023454da5a044)
       '@effect/platform': 0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       '@effect/platform-browser': 0.70.0(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       '@formatjs/intl': 3.1.6(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@sentry/browser': 10.11.0
+      '@sentry/browser': 10.12.0
       '@tanstack/query-core': 5.83.1(patch_hash=351153003e430d89ebb99f44022c6de72d7e21f40056ebf2468626bec8e015c7)
       '@tanstack/vue-query': 5.83.1(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       '@vueuse/core': 13.9.0(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       change-case: 5.4.4
       effect: 3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)
-      effect-app: 3.6.1(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
+      effect-app: 3.7.0(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       query-string: 9.3.0
       vue: 3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
     transitivePeerDependencies:
@@ -9313,10 +9293,10 @@ snapshots:
     dependencies:
       effect: 3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)
 
-  '@effect/vitest@0.25.1(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(vitest@3.2.4(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))':
+  '@effect/vitest@0.25.1(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))(vitest@3.2.4(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))':
     dependencies:
       effect: 3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)
-      vitest: 3.2.4(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vitest: 3.2.4(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
 
   '@effect/workflow@0.9.5(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(@effect/rpc@0.69.2(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))':
     dependencies:
@@ -9573,7 +9553,7 @@ snapshots:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
       '@types/yargs': 15.0.19
       chalk: 4.1.2
 
@@ -9711,11 +9691,11 @@ snapshots:
 
   '@nuxt/devalue@2.0.2': {}
 
-  '@nuxt/devtools-kit@2.6.3(magicast@0.3.5)(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))':
+  '@nuxt/devtools-kit@2.6.3(magicast@0.3.5)(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))':
     dependencies:
       '@nuxt/kit': 3.19.1(magicast@0.3.5)
       execa: 8.0.1
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
     transitivePeerDependencies:
       - magicast
 
@@ -9730,12 +9710,12 @@ snapshots:
       prompts: 2.4.2
       semver: 7.7.2
 
-  '@nuxt/devtools@2.6.3(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
+  '@nuxt/devtools@2.6.3(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
     dependencies:
-      '@nuxt/devtools-kit': 2.6.3(magicast@0.3.5)(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
+      '@nuxt/devtools-kit': 2.6.3(magicast@0.3.5)(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
       '@nuxt/devtools-wizard': 2.6.3
       '@nuxt/kit': 3.19.1(magicast@0.3.5)
-      '@vue/devtools-core': 7.7.7(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
+      '@vue/devtools-core': 7.7.7(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       '@vue/devtools-kit': 7.7.7
       birpc: 2.5.0
       consola: 3.4.2
@@ -9760,9 +9740,9 @@ snapshots:
       sirv: 3.0.2
       structured-clone-es: 1.0.0
       tinyglobby: 0.2.15
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
-      vite-plugin-inspect: 11.3.3(@nuxt/kit@3.19.1(magicast@0.3.5))(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
-      vite-plugin-vue-tracer: 1.0.0(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite-plugin-inspect: 11.3.3(@nuxt/kit@3.19.1(magicast@0.3.5))(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
+      vite-plugin-vue-tracer: 1.0.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       which: 5.0.0
       ws: 8.18.3
     transitivePeerDependencies:
@@ -9853,12 +9833,12 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  '@nuxt/vite-builder@4.1.2(@types/node@24.3.3)(eslint@9.35.0(jiti@2.5.1))(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1)':
+  '@nuxt/vite-builder@4.1.2(@types/node@24.5.1)(eslint@9.35.0(jiti@2.5.1))(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1)':
     dependencies:
       '@nuxt/kit': 4.1.2(magicast@0.3.5)
       '@rollup/plugin-replace': 6.0.2(rollup@4.50.1)
-      '@vitejs/plugin-vue': 6.0.1(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
-      '@vitejs/plugin-vue-jsx': 5.1.1(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
+      '@vitejs/plugin-vue': 6.0.1(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
+      '@vitejs/plugin-vue-jsx': 5.1.1(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       autoprefixer: 10.4.21(postcss@8.5.6)
       consola: 3.4.2
       cssnano: 7.1.1(postcss@8.5.6)
@@ -9880,9 +9860,9 @@ snapshots:
       std-env: 3.9.0
       ufo: 1.6.1
       unenv: 2.0.0-rc.21
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
-      vite-node: 3.2.4(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
-      vite-plugin-checker: 0.10.3(eslint@9.35.0(jiti@2.5.1))(optionator@0.9.4)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite-node: 3.2.4(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite-plugin-checker: 0.10.3(eslint@9.35.0(jiti@2.5.1))(optionator@0.9.4)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       vue: 3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       vue-bundle-renderer: 2.1.2
     transitivePeerDependencies:
@@ -9909,10 +9889,6 @@ snapshots:
       - vti
       - vue-tsc
       - yaml
-
-  '@opentelemetry/api-logs@0.203.0':
-    dependencies:
-      '@opentelemetry/api': 1.9.0
 
   '@opentelemetry/api-logs@0.204.0':
     dependencies:
@@ -10015,11 +9991,6 @@ snapshots:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/semantic-conventions': 1.37.0
       semver: 7.7.2
-
-  '@opentelemetry/core@2.0.1(@opentelemetry/api@1.9.0)':
-    dependencies:
-      '@opentelemetry/api': 1.9.0
-      '@opentelemetry/semantic-conventions': 1.37.0
 
   '@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0)':
     dependencies:
@@ -10140,11 +10111,11 @@ snapshots:
       '@opentelemetry/sdk-trace-base': 2.1.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
 
-  '@opentelemetry/instrumentation-amqplib@0.50.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-amqplib@0.51.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
     transitivePeerDependencies:
       - supports-color
@@ -10193,11 +10164,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-connect@0.47.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-connect@0.48.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
       '@types/connect': 3.4.38
     transitivePeerDependencies:
@@ -10221,10 +10192,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-dataloader@0.21.1(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-dataloader@0.22.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -10242,11 +10213,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-express@0.52.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-express@0.53.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
     transitivePeerDependencies:
       - supports-color
@@ -10269,11 +10240,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-fs@0.23.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-fs@0.24.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -10285,10 +10256,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-generic-pool@0.47.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-generic-pool@0.48.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -10299,10 +10270,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-graphql@0.51.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-graphql@0.52.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -10321,11 +10292,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-hapi@0.50.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-hapi@0.51.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
     transitivePeerDependencies:
       - supports-color
@@ -10339,11 +10310,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-http@0.203.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-http@0.204.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/core': 2.0.1(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
       forwarded-parse: 2.1.2
     transitivePeerDependencies:
@@ -10377,10 +10348,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-kafkajs@0.13.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-kafkajs@0.14.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
     transitivePeerDependencies:
       - supports-color
@@ -10393,10 +10364,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-knex@0.48.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-knex@0.49.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
     transitivePeerDependencies:
       - supports-color
@@ -10409,11 +10380,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-koa@0.51.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-koa@0.52.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
     transitivePeerDependencies:
       - supports-color
@@ -10427,10 +10398,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-lru-memoizer@0.48.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-lru-memoizer@0.49.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -10450,10 +10421,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-mongodb@0.56.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-mongodb@0.57.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
     transitivePeerDependencies:
       - supports-color
@@ -10466,11 +10437,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-mongoose@0.50.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-mongoose@0.51.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
     transitivePeerDependencies:
       - supports-color
@@ -10484,10 +10455,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-mysql2@0.50.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-mysql2@0.51.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
       '@opentelemetry/sql-common': 0.41.0(@opentelemetry/api@1.9.0)
     transitivePeerDependencies:
@@ -10502,10 +10473,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-mysql@0.49.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-mysql@0.50.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
       '@types/mysql': 2.15.27
     transitivePeerDependencies:
@@ -10545,14 +10516,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-pg@0.55.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-pg@0.57.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
       '@opentelemetry/sql-common': 0.41.0(@opentelemetry/api@1.9.0)
-      '@types/pg': 8.15.4
+      '@types/pg': 8.15.5
       '@types/pg-pool': 2.0.6
     transitivePeerDependencies:
       - supports-color
@@ -10578,10 +10549,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-redis@0.51.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-redis@0.53.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/redis-common': 0.38.0
       '@opentelemetry/semantic-conventions': 1.37.0
     transitivePeerDependencies:
@@ -10628,10 +10599,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-tedious@0.22.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-tedious@0.23.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
       '@types/tedious': 4.0.14
     transitivePeerDependencies:
@@ -10646,11 +10617,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@opentelemetry/instrumentation-undici@0.14.0(@opentelemetry/api@1.9.0)':
+  '@opentelemetry/instrumentation-undici@0.15.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -10667,15 +10638,6 @@ snapshots:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/api-logs': 0.205.0
       '@opentelemetry/instrumentation': 0.205.0(@opentelemetry/api@1.9.0)
-    transitivePeerDependencies:
-      - supports-color
-
-  '@opentelemetry/instrumentation@0.203.0(@opentelemetry/api@1.9.0)':
-    dependencies:
-      '@opentelemetry/api': 1.9.0
-      '@opentelemetry/api-logs': 0.203.0
-      import-in-the-middle: 1.14.2
-      require-in-the-middle: 7.5.2
     transitivePeerDependencies:
       - supports-color
 
@@ -11148,7 +11110,7 @@ snapshots:
     transitivePeerDependencies:
       - vue
 
-  '@prisma/instrumentation@6.14.0(@opentelemetry/api@1.9.0)':
+  '@prisma/instrumentation@6.15.0(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/instrumentation': 0.57.2(@opentelemetry/api@1.9.0)
@@ -11353,23 +11315,23 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@sentry-internal/browser-utils@10.11.0':
+  '@sentry-internal/browser-utils@10.12.0':
     dependencies:
-      '@sentry/core': 10.11.0
+      '@sentry/core': 10.12.0
 
-  '@sentry-internal/feedback@10.11.0':
+  '@sentry-internal/feedback@10.12.0':
     dependencies:
-      '@sentry/core': 10.11.0
+      '@sentry/core': 10.12.0
 
-  '@sentry-internal/replay-canvas@10.11.0':
+  '@sentry-internal/replay-canvas@10.12.0':
     dependencies:
-      '@sentry-internal/replay': 10.11.0
-      '@sentry/core': 10.11.0
+      '@sentry-internal/replay': 10.12.0
+      '@sentry/core': 10.12.0
 
-  '@sentry-internal/replay@10.11.0':
+  '@sentry-internal/replay@10.12.0':
     dependencies:
-      '@sentry-internal/browser-utils': 10.11.0
-      '@sentry/core': 10.11.0
+      '@sentry-internal/browser-utils': 10.12.0
+      '@sentry/core': 10.12.0
 
   '@sentry-internal/tracing@7.120.4':
     dependencies:
@@ -11379,13 +11341,13 @@ snapshots:
 
   '@sentry/babel-plugin-component-annotate@4.3.0': {}
 
-  '@sentry/browser@10.11.0':
+  '@sentry/browser@10.12.0':
     dependencies:
-      '@sentry-internal/browser-utils': 10.11.0
-      '@sentry-internal/feedback': 10.11.0
-      '@sentry-internal/replay': 10.11.0
-      '@sentry-internal/replay-canvas': 10.11.0
-      '@sentry/core': 10.11.0
+      '@sentry-internal/browser-utils': 10.12.0
+      '@sentry-internal/feedback': 10.12.0
+      '@sentry-internal/replay': 10.12.0
+      '@sentry-internal/replay-canvas': 10.12.0
+      '@sentry/core': 10.12.0
 
   '@sentry/bundler-plugin-core@4.3.0':
     dependencies:
@@ -11445,7 +11407,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sentry/core@10.11.0': {}
+  '@sentry/core@10.12.0': {}
 
   '@sentry/core@7.114.0':
     dependencies:
@@ -11457,54 +11419,54 @@ snapshots:
       '@sentry/types': 7.120.4
       '@sentry/utils': 7.120.4
 
-  '@sentry/node-core@10.11.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.203.0(@opentelemetry/api@1.9.0))(@opentelemetry/resources@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)':
+  '@sentry/node-core@10.12.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.204.0(@opentelemetry/api@1.9.0))(@opentelemetry/resources@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/context-async-hooks': 2.1.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/resources': 2.1.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-base': 2.1.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
-      '@sentry/core': 10.11.0
-      '@sentry/opentelemetry': 10.11.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
+      '@sentry/core': 10.12.0
+      '@sentry/opentelemetry': 10.12.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
       import-in-the-middle: 1.14.2
 
-  '@sentry/node@10.11.0':
+  '@sentry/node@10.12.0':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/context-async-hooks': 2.1.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.203.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-amqplib': 0.50.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-connect': 0.47.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-dataloader': 0.21.1(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-express': 0.52.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-fs': 0.23.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-generic-pool': 0.47.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-graphql': 0.51.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-hapi': 0.50.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-http': 0.203.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.204.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-amqplib': 0.51.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-connect': 0.48.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-dataloader': 0.22.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-express': 0.53.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-fs': 0.24.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-generic-pool': 0.48.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-graphql': 0.52.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-hapi': 0.51.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-http': 0.204.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation-ioredis': 0.52.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-kafkajs': 0.13.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-knex': 0.48.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-koa': 0.51.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-lru-memoizer': 0.48.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-mongodb': 0.56.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-mongoose': 0.50.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-mysql': 0.49.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-mysql2': 0.50.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-pg': 0.55.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-redis': 0.51.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-tedious': 0.22.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-undici': 0.14.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-kafkajs': 0.14.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-knex': 0.49.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-koa': 0.52.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-lru-memoizer': 0.49.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-mongodb': 0.57.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-mongoose': 0.51.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-mysql': 0.50.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-mysql2': 0.51.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-pg': 0.57.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-redis': 0.53.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-tedious': 0.23.0(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation-undici': 0.15.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/resources': 2.1.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-base': 2.1.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
-      '@prisma/instrumentation': 6.14.0(@opentelemetry/api@1.9.0)
-      '@sentry/core': 10.11.0
-      '@sentry/node-core': 10.11.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.203.0(@opentelemetry/api@1.9.0))(@opentelemetry/resources@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
-      '@sentry/opentelemetry': 10.11.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
+      '@prisma/instrumentation': 6.15.0(@opentelemetry/api@1.9.0)
+      '@sentry/core': 10.12.0
+      '@sentry/node-core': 10.12.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.204.0(@opentelemetry/api@1.9.0))(@opentelemetry/resources@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
+      '@sentry/opentelemetry': 10.12.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)
       import-in-the-middle: 1.14.2
       minimatch: 9.0.5
     transitivePeerDependencies:
@@ -11520,14 +11482,14 @@ snapshots:
       '@sentry/types': 7.114.0
       '@sentry/utils': 7.114.0
 
-  '@sentry/opentelemetry@10.11.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)':
+  '@sentry/opentelemetry@10.12.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.1.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.37.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/context-async-hooks': 2.1.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/core': 2.1.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-base': 2.1.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.37.0
-      '@sentry/core': 10.11.0
+      '@sentry/core': 10.12.0
 
   '@sentry/tracing@7.120.4':
     dependencies:
@@ -11553,10 +11515,10 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sentry/vue@10.11.0(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
+  '@sentry/vue@10.12.0(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
     dependencies:
-      '@sentry/browser': 10.11.0
-      '@sentry/core': 10.11.0
+      '@sentry/browser': 10.12.0
+      '@sentry/core': 10.12.0
       vue: 3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
 
   '@sindresorhus/is@7.0.2': {}
@@ -11646,11 +11608,11 @@ snapshots:
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/bunyan@1.8.11':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/chai@5.2.2':
     dependencies:
@@ -11658,7 +11620,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/cookie@1.0.0':
     dependencies:
@@ -11666,7 +11628,7 @@ snapshots:
 
   '@types/cors@2.8.19':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/deep-eql@4.0.2': {}
 
@@ -11684,14 +11646,14 @@ snapshots:
 
   '@types/express-serve-static-core@4.19.6':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.5
 
   '@types/express-serve-static-core@5.0.7':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.5
@@ -11713,11 +11675,11 @@ snapshots:
 
   '@types/http-proxy@1.17.16':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/is-buffer@2.0.2':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/istanbul-lib-coverage@2.0.6': {}
 
@@ -11739,7 +11701,7 @@ snapshots:
 
   '@types/jsonwebtoken@8.5.9':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/linkify-it@5.0.0': {}
 
@@ -11754,32 +11716,32 @@ snapshots:
 
   '@types/memcached@2.2.10':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/mime@1.3.5': {}
 
   '@types/mysql@2.15.27':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/node-fetch@2.6.13':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
       form-data: 4.0.4
 
   '@types/node@22.18.1':
     dependencies:
       undici-types: 6.21.0
 
-  '@types/node@24.3.3':
+  '@types/node@24.5.1':
     dependencies:
-      undici-types: 7.10.0
+      undici-types: 7.12.0
 
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/oracledb@6.5.2':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/parse-json@4.0.2': {}
 
@@ -11791,15 +11753,9 @@ snapshots:
     dependencies:
       '@types/pg': 8.15.5
 
-  '@types/pg@8.15.4':
-    dependencies:
-      '@types/node': 24.3.3
-      pg-protocol: 1.10.3
-      pg-types: 2.2.0
-
   '@types/pg@8.15.5':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
       pg-protocol: 1.10.3
       pg-types: 2.2.0
 
@@ -11811,19 +11767,19 @@ snapshots:
 
   '@types/redis@2.8.32':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/resolve@1.20.2': {}
 
   '@types/send@0.17.5':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/serve-static@1.15.8':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
       '@types/send': 0.17.5
 
   '@types/shimmer@1.2.0': {}
@@ -11839,7 +11795,7 @@ snapshots:
 
   '@types/tedious@4.0.14':
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
 
   '@types/trusted-types@2.0.7':
     optional: true
@@ -11852,14 +11808,14 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@typescript-eslint/eslint-plugin@8.43.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
+  '@typescript-eslint/eslint-plugin@8.44.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/scope-manager': 8.43.0
-      '@typescript-eslint/type-utils': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/utils': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/visitor-keys': 8.43.0
+      '@typescript-eslint/parser': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/scope-manager': 8.44.0
+      '@typescript-eslint/type-utils': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/utils': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/visitor-keys': 8.44.0
       eslint: 9.35.0(jiti@2.5.1)
       graphemer: 1.4.0
       ignore: 7.0.5
@@ -11869,41 +11825,41 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
+  '@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
     dependencies:
-      '@typescript-eslint/scope-manager': 8.43.0
-      '@typescript-eslint/types': 8.43.0
-      '@typescript-eslint/typescript-estree': 8.43.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/visitor-keys': 8.43.0
+      '@typescript-eslint/scope-manager': 8.44.0
+      '@typescript-eslint/types': 8.44.0
+      '@typescript-eslint/typescript-estree': 8.44.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/visitor-keys': 8.44.0
       debug: 4.4.1(supports-color@5.5.0)
       eslint: 9.35.0(jiti@2.5.1)
       typescript: 5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/project-service@8.43.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
+  '@typescript-eslint/project-service@8.44.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.43.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/types': 8.43.0
+      '@typescript-eslint/tsconfig-utils': 8.44.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/types': 8.44.0
       debug: 4.4.1(supports-color@5.5.0)
       typescript: 5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/scope-manager@8.43.0':
+  '@typescript-eslint/scope-manager@8.44.0':
     dependencies:
-      '@typescript-eslint/types': 8.43.0
-      '@typescript-eslint/visitor-keys': 8.43.0
+      '@typescript-eslint/types': 8.44.0
+      '@typescript-eslint/visitor-keys': 8.44.0
 
-  '@typescript-eslint/tsconfig-utils@8.43.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
+  '@typescript-eslint/tsconfig-utils@8.44.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
     dependencies:
       typescript: 5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)
 
-  '@typescript-eslint/type-utils@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
+  '@typescript-eslint/type-utils@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
     dependencies:
-      '@typescript-eslint/types': 8.43.0
-      '@typescript-eslint/typescript-estree': 8.43.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/utils': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/types': 8.44.0
+      '@typescript-eslint/typescript-estree': 8.44.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/utils': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       debug: 4.4.1(supports-color@5.5.0)
       eslint: 9.35.0(jiti@2.5.1)
       ts-api-utils: 2.1.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
@@ -11911,14 +11867,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/types@8.43.0': {}
+  '@typescript-eslint/types@8.44.0': {}
 
-  '@typescript-eslint/typescript-estree@8.43.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
+  '@typescript-eslint/typescript-estree@8.44.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
     dependencies:
-      '@typescript-eslint/project-service': 8.43.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/tsconfig-utils': 8.43.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/types': 8.43.0
-      '@typescript-eslint/visitor-keys': 8.43.0
+      '@typescript-eslint/project-service': 8.44.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/tsconfig-utils': 8.44.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/types': 8.44.0
+      '@typescript-eslint/visitor-keys': 8.44.0
       debug: 4.4.1(supports-color@5.5.0)
       fast-glob: 3.3.3
       is-glob: 4.0.3
@@ -11929,20 +11885,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
+  '@typescript-eslint/utils@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
     dependencies:
       '@eslint-community/eslint-utils': 4.9.0(eslint@9.35.0(jiti@2.5.1))
-      '@typescript-eslint/scope-manager': 8.43.0
-      '@typescript-eslint/types': 8.43.0
-      '@typescript-eslint/typescript-estree': 8.43.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/scope-manager': 8.44.0
+      '@typescript-eslint/types': 8.44.0
+      '@typescript-eslint/typescript-estree': 8.44.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       eslint: 9.35.0(jiti@2.5.1)
       typescript: 5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/visitor-keys@8.43.0':
+  '@typescript-eslint/visitor-keys@8.44.0':
     dependencies:
-      '@typescript-eslint/types': 8.43.0
+      '@typescript-eslint/types': 8.44.0
       eslint-visitor-keys: 4.2.1
 
   '@typespec/ts-http-runtime@0.3.0':
@@ -12037,22 +11993,22 @@ snapshots:
       - rollup
       - supports-color
 
-  '@vitejs/plugin-vue-jsx@5.1.1(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
+  '@vitejs/plugin-vue-jsx@5.1.1(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
     dependencies:
       '@babel/core': 7.28.4
       '@babel/plugin-syntax-typescript': 7.27.1(@babel/core@7.28.4)
       '@babel/plugin-transform-typescript': 7.28.0(@babel/core@7.28.4)
       '@rolldown/pluginutils': 1.0.0-beta.37
       '@vue/babel-plugin-jsx': 1.5.0(@babel/core@7.28.4)
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
       vue: 3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue@6.0.1(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
+  '@vitejs/plugin-vue@6.0.1(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.29
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
       vue: 3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
 
   '@vitest/expect@3.2.4':
@@ -12063,13 +12019,13 @@ snapshots:
       chai: 5.3.3
       tinyrainbow: 2.0.0
 
-  '@vitest/mocker@3.2.4(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))':
+  '@vitest/mocker@3.2.4(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))':
     dependencies:
       '@vitest/spy': 3.2.4
       estree-walker: 3.0.3
       magic-string: 0.30.19
     optionalDependencies:
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
 
   '@vitest/pretty-format@3.2.4':
     dependencies:
@@ -12185,14 +12141,14 @@ snapshots:
 
   '@vue/devtools-api@6.6.4': {}
 
-  '@vue/devtools-core@7.7.7(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
+  '@vue/devtools-core@7.7.7(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
     dependencies:
       '@vue/devtools-kit': 7.7.7
       '@vue/devtools-shared': 7.7.7
       mitt: 3.0.1
       nanoid: 5.1.5
       pathe: 2.0.3
-      vite-hot-client: 2.1.0(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
+      vite-hot-client: 2.1.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
       vue: 3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
     transitivePeerDependencies:
       - vite
@@ -12220,13 +12176,13 @@ snapshots:
     transitivePeerDependencies:
       - '@types/eslint'
 
-  '@vue/eslint-config-typescript@14.6.0(eslint-plugin-vue@10.4.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1))))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
+  '@vue/eslint-config-typescript@14.6.0(eslint-plugin-vue@10.4.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1))))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))':
     dependencies:
-      '@typescript-eslint/utils': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/utils': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       eslint: 9.35.0(jiti@2.5.1)
-      eslint-plugin-vue: 10.4.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))
+      eslint-plugin-vue: 10.4.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1)))
       fast-glob: 3.3.3
-      typescript-eslint: 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      typescript-eslint: 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       vue-eslint-parser: 10.2.0(eslint@9.35.0(jiti@2.5.1))
     optionalDependencies:
       typescript: 5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)
@@ -12279,13 +12235,13 @@ snapshots:
 
   '@vueuse/metadata@13.9.0': {}
 
-  '@vueuse/nuxt@13.9.0(magicast@0.3.5)(nuxt@4.1.2(@azure/cosmos@4.5.1)(@azure/storage-blob@12.28.0)(@parcel/watcher@2.5.1)(@types/node@24.3.3)(@vue/compiler-sfc@3.5.21)(db0@0.3.2)(eslint@9.35.0(jiti@2.5.1))(ioredis@5.7.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
+  '@vueuse/nuxt@13.9.0(magicast@0.3.5)(nuxt@4.1.2(@azure/cosmos@4.5.1)(@azure/storage-blob@12.28.0)(@parcel/watcher@2.5.1)(@types/node@24.5.1)(@vue/compiler-sfc@3.5.21)(db0@0.3.2)(eslint@9.35.0(jiti@2.5.1))(ioredis@5.7.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))':
     dependencies:
       '@nuxt/kit': 3.19.1(magicast@0.3.5)
       '@vueuse/core': 13.9.0(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       '@vueuse/metadata': 13.9.0
       local-pkg: 1.1.2
-      nuxt: 4.1.2(@azure/cosmos@4.5.1)(@azure/storage-blob@12.28.0)(@parcel/watcher@2.5.1)(@types/node@24.3.3)(@vue/compiler-sfc@3.5.21)(db0@0.3.2)(eslint@9.35.0(jiti@2.5.1))(ioredis@5.7.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1)
+      nuxt: 4.1.2(@azure/cosmos@4.5.1)(@azure/storage-blob@12.28.0)(@parcel/watcher@2.5.1)(@types/node@24.5.1)(@vue/compiler-sfc@3.5.21)(db0@0.3.2)(eslint@9.35.0(jiti@2.5.1))(ioredis@5.7.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1)
       vue: 3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
     transitivePeerDependencies:
       - magicast
@@ -13163,7 +13119,7 @@ snapshots:
 
   detective-typescript@14.0.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)):
     dependencies:
-      '@typescript-eslint/typescript-estree': 8.43.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/typescript-estree': 8.44.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       ast-module-types: 6.0.1
       node-source-walk: 7.0.1
       typescript: 5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)
@@ -13233,17 +13189,17 @@ snapshots:
 
   dprint-plugin-yaml@0.5.1: {}
 
-  dprint@0.50.1:
+  dprint@0.50.2:
     optionalDependencies:
-      '@dprint/darwin-arm64': 0.50.1
-      '@dprint/darwin-x64': 0.50.1
-      '@dprint/linux-arm64-glibc': 0.50.1
-      '@dprint/linux-arm64-musl': 0.50.1
-      '@dprint/linux-riscv64-glibc': 0.50.1
-      '@dprint/linux-x64-glibc': 0.50.1
-      '@dprint/linux-x64-musl': 0.50.1
-      '@dprint/win32-arm64': 0.50.1
-      '@dprint/win32-x64': 0.50.1
+      '@dprint/darwin-arm64': 0.50.2
+      '@dprint/darwin-x64': 0.50.2
+      '@dprint/linux-arm64-glibc': 0.50.2
+      '@dprint/linux-arm64-musl': 0.50.2
+      '@dprint/linux-riscv64-glibc': 0.50.2
+      '@dprint/linux-x64-glibc': 0.50.2
+      '@dprint/linux-x64-musl': 0.50.2
+      '@dprint/win32-arm64': 0.50.2
+      '@dprint/win32-x64': 0.50.2
 
   dunder-proto@1.0.1:
     dependencies:
@@ -13257,7 +13213,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  effect-app@3.6.1(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)):
+  effect-app@3.7.0(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)):
     dependencies:
       '@effect/platform': 0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
       '@effect/rpc': 0.69.2(@effect/platform@0.90.9(patch_hash=6385b460820441c4894f8bd151f9f33b6fbaf8daf97fd60e7484746f1cce27de)(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a)))(effect@3.17.13(patch_hash=7b69194433eb44e6347c29e506edd8dff724302dc19f8883bb35c21c2f3aea8a))
@@ -13477,7 +13433,7 @@ snapshots:
       tinyglobby: 0.2.15
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -13485,7 +13441,7 @@ snapshots:
     dependencies:
       debug: 3.2.7
       enhanced-resolve: 0.9.1
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1))
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1))
       find-root: 1.1.0
       hasown: 2.0.2
       interpret: 1.4.0
@@ -13498,11 +13454,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1)):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
-      '@typescript-eslint/parser': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/parser': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       eslint: 9.35.0(jiti@2.5.1)
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 4.4.4(eslint-plugin-import@2.32.0)(eslint@9.35.0(jiti@2.5.1))
@@ -13534,7 +13490,7 @@ snapshots:
       '@formatjs/ts-transformer': 3.14.0
       '@types/eslint': 9.6.1
       '@types/picomatch': 3.0.2
-      '@typescript-eslint/utils': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/utils': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       eslint: 9.35.0(jiti@2.5.1)
       magic-string: 0.30.19
       picomatch: 4.0.3
@@ -13545,7 +13501,7 @@ snapshots:
       - ts-jest
       - typescript
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1)):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1)):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -13556,7 +13512,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.35.0(jiti@2.5.1)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1))
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@4.4.4)(eslint-import-resolver-webpack@0.13.10)(eslint@9.35.0(jiti@2.5.1))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -13568,7 +13524,7 @@ snapshots:
       string.prototype.trimend: 1.0.9
       tsconfig-paths: 3.15.0
     optionalDependencies:
-      '@typescript-eslint/parser': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/parser': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
@@ -13601,13 +13557,13 @@ snapshots:
       eslint: 9.35.0(jiti@2.5.1)
       natural-compare-lite: 1.4.0
 
-  eslint-plugin-unused-imports@4.2.0(@typescript-eslint/eslint-plugin@8.43.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1)):
+  eslint-plugin-unused-imports@4.2.0(@typescript-eslint/eslint-plugin@8.44.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1)):
     dependencies:
       eslint: 9.35.0(jiti@2.5.1)
     optionalDependencies:
-      '@typescript-eslint/eslint-plugin': 8.43.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/eslint-plugin': 8.44.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
 
-  eslint-plugin-vue@10.4.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1))):
+  eslint-plugin-vue@10.4.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(vue-eslint-parser@10.2.0(eslint@9.35.0(jiti@2.5.1))):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.0(eslint@9.35.0(jiti@2.5.1))
       eslint: 9.35.0(jiti@2.5.1)
@@ -13618,7 +13574,7 @@ snapshots:
       vue-eslint-parser: 10.2.0(eslint@9.35.0(jiti@2.5.1))
       xml-name-validator: 4.0.0
     optionalDependencies:
-      '@typescript-eslint/parser': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/parser': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
 
   eslint-scope@5.1.1:
     dependencies:
@@ -14610,7 +14566,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -15254,15 +15210,15 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
-  nuxt@4.1.2(@azure/cosmos@4.5.1)(@azure/storage-blob@12.28.0)(@parcel/watcher@2.5.1)(@types/node@24.3.3)(@vue/compiler-sfc@3.5.21)(db0@0.3.2)(eslint@9.35.0(jiti@2.5.1))(ioredis@5.7.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1):
+  nuxt@4.1.2(@azure/cosmos@4.5.1)(@azure/storage-blob@12.28.0)(@parcel/watcher@2.5.1)(@types/node@24.5.1)(@vue/compiler-sfc@3.5.21)(db0@0.3.2)(eslint@9.35.0(jiti@2.5.1))(ioredis@5.7.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1):
     dependencies:
       '@nuxt/cli': 3.28.0(magicast@0.3.5)
       '@nuxt/devalue': 2.0.2
-      '@nuxt/devtools': 2.6.3(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
+      '@nuxt/devtools': 2.6.3(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       '@nuxt/kit': 4.1.2(magicast@0.3.5)
       '@nuxt/schema': 4.1.2
       '@nuxt/telemetry': 2.6.6(magicast@0.3.5)
-      '@nuxt/vite-builder': 4.1.2(@types/node@24.3.3)(eslint@9.35.0(jiti@2.5.1))(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1)
+      '@nuxt/vite-builder': 4.1.2(@types/node@24.5.1)(eslint@9.35.0(jiti@2.5.1))(magicast@0.3.5)(optionator@0.9.4)(rollup@4.50.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(yaml@2.8.1)
       '@unhead/vue': 2.0.14(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
       '@vue/shared': 3.5.21
       c12: 3.2.0(magicast@0.3.5)
@@ -15321,7 +15277,7 @@ snapshots:
       vue-router: 4.5.1(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))
     optionalDependencies:
       '@parcel/watcher': 2.5.1
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -16066,7 +16022,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
       long: 5.3.2
 
   protocols@2.0.2: {}
@@ -17128,12 +17084,12 @@ snapshots:
       possible-typed-array-names: 1.1.0
       reflect.getprototypeof: 1.0.10
 
-  typescript-eslint@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)):
+  typescript-eslint@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.43.0(@typescript-eslint/parser@8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/parser': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/typescript-estree': 8.43.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
-      '@typescript-eslint/utils': 8.43.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/eslint-plugin': 8.44.0(@typescript-eslint/parser@8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)))(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/parser': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/typescript-estree': 8.44.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
+      '@typescript-eslint/utils': 8.44.0(eslint@9.35.0(jiti@2.5.1))(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
       eslint: 9.35.0(jiti@2.5.1)
       typescript: 5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)
     transitivePeerDependencies:
@@ -17167,7 +17123,7 @@ snapshots:
 
   undici-types@6.21.0: {}
 
-  undici-types@7.10.0: {}
+  undici-types@7.12.0: {}
 
   undici@7.16.0: {}
 
@@ -17389,23 +17345,23 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite-dev-rpc@1.1.0(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)):
+  vite-dev-rpc@1.1.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)):
     dependencies:
       birpc: 2.5.0
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
-      vite-hot-client: 2.1.0(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite-hot-client: 2.1.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
 
-  vite-hot-client@2.1.0(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)):
+  vite-hot-client@2.1.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)):
     dependencies:
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
 
-  vite-node@3.2.4(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1):
+  vite-node@3.2.4(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1):
     dependencies:
       cac: 6.7.14
       debug: 4.4.1(supports-color@5.5.0)
       es-module-lexer: 1.7.0
       pathe: 2.0.3
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -17420,7 +17376,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite-plugin-checker@0.10.3(eslint@9.35.0(jiti@2.5.1))(optionator@0.9.4)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))):
+  vite-plugin-checker@0.10.3(eslint@9.35.0(jiti@2.5.1))(optionator@0.9.4)(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue-tsc@3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))):
     dependencies:
       '@babel/code-frame': 7.27.1
       chokidar: 4.0.3
@@ -17430,7 +17386,7 @@ snapshots:
       strip-ansi: 7.1.2
       tiny-invariant: 1.3.3
       tinyglobby: 0.2.15
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
       vscode-uri: 3.1.0
     optionalDependencies:
       eslint: 9.35.0(jiti@2.5.1)
@@ -17438,7 +17394,7 @@ snapshots:
       typescript: 5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)
       vue-tsc: 3.0.7(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
 
-  vite-plugin-inspect@11.3.3(@nuxt/kit@3.19.1(magicast@0.3.5))(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)):
+  vite-plugin-inspect@11.3.3(@nuxt/kit@3.19.1(magicast@0.3.5))(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)):
     dependencies:
       ansis: 4.1.0
       debug: 4.4.1(supports-color@5.5.0)
@@ -17448,35 +17404,35 @@ snapshots:
       perfect-debounce: 2.0.0
       sirv: 3.0.2
       unplugin-utils: 0.3.0
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
-      vite-dev-rpc: 1.1.0(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite-dev-rpc: 1.1.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
     optionalDependencies:
       '@nuxt/kit': 3.19.1(magicast@0.3.5)
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-vue-tracer@1.0.0(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))):
+  vite-plugin-vue-tracer@1.0.0(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))):
     dependencies:
       estree-walker: 3.0.3
       exsolve: 1.0.7
       magic-string: 0.30.19
       pathe: 2.0.3
       source-map-js: 1.2.1
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
       vue: 3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
 
-  vite-tsconfig-paths@5.1.4(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)):
+  vite-tsconfig-paths@5.1.4(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)):
     dependencies:
       debug: 4.4.1(supports-color@5.5.0)
       globrex: 0.1.2
       tsconfck: 3.1.6(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
     optionalDependencies:
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1):
+  vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1):
     dependencies:
       esbuild: 0.25.9
       fdir: 6.5.0(picomatch@4.0.3)
@@ -17485,7 +17441,7 @@ snapshots:
       rollup: 4.50.1
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
       fsevents: 2.3.3
       jiti: 2.5.1
       sass: 1.92.1
@@ -17493,11 +17449,11 @@ snapshots:
       tsx: 4.20.5
       yaml: 2.8.1
 
-  vitest@3.2.4(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1):
+  vitest@3.2.4(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1):
     dependencies:
       '@types/chai': 5.2.2
       '@vitest/expect': 3.2.4
-      '@vitest/mocker': 3.2.4(vite@7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
+      '@vitest/mocker': 3.2.4(vite@7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
       '@vitest/pretty-format': 3.2.4
       '@vitest/runner': 3.2.4
       '@vitest/snapshot': 3.2.4
@@ -17515,11 +17471,11 @@ snapshots:
       tinyglobby: 0.2.15
       tinypool: 1.1.1
       tinyrainbow: 2.0.0
-      vite: 7.1.5(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
-      vite-node: 3.2.4(@types/node@24.3.3)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite: 7.1.5(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite-node: 3.2.4(@types/node@24.5.1)(jiti@2.5.1)(sass@1.92.1)(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 24.3.3
+      '@types/node': 24.5.1
     transitivePeerDependencies:
       - jiti
       - less
@@ -17598,7 +17554,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0)
 
-  vuetify@3.10.0(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))):
+  vuetify@3.10.1(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))(vue@3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))):
     dependencies:
       vue: 3.5.21(typescript@5.9.2(patch_hash=9f9678d78a879a2cbd842897c639ebfa754353e8098bac340a8ce599ae2161c0))
     optionalDependencies:

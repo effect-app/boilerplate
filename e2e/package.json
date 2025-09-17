@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@playwright/test": "~1.55.0",
-    "@types/node": "~24.3.3",
+    "@types/node": "~24.5.1",
     "date-fns": "^4.1.0",
     "npm-check-updates": "^18.1.1",
     "playwright-core": "^1.55.0",
@@ -31,11 +31,11 @@
   "dependencies": {
     "@effect-app-boilerplate/api": "workspace:*",
     "@effect/platform-node": "0.96.1",
-    "effect-app": "^3.6.1",
+    "effect-app": "^3.7.0",
     "@effect/platform": "^0.90.9",
     "effect": "^3.17.13",
     "cross-fetch": "^4.1.0",
     "eslint": "^9.35.0",
-    "dprint": "^0.50.1"
+    "dprint": "^0.50.2"
   }
 }
