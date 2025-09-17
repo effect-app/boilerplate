@@ -3,7 +3,7 @@ import * as MW from "#lib/middleware"
 import { Events } from "#services"
 import { reportError } from "@effect-app/infra/errorReporter"
 import { RpcSerialization } from "@effect/rpc"
-import { FiberRef, flow } from "effect"
+import { flow } from "effect"
 import { Console, Effect, Layer } from "effect-app"
 import { HttpLayerRouter, HttpMiddleware } from "effect-app/http"
 import { BaseConfig, MergedConfig } from "./config.js"
@@ -97,23 +97,22 @@ const logServer = Effect
   })
   .pipe(Layer.effectDiscard)
 
-const ConfigureTracer = Layer.effectDiscard(
-  FiberRef.set(
-    HttpMiddleware.currentTracerDisabledWhen,
-    (r) => r.method === "OPTIONS" || r.url === "/.well-known/local/server-health"
-  )
+const ConfigureTracer = HttpMiddleware.withTracerDisabledWhen(
+  (r) => r.method === "OPTIONS" || r.url === "/.well-known/local/server-health"
 )
+
 export const makeHttpServer = <E, R>(
   rpcRouter: Layer.Layer<never, E, R>
 ) =>
-  HttpLayerRouter.serve(
-    logServer.pipe(
-      Layer.provide([
-        rpcRouter.pipe(Layer.provide(MainMiddleware)),
-        RootRoutes
-      ]),
-      Layer.provide(RpcSerialization.layerJson),
-      Layer.provide(ConfigureTracer)
-    ),
-    { middleware: HttpMiddleware.logger }
-  )
+  HttpLayerRouter
+    .serve(
+      logServer.pipe(
+        Layer.provide([
+          rpcRouter.pipe(Layer.provide(MainMiddleware)),
+          RootRoutes
+        ]),
+        Layer.provide(RpcSerialization.layerJson)
+      ),
+      { middleware: HttpMiddleware.logger }
+    )
+    .pipe(ConfigureTracer)
