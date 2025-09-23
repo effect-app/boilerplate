@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OmegaErrors, OmegaForm, useOmegaForm } from "@effect-app/vue-components"
+import { useOmegaForm } from "@effect-app/vue-components"
 import { mdiSetAll } from "@mdi/js"
 import { Effect, S } from "effect-app"
 import type { Email, NonEmptyString255 } from "effect-app/Schema"
@@ -91,10 +91,7 @@ onMounted(() => {
 <template>
   Hi world!
   <div>
-    <OmegaForm
-      :form="form"
-      :subscribe="['isDirty', 'isSubmitting']"
-    >
+    <form.Form :subscribe="['isDirty', 'isSubmitting']">
       <!-- TODO: field.type text, or via length, or is multiLine -->
       <form.Input
         name="title"
@@ -121,8 +118,8 @@ onMounted(() => {
       >
         Clear
       </v-btn>
-      <OmegaErrors />
-    </OmegaForm>
+      <form.Errors />
+    </form.Form>
 
     <CommandButton
       :command="setState"
