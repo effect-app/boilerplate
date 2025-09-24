@@ -9,6 +9,9 @@ WORKDIR /app
 
 ENV NODE_ENV production
 
+# no effect-language-service patch here
+ENV SKIP_PREPARE=true
+
 # pnpm fetch does require only lockfile
 COPY patches ./patches
 COPY pnpm-lock.yaml .npmrc ./

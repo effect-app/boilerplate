@@ -54,7 +54,8 @@
     "build-prod": "pnpm packages build && pnpm build-frontend-prod",
     "build-frontend-prod": "cd frontend && pnpm build",
     "rbuild": "pnpm clean && pnpm build",
-    "nnm": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && pnpm i"
+    "nnm": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && pnpm i",
+    "prepare": "if [ \"$SKIP_PREPARE\" != \"true\" ]; then effect-language-service patch; fi"
   },
   "resolutions": {
     "@opentelemetry/api": "$@opentelemetry/api",
@@ -107,7 +108,7 @@
     "@effect-app/cli": "^1.26.4",
     "@effect-app/eslint-codegen-model": "^1.44.0",
     "@effect-app/eslint-shared-config": "^0.2.1",
-    "@effect/language-service": "^0.40.0",
+    "@effect/language-service": "^0.40.1",
     "@phaphoso/eslint-plugin-dprint": "^0.5.2",
     "@tsconfig/strictest": "^2.0.5",
     "@types/lodash": "^4.17.20",

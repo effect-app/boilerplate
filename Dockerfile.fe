@@ -4,6 +4,9 @@ RUN npm i -g pnpm
 
 ENV NODE_ENV production
 
+# no effect-language-service patch here
+ENV SKIP_PREPARE=true
+
 # RUN addgroup -g 1001 -S nodejs
 # RUN adduser -S nextjs -u 1001
 
