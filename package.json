@@ -9,7 +9,8 @@
       "@effect/platform": "patches/@effect__platform.patch",
       "effect": "patches/effect.patch",
       "ts-plugin-sort-import-suggestions": "patches/ts-plugin-sort-import-suggestions.patch",
-      "@tanstack/query-core": "patches/@tanstack__query-core.patch"
+      "@tanstack/query-core": "patches/@tanstack__query-core.patch",
+      "@vue/compiler-sfc": "patches/@vue__compiler-sfc.patch"
     }
   },
   "engines": {

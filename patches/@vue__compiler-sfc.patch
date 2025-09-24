@@ -1,0 +1,43 @@
+diff --git a/dist/compiler-sfc.cjs.js b/dist/compiler-sfc.cjs.js
+index ee78ff8a7fc04ac3e56bf0a30752a00fdd31080b..c852162a9e540db4a77ba007c61830bbdd5d457a 100644
+--- a/dist/compiler-sfc.cjs.js
++++ b/dist/compiler-sfc.cjs.js
+@@ -24653,6 +24653,7 @@ let __temp${any}, __restore${any}
+   }
+   let templateMap;
+   let returned;
++  const propsDecl = genRuntimeProps(ctx);
+   if (!options.inlineTemplate || !sfc.template && ctx.hasDefaultExportRender) {
+     const allBindings = {
+       ...scriptBindings,
+@@ -24759,7 +24760,6 @@ return ${returned}
+     runtimeOptions += `
+   __ssrInlineRender: true,`;
+   }
+-  const propsDecl = genRuntimeProps(ctx);
+   if (propsDecl) runtimeOptions += `
+   props: ${propsDecl},`;
+   const emitsDecl = genRuntimeEmits(ctx);
+diff --git a/dist/compiler-sfc.d.ts b/dist/compiler-sfc.d.ts
+deleted file mode 100644
+index 2468b7626d90a20039469951fbbba12a61e1bf7c..0000000000000000000000000000000000000000
+diff --git a/dist/compiler-sfc.esm-browser.js b/dist/compiler-sfc.esm-browser.js
+index 4781105c96fbbb15f6dd16a811b01ced9694b1a0..370c51fb0b9d3d8902abfec1ca794f180393423c 100644
+--- a/dist/compiler-sfc.esm-browser.js
++++ b/dist/compiler-sfc.esm-browser.js
+@@ -50091,6 +50091,7 @@ let __temp${any}, __restore${any}
+   }
+   let templateMap;
+   let returned;
++  const propsDecl = genRuntimeProps(ctx);
+   if (!options.inlineTemplate || !sfc.template && ctx.hasDefaultExportRender) {
+     const allBindings = __spreadValues$1(__spreadValues$1({}, scriptBindings), setupBindings);
+     for (const key in ctx.userImports) {
+@@ -50193,7 +50194,6 @@ return ${returned}
+     runtimeOptions += `
+   __ssrInlineRender: true,`;
+   }
+-  const propsDecl = genRuntimeProps(ctx);
+   if (propsDecl) runtimeOptions += `
+   props: ${propsDecl},`;
+   const emitsDecl = genRuntimeEmits(ctx);
