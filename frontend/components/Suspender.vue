@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="root">
     <FixedNuxtErrorBoundary @error="handleError">
       <template #error="{ error }">
         <slot
@@ -12,7 +12,10 @@
           </p>
         </slot>
       </template>
-      <Suspense :timeout="timeout">
+      <Suspense
+        :timeout="timeout"
+        :suspensible="suspensible"
+      >
         <slot />
         <template #fallback>
           <slot name="loader">
@@ -25,13 +28,29 @@
 </template>
 
 <script setup lang="ts" generic="E">
+import { onUnmounted, ref, templateRef, useRuntimeConfig, watch } from "#imports"
 import { Cause, Runtime } from "effect-app"
 import type { Refinement } from "effect/Predicate"
 import FixedNuxtErrorBoundary from "./FixedNuxtErrorBoundary.vue"
 
+const root = templateRef("root")
+const latestRoot = ref()
+watch(root, (v) => {
+  if (v) {
+    latestRoot.value = v
+  }
+}, { immediate: true })
+
+onUnmounted(() => {
+  // let's help silly vue.
+  // for whatever bs reason, a Suspense within another Suspense does not properly unmount the html on error.
+  if (latestRoot.value) latestRoot.value.remove()
+})
+
 const config = useRuntimeConfig()
 type BaseProps = {
   timeout?: number
+  suspensible?: boolean
 }
 
 type WithGuard = BaseProps & {
