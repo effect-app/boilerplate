@@ -118,7 +118,7 @@
     "@typescript-eslint/scope-manager": "^8.44.0",
     "concurrently": "^9.2.1",
     "dprint": "^0.50.2",
-    "effect-app": "^3.8.0",
+    "effect-app": "^3.8.1",
     "enhanced-resolve": "^5.18.3",
     "eslint": "^9.35.0",
     "eslint-import-resolver-typescript": "^4.4.4",
