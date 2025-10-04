@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@effect-app/vue": "^2.84.2",
-    "@effect-app/vue-components": "^1.8.0",
+    "@effect-app/vue-components": "^1.8.1",
     "@effect-atom/atom": "^0.3.0",
     "@effect-atom/atom-vue": "^0.3.0",
     "@effect/platform": "^0.92.0",

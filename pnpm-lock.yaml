@@ -460,8 +460,8 @@ importers:
         specifier: ^2.84.2
         version: 2.84.2(0f6bdc4a5ccb36f7fae81b7b1ad1a3c1)
       '@effect-app/vue-components':
-        specifier: ^1.8.0
-        version: 1.8.0(5983822fcd1d94ea706dc36bddff33ac)
+        specifier: ^1.8.1
+        version: 1.8.1(5983822fcd1d94ea706dc36bddff33ac)
       '@effect-atom/atom':
         specifier: ^0.3.0
         version: 0.3.0(@effect/experimental@0.56.0(@effect/platform@0.92.0(effect@3.18.0(patch_hash=43c3b64130695b34e77e33c4bce41699657064974a32b770f14bbeefe69bf30a)))(effect@3.18.0(patch_hash=43c3b64130695b34e77e33c4bce41699657064974a32b770f14bbeefe69bf30a))(ioredis@5.7.0))(@effect/platform@0.92.0(effect@3.18.0(patch_hash=43c3b64130695b34e77e33c4bce41699657064974a32b770f14bbeefe69bf30a)))(@effect/rpc@0.71.0(@effect/platform@0.92.0(effect@3.18.0(patch_hash=43c3b64130695b34e77e33c4bce41699657064974a32b770f14bbeefe69bf30a)))(effect@3.18.0(patch_hash=43c3b64130695b34e77e33c4bce41699657064974a32b770f14bbeefe69bf30a)))(effect@3.18.0(patch_hash=43c3b64130695b34e77e33c4bce41699657064974a32b770f14bbeefe69bf30a))
@@ -955,8 +955,8 @@ packages:
       redis: ^3.1.2
       redlock: ^4.2.0
 
-  '@effect-app/vue-components@1.8.0':
-    resolution: {integrity: sha512-J6eEeF/oVjlqoi3+aswTrEqEyMhmMPdBSpK8YzzPQdKdtdYxT7ajwwp051+NiumaohquA1ojZ/iGzvUpXbB1Kw==}
+  '@effect-app/vue-components@1.8.1':
+    resolution: {integrity: sha512-MybmVo7inqQ98Pgdt3TWmReskd+wM3O51aqQQFH3t8u5uT3/PPiQHw2dg8TVeGYDhvqcIqc0PKqplBsjUkv36A==}
     peerDependencies:
       '@mdi/js': ^7.4.47
       effect: 3.18.0
@@ -9106,7 +9106,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@effect-app/vue-components@1.8.0(5983822fcd1d94ea706dc36bddff33ac)':
+  '@effect-app/vue-components@1.8.1(5983822fcd1d94ea706dc36bddff33ac)':
     dependencies:
       '@effect-app/vue': 2.84.2(0f6bdc4a5ccb36f7fae81b7b1ad1a3c1)
       '@mdi/js': 7.4.47
