@@ -17,8 +17,8 @@
     "clean": "rm -rf ./.nuxt ./node_modules/.cache"
   },
   "dependencies": {
-    "@effect-app/vue": "^2.84.2",
-    "@effect-app/vue-components": "^1.8.1",
+    "@effect-app/vue": "^2.84.3",
+    "@effect-app/vue-components": "^1.8.13",
     "@effect-atom/atom": "^0.3.0",
     "@effect-atom/atom-vue": "^0.3.0",
     "@effect/platform": "^0.92.0",
@@ -46,7 +46,7 @@
     "cookie": "^1.0.2",
     "date-fns": "^4.1.0",
     "effect": "^3.18.0",
-    "effect-app": "^3.10.1",
+    "effect-app": "^3.10.2",
     "highcharts": "^12.4.0",
     "http-proxy-node16": "^1.0.6",
     "mitt": "^3.0.1",
