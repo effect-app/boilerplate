@@ -1,9 +1,9 @@
 <script
   setup
   lang="ts"
-  generic="I extends NonEmptyReadonlyArray<any> = never"
+  generic="I = never"
 >
-import type { NonEmptyReadonlyArray } from "effect/Array"
+import type { CommandBase } from "@effect-app/vue"
 import type { VBtn } from "vuetify/components"
 
 type VBtnProps = VBtn["$props"]
@@ -15,26 +15,27 @@ const props = defineProps<
   & (
     | {
       input: NoInfer<I>
-      command: {
-        handle: (...input: I) => void
-        waiting: boolean
-        action: string
-      }
+      command: CommandBase<I>
       empty?: boolean
-      title?: string // why isn't it part of VBtnProps??
     }
     | {
-      command: {
-        handle: () => void
-        waiting: boolean
-        action: string
-      }
+      command: CommandBase
+      input?: undefined
       empty?: boolean
-      title?: string // why isn't it part of VBtnProps??
     }
   )
+  & {
+    disabled?: ButtonProps["disabled"]
+    title?: string // why isn't it part of VBtnProps??
+  }
   & ButtonProps
 >()
+</script>
+<script lang="ts">
+/** Command Button is an easy way to connect commands and have it execute on click, while keeping track of disabled/loading states automatically */
+export default {
+  name: "CommandButton"
+}
 </script>
 <template>
   <v-btn
@@ -42,15 +43,20 @@ const props = defineProps<
     v-bind="$attrs"
     :loading="command.waiting"
     :disabled="command.waiting || disabled"
-    :title="title"
-    @click="command.handle(
-      ...((`input` in props && props.input
+    :title="title ?? command.action"
+    @click="(command.handle as any)(
+      (`input` in props && props.input
         ? props.input
-        : []) as unknown as I)
+        : undefined) as unknown as I
     )"
   >
-    <slot>
-      <span>{{ command.action }}</span>
+    <slot
+      :loading="command.waiting"
+      :disabled="command.waiting || disabled"
+      :label="command.label"
+      :title="title ?? command.action"
+    >
+      <span>{{ command.label }}</span>
     </slot>
   </v-btn>
   <v-btn
@@ -59,10 +65,10 @@ const props = defineProps<
     :loading="command.waiting"
     :disabled="command.waiting || disabled"
     :title="title ?? command.action"
-    @click="command.handle(
-      ...((`input` in props && props.input
+    @click="(command.handle as any)(
+      (`input` in props && props.input
         ? props.input
-        : []) as unknown as I)
+        : undefined) as unknown as I
     )"
   />
 </template>

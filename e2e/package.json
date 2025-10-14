@@ -31,7 +31,7 @@
   "dependencies": {
     "@effect-app-boilerplate/api": "workspace:*",
     "@effect/platform-node": "0.98.0",
-    "effect-app": "^3.10.2",
+    "effect-app": "^3.11.0",
     "@effect/platform": "^0.92.0",
     "effect": "^3.18.0",
     "cross-fetch": "^4.1.0",

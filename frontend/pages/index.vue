@@ -123,19 +123,19 @@ onMounted(() => {
 
     <CommandButton
       :command="setState"
-      :input="[false]"
+      :input="false"
     />
     <!-- alt -->
     <CommandButton
       :command="setState"
       empty
       :icon="mdiSetAll"
-      :input="[false]"
+      :input="false"
     />
 
     <CommandButton
       :command="setState"
-      :input="[true]"
+      :input="true"
     >
       Fail test
     </CommandButton>
