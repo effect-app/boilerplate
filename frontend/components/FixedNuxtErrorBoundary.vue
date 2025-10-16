@@ -58,7 +58,7 @@ if (import.meta.client) {
 
     // PRO: we don't handle native event handlers the same way we handle setup errors,
     // because these errors should only get reported, not take over the page.
-    if (info === "native event handler") {
+    if (info !== "setup function") {
       captureException(err, { extra: { info, instance } })
       return
     }
