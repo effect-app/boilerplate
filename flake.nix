@@ -1,5 +1,5 @@
 {
-  description = "Node 22 + pnpm 10 dev shell";
+  description = "Node 24 + pnpm 10 dev shell";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -10,7 +10,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        nodejs = pkgs.nodejs_22;
+        nodejs = pkgs.nodejs_24;
         pnpm = pkgs.pnpm.override { inherit nodejs; };
         tools = with pkgs; [
           git
