@@ -40,6 +40,9 @@ function clearError() {
   error.value = null
 }
 
+// lol in production these are different...
+const supportedErrors = ["https://vuejs.org/error-reference/#runtime-0", 0, "0", "setup function"]
+
 if (import.meta.client) {
   const nuxtApp = useNuxtApp()
 
@@ -47,18 +50,17 @@ if (import.meta.client) {
     ...args: Parameters<Parameters<typeof onErrorCaptured<Error>>[0]>
   ) {
     const [err, instance, info] = args
+    const fiberFailure = isFiberFailure(err) ? err : null
     // PRO: log that we hit the error boundary
     console.warn(
-      "NuxtErrorBoundary caught error",
-      err,
-      instance,
-      info,
-      isFiberFailure(err) ? Cause.pretty(err[Runtime.FiberFailureCauseId]) : undefined
+      "NuxtErrorBoundary caught error in " + info + ": " + (fiberFailure ? "FiberFailure" : "classic error"),
+      fiberFailure ? Cause.pretty(fiberFailure[Runtime.FiberFailureCauseId]) : err,
+      instance
     )
 
     // PRO: we don't handle native event handlers the same way we handle setup errors,
     // because these errors should only get reported, not take over the page.
-    if (info !== "setup function") {
+    if (!supportedErrors.includes(info)) {
       captureException(err, { extra: { info, instance } })
       return
     }
@@ -67,8 +69,8 @@ if (import.meta.client) {
     // e.g when we run useSuspenseQuery, and we navigate away before a query is finished, we get a CancelledError
     // if we however render it here instead of the default slot, we will show the cancellation error of the previous page, instead of rendering the new page
     if (
-      Runtime.isFiberFailure(err)
-      && Cause.isInterruptedOnly(err[Runtime.FiberFailureCauseId])
+      fiberFailure
+      && Cause.isInterruptedOnly(fiberFailure[Runtime.FiberFailureCauseId])
     ) {
       return
     }
