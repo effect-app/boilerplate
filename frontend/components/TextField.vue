@@ -22,7 +22,7 @@
   </v-text-field>
 </template>
 <script lang="ts" setup>
-import type { FieldInfo } from "@/composables/form"
+import type { FieldInfo } from "@effect-app/vue/form"
 import { VTextField } from "vuetify/components"
 
 export interface Fields extends

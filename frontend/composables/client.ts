@@ -67,7 +67,8 @@ const provideLayers = Layer
 // argh, deprecation comments get stripped by unimport, so we group them under "Legacy" now.
 export const { Command, clientFor, legacy } = makeClient(
   () => ManagedRuntime.make(provideLayers, useRuntime().memoMap),
-  clientFor_
+  clientFor_,
+  Router.Default
 )
 
 export const useOperationsClient = () => useRuntime().runSync(OperationsClient)

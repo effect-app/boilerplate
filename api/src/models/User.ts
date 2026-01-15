@@ -63,7 +63,9 @@ export type Role = S.Schema.Type<typeof Role>
 
 export class UserFromIdResolver
   extends Context.TagId("UserFromId")<UserFromIdResolver, { get: (userId: UserId) => Effect.Effect<User> }>()
-{}
+{
+  static readonly get = (userId: UserId) => this.use((_) => _.get(userId))
+}
 
 export class User extends S.ExtendedClass<User, User.Encoded>("User")({
   id: UserId.withDefault,
