@@ -14,6 +14,18 @@
 | `@effect-atom/atom-react`             | `@effect/atom-react` (rename only)                                               |
 | `@effect-atom/atom-solid`             | `@effect/atom-solid` (rename only)                                               |
 
+## Effect-App Package Changes
+
+| v3                                        | v4                                              |
+| ----------------------------------------- | ----------------------------------------------- |
+| `effect-app` 3.16.0                       | `effect-app` 4.0.0-beta.1                       |
+| `@effect-app/infra` 3.x                   | `@effect-app/infra` 4.0.0-beta.1                |
+| `@effect-app/vue` 2.x                     | `@effect-app/vue` 4.0.0-beta.1                  |
+| `@effect-app/vue-components` 3.x          | `@effect-app/vue-components` 4.0.0-beta.1       |
+| `@effect-app/cli` 1.29.0                  | `@effect-app/cli` 2.0.1-beta.0                  |
+| `@effect-app/eslint-codegen-model` 1.47.0 | `@effect-app/eslint-codegen-model` 2.0.0-beta.1 |
+| `@effect-app/eslint-shared-config` 0.5.1  | `@effect-app/eslint-shared-config` 0.5.7-beta.1 |
+
 ## Service Classes
 
 | v3                                                                                | v4                                                                                                                    |

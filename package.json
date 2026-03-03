@@ -6,7 +6,6 @@
     "patchedDependencies": {
       "eslint-plugin-codegen@0.17.0": "patches/eslint-plugin-codegen@0.17.0.patch",
       "typescript": "patches/typescript.patch",
-      "effect": "patches/effect.patch",
       "ts-plugin-sort-import-suggestions": "patches/ts-plugin-sort-import-suggestions.patch",
       "@tanstack/query-core": "patches/@tanstack__query-core.patch"
     }
@@ -68,20 +67,16 @@
     "@opentelemetry/semantic-conventions": "$@opentelemetry/semantic-conventions",
     "date-fns": "$date-fns",
     "effect": "$effect",
-    "@effect/experimental": "$@effect/experimental",
     "@effect/opentelemetry": "$@effect/opentelemetry",
-    "@effect/platform": "$@effect/platform",
     "@effect/platform-node": "$@effect/platform-node",
     "fast-check": "$fast-check",
     "vue": "$vue"
   },
   "dependencies": {
     "date-fns": "^4.1.0",
-    "effect": "3.19.14",
-    "@effect/experimental": "0.58.0",
-    "@effect/opentelemetry": "0.60.0",
-    "@effect/platform": "0.94.1",
-    "@effect/platform-node": "0.104.0",
+    "effect": "4.0.0-beta.25",
+    "@effect/opentelemetry": "4.0.0-beta.25",
+    "@effect/platform-node": "4.0.0-beta.25",
     "@opentelemetry/api": "^1.9",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.210.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.210.0",
@@ -103,9 +98,9 @@
   "devDependencies": {
     "@ben_12/eslint-plugin-dprint": "^1.14.0",
     "@dprint/typescript": "^0.95.13",
-    "@effect-app/cli": "^1.29.0",
-    "@effect-app/eslint-codegen-model": "^1.47.0",
-    "@effect-app/eslint-shared-config": "^0.5.1",
+    "@effect-app/cli": "2.0.1-beta.0",
+    "@effect-app/eslint-codegen-model": "2.0.0-beta.1",
+    "@effect-app/eslint-shared-config": "0.5.7-beta.1",
     "@effect/language-service": "^0.65.0",
     "@phaphoso/eslint-plugin-dprint": "^0.5.2",
     "@tsconfig/strictest": "^2.0.8",
@@ -116,7 +111,7 @@
     "@typescript-eslint/scope-manager": "^8.53.0",
     "concurrently": "^9.2.1",
     "dprint": "^0.51.1",
-    "effect-app": "^3.16.0",
+    "effect-app": "4.0.0-beta.1",
     "enhanced-resolve": "^5.18.4",
     "eslint": "^9.39.2",
     "eslint-import-resolver-typescript": "^4.4.4",
