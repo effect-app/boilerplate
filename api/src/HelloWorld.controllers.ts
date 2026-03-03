@@ -14,7 +14,7 @@ export default Router(HelloWorldRsc)({
   *effect(match) {
     const userRepo = yield* UserRepo
     return match({
-      *GetHelloWorld({ echo }: { echo: string }) {
+      *GetHelloWorld({ echo }) {
         const context = yield* getRequestContext
         const user = yield* userRepo
           .tryGetCurrentUser
@@ -40,7 +40,7 @@ export default Router(HelloWorldRsc)({
           randomUser: generate(S.toArbitrary(UserView)).value
         })
       },
-      *SetState(req: { fail?: boolean; state: string }) {
+      *SetState(req) {
         if (req.fail) {
           return yield* new InvalidStateError("Heute nicht möglich")
         }
