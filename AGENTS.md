@@ -1,6 +1,6 @@
 # Agent Instructions
 
-This is the Effect App library repository, focusing on functional programming patterns and effect systems in TypeScript, wrapping and extending the Effect library.
+This is the Effect App library  itory, focusing on functional programming patterns and effect systems in TypeScript, wrapping and extending the Effect library.
 
 ## Development Workflow
 
@@ -15,7 +15,7 @@ This is the Effect App library repository, focusing on functional programming pa
 - **Conciseness**: Keep code and any wording concise and to the point. Sacrifice grammar for the sake of concision.
 - **Reduce comments**: Avoid comments unless absolutely required to explain unusual or complex logic. Comments in jsdocs are acceptable.
 - **Look for effect sources inside `repos/effect-v4`**
-- **Never import local `repos` files**: Always use the latest online versions of packages instead.
+- **Never import local `repos` files**: Always use the latest online (pre-release) versions of packages instead.
 - **Never webfetch from the `effect-v3` and `effect-v4` repos**: just use the locally included under `repos`
 
 ### Mandatory Validation Steps

@@ -2,4 +2,3 @@ packages:
   - api
   - frontend
   - e2e
-  #- libs/packages/* # link
