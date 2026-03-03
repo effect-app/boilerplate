@@ -2,10 +2,10 @@
 import * as MW from "#lib/middleware"
 import { Events } from "#services"
 import { reportError } from "@effect-app/infra/errorReporter"
-import { RpcSerialization } from "@effect/rpc"
 import { flow } from "effect"
 import { Console, Effect, Layer } from "effect-app"
 import { HttpLayerRouter, HttpMiddleware } from "effect-app/http"
+import { RpcSerialization } from "effect/unstable/rpc"
 import { BaseConfig, MergedConfig } from "./config.js"
 
 const prodOrigins: string[] = []

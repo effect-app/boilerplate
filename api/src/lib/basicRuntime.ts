@@ -1,9 +1,7 @@
 import { AppLogger } from "#lib/logger"
 import { reportError } from "@effect-app/infra/errorReporter"
 import { logJson } from "@effect-app/infra/logger/jsonLogger"
-import { PlatformLogger } from "@effect/platform"
 import { NodeFileSystem } from "@effect/platform-node"
-import { defaultTeardown, type RunMain, type Teardown } from "@effect/platform/Runtime"
 import * as Sentry from "@sentry/node"
 import { constantCase } from "change-case"
 import { Cause, Console, Effect, Fiber, Layer, ManagedRuntime } from "effect-app"
@@ -11,6 +9,7 @@ import { dual } from "effect-app/Function"
 import * as ConfigProvider from "effect/ConfigProvider"
 import * as Logger from "effect/Logger"
 import * as Level from "effect/LogLevel"
+import { defaultTeardown, type RunMain, type Teardown } from "effect/Runtime"
 import type * as Runtime from "effect/Runtime"
 
 const envProviderConstantCase = ConfigProvider.mapInputPath(
@@ -42,7 +41,7 @@ if (!logLevel) throw new Error(`Invalid LOG_LEVEL: ${configuredLogLevel}`)
 const devLog = Logger
   .withSpanAnnotations(Logger.logfmtLogger)
   .pipe(
-    PlatformLogger.toFile("./dev.log")
+    Logger.toFile("./dev.log")
   )
 
 const addDevLog = Logger.addScoped(devLog).pipe(Layer.provide(NodeFileSystem.layer))
