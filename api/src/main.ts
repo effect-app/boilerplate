@@ -1,7 +1,7 @@
+import * as DevTools from "@effect/experimental/DevTools"
 import { faker } from "@faker-js/faker"
 import { Effect, Layer } from "effect-app"
 import { setFaker } from "effect-app/faker"
-import { DevTools } from "effect/unstable/devtools"
 import { api } from "./api.js"
 import { MergedConfig } from "./config.js"
 import { runMain } from "./lib/basicRuntime.js"

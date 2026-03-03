@@ -1,4 +1,4 @@
-import type {} from "effect/unstable/http/HttpClient"
+import type {} from "@effect/platform/HttpClient"
 
 export { ClientEvents } from "./resources/Events.js"
 

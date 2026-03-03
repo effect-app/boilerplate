@@ -248,19 +248,6 @@ Most `@effect/*` sub-packages are now consolidated into `effect`:
 - `import { ChildProcessSpawner } from "effect/unstable/process/ChildProcessSpawner"`
 - CLI: `import { Argument, Command, Flag, Prompt } from "effect/unstable/cli"`
 
-Additional mappings used in `boilerplate/api`:
-- `import { DevTools } from "effect/unstable/devtools"` instead of `@effect/experimental/DevTools`
-- `import { RpcSerialization } from "effect/unstable/rpc"` instead of `@effect/rpc`
-- `import { defaultTeardown, type RunMain, type Teardown } from "effect/Runtime"` instead of `@effect/platform/Runtime`
-- `import type {} from "effect/unstable/http/HttpClient"` instead of `@effect/platform/HttpClient`
-- `@effect/platform` HTTP imports can be replaced by `effect-app/http` re-exports where used by effect-app wrappers
-
-## Logger API
-
-| v3                                   | v4                           |
-| ------------------------------------ | ---------------------------- |
-| `PlatformLogger.toFile("./dev.log")` | `Logger.toFile("./dev.log")` |
-
 ## Schema DecodingServices gotcha
 
 - `S.Schema<T>` extends `Top` but does **NOT** override `DecodingServices`. So `Schema<T>["DecodingServices"]` = `Top["DecodingServices"]` = `unknown`.

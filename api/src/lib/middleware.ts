@@ -1,5 +1,6 @@
+import { HttpApp, HttpServerRequest } from "@effect/platform"
 import { Context, Effect } from "effect-app"
-import { HttpApp, HttpHeaders, HttpMiddleware, HttpServerRequest, HttpServerResponse } from "effect-app/http"
+import { HttpHeaders, HttpMiddleware, HttpServerResponse } from "effect-app/http"
 import { type ReadonlyRecord } from "effect/Record"
 import z from "zlib"
 
@@ -177,6 +178,6 @@ export const cors = (options?: {
           headers: headersFromRequestOptions(request)
         }))
       }
-      return Effect.andThen(HttpApp.appendPreResponseHandler(preResponseHandler), httpApp)
+      return Effect.zipRight(HttpApp.appendPreResponseHandler(preResponseHandler), httpApp)
     })
 }
