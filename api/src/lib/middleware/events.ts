@@ -5,8 +5,5 @@ import { Effect } from "effect-app"
 
 export const makeEvents = Effect.gen(function*() {
   const events = yield* Events
-  return Effect.gen(function*() {
-    const stream = yield* events.stream
-    return yield* makeSSE(ClientEvents)(stream)
-  })
+  return makeSSE(ClientEvents)(events.stream)
 })

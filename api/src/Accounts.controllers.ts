@@ -6,7 +6,6 @@ export default Router(AccountsRsc)({
   dependencies: [UserRepo.Default],
   *effect(match) {
     const userRepo = yield* UserRepo
-
     return match({
       GetMe: userRepo.getCurrentUser
     })

@@ -2,10 +2,10 @@
 import * as MW from "#lib/middleware"
 import { Events } from "#services"
 import { reportError } from "@effect-app/infra/errorReporter"
-import { RpcSerialization } from "@effect/rpc"
 import { flow } from "effect"
 import { Console, Effect, Layer } from "effect-app"
-import { HttpLayerRouter, HttpMiddleware } from "effect-app/http"
+import { HttpMiddleware, HttpRouter } from "effect-app/http"
+import { RpcSerialization } from "effect/unstable/rpc"
 import { BaseConfig, MergedConfig } from "./config.js"
 
 const prodOrigins: string[] = []
@@ -15,7 +15,7 @@ const CORSMiddleware = Effect
   .gen(function*() {
     const { env } = yield* BaseConfig
 
-    return HttpLayerRouter.middleware(
+    return HttpRouter.middleware(
       flow(
         MW.cors({
           allowedOrigins: env === "demo"
@@ -26,49 +26,39 @@ const CORSMiddleware = Effect
           credentials: true
         })
       ),
-      // CORS has to be global to respond to OPTIONS
       { global: true }
     )
   })
-  .pipe(Layer.unwrapEffect)
+  .pipe(Layer.unwrap)
 
-const GZIPMiddleware = HttpLayerRouter.middleware(MW.gzip)
-const ForwardedHeadersMiddleware = HttpLayerRouter.middleware(HttpMiddleware.xForwardedHeaders)
+const GZIPMiddleware = HttpRouter.middleware(MW.gzip)
+const ForwardedHeadersMiddleware = HttpRouter.middleware(HttpMiddleware.xForwardedHeaders)
 
-// const authTokenFromCookie = Effect
-//   .gen(function*() {
-//     const secret = yield* authConfig
-//     return HttpLayerRouter.middleware(MW.authTokenFromCookie(secret)).layer
-//   })
-//   .pipe(Layer.unwrapEffect)
+const RequestContextMiddleware = HttpRouter.middleware(MW.RequestContextMiddleware())
 
-const RequestContextMiddleware = HttpLayerRouter.middleware()(MW.RequestContextMiddleware())
-
-const HealthRoute = HttpLayerRouter
+const HealthRoute = HttpRouter
   .use(
     Effect.fnUntraced(function*(router) {
       const cfg = yield* BaseConfig
 
-      // NO authtoken/requestcontext middleware!
       yield* router.add(
         "GET",
         "/.well-known/local/server-health",
         MW
           .serverHealth(cfg.apiVersion)
-          .pipe(Effect.tapErrorCause(reportError("server-health error")))
+          .pipe(Effect.tapCause(reportError("server-health error")))
       )
     })
   )
 
-const MainMiddleware = [
+const MainMiddleware = Layer.mergeAll(
   GZIPMiddleware.layer,
   CORSMiddleware,
   ForwardedHeadersMiddleware.layer,
   RequestContextMiddleware.layer
-  // authTokenFromCookie
-] as const
+)
 
-const EventsRoute = HttpLayerRouter
+const EventsRoute = HttpRouter
   .use(
     Effect.fnUntraced(function*(router) {
       const handleEvents = yield* MW.makeEvents
@@ -76,11 +66,11 @@ const EventsRoute = HttpLayerRouter
       yield* router.add(
         "GET",
         "/events",
-        handleEvents.pipe(Effect.tapErrorCause(reportError("events error")))
+        handleEvents.pipe(Effect.tapCause((cause) => reportError("events error")(cause)))
       )
     })
   )
-  .pipe(Layer.provide([Events.Default, ...MainMiddleware]))
+  .pipe(Layer.provide([Events.Default, MainMiddleware]))
 
 const RootRoutes = Layer.mergeAll(
   HealthRoute,
@@ -90,21 +80,18 @@ const RootRoutes = Layer.mergeAll(
 const logServer = Effect
   .gen(function*() {
     const cfg = yield* MergedConfig
-    // using Console.log for vscode to know we're ready
     yield* Console.log(
       `Running on http://${cfg.host}:${cfg.port} at version: ${cfg.apiVersion}. ENV: ${cfg.env}`
     )
   })
   .pipe(Layer.effectDiscard)
 
-const ConfigureTracer = HttpMiddleware.withTracerDisabledWhen(
-  (r) => r.method === "OPTIONS" || r.url === "/.well-known/local/server-health"
-)
+const ConfigureTracer = HttpMiddleware.layerTracerDisabledForUrls(["/.well-known/local/server-health"])
 
 export const makeHttpServer = <E, R>(
   rpcRouter: Layer.Layer<never, E, R>
 ) =>
-  HttpLayerRouter
+  HttpRouter
     .serve(
       logServer.pipe(
         Layer.provide([
@@ -115,4 +102,4 @@ export const makeHttpServer = <E, R>(
       ),
       { middleware: HttpMiddleware.logger }
     )
-    .pipe(ConfigureTracer)
+    .pipe(Layer.provide(ConfigureTracer))

@@ -1,10 +1,14 @@
-import { Context, Effect, Equivalence, pipe, S } from "effect"
+import { Effect, Equivalence, Option, S } from "effect-app"
 import { UserProfileId } from "effect-app/ids"
 
-export const FirstName = S.NonEmptyString255.pipe(S.withDefault("FirstName"))
+export const FirstName = S.NonEmptyString255.pipe(
+  S.withConstructorDefault(() => Option.some(S.NonEmptyString255("FirstName")))
+)
 export type FirstName = typeof FirstName.Type
 
-export const LastName = S.NonEmptyString255.pipe(S.withDefault("LastName"))
+export const LastName = S.NonEmptyString255.pipe(
+  S.withConstructorDefault(() => Option.some(S.NonEmptyString255("LastName")))
+)
 export type LastName = typeof LastName.Type
 
 export const FullName = S.Struct({
@@ -16,11 +20,11 @@ export type FullName = typeof FullName.Type
 export const UserId = UserProfileId
 export type UserId = UserProfileId
 
-export const Role = S.Literal("manager", "user").pipe(S.withDefault("user" as const))
+export const Role = S.Literal("manager", "user").pipe(S.withConstructorDefault(() => Option.some("user" as const)))
 export type Role = typeof Role.Type
 
 export const UserInfo = {
-  get: (userId: UserId) => Effect.fail(new Error("User not found"))
+  get: (_userId: UserId) => Effect.fail(new Error("User not found"))
 }
 
 export const User = S.Struct({
@@ -32,10 +36,10 @@ export const User = S.Struct({
 })
 export type User = typeof User.Type
 
-export const defaultEqual = Equivalence.struct<User>(
+export const defaultEqual = Equivalence.Struct(
   {
     id: Equivalence.String,
-    name: Equivalence.struct({ firstName: Equivalence.String, lastName: Equivalence.String }),
+    name: Equivalence.Struct({ firstName: Equivalence.String, lastName: Equivalence.String }),
     email: Equivalence.String,
     role: Equivalence.String,
     passwordHash: Equivalence.String
