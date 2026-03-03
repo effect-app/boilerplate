@@ -1,4 +1,4 @@
-import { Config, Effect } from "effect-app"
+import { Config } from "effect"
 import { secretURL } from "effect-app/Config/SecretURL"
 import * as SecretURL from "effect-app/Config/SecretURL"
 import { basicRuntime } from "../lib/basicRuntime.js"
@@ -32,11 +32,11 @@ export const RepoConfig = Config.all({
   fakeUsers: Config.string("fakeUsers").pipe(Config.withDefault("sample"))
 })
 
-const port = Config.integer("port").pipe(Config.withDefault(3610))
+const port = Config.int("port").pipe(Config.withDefault(3610))
 export const ApiConfig = Config.all({
   host: Config.string("host").pipe(Config.withDefault("0.0.0.0")),
   port,
-  devPort: Config.integer("devPort").pipe(Config.orElse(() => port.pipe(Config.map((_) => _ + 1)))),
+  devPort: Config.int("devPort").pipe(Config.orElse(() => port.pipe(Config.map((_) => _ + 1)))),
   baseUrl: Config.string("baseUrl").pipe(Config.withDefault("http://localhost:4000")),
 
   repo: RepoConfig,
@@ -44,16 +44,16 @@ export const ApiConfig = Config.all({
   storage: StorageConfig
 })
 
-type ConfigA<Cfg> = Cfg extends Config.Config.Variance<infer A> ? A : never
+type ConfigA<Cfg> = Cfg extends Config.Config<infer A> ? A : never
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ApiConfig extends ConfigA<typeof ApiConfig> {}
 
 export interface ApiMainConfig extends ApiConfig, BaseConfig {}
 
-export const MergedConfig = ApiConfig
-  .pipe(
-    Effect.andThen((apiConfig) => Effect.andThen(BaseConfig, (baseConfig) => ({ ...baseConfig, ...apiConfig }))),
-    Effect.cached,
-    basicRuntime.runSync
-  )
+export const MergedConfig = Config.all({
+  api: ApiConfig,
+  base: BaseConfig
+}).pipe(
+  Config.map(({ api, base }) => ({ ...base, ...api }))
+)

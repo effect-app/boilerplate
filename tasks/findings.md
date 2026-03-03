@@ -131,14 +131,59 @@ class MyService extends ServiceMap.Service<MyService>()("MyService", {
 | `Config.hashMap(Config.string(), "name")` | `Config.schema(Config.Record(Schema.String, Schema.String), "name")` — reads sub-keys (e.g. `NAME__key=val`) |
 
 
-## Removed Modules
+## Migration Progress - Step 1 (API Package)
 
-| v3 module                            | v4 replacement                                |
-| ------------------------------------ | --------------------------------------------- |
-| `effect/Either`                      | `effect/Result` (see Either → Result section) |
-| `effect/Arbitrary` (`LazyArbitrary`) | `LazyArbitrary` moved to `effect/Schema`      |
-| `effect/ParseResult`                 | `effect/SchemaParser`                         |
-| `effect/Secret` (`SecretTypeId`)     | `effect/Redacted`                             |
+### Files Completed ✅
+- **models/User.ts** -  Simplified to v4 Schema API (removed ExtendedClass, transformed to simple Struct)
+- **config/base.ts** - No changes needed (v3 API compatible)
+- **lib/logger.ts** - No changes needed (re-export only)
+- **config/api.ts** - Fixed `Config.integer` → `Config.int`
+- **lib/basicRuntime.ts** - **PARTIALLY FIXED** (needs more work on Logger/LogLevel APIs)
+
+### Discovered v4 API Changes Not Yet Documented
+
+#### LogLevel API (v4)
+- `Level.Trace`, `Level.Debug`, etc. **don't exist** in v4
+- Instead use: `Logger.levelNumber("trace")`, etc. or check LogLevel module exports
+- Need to revisit basicRuntime.ts level definitions
+
+#### Logger API (v4)
+- `Logger.logfmtLogger` **doesn't exist** - check actual Logger exports
+- `Logger.withMinimumLogLevel` **doesn't exist** (likely has different name)
+- `Logger.addScoped` removed
+- Simplified approach: use `Logger.prettyLogger()` or similar pre-built logger
+
+#### ConfigProvider API (v4)
+- `ConfigProvider.mapInputPath` **doesn't exist** - use `ConfigProvider.mapInput` instead
+- `pathDelim`, `seqDelim` options **don't match** v4 API signature
+
+#### Services Layer Composition (v4)
+- `ServiceMap.Service` requires static `Default`, `DefaultWithoutDependencies` layers
+- Instance still using v3 `Effect.Service` pattern in UserRepo.ts
+
+### Next Critical Tasks
+1. **Simplify lib/basicRuntime.ts** - Logger/ConfigProvider/LogLevel need correct v4 APIs
+2. **Fix services/DBContext/UserRepo.ts** - Change to `ServiceMap.Service` pattern with static Default/DefaultWithoutDependencies
+3. **Fix remaining controllers** - Depend on UserRepo.Default layer
+4. **Fix lib/layers.ts** - Layer composition with correct Config APIs
+
+### Code Pattern Reference (v4 ServiceMap)
+
+```typescript
+import { Layer, ServiceMap, Effect } from "effect"
+
+class MyService extends ServiceMap.Service<MyService>()("MyService", {
+  make: Effect.gen(function*() {
+    const dep = yield* Dependency
+    return { method: (x) => x }
+  })
+}) {
+  static DefaultWithoutDependencies = Layer.effect(this, this.make)
+  static Default = this.DefaultWithoutDependencies.pipe(
+    Layer.provide(Dependency.Default)
+  )
+}
+```
 
 ## Renamed Functions
 
@@ -269,3 +314,19 @@ Most `@effect/*` sub-packages are now consolidated into `effect`:
 - Custom `TaggedRequestResult` type: intersection of `S.TaggedStruct<Tag, Payload>` with `{ new(...): any; _tag; fields; success; error; config; ~decodingServices }`.
 - `~decodingServices` phantom property pre-computes `S.Codec.DecodingServices<Success> | S.Codec.DecodingServices<Error>` to avoid generic-context resolution issues.
 - `RequestHandlers` uses `ReqDecodingServices<M[K]>` (property access) instead of re-computing `S.Codec.DecodingServices` in generic mapped types.
+
+## Additional v4 API Changes (Boilerplate API Migration)
+
+| v3                                       | v4                                                         |
+| ---------------------------------------- | ---------------------------------------------------------- |
+| `Config.integer`                         | `Config.number` (integers not separately typed in v4)      |
+| `Config.Config.Variance<A>`              | Extract via `Cfg extends Config<infer A> ? A : never`     |
+| `Effect.andThen(plainValue)`             | `Effect.succeed(plainValue)` (andThen only for Effects)    |
+| `Cause.isInterruptedOnly`                | `Cause.hasInterruptsOnly`                                  |
+| `Layer.unwrapEffect`                     | Restructure - effects should unwrap to layers appropriately |
+| `Effect.tapErrorCause`                   | `Effect.catchCause` (to return effect) or `Effect.tapError` |
+| `Logger.minimumLogLevel`                 | `Logger.withMinimumLogLevel`                               |
+| `Logger.remove`,  `Logger.replace`       | Restructure using layer operations                         |
+| `Logger.addScoped`                       | Use `Logger.withEffect` or `Logger.add`                    |
+| `@effect/platform/Runtime` exports       | Not available - use `NodeRuntime` from appropriate layer   |
+
