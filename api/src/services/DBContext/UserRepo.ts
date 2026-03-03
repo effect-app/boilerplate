@@ -4,7 +4,7 @@ import { User, type UserId } from "#models/User"
 import { Model } from "@effect-app/infra"
 import { NotFoundError, NotLoggedInError } from "@effect-app/infra/errors"
 import { generate } from "@effect-app/infra/test"
-import { Array, Effect, Exit, Layer, Option, pipe, Request, RequestResolver, S, ServiceMap } from "effect-app"
+import { Array, Effect, Exit, Layer, Option, pipe, Request, RequestResolver, S } from "effect-app"
 import { fakerArb } from "effect-app/faker"
 import { Email } from "effect-app/Schema"
 import fc from "fast-check"
@@ -17,14 +17,9 @@ export interface UserPersistenceModel extends User.Encoded {
 
 export type UserSeed = "sample" | ""
 
-interface GetUserById extends Request.Request<User, NotFoundError<"User">> {
-  readonly _tag: "GetUserById"
-  readonly id: UserId
-}
-const GetUserById = Request.tagged<GetUserById>("GetUserById")
-
-export class UserRepo extends ServiceMap.Service<UserRepo>()("UserRepo", {
-  make: Effect.gen(function*() {
+export class UserRepo extends Effect.Service<UserRepo>()("UserRepo", {
+  dependencies: [RepoDefault],
+  effect: Effect.gen(function*() {
     const cfg = yield* RepoConfig
 
     const makeInitial = yield* Effect.cached(Effect.sync(() => {
@@ -58,18 +53,22 @@ export class UserRepo extends ServiceMap.Service<UserRepo>()("UserRepo", {
       return items
     }))
 
-    const repo = yield* Model.makeRepo("User", User, { makeInitial })
-
-    return {
-      ...repo,
-      getCurrentUser: UserProfile.pipe(Effect.andThen((_) => repo.get(_.sub))),
-      tryGetCurrentUser: Effect.serviceOption(UserProfile).pipe(
-        Effect.andThen((_) => _.pipe(Effect.mapError(() => new NotLoggedInError()))),
-        Effect.andThen((_) => repo.get(_.sub))
-      )
-    }
+    return yield* Model.makeRepo("User", User, { makeInitial })
   })
 }) {
+  get tryGetCurrentUser() {
+    return Effect.serviceOption(UserProfile).pipe(
+      Effect.andThen((_) => _.pipe(Effect.mapError(() => new NotLoggedInError()))),
+      Effect.andThen((_) => this.get(_.sub))
+    )
+  }
+
+  get getCurrentUser() {
+    return UserProfile.pipe(
+      Effect.andThen((_) => this.get(_.sub))
+    )
+  }
+
   static readonly getUserByIdResolver = RequestResolver
     .makeBatched((requests: GetUserById[]) =>
       this.use((_) =>
@@ -108,6 +107,10 @@ export class UserRepo extends ServiceMap.Service<UserRepo>()("UserRepo", {
       )
     )
     .pipe(Layer.provide(this.Default))
-
-  static readonly Default = Layer.provide(this.DefaultWithoutDependencies, RepoDefault)
 }
+
+interface GetUserById extends Request.Request<User, NotFoundError<"User">> {
+  readonly _tag: "GetUserById"
+  readonly id: UserId
+}
+const GetUserById = Request.tagged<GetUserById>("GetUserById")

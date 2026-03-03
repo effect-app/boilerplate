@@ -1,64 +1,43 @@
-/* eslint-disable @typescript-eslint/unbound-method */
-import { Context, Effect, Equivalence, pipe, S } from "effect-app"
+import { Context, Effect, Equivalence, pipe, S } from "effect"
 import { UserProfileId } from "effect-app/ids"
 
-export const FirstName = S.NonEmptyString255.pipe(S.withDefaultMake)
+export const FirstName = S.NonEmptyString255.pipe(S.withDefault("FirstName"))
 export type FirstName = typeof FirstName.Type
 
-export const DisplayName = FirstName
-export type DisplayName = typeof DisplayName.Type
-
-export const LastName = S.NonEmptyString255.pipe(S.withDefaultMake)
+export const LastName = S.NonEmptyString255.pipe(S.withDefault("LastName"))
 export type LastName = typeof LastName.Type
 
-export class FullName extends S.ExtendedClass<FullName, FullName.Encoded>("FullName")({
+export const FullName = S.Struct({
   firstName: FirstName,
   lastName: LastName
-}) {}
+})
+export type FullName = typeof FullName.Type
 
 export const UserId = UserProfileId
 export type UserId = UserProfileId
 
-export const Role = S.withDefaultMake(S.Literal("manager", "user"))
+export const Role = S.Literal("manager", "user").pipe(S.withDefault("user" as const))
 export type Role = typeof Role.Type
 
-export class UserFromIdResolver
-  extends Context.TagId("UserFromId")<UserFromIdResolver, { get: (userId: UserId) => Effect.Effect<User> }>()
-{
-  static readonly get = (userId: UserId) => this.use((_) => _.get(userId))
+export const UserInfo = {
+  get: (userId: UserId) => Effect.fail(new Error("User not found"))
 }
 
-export class User extends S.ExtendedClass<User, User.Encoded>("User")({
-  id: UserId.withDefault,
+export const User = S.Struct({
+  id: UserId,
   name: FullName,
-  email: S.Email,
+  email: S.String,
   role: Role,
   passwordHash: S.NonEmptyString255
-}) {
-  get displayName() {
-    return S.NonEmptyString2k(this.name.firstName + " " + this.name.lastName)
+})
+export type User = typeof User.Type
+
+export const defaultEqual = Equivalence.struct<User>(
+  {
+    id: Equivalence.String,
+    name: Equivalence.struct({ firstName: Equivalence.String, lastName: Equivalence.String }),
+    email: Equivalence.String,
+    role: Equivalence.String,
+    passwordHash: Equivalence.String
   }
-  static readonly resolver = UserFromIdResolver
-}
-
-export const UserFromId = S.transformOrFail(
-  UserId,
-  S.typeSchema(User),
-  { decode: User.resolver.get, encode: (u) => Effect.succeed(u.id) }
 )
-
-export const defaultEqual = pipe(Equivalence.String, Equivalence.mapInput((u: User) => u.id))
-
-// codegen:start {preset: model}
-//
-/* eslint-disable */
-export namespace FullName {
-  export interface Encoded extends S.Struct.Encoded<typeof FullName["fields"]> {}
-}
-export namespace User {
-  export interface Encoded extends S.Struct.Encoded<typeof User["fields"]> {}
-}
-/* eslint-enable */
-//
-// codegen:end
-//
