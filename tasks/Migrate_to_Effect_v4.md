@@ -32,7 +32,7 @@ Commit every task you complete for every step.
 - Consult the migration guides instead of making up assumptions. e.g `Schema<A, I, R>` is now `Codec<A, I, R>`
 - Prioritise first fixing files that are dependencies of others (via direct or indirect imports).
   - Migrate and fix files in dependency order
-- The `repos` only serve as documentaiton/reference. Do not link packages to these local files. The repository source code should only use (pre) released packages from npm.
+- The `repos` only serve as documentation/reference, there are examples and tests. Do not link packages to these local files. The repository source code should only use (pre) released packages from npm.
 
 ## Process
 
