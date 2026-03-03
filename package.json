@@ -14,7 +14,7 @@
     "pnpm": ">= 10.2.1"
   },
   "scripts": {
-    "all": "pnpm -r --filter \"!./play\" --filter \"!./libs/**/*\"",
+    "all": "pnpm -r",
     "preinstall": "npx only-allow pnpm",
     "clean": "pnpm all clean",
     "clean-dist": "pnpm all clean-dist",
