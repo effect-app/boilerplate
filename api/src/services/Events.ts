@@ -1,11 +1,10 @@
 import type { ClientEvents } from "#resources"
 import { storeId } from "@effect-app/infra/Store/Memory"
-import { Effect, PubSub, Stream } from "effect-app"
+import { Effect, Layer, PubSub, ServiceMap, Stream } from "effect-app"
 import type { NonEmptyReadonlyArray } from "effect/Array"
 
-export class Events extends Effect.Service<Events>()("Events", {
-  accessors: true,
-  effect: Effect.gen(function*() {
+export class Events extends ServiceMap.Service<Events>()("Events", {
+  make: Effect.gen(function*() {
     const q = yield* PubSub.unbounded<{ evt: ClientEvents; namespace: string }>()
     const svc = {
       publish: (...evts: NonEmptyReadonlyArray<ClientEvents>) =>
@@ -15,4 +14,6 @@ export class Events extends Effect.Service<Events>()("Events", {
     }
     return svc
   })
-}) {}
+}) {
+  static readonly Default = Layer.effect(this, this.make)
+}

@@ -1,7 +1,6 @@
 import { Config } from "effect"
 import { secretURL } from "effect-app/Config/SecretURL"
 import * as SecretURL from "effect-app/Config/SecretURL"
-import { basicRuntime } from "../lib/basicRuntime.js"
 import { BaseConfig } from "./base.js"
 
 const STORAGE_VERSION = "1"
@@ -51,9 +50,11 @@ export interface ApiConfig extends ConfigA<typeof ApiConfig> {}
 
 export interface ApiMainConfig extends ApiConfig, BaseConfig {}
 
-export const MergedConfig = Config.all({
-  api: ApiConfig,
-  base: BaseConfig
-}).pipe(
-  Config.map(({ api, base }) => ({ ...base, ...api }))
-)
+export const MergedConfig = Config
+  .all({
+    api: ApiConfig,
+    base: BaseConfig
+  })
+  .pipe(
+    Config.map(({ api, base }) => ({ ...base, ...api }))
+  )

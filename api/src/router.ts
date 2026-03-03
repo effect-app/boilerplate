@@ -1,50 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as MW from "#lib/middleware"
 import { Events } from "#services"
-import { reportError } from "@effect-app/infra/errorReporter"
-import { RpcSerialization } from "@effect/rpc"
-import { flow } from "effect"
 import { Console, Effect, Layer } from "effect-app"
-import { HttpLayerRouter, HttpMiddleware } from "effect-app/http"
+import { HttpRouter } from "effect-app/http"
+import { RpcSerialization } from "effect/unstable/rpc"
 import { BaseConfig, MergedConfig } from "./config.js"
 
-const prodOrigins: string[] = []
-const demoOrigins: string[] = []
-
-const CORSMiddleware = Effect
-  .gen(function*() {
-    const { env } = yield* BaseConfig
-
-    return HttpLayerRouter.middleware(
-      flow(
-        MW.cors({
-          allowedOrigins: env === "demo"
-            ? (origin) => demoOrigins.includes(origin)
-            : env === "prod"
-            ? prodOrigins
-            : () => true,
-          credentials: true
-        })
-      ),
-      // CORS has to be global to respond to OPTIONS
-      { global: true }
-    )
-  })
-  .pipe(Layer.unwrapEffect)
-
-const GZIPMiddleware = HttpLayerRouter.middleware(MW.gzip)
-const ForwardedHeadersMiddleware = HttpLayerRouter.middleware(HttpMiddleware.xForwardedHeaders)
-
-// const authTokenFromCookie = Effect
-//   .gen(function*() {
-//     const secret = yield* authConfig
-//     return HttpLayerRouter.middleware(MW.authTokenFromCookie(secret)).layer
-//   })
-//   .pipe(Layer.unwrapEffect)
-
-const RequestContextMiddleware = HttpLayerRouter.middleware()(MW.RequestContextMiddleware())
-
-const HealthRoute = HttpLayerRouter
+const HealthRoute = HttpRouter
   .use(
     Effect.fnUntraced(function*(router) {
       const cfg = yield* BaseConfig
@@ -53,22 +15,12 @@ const HealthRoute = HttpLayerRouter
       yield* router.add(
         "GET",
         "/.well-known/local/server-health",
-        MW
-          .serverHealth(cfg.apiVersion)
-          .pipe(Effect.tapErrorCause(reportError("server-health error")))
+        MW.serverHealth(cfg.apiVersion)
       )
     })
   )
 
-const MainMiddleware = [
-  GZIPMiddleware.layer,
-  CORSMiddleware,
-  ForwardedHeadersMiddleware.layer,
-  RequestContextMiddleware.layer
-  // authTokenFromCookie
-] as const
-
-const EventsRoute = HttpLayerRouter
+const EventsRoute = HttpRouter
   .use(
     Effect.fnUntraced(function*(router) {
       const handleEvents = yield* MW.makeEvents
@@ -76,16 +28,14 @@ const EventsRoute = HttpLayerRouter
       yield* router.add(
         "GET",
         "/events",
-        handleEvents.pipe(Effect.tapErrorCause(reportError("events error")))
+        handleEvents
       )
     })
   )
-  .pipe(Layer.provide([Events.Default, ...MainMiddleware]))
+  .pipe(Layer.provide(Events.Default))
 
-const RootRoutes = Layer.mergeAll(
-  HealthRoute,
-  EventsRoute
-)
+void HealthRoute
+void EventsRoute
 
 const logServer = Effect
   .gen(function*() {
@@ -97,22 +47,13 @@ const logServer = Effect
   })
   .pipe(Layer.effectDiscard)
 
-const ConfigureTracer = HttpMiddleware.withTracerDisabledWhen(
-  (r) => r.method === "OPTIONS" || r.url === "/.well-known/local/server-health"
-)
-
 export const makeHttpServer = <E, R>(
   rpcRouter: Layer.Layer<never, E, R>
 ) =>
-  HttpLayerRouter
+  HttpRouter
     .serve(
       logServer.pipe(
-        Layer.provide([
-          rpcRouter.pipe(Layer.provide(MainMiddleware)),
-          RootRoutes
-        ]),
+        Layer.provide(rpcRouter),
         Layer.provide(RpcSerialization.layerJson)
-      ),
-      { middleware: HttpMiddleware.logger }
+      )
     )
-    .pipe(ConfigureTracer)
