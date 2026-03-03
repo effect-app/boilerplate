@@ -317,16 +317,16 @@ Most `@effect/*` sub-packages are now consolidated into `effect`:
 
 ## Additional v4 API Changes (Boilerplate API Migration)
 
-| v3                                       | v4                                                         |
-| ---------------------------------------- | ---------------------------------------------------------- |
-| `Config.integer`                         | `Config.number` (integers not separately typed in v4)      |
-| `Config.Config.Variance<A>`              | Extract via `Cfg extends Config<infer A> ? A : never`     |
-| `Effect.andThen(plainValue)`             | `Effect.succeed(plainValue)` (andThen only for Effects)    |
-| `Cause.isInterruptedOnly`                | `Cause.hasInterruptsOnly`                                  |
-| `Layer.unwrapEffect`                     | Restructure - effects should unwrap to layers appropriately |
-| `Effect.tapErrorCause`                   | `Effect.catchCause` (to return effect) or `Effect.tapError` |
-| `Logger.minimumLogLevel`                 | `Logger.withMinimumLogLevel`                               |
-| `Logger.remove`,  `Logger.replace`       | Restructure using layer operations                         |
-| `Logger.addScoped`                       | Use `Logger.withEffect` or `Logger.add`                    |
-| `@effect/platform/Runtime` exports       | Not available - use `NodeRuntime` from appropriate layer   |
+| v3                                 | v4                                                          |
+| ---------------------------------- | ----------------------------------------------------------- |
+| `Config.integer`                   | `Config.number` (integers not separately typed in v4)       |
+| `Config.Config.Variance<A>`        | Extract via `Cfg extends Config<infer A> ? A : never`       |
+| `Effect.andThen(plainValue)`       | `Effect.succeed(plainValue)` (andThen only for Effects)     |
+| `Cause.isInterruptedOnly`          | `Cause.hasInterruptsOnly`                                   |
+| `Layer.unwrapEffect`               | Restructure - effects should unwrap to layers appropriately |
+| `Effect.tapErrorCause`             | `Effect.catchCause` (to return effect) or `Effect.tapError` |
+| `Logger.minimumLogLevel`           | `Logger.withMinimumLogLevel`                                |
+| `Logger.remove`,  `Logger.replace` | Restructure using layer operations                          |
+| `Logger.addScoped`                 | Use `Logger.withEffect` or `Logger.add`                     |
+| `@effect/platform/Runtime` exports | Not available - use `NodeRuntime` from appropriate layer    |
 
