@@ -15,9 +15,9 @@ There are migration guides:
 2. Convert `frontend`
 3. Convert `e2e`
 
-Each step will be completed individually, and only move on to the next step when the current is done succesfully.
+Each step will be completed individually, and only move on to the next step when the current is done succesfully, and confirmed by the user.
 For each step we should find out if we can convert 1:1 or certain things are missing preventing that.
-Commit every task you complete for every step.
+Commit every task you complete for every step (wait until confirmation by the user)
 
 ## Rules
 
