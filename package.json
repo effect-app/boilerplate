@@ -18,7 +18,7 @@
     "preinstall": "npx only-allow pnpm",
     "clean": "pnpm all clean",
     "clean-dist": "pnpm all clean-dist",
-    "autofix": "NODE_OPTIONS=--max-old-space-size=8192 pnpm lint-api --fix && pnpm lint-frontend --fix && pnpm lint-e2e --fix",
+    "lint-fix": "NODE_OPTIONS=--max-old-space-size=8192 pnpm lint-api --fix && pnpm lint-frontend --fix && pnpm lint-e2e --fix",
     "lint": "pnpm lint-api && pnpm lint-frontend && pnpm lint-e2e",
     "circular:dist": "pnpm all circular:dist",
     "start": "concurrently -k -p \"[{name}]\" -n \"API,Frontend\" -c \"cyan.bold,green.bold,blue.bold\" \"pnpm start:api\" \"pnpm start:frontend\"",
