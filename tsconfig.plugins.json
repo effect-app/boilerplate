@@ -24,9 +24,18 @@
           ]
         }
       },
-      {
-        "name": "@effect/language-service"
-      }
+      // {
+      //   "name": "@effect/language-service",
+      //   "ignoreEffectWarningsInTscExitCode": true,
+      //   "diagnosticSeverity": {
+      //     "missingEffectServiceDependency": "error",
+      //     "effectFnOpportunity": "warning",
+      //     "globalErrorInEffectFailure": "warning",
+      //     "returnEffectInGen": "warning",
+      //     "preferSchemaOverJson": "off",
+      //     "unnecessaryEffectGen": "warning"
+      //   }
+      // }
     ]
   }
 }
