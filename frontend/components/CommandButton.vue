@@ -45,7 +45,7 @@ export default {
     :disabled="command.waiting || disabled"
     :title="title ?? command.action"
     @click="(command.handle as any)(
-      (`input` in props && props.input
+      (`input` in props && props.input !== undefined
         ? props.input
         : undefined) as unknown as I
     )"
@@ -66,7 +66,7 @@ export default {
     :disabled="command.waiting || disabled"
     :title="title ?? command.action"
     @click="(command.handle as any)(
-      (`input` in props && props.input
+      (`input` in props && props.input !== undefined
         ? props.input
         : undefined) as unknown as I
     )"
