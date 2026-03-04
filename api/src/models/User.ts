@@ -1,4 +1,4 @@
-import { Effect, Equivalence, Option, S } from "effect-app"
+import { Equivalence, Option, S } from "effect-app"
 import { UserProfileId } from "effect-app/ids"
 
 export const FirstName = S.NonEmptyString255.pipe(
@@ -22,10 +22,6 @@ export type UserId = UserProfileId
 
 export const Role = S.Literal("manager", "user").pipe(S.withConstructorDefault(() => Option.some("user" as const)))
 export type Role = typeof Role.Type
-
-export const UserInfo = {
-  get: (_userId: UserId) => Effect.fail(new Error("User not found"))
-}
 
 export const User = S.Struct({
   id: UserId,

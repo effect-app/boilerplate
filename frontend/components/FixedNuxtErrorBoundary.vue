@@ -14,8 +14,8 @@
 <script setup lang="ts">
 import { onNuxtReady, useNuxtApp, useRouter } from "#imports"
 import { captureException } from "@sentry/browser"
-import { Cause, Runtime } from "effect-app"
-import { isFiberFailure } from "effect/Runtime"
+import { Cause } from "effect-app"
+import { KnownFiberFailure } from "@effect-app/vue"
 import { onErrorCaptured, shallowRef } from "vue"
 
 defineOptions({
@@ -50,11 +50,11 @@ if (import.meta.client) {
     ...args: Parameters<Parameters<typeof onErrorCaptured<Error>>[0]>
   ) {
     const [err, instance, info] = args
-    const fiberFailure = isFiberFailure(err) ? err : null
+    const fiberFailure = err instanceof KnownFiberFailure ? err : null
     // PRO: log that we hit the error boundary
     console.warn(
-      "NuxtErrorBoundary caught error in " + info + ": " + (fiberFailure ? "FiberFailure" : "classic error"),
-      fiberFailure ? Cause.pretty(fiberFailure[Runtime.FiberFailureCauseId]) : err,
+      "NuxtErrorBoundary caught error in " + info + ": " + (fiberFailure ? "KnownFiberFailure" : "classic error"),
+      fiberFailure ? Cause.pretty(fiberFailure.effectCause) : err,
       instance
     )
 
@@ -70,7 +70,7 @@ if (import.meta.client) {
     // if we however render it here instead of the default slot, we will show the cancellation error of the previous page, instead of rendering the new page
     if (
       fiberFailure
-      && Cause.isInterruptedOnly(fiberFailure[Runtime.FiberFailureCauseId])
+      && Cause.hasInterruptsOnly(fiberFailure.effectCause)
     ) {
       return
     }

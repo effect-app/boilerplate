@@ -323,10 +323,27 @@ Most `@effect/*` sub-packages are now consolidated into `effect`:
 | `Config.Config.Variance<A>`        | Extract via `Cfg extends Config<infer A> ? A : never`       |
 | `Effect.andThen(plainValue)`       | `Effect.succeed(plainValue)` (andThen only for Effects)     |
 | `Cause.isInterruptedOnly`          | `Cause.hasInterruptsOnly`                                   |
-| `Layer.unwrapEffect`               | Restructure - effects should unwrap to layers appropriately |
+| `Cause.isInterrupted`              | `Cause.hasInterrupts`                                       |
+| `Cause.failureOrCause`             | `Cause.findError` (returns `Result.Result` not `Either`)    |
+| `Layer.unwrapEffect`               | `Layer.unwrap`                                              |
 | `Effect.tapErrorCause`             | `Effect.catchCause` (to return effect) or `Effect.tapError` |
 | `Logger.minimumLogLevel`           | `Logger.withMinimumLogLevel`                                |
 | `Logger.remove`,  `Logger.replace` | Restructure using layer operations                          |
 | `Logger.addScoped`                 | Use `Logger.withEffect` or `Logger.add`                     |
 | `@effect/platform/Runtime` exports | Not available - use `NodeRuntime` from appropriate layer    |
+
+## Frontend-Specific Findings
+
+| v3                                              | v4                                                                    |
+| ----------------------------------------------- | --------------------------------------------------------------------- |
+| `@effect-atom/atom` Atom import                 | `effect/unstable/reactivity` Atom import                              |
+| `@effect/platform` FetchHttpClient import       | `effect/unstable/http/FetchHttpClient` (namespace import)             |
+| `@effect/rpc` RpcClient, RpcSerialization       | `effect/unstable/rpc` RpcClient, RpcSerialization                     |
+| `Either.match({onLeft, onRight})`               | `Result.match({onFailure, onSuccess})`                                |
+| `Runtime.isFiberFailure(err)`                   | `err instanceof KnownFiberFailure` (from `@effect-app/vue`)           |
+| `err[Runtime.FiberFailureCauseId]`              | `err.effectCause` (KnownFiberFailure property)                        |
+| `Effect.Service<T>()("tag", {sync, accessors})` | `ServiceMap.Service<T>()("tag", {make: Effect.sync(fn)})` + `Default` |
+| `Effect.map(Tag, fn)` (Tag as Effect)           | `Tag.use((svc) => Effect.succeed(fn(svc)))` (ServiceMap.use)          |
+| `ManagedRuntime.make(layers, memoMap)`          | `ManagedRuntime.make(layers, { memoMap })`                            |
+| `export { Result } from "@effect-app/vue"`      | `export { asResult as Result } from "@effect-app/vue"`                |
 

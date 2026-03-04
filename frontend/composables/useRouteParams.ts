@@ -3,7 +3,7 @@ import { parseRouteParams, parseRouteParamsOption } from "@effect-app/vue/routeP
 import { Option, type S } from "effect-app"
 import { typedKeysOf } from "effect-app/utils"
 
-export const useRouteParams = <NER extends Record<string, S.Schema<any>>>(
+export const useRouteParams = <NER extends Record<string, S.Codec<any, any>>>(
   t: NER // enforce non empty
 ) => {
   const r = useRoute()
@@ -11,7 +11,7 @@ export const useRouteParams = <NER extends Record<string, S.Schema<any>>>(
   return result
 }
 
-export const useRouteParamsOption = <NER extends Record<string, S.Schema<any>>>(
+export const useRouteParamsOption = <NER extends Record<string, S.Codec<any, any>>>(
   t: NER // enforce non empty
 ) => {
   const r = useRoute()
@@ -19,7 +19,7 @@ export const useRouteParamsOption = <NER extends Record<string, S.Schema<any>>>(
   type Result = typeof result
   return typedKeysOf(result).reduce(
     (prev, cur) => {
-      prev[cur] = Option.getOrUndefined(result[cur])
+      prev[cur] = Option.getOrUndefined(result[cur]!)
       return prev
     },
     {} as Record<keyof Result, unknown>

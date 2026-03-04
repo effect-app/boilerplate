@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRuntimeConfig } from "#app"
-import { Cause, Either, Match } from "effect-app"
+import { Cause, Match, Result } from "effect-app"
 import type { SupportedErrors } from "effect-app/client/errors"
 
 defineProps<{ cause: Cause.Cause<unknown> }>()
@@ -10,9 +10,13 @@ const config = useRuntimeConfig()
 <template>
   <div>
     {{
-      Cause.failureOrCause(cause).pipe(
-        Either.match({
-          onLeft: (error) =>
+      Cause.findError(cause).pipe(
+        Result.match({
+          onFailure: (cause) =>
+            Cause.hasInterrupts(cause)
+              ? "Die Anfrage wurde unterbrochen"
+              : "Es ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem in Kürze beheben. Versuchen Sie es erneut.",
+          onSuccess: (error) =>
             Match.value(error as SupportedErrors).pipe(
               Match.tags({
                 NotFoundError: () => "Nicht gefunden",
@@ -24,11 +28,7 @@ const config = useRuntimeConfig()
                 () =>
                   "Es ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem in Kürze beheben. Versuchen Sie es erneut."
               )
-            ),
-          onRight: (cause) =>
-            Cause.isInterrupted(cause)
-              ? "Die Anfrage wurde unterbrochen"
-              : "Es ist ein Fehler aufgetreten. Wir wurden benachrichtigt und werden das Problem in Kürze beheben. Versuchen Sie es erneut."
+            )
         })
       )
     }}

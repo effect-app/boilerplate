@@ -15,7 +15,7 @@ import { useIntl } from "./intl"
 
 export { useToast } from "vue-toastification"
 
-export { makeContext, Result } from "@effect-app/vue"
+export { AsyncResult, makeContext } from "@effect-app/vue"
 export { composeQueries, mapHandler, pauseWhileProcessing, SuppressErrors, useIntervalPauseWhileProcessing, useMutation } from "@effect-app/vue"
 
 export const useRuntime = () => useNuxtApp().$runtime
@@ -51,7 +51,7 @@ const commanderLayer = Commander.Default.pipe(
 )
 
 const globalLayers = Effect.sync(() => useRuntime().globalLayers).pipe(
-  Layer.unwrapEffect
+  Layer.unwrap
 )
 const viewLayers = Layer.mergeAll(Router.Default, intlLayer, toastLayer)
 const provideLayers = Layer
@@ -66,7 +66,7 @@ const provideLayers = Layer
 
 // argh, deprecation comments get stripped by unimport, so we group them under "Legacy" now.
 export const { Command, clientFor, legacy } = makeClient(
-  () => ManagedRuntime.make(provideLayers, useRuntime().memoMap),
+  () => ManagedRuntime.make(provideLayers, { memoMap: useRuntime().memoMap }),
   clientFor_,
   Router.Default
 )
