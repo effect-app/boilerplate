@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { HelloWorldRsc } from "#resources"
 import { useOmegaForm } from "@effect-app/vue-components"
 import { mdiSetAll } from "@mdi/js"
 import { Effect, S } from "effect-app"
@@ -43,7 +44,9 @@ const makeReq = () => ({
 const req = ref(makeReq())
 
 const { getHelloWorldQuery, setStateMutation } = useHelloWorld()
-const [helloWorld] = await getHelloWorldQuery(req)
+const cl = clientFor(HelloWorldRsc)
+console.log(cl.GetHelloWorld, cl)
+const [helloWorld] = await cl.GetHelloWorld.query(req)
 
 const setState = setStateMutation.fn(
   function*(fail: boolean) {
