@@ -100,12 +100,16 @@ const filteredEntries = Object.entries(filterAttrs)
 const setupSentry = (options?: Sentry.NodeOptions) => {
   Sentry.init({
     ...dropUndefinedT({
+      // otherwise sentry will set it up and override ours
       skipOpenTelemetrySetup: true,
       dsn: Redacted.value(appConfig.sentry.dsn),
       environment: appConfig.env,
       enabled: isRemote,
       release: appConfig.apiVersion,
-      normalizeDepth: 5,
+      normalizeDepth: 5, // default 3
+      // Set tracesSampleRate to 1.0 to capture 100%
+      // of transactions for performance monitoring.
+      // We recommend adjusting this value in production
       tracesSampleRate: 1.0,
       ...options
     }),
@@ -160,11 +164,13 @@ const ConfigLive = Effect
       const client = Sentry.getClient()!
       setupEventContextTrace(client)
 
+      // You can wrap whatever local storage context manager you want to use
       const SentryContextManager = wrapContextManagerClass(
         AsyncLocalStorageContextManager
       )
 
       props = {
+        // Sentry config
         spanProcessors: [
           new SentrySpanProcessor()
         ],
@@ -178,6 +184,7 @@ const ConfigLive = Effect
       instrumentations: [
         getNodeAutoInstrumentations({
           "@opentelemetry/instrumentation-http": {
+            // effect http server already does this
             disableIncomingRequestInstrumentation: true
           }
         })

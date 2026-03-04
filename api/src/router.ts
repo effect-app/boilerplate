@@ -26,6 +26,7 @@ const CORSMiddleware = Effect
           credentials: true
         })
       ),
+      // CORS has to be global to respond to OPTIONS
       { global: true }
     )
   })
@@ -41,6 +42,7 @@ const HealthRoute = HttpRouter
     Effect.fnUntraced(function*(router) {
       const cfg = yield* BaseConfig
 
+      // NO authtoken/requestcontext middleware!
       yield* router.add(
         "GET",
         "/.well-known/local/server-health",
@@ -80,6 +82,7 @@ const RootRoutes = Layer.mergeAll(
 const logServer = Effect
   .gen(function*() {
     const cfg = yield* MergedConfig
+    // using Console.log for vscode to know we're ready
     yield* Console.log(
       `Running on http://${cfg.host}:${cfg.port} at version: ${cfg.apiVersion}. ENV: ${cfg.env}`
     )

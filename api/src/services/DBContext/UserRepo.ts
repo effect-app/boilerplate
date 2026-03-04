@@ -1,6 +1,6 @@
 import { RepoConfig } from "#config"
 import { RepoDefault } from "#lib/layers"
-import { User, type UserId } from "#models/User"
+import { User, UserFromIdResolver, type UserId } from "#models/User"
 import { Model } from "@effect-app/infra"
 import { NotFoundError, NotLoggedInError } from "@effect-app/infra/errors"
 import { generate } from "@effect-app/infra/test"
@@ -33,11 +33,11 @@ export class UserRepo extends ServiceMap.Service<UserRepo>()("UserRepo", {
                 .internet
                 .exampleEmail({ firstName: g.name.firstName, lastName: g.name.lastName })
             )
-            return {
+            return new User({
               ...g,
               email: Email(generate(emailArb(fc)).value),
               role: i === 0 || i === 1 ? "manager" : "user"
-            }
+            })
           }),
         Array.toNonEmptyArray,
         Option
@@ -97,15 +97,17 @@ export class UserRepo extends ServiceMap.Service<UserRepo>()("UserRepo", {
       .pipe(RequestResolver.batchN(25))
   })
 
-  // TODO: v3's User.resolver.toLayer() pattern removed in v4 - User.resolver no longer exists.
-  // Original intent: create a layer providing a service for resolving Users by ID via batched requests.
-  // Needs a v4 service tag to replace User.resolver if this functionality is needed.
   static readonly UserFromIdLayer = Layer
     .effect(
-      this,
+      UserFromIdResolver,
       Effect.gen(function*() {
-        const userRepo = yield* UserRepo
-        return userRepo
+        const resolver = yield* UserRepo.getUserByIdResolver
+        return {
+          get: (id: UserId) =>
+            Effect
+              .request(GetUserById({ id }), resolver)
+              .pipe(Effect.orDie)
+        }
       })
     )
     .pipe(Layer.provide(this.Default))

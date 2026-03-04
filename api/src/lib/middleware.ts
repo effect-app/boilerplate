@@ -30,6 +30,7 @@ export const gzip = HttpMiddleware.make(
           .includes("gzip")
       ) return r
 
+      // TODO: a stream may be better, for realtime compress?
       const buffer = yield* Effect.callback<Buffer>((resume) =>
         z.gzip(body.body, (err, r) => resume(err ? Effect.die(err) : Effect.succeed(r)))
       )

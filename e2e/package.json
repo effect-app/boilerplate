@@ -31,7 +31,7 @@
   "dependencies": {
     "@effect-app-boilerplate/api": "workspace:*",
     "@effect/platform-node": "4.0.0-beta.25",
-    "effect-app": "4.0.0-beta.3",
+    "effect-app": "4.0.0-beta.4",
     "effect": "4.0.0-beta.25",
     "cross-fetch": "^4.1.0",
     "eslint": "^9.39.2",

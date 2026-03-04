@@ -21,4 +21,6 @@ const program = api
     Layer.provideMerge(TracingLive)
   )
 
+// NOTE: all dependencies should have been provided, for us to be able to run the program.
+// if you get a type error here on the R argument, you haven't provided that dependency yet, or not at the appropriate time / location
 runMain(Layer.launch(program))
