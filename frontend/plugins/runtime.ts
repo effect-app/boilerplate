@@ -86,7 +86,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         .layerProtocolHttp({
           url: "/api/api/rpc" + path
         })
-        .pipe(Layer.provide(RpcSerialization.layerJson)),
+        .pipe(Layer.provide(RpcSerialization.layerNdjson)),
       runtime.OurHttpClient
     )
 

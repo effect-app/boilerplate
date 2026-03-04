@@ -101,7 +101,7 @@ export const makeHttpServer = <E, R>(
           rpcRouter.pipe(Layer.provide(MainMiddleware)),
           RootRoutes
         ]),
-        Layer.provide(RpcSerialization.layerJson)
+        Layer.provide(RpcSerialization.layerNdjson)
       ),
       { middleware: HttpMiddleware.logger }
     )

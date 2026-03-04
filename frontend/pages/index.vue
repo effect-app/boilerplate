@@ -43,10 +43,8 @@ const makeReq = () => ({
 
 const req = ref(makeReq())
 
-const { getHelloWorldQuery, setStateMutation } = useHelloWorld()
-const cl = clientFor(HelloWorldRsc)
-console.log(cl.GetHelloWorld, cl)
-const [helloWorld] = await cl.GetHelloWorld.query(req)
+const { getHelloWorldSuspenseQuery, setStateMutation } = useHelloWorld()
+const [helloWorld] = await getHelloWorldSuspenseQuery(req)
 
 const setState = setStateMutation.fn(
   function*(fail: boolean) {
