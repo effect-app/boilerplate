@@ -19,22 +19,22 @@
     "watch": "pnpm build --watch"
   },
   "devDependencies": {
-    "@playwright/test": "~1.57.0",
-    "@types/node": "~25.0.9",
+    "@playwright/test": "~1.58.2",
+    "@types/node": "~25.3.3",
     "date-fns": "^4.1.0",
-    "npm-check-updates": "^19.3.1",
-    "playwright-core": "^1.57.0",
+    "npm-check-updates": "^19.6.3",
+    "playwright-core": "^1.58.2",
     "playwright-watch": "^1.3.23",
-    "prettier": "^3.8.0",
+    "prettier": "^3.8.1",
     "typescript": "~5.9.2"
   },
   "dependencies": {
     "@effect-app-boilerplate/api": "workspace:*",
-    "@effect/platform-node": "4.0.0-beta.25",
-    "effect-app": "4.0.0-beta.9",
-    "effect": "4.0.0-beta.25",
+    "@effect/platform-node": "4.0.0-beta.27",
+    "effect-app": "4.0.0-beta.10",
+    "effect": "4.0.0-beta.27",
     "cross-fetch": "^4.1.0",
-    "eslint": "^9.39.2",
-    "dprint": "^0.51.1"
+    "eslint": "^10.0.2",
+    "dprint": "^0.52.0"
   }
 }

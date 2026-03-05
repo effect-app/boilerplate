@@ -4,7 +4,7 @@
       <v-container>
         <template
           v-if="guard && error instanceof KnownFiberFailure && guard(Cause
-            .squash(error.effectCause))"
+          .squash(error.effectCause))"
         >
           <slot
             name="error"

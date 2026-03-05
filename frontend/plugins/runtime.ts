@@ -5,11 +5,11 @@ import { WebSdkLive } from "~/utils/observability"
 import "effect-app/builtin"
 import { initializeAsync, makeIntl } from "@effect-app/vue"
 import { useIntlKey } from "@effect-app/vue-components"
-import { Atom } from "effect/unstable/reactivity"
-import * as FetchHttpClient from "effect/unstable/http/FetchHttpClient"
-import { RpcClient, RpcSerialization } from "effect/unstable/rpc"
 import { ApiClientFactory } from "effect-app/client/apiClientFactory"
 import { HttpClient } from "effect-app/http"
+import * as FetchHttpClient from "effect/unstable/http/FetchHttpClient"
+import { Atom } from "effect/unstable/reactivity"
+import { RpcClient, RpcSerialization } from "effect/unstable/rpc"
 import { useRuntimeConfig } from "nuxt/app"
 import { ref } from "vue"
 import { messages } from "~/composables/intl"
@@ -28,8 +28,7 @@ async function makeRuntime(feVersion: string, disableTracing: boolean) {
               if (remoteFeVersion) {
                 versionMatch.value = feVersion === remoteFeVersion
               }
-            })
-          )
+            }))
         )
       )
     )
