@@ -47,7 +47,7 @@
     "check:tsc": "NODE_OPTIONS=--max-old-space-size=8192 tsc --build",
     "build:tsc": "NODE_OPTIONS=--max-old-space-size=8192 effect-app-cli index-multi pnpm check:tsc",
     "check": "pnpm check:tsc ./tsconfig.all.json && cd frontend && pnpm check",
-    "build": "pnpm build:tsc ./tsconfig.all.json && cd frontend && pnpm check",
+    "build": "pnpm build:tsc ./tsconfig.all.json && cd frontend && pnpm build",
     "watch": "pnpm build:tsc ./tsconfig.all.json --watch",
     "watch-src": "pnpm build:tsc ./tsconfig.src.json --watch",
     "build-prod": "pnpm packages build && pnpm build-frontend-prod",
