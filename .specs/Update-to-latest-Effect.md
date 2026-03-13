@@ -2,7 +2,7 @@
 
 ## Rules
 
-- only include root `package.json` and packages under the `packages` folders
+- only include root `package.json` and `api`, `e2e`, and `frontend` packages.
 
 ## Steps
 
