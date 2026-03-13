@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import { AccountsRsc } from "#resources"
+import { AsyncResult } from "@effect-app/vue"
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
+import { Option, pipe } from "effect-app"
 import { useRouter } from "vue-router"
 
 const accountsClient = clientFor(AccountsRsc)
 const [userResult] = accountsClient.GetMe.query()
+const [usersResult] = accountsClient.Index.query()
+
+const firstUserId = computed(() =>
+  pipe(
+    AsyncResult.value(usersResult.value),
+    Option.flatMapNullishOr((users) => users[0]?.id),
+    Option.getOrNull
+  )
+)
 
 const appConfig = {
   title: "@effect-app/boilerplate"
@@ -34,7 +45,11 @@ const router = useRouter()
           <div><a href="/logout">Logout</a></div>
         </template>
         <template #error>
-          <a href="/login/No3o_xbwEh8z2gSbcantz">Login</a>
+          <a
+            v-if="firstUserId"
+            :href="`/login/${encodeURIComponent(firstUserId)}`"
+          >Login</a>
+          <span v-else>No users available</span>
         </template>
       </QueryResult>
     </v-app-bar>
