@@ -1,7 +1,8 @@
-import { HttpApp, HttpServerRequest } from "@effect/platform"
-import { Context, Effect } from "effect-app"
+import { Effect } from "effect-app"
 import { HttpHeaders, HttpMiddleware, HttpServerResponse } from "effect-app/http"
 import { type ReadonlyRecord } from "effect/Record"
+import * as HttpEffect from "effect/unstable/http/HttpEffect"
+import { HttpServerRequest } from "effect/unstable/http/HttpServerRequest"
 import z from "zlib"
 
 export * from "@effect-app/infra/api/middlewares"
@@ -20,18 +21,18 @@ export const gzip = HttpMiddleware.make(
         || body.contentLength === 0
       ) return r
 
-      const req = yield* HttpServerRequest.HttpServerRequest
+      const req = yield* HttpServerRequest
       if (
         !req
           .headers["accept-encoding"]
           ?.split(",")
-          .map((_) => _.trim())
+          .map((_: string) => _.trim())
           .includes("gzip")
       ) return r
 
       // TODO: a stream may be better, for realtime compress?
-      const buffer = yield* Effect.async<Buffer>((cb) =>
-        z.gzip(body.body, (err, r) => cb(err ? Effect.die(err) : Effect.succeed(r)))
+      const buffer = yield* Effect.callback<Buffer>((resume) =>
+        z.gzip(body.body, (err, r) => resume(err ? Effect.die(err) : Effect.succeed(r)))
       )
 
       return HttpServerResponse.uint8Array(
@@ -142,19 +143,19 @@ export const cors = (options?: {
     ? { "access-control-max-age": opts.maxAge.toString() }
     : undefined
 
-  const headersFromRequest = (request: HttpServerRequest.HttpServerRequest) => {
+  const headersFromRequest = (request: HttpServerRequest) => {
     const origin = request.headers["origin"]
-    return HttpHeaders.unsafeFromRecord({
+    return HttpHeaders.fromInput({
       ...allowOrigin(origin),
       ...allowCredentials,
       ...exposeHeaders
     })
   }
 
-  const headersFromRequestOptions = (request: HttpServerRequest.HttpServerRequest) => {
+  const headersFromRequestOptions = (request: HttpServerRequest) => {
     const origin = request.headers["origin"]!
     const accessControlRequestHeaders = request.headers["access-control-request-headers"]
-    return HttpHeaders.unsafeFromRecord({
+    return HttpHeaders.fromInput({
       ...allowOrigin(origin),
       ...allowCredentials,
       ...exposeHeaders,
@@ -165,19 +166,22 @@ export const cors = (options?: {
   }
 
   const preResponseHandler = (
-    request: HttpServerRequest.HttpServerRequest,
+    request: HttpServerRequest,
     response: HttpServerResponse.HttpServerResponse
   ) => Effect.succeed(HttpServerResponse.setHeaders(response, headersFromRequest(request)))
 
-  return <E, R>(httpApp: HttpApp.Default<E, R>): HttpApp.Default<E, R> =>
-    Effect.withFiberRuntime((fiber) => {
-      const request = Context.unsafeGet(fiber.currentContext, HttpServerRequest.HttpServerRequest)
+  return <E, R>(
+    httpApp: Effect.Effect<HttpServerResponse.HttpServerResponse, E, R>
+  ): Effect.Effect<HttpServerResponse.HttpServerResponse, E, R | HttpServerRequest> =>
+    Effect.gen(function*() {
+      const request = yield* HttpServerRequest
       if (request.method === "OPTIONS") {
-        return Effect.succeed(HttpServerResponse.empty({
+        return HttpServerResponse.empty({
           status: 204,
           headers: headersFromRequestOptions(request)
-        }))
+        })
       }
-      return Effect.zipRight(HttpApp.appendPreResponseHandler(preResponseHandler), httpApp)
+      yield* HttpEffect.appendPreResponseHandler(preResponseHandler)
+      return yield* httpApp
     })
 }

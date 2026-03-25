@@ -2,11 +2,29 @@
 
 ## Package Changes
 
-| v3                                    | v4                                          |
-| ------------------------------------- | ------------------------------------------- |
-| `@effect/cli` (separate package)      | `effect/unstable/cli` (built into `effect`) |
-| `@effect/platform` (separate package) | Built into `effect`                         |
-| `@effect/platform-node` (peer deps)   | `@effect/platform-node ^4.0.0-beta.5`       |
+| v3                                    | v4                                                                               |
+| ------------------------------------- | -------------------------------------------------------------------------------- |
+| `@effect/cli` (separate package)      | `effect/unstable/cli` (built into `effect`)                                      |
+| `@effect/platform` (separate package) | Built into `effect`                                                              |
+| `@effect/platform-node` (peer deps)   | `@effect/platform-node ^4.0.0-beta.5`                                            |
+| `@effect/platform-browser`            | `@effect/platform-browser ^4.0.0-beta.x` (no major changes, mainly import paths) |
+| `@effect/vitest`                      | `@effect/vitest ^4.0.0-beta.x` (no major changes)                                |
+| `@effect-atom/atom`                   | `@effect/atom` (check package version)                                           |
+| `@effect-atom/atom-vue`               | `@effect/atom-vue` (rename only, no import changes)                              |
+| `@effect-atom/atom-react`             | `@effect/atom-react` (rename only)                                               |
+| `@effect-atom/atom-solid`             | `@effect/atom-solid` (rename only)                                               |
+
+## Effect-App Package Changes
+
+| v3                                        | v4                                              |
+| ----------------------------------------- | ----------------------------------------------- |
+| `effect-app` 3.16.0                       | `effect-app` 4.0.0-beta.1                       |
+| `@effect-app/infra` 3.x                   | `@effect-app/infra` 4.0.0-beta.1                |
+| `@effect-app/vue` 2.x                     | `@effect-app/vue` 4.0.0-beta.1                  |
+| `@effect-app/vue-components` 3.x          | `@effect-app/vue-components` 4.0.0-beta.1       |
+| `@effect-app/cli` 1.29.0                  | `@effect-app/cli` 2.0.1-beta.0                  |
+| `@effect-app/eslint-codegen-model` 1.47.0 | `@effect-app/eslint-codegen-model` 2.0.0-beta.1 |
+| `@effect-app/eslint-shared-config` 0.5.1  | `@effect-app/eslint-shared-config` 0.5.7-beta.1 |
 
 ## Service Classes
 
@@ -113,14 +131,59 @@ class MyService extends ServiceMap.Service<MyService>()("MyService", {
 | `Config.hashMap(Config.string(), "name")` | `Config.schema(Config.Record(Schema.String, Schema.String), "name")` — reads sub-keys (e.g. `NAME__key=val`) |
 
 
-## Removed Modules
+## Migration Progress - Step 1 (API Package)
 
-| v3 module                            | v4 replacement                                |
-| ------------------------------------ | --------------------------------------------- |
-| `effect/Either`                      | `effect/Result` (see Either → Result section) |
-| `effect/Arbitrary` (`LazyArbitrary`) | `LazyArbitrary` moved to `effect/Schema`      |
-| `effect/ParseResult`                 | `effect/SchemaParser`                         |
-| `effect/Secret` (`SecretTypeId`)     | `effect/Redacted`                             |
+### Files Completed ✅
+- **models/User.ts** -  Simplified to v4 Schema API (removed ExtendedClass, transformed to simple Struct)
+- **config/base.ts** - No changes needed (v3 API compatible)
+- **lib/logger.ts** - No changes needed (re-export only)
+- **config/api.ts** - Fixed `Config.integer` → `Config.int`
+- **lib/basicRuntime.ts** - **PARTIALLY FIXED** (needs more work on Logger/LogLevel APIs)
+
+### Discovered v4 API Changes Not Yet Documented
+
+#### LogLevel API (v4)
+- `Level.Trace`, `Level.Debug`, etc. **don't exist** in v4
+- Instead use: `Logger.levelNumber("trace")`, etc. or check LogLevel module exports
+- Need to revisit basicRuntime.ts level definitions
+
+#### Logger API (v4)
+- `Logger.logfmtLogger` **doesn't exist** - check actual Logger exports
+- `Logger.withMinimumLogLevel` **doesn't exist** (likely has different name)
+- `Logger.addScoped` removed
+- Simplified approach: use `Logger.prettyLogger()` or similar pre-built logger
+
+#### ConfigProvider API (v4)
+- `ConfigProvider.mapInputPath` **doesn't exist** - use `ConfigProvider.mapInput` instead
+- `pathDelim`, `seqDelim` options **don't match** v4 API signature
+
+#### Services Layer Composition (v4)
+- `ServiceMap.Service` requires static `Default`, `DefaultWithoutDependencies` layers
+- Instance still using v3 `Effect.Service` pattern in UserRepo.ts
+
+### Next Critical Tasks
+1. **Simplify lib/basicRuntime.ts** - Logger/ConfigProvider/LogLevel need correct v4 APIs
+2. **Fix services/DBContext/UserRepo.ts** - Change to `ServiceMap.Service` pattern with static Default/DefaultWithoutDependencies
+3. **Fix remaining controllers** - Depend on UserRepo.Default layer
+4. **Fix lib/layers.ts** - Layer composition with correct Config APIs
+
+### Code Pattern Reference (v4 ServiceMap)
+
+```typescript
+import { Layer, ServiceMap, Effect } from "effect"
+
+class MyService extends ServiceMap.Service<MyService>()("MyService", {
+  make: Effect.gen(function*() {
+    const dep = yield* Dependency
+    return { method: (x) => x }
+  })
+}) {
+  static DefaultWithoutDependencies = Layer.effect(this, this.make)
+  static Default = this.DefaultWithoutDependencies.pipe(
+    Layer.provide(Dependency.Default)
+  )
+}
+```
 
 ## Renamed Functions
 
@@ -251,3 +314,36 @@ Most `@effect/*` sub-packages are now consolidated into `effect`:
 - Custom `TaggedRequestResult` type: intersection of `S.TaggedStruct<Tag, Payload>` with `{ new(...): any; _tag; fields; success; error; config; ~decodingServices }`.
 - `~decodingServices` phantom property pre-computes `S.Codec.DecodingServices<Success> | S.Codec.DecodingServices<Error>` to avoid generic-context resolution issues.
 - `RequestHandlers` uses `ReqDecodingServices<M[K]>` (property access) instead of re-computing `S.Codec.DecodingServices` in generic mapped types.
+
+## Additional v4 API Changes (Boilerplate API Migration)
+
+| v3                                 | v4                                                          |
+| ---------------------------------- | ----------------------------------------------------------- |
+| `Config.integer`                   | `Config.number` (integers not separately typed in v4)       |
+| `Config.Config.Variance<A>`        | Extract via `Cfg extends Config<infer A> ? A : never`       |
+| `Effect.andThen(plainValue)`       | `Effect.succeed(plainValue)` (andThen only for Effects)     |
+| `Cause.isInterruptedOnly`          | `Cause.hasInterruptsOnly`                                   |
+| `Cause.isInterrupted`              | `Cause.hasInterrupts`                                       |
+| `Cause.failureOrCause`             | `Cause.findError` (returns `Result.Result` not `Either`)    |
+| `Layer.unwrapEffect`               | `Layer.unwrap`                                              |
+| `Effect.tapErrorCause`             | `Effect.catchCause` (to return effect) or `Effect.tapError` |
+| `Logger.minimumLogLevel`           | `Logger.withMinimumLogLevel`                                |
+| `Logger.remove`,  `Logger.replace` | Restructure using layer operations                          |
+| `Logger.addScoped`                 | Use `Logger.withEffect` or `Logger.add`                     |
+| `@effect/platform/Runtime` exports | Not available - use `NodeRuntime` from appropriate layer    |
+
+## Frontend-Specific Findings
+
+| v3                                              | v4                                                                    |
+| ----------------------------------------------- | --------------------------------------------------------------------- |
+| `@effect-atom/atom` Atom import                 | `effect/unstable/reactivity` Atom import                              |
+| `@effect/platform` FetchHttpClient import       | `effect/unstable/http/FetchHttpClient` (namespace import)             |
+| `@effect/rpc` RpcClient, RpcSerialization       | `effect/unstable/rpc` RpcClient, RpcSerialization                     |
+| `Either.match({onLeft, onRight})`               | `Result.match({onFailure, onSuccess})`                                |
+| `Runtime.isFiberFailure(err)`                   | `err instanceof KnownFiberFailure` (from `@effect-app/vue`)           |
+| `err[Runtime.FiberFailureCauseId]`              | `err.effectCause` (KnownFiberFailure property)                        |
+| `Effect.Service<T>()("tag", {sync, accessors})` | `ServiceMap.Service<T>()("tag", {make: Effect.sync(fn)})` + `Default` |
+| `Effect.map(Tag, fn)` (Tag as Effect)           | `Tag.use((svc) => Effect.succeed(fn(svc)))` (ServiceMap.use)          |
+| `ManagedRuntime.make(layers, memoMap)`          | `ManagedRuntime.make(layers, { memoMap })`                            |
+| `export { Result } from "@effect-app/vue"`      | `export { asResult as Result } from "@effect-app/vue"`                |
+

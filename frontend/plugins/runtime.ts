@@ -5,11 +5,11 @@ import { WebSdkLive } from "~/utils/observability"
 import "effect-app/builtin"
 import { initializeAsync, makeIntl } from "@effect-app/vue"
 import { useIntlKey } from "@effect-app/vue-components"
-import { Atom } from "@effect-atom/atom"
-import { FetchHttpClient } from "@effect/platform"
-import { RpcClient, RpcSerialization } from "@effect/rpc"
 import { ApiClientFactory } from "effect-app/client/apiClientFactory"
 import { HttpClient } from "effect-app/http"
+import * as FetchHttpClient from "effect/unstable/http/FetchHttpClient"
+import { Atom } from "effect/unstable/reactivity"
+import { RpcClient, RpcSerialization } from "effect/unstable/rpc"
 import { useRuntimeConfig } from "nuxt/app"
 import { ref } from "vue"
 import { messages } from "~/composables/intl"
@@ -20,15 +20,15 @@ async function makeRuntime(feVersion: string, disableTracing: boolean) {
   const OurHttpClient = Layer
     .effect(
       HttpClient.HttpClient,
-      Effect.map(
-        HttpClient.HttpClient,
-        HttpClient.tap((r) =>
-          Effect.sync(() => {
-            const remoteFeVersion = r.headers["x-fe-version"]
-            if (remoteFeVersion) {
-              versionMatch.value = feVersion === remoteFeVersion
-            }
-          })
+      HttpClient.HttpClient.use((client) =>
+        Effect.succeed(
+          HttpClient.tap(client, (r) =>
+            Effect.sync(() => {
+              const remoteFeVersion = r.headers["x-fe-version"]
+              if (remoteFeVersion) {
+                versionMatch.value = feVersion === remoteFeVersion
+              }
+            }))
         )
       )
     )
@@ -85,7 +85,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         .layerProtocolHttp({
           url: "/api/api/rpc" + path
         })
-        .pipe(Layer.provide(RpcSerialization.layerJson)),
+        .pipe(Layer.provide(RpcSerialization.layerNdjson)),
       runtime.OurHttpClient
     )
 

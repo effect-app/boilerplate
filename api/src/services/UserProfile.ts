@@ -1,6 +1,8 @@
 import { UserProfile } from "#resources/lib"
 import { parseJwt } from "@effect-app/infra/api/routing/schema/jwt"
+import type { Effect } from "effect"
 import { S } from "effect-app"
+import type { SchemaError } from "effect/Schema"
 
 export { UserProfile } from "#resources/lib/Userprofile"
 
@@ -10,10 +12,20 @@ export namespace UserProfileService {
   }
 }
 
-const userProfileFromJson = S.parseJson(UserProfile)
-const userProfileFromJWT = parseJwt(UserProfile)
+const userProfileFromJson = S.fromJsonString(UserProfile.fromEncoded)
+const userProfileFromJWT = parseJwt(UserProfile.fromEncoded)
+
+// Workaround: Schema.encodeKeys has a TypeScript inference limitation where it cannot resolve
+// DecodingServices through its complex mapped type, falling back to `unknown` from the `Top` constraint.
+// The actual decode has no service requirements — the `unknown` R is a false positive.
+function decodeProfile(schema: typeof userProfileFromJson): (input: unknown) => Effect.Effect<UserProfile, SchemaError>
+function decodeProfile(schema: typeof userProfileFromJWT): (input: unknown) => Effect.Effect<UserProfile, SchemaError>
+function decodeProfile(schema: S.Top) {
+  return S.decodeUnknownEffect(schema)
+}
+
 export const makeUserProfileFromAuthorizationHeader = (
   authorization: string | undefined
-) => S.decodeUnknown(userProfileFromJWT)(authorization)
+) => decodeProfile(userProfileFromJWT)(authorization)
 export const makeUserProfileFromUserHeader = (user: string | string[] | undefined) =>
-  S.decodeUnknown(userProfileFromJson)(user)
+  decodeProfile(userProfileFromJson)(user)

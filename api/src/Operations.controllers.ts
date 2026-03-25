@@ -2,6 +2,7 @@ import { Router } from "#lib/routing"
 import { OperationsRsc } from "#resources"
 import { Operations } from "#services"
 import { Effect } from "effect-app"
+import type { OperationId } from "effect-app/Operations"
 import { OperationsDefault } from "./lib/layers.js"
 
 export default Router(OperationsRsc)({
@@ -10,10 +11,10 @@ export default Router(OperationsRsc)({
     const operations = yield* Operations
 
     return match({
-      FindOperation: ({ id }) =>
+      FindOperation: ({ id }: { id: OperationId }) =>
         operations
           .find(id)
-          .pipe(Effect.andThen((_) => _.value ?? null))
+          .pipe(Effect.map((_) => _.value ?? null))
     })
   }
 })
