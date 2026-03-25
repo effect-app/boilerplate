@@ -141,8 +141,8 @@
     "@azure/cosmos": "^4.9.1",
     "@azure/service-bus": "^7.9.5",
     "@azure/storage-blob": "^12.31.0",
-    "@effect-app/infra": "4.0.0-beta.14",
-    "effect-app": "4.0.0-beta.14",
+    "@effect-app/infra": "4.0.0-beta.15",
+    "effect-app": "4.0.0-beta.15",
     "@effect/opentelemetry": "4.0.0-beta.31",
     "@effect/platform-node": "4.0.0-beta.31",
     "@effect/vitest": "4.0.0-beta.31",
@@ -187,6 +187,6 @@
     "@types/swagger-ui-express": "^4.1.8",
     "eslint": "^10.0.2",
     "dprint": "^0.52.0",
-    "typescript": "~5.9.2"
+    "typescript": "~6.0.2"
   }
 }
