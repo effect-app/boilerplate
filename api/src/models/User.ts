@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { Context, Effect, Equivalence, pipe, S } from "effect-app"
+import { SchemaTransformation } from "effect"
+import { Effect, Equivalence, pipe, S, ServiceMap } from "effect-app"
 import { fakerArb } from "effect-app/faker"
 import { UserProfileId } from "effect-app/ids"
-import { AST } from "effect-app/Schema"
-import type * as A from "effect/Arbitrary"
 
 export const FirstName = S
   .NonEmptyString255
   .pipe(
-    S.annotations({
-      [AST.ArbitraryAnnotationId]: (): A.LazyArbitrary<string> => (fc) => fc.string()
+    S.annotate({
+      toArbitrary: () => (fc) => fc.string().map(S.NonEmptyString255)
     }),
     S.withDefaultMake
   )
@@ -19,15 +18,11 @@ export type FirstName = typeof FirstName.Type
 export const DisplayName = FirstName
 export type DisplayName = typeof DisplayName.Type
 
-S.Array(S.NonEmptyString255).pipe(
-  S.annotations({ [AST.ArbitraryAnnotationId]: (): A.LazyArbitrary<Array<string>> => (fc) => fc.tuple() })
-)
-
 export const LastName = S
   .NonEmptyString255
   .pipe(
-    S.annotations({
-      [AST.ArbitraryAnnotationId]: (): A.LazyArbitrary<string> => fakerArb((faker) => faker.person.lastName)
+    S.annotate({
+      toArbitrary: () => (fc) => fakerArb((faker) => faker.person.lastName)(fc).map(S.NonEmptyString255)
     }),
     S.withDefaultMake
   )
@@ -61,10 +56,11 @@ export type UserId = UserProfileId
 export const Role = S.withDefaultMake(S.Literal("manager", "user"))
 export type Role = S.Schema.Type<typeof Role>
 
-export class UserFromIdResolver
-  extends Context.TagId("UserFromId")<UserFromIdResolver, { get: (userId: UserId) => Effect.Effect<User> }>()
-{
-  static readonly get = (userId: UserId) => this.use((_) => _.get(userId))
+// TODO(v4): Context.TagId removed in v4 — migrated to ServiceMap.Service as simple service tag
+export class UserFromIdResolver extends ServiceMap.Service<UserFromIdResolver, {
+  readonly get: (userId: UserId) => Effect.Effect<User>
+}>()("UserFromId") {
+  static readonly getUser = (userId: UserId) => UserFromIdResolver.use((_) => _.get(userId))
 }
 
 export class User extends S.ExtendedClass<User, User.Encoded>("User")({
@@ -80,13 +76,17 @@ export class User extends S.ExtendedClass<User, User.Encoded>("User")({
   static readonly resolver = UserFromIdResolver
 }
 
-export const UserFromId: S.Schema<User, string, UserFromIdResolver> = S.transformOrFail(
-  UserId,
-  S.typeSchema(User),
-  { decode: User.resolver.get, encode: (u) => Effect.succeed(u.id) }
+export const UserFromId: S.Codec<User, string, UserFromIdResolver> = UserId.pipe(
+  S.decodeTo(
+    S.toType(User),
+    SchemaTransformation.transformOrFail({
+      decode: (id) => User.resolver.getUser(id),
+      encode: (u) => Effect.succeed(u.id)
+    })
+  )
 )
 
-export const defaultEqual = pipe(Equivalence.string, Equivalence.mapInput((u: User) => u.id))
+export const defaultEqual = pipe(Equivalence.String, Equivalence.mapInput((u: User) => u.id))
 
 // codegen:start {preset: model}
 //

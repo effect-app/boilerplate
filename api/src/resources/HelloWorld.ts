@@ -19,7 +19,7 @@ export class GetHelloWorld extends S.Req<GetHelloWorld>()("GetHelloWorld", {
 export class SetState extends S.Req<SetState>()("SetState", {
   state: S.String,
   fail: S.Boolean
-}, { failure: InvalidStateError, allowAnonymous: true, allowRoles: ["user"] }) {}
+}, { error: InvalidStateError, allowAnonymous: true, allowRoles: ["user"] }) {}
 
 // codegen:start {preset: meta, sourcePrefix: src/resources/}
 export const meta = { moduleName: "HelloWorld" } as const

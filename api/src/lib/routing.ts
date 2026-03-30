@@ -8,7 +8,6 @@ import { Effect, Exit, Layer } from "effect"
 import { Option } from "effect-app"
 import { NotLoggedInError, UnauthorizedError } from "effect-app/client"
 import { type HttpHeaders } from "effect-app/http"
-import { basicRuntime } from "./basicRuntime.js"
 import { AppLogger } from "./logger.js"
 
 const AllowAnonymousLive = Layer.effect(
@@ -40,13 +39,12 @@ const AllowAnonymousLive = Layer.effect(
       //   )
       // }
 
-      const r = makeUserProfile(headers)
-        .pipe(Effect.exit, basicRuntime.runSync)
+      const r = yield* makeUserProfile(headers).pipe(Effect.exit)
       if (!Exit.isSuccess(r)) {
         yield* AppLogger.logWarning("Parsing userInfo failed").pipe(Effect.annotateLogs("r", r))
       }
 
-      const userProfile = Option.fromNullable(Exit.isSuccess(r) ? r.value : undefined)
+      const userProfile = Option.fromNullishOr(Exit.isSuccess(r) ? r.value : undefined)
       if (Option.isSome(userProfile)) {
         return yield* Effect.provideService(effect, UserProfile, userProfile.value)
       } else if (!config?.allowAnonymous) {

@@ -2,7 +2,8 @@ import { User } from "#models/User"
 import { S } from "#resources/lib"
 
 export class UserView extends S.ExtendedClass<UserView, UserView.Encoded>("UserView")({
-  ...User.pick("id", "role"),
+  id: User.fields.id,
+  role: User.fields.role,
   displayName: S.NonEmptyString2k
 }) {}
 

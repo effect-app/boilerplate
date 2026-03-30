@@ -42,8 +42,8 @@ const makeReq = () => ({
 
 const req = ref(makeReq())
 
-const { getHelloWorldQuery, setStateMutation } = useHelloWorld()
-const [helloWorld] = await getHelloWorldQuery(req)
+const { getHelloWorldSuspenseQuery, setStateMutation } = useHelloWorld()
+const [helloWorld] = await getHelloWorldSuspenseQuery(req)
 
 const setState = setStateMutation.fn(
   function*(fail: boolean) {

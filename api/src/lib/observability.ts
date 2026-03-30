@@ -12,7 +12,7 @@ import { BatchSpanProcessor, ConsoleSpanExporter, NoopSpanProcessor } from "@ope
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions"
 import * as Sentry from "@sentry/node"
 import { SentryPropagator, SentrySampler, SentrySpanProcessor, setupEventContextTrace, wrapContextManagerClass } from "@sentry/opentelemetry"
-import { Context, Effect, Layer, Redacted } from "effect-app"
+import { Effect, Layer, Redacted, ServiceMap } from "effect-app"
 import { dropUndefinedT } from "effect-app/utils"
 import fs from "fs"
 import tcpPortUsed from "tcp-port-used"
@@ -21,7 +21,7 @@ import { basicRuntime } from "./basicRuntime.js"
 
 const localConsole = false
 
-const appConfig = basicRuntime.runSync(BaseConfig)
+const appConfig = basicRuntime.runSync(BaseConfig.asEffect())
 const isRemote = appConfig.env !== "local-dev"
 
 const ResourceLive = Resource.layer({
@@ -76,8 +76,10 @@ const makeMetricsReader = Effect.gen(function*() {
   return { makeMetricReader }
 })
 
-export class MetricsReader extends Context.TagMakeId("MetricsReader", makeMetricsReader)<MetricsReader>() {
-  static readonly Live = this.toLayer()
+export class MetricsReader extends ServiceMap.Service<MetricsReader>()("MetricsReader", {
+  make: makeMetricsReader
+}) {
+  static readonly Live = Layer.effect(this, this.make)
 }
 
 const filteredOps = ["Import.AllOperations", "Operations.FindOperation"]
@@ -194,23 +196,22 @@ const ConfigLive = Effect
     }
     const sdk = new opentelemetry.NodeSDK(props)
 
-    // Ensure OpenTelemetry Context & Sentry Hub/Scope is synced
-    // seems to be always set by Sentry 8.0.0 anyway
-    // setOpenTelemetryContextAsyncContextStrategy()
-
     sdk.start()
     yield* Effect.addFinalizer(() => Effect.promise(() => sdk.shutdown()))
   })
-  .pipe(Layer.scopedDiscard, Layer.provide(Layer.mergeAll(MetricsReader.Live, ResourceLive)))
+  .pipe(Layer.effectDiscard, Layer.provide(Layer.mergeAll(MetricsReader.Live, ResourceLive)))
 
-const MetricsLive = MetricsReader
-  .use(({ makeMetricReader }) => makeMetricReader ? Metrics.layer(makeMetricReader) : Layer.empty)
+const MetricsLive = Effect
+  .gen(function*() {
+    const { makeMetricReader } = yield* MetricsReader
+    return makeMetricReader ? Metrics.layer(makeMetricReader) : Layer.empty
+  })
   .pipe(
-    Layer.unwrapEffect,
+    Layer.unwrap,
     Layer.provide(Layer.mergeAll(ResourceLive, MetricsReader.Live))
   )
 const NodeSdkLive = Layer.mergeAll(ConfigLive, MetricsLive)
-export const TracingLive = Layer.mergeAll(
+export const TracingLive = Layer.provideMerge(
   NodeSdkLive,
   Tracer.layerGlobal.pipe(Layer.provide(ResourceLive))
 )
