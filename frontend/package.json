@@ -17,8 +17,8 @@
     "clean": "rm -rf ./.nuxt ./node_modules/.cache"
   },
   "dependencies": {
-    "@effect-app/vue": "4.0.0-beta.44",
-    "@effect-app/vue-components": "4.0.0-beta.44",
+    "@effect-app/vue": "4.0.0-beta.45",
+    "@effect-app/vue-components": "4.0.0-beta.45",
     "@effect/atom-vue": "4.0.0-beta.43",
     "@effect/platform-browser": "4.0.0-beta.43",
     "@effect/opentelemetry": "4.0.0-beta.43",
@@ -42,7 +42,7 @@
     "cookie": "^1.1.1",
     "date-fns": "^4.1.0",
     "effect": "4.0.0-beta.43",
-    "effect-app": "4.0.0-beta.44",
+    "effect-app": "4.0.0-beta.45",
     "highcharts": "^12.5.0",
     "http-proxy-node16": "^1.0.6",
     "mitt": "^3.0.1",
