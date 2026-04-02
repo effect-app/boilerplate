@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Effect, Layer, ServiceMap } from "effect-app"
+import { Context, Effect, Layer } from "effect-app"
 import type { RouteLocationAsPath, RouteLocationAsRelative, RouteLocationAsRelativeTyped, RouteLocationAsString, RouteLocationNormalizedLoaded, RouteLocationRaw, RouteLocationResolved, RouteMap, RouteRecordNameGeneric, RouteRecordRaw } from "vue-router"
 
 /**
@@ -18,7 +18,7 @@ export const useEffectRouter = () => {
   return effectified
 }
 
-export class Router extends ServiceMap.Service<Router>()("Router", {
+export class Router extends Context.Service<Router>()("Router", {
   make: Effect.sync(useEffectRouter)
 }) {
   static Default = Layer.effect(this, this.make)

@@ -12,7 +12,7 @@ import { BatchSpanProcessor, ConsoleSpanExporter, NoopSpanProcessor } from "@ope
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions"
 import * as Sentry from "@sentry/node"
 import { SentryPropagator, SentrySampler, SentrySpanProcessor, setupEventContextTrace, wrapContextManagerClass } from "@sentry/opentelemetry"
-import { Effect, Layer, Redacted, ServiceMap } from "effect-app"
+import { Context, Effect, Layer, Redacted } from "effect-app"
 import { dropUndefinedT } from "effect-app/utils"
 import fs from "fs"
 import tcpPortUsed from "tcp-port-used"
@@ -76,7 +76,7 @@ const makeMetricsReader = Effect.gen(function*() {
   return { makeMetricReader }
 })
 
-export class MetricsReader extends ServiceMap.Service<MetricsReader>()("MetricsReader", {
+export class MetricsReader extends Context.Service<MetricsReader>()("MetricsReader", {
   make: makeMetricsReader
 }) {
   static readonly Live = Layer.effect(this, this.make)

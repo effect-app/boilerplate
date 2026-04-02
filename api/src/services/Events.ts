@@ -1,9 +1,9 @@
 import type { ClientEvents } from "#resources"
 import { storeId } from "@effect-app/infra/Store/Memory"
-import { Effect, Layer, PubSub, ServiceMap, Stream } from "effect-app"
+import { Context, Effect, Layer, PubSub, Stream } from "effect-app"
 import type { NonEmptyReadonlyArray } from "effect/Array"
 
-export class Events extends ServiceMap.Service<Events>()("Events", {
+export class Events extends Context.Service<Events>()("Events", {
   make: Effect.gen(function*() {
     const q = yield* PubSub.unbounded<{ evt: ClientEvents; namespace: string }>()
     const svc = {

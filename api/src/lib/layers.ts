@@ -6,7 +6,7 @@ import { StoreMakerLayer } from "@effect-app/infra/Store/index"
 import { NodeServices } from "@effect/platform-node"
 import * as HttpClientNode from "@effect/platform-node/NodeHttpClient"
 import * as HttpNode from "@effect/platform-node/NodeHttpServer"
-import { Effect, Layer, Option, Redacted, ServiceMap } from "effect-app"
+import { Context, Effect, Layer, Option, Redacted } from "effect-app"
 import { createServer } from "http"
 import { MergedConfig, SendgridConfig, StorageConfig } from "../config.js"
 
@@ -34,7 +34,7 @@ export const OperationsDefault = Operations.Live.pipe(
 
 export const Platform = HttpClientNode.layerUndici
 
-export const ApiPortTag = ServiceMap.Service<{ port: number }>("@services/ApiPortTag")
+export const ApiPortTag = Context.Service<{ port: number }>("@services/ApiPortTag")
 
 export const HttpServerLive = Effect
   .gen(function*() {

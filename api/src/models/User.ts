@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { SchemaTransformation } from "effect"
-import { Effect, Equivalence, pipe, S, ServiceMap } from "effect-app"
+import { Context, Effect, Equivalence, pipe, S } from "effect-app"
 import { fakerArb } from "effect-app/faker"
 import { UserProfileId } from "effect-app/ids"
 
@@ -56,8 +56,7 @@ export type UserId = UserProfileId
 export const Role = S.withDefaultMake(S.Literal("manager", "user"))
 export type Role = S.Schema.Type<typeof Role>
 
-// TODO(v4): Context.TagId removed in v4 — migrated to ServiceMap.Service as simple service tag
-export class UserFromIdResolver extends ServiceMap.Service<UserFromIdResolver, {
+export class UserFromIdResolver extends Context.Service<UserFromIdResolver, {
   readonly get: (userId: UserId) => Effect.Effect<User>
 }>()("UserFromId") {
   static readonly getUser = (userId: UserId) => UserFromIdResolver.use((_) => _.get(userId))

@@ -4,7 +4,7 @@ import { User, UserFromIdResolver, type UserId } from "#models/User"
 import { Model } from "@effect-app/infra"
 import { NotFoundError, NotLoggedInError } from "@effect-app/infra/errors"
 import { generate } from "@effect-app/infra/test"
-import { Array, Effect, Exit, Layer, Option, pipe, Request, RequestResolver, S, ServiceMap } from "effect-app"
+import { Array, Context, Effect, Exit, Layer, Option, pipe, Request, RequestResolver, S } from "effect-app"
 import { fakerArb } from "effect-app/faker"
 import { Email } from "effect-app/Schema"
 import fc from "fast-check"
@@ -17,7 +17,7 @@ export interface UserPersistenceModel extends S.Codec.Encoded<typeof User> {
 
 export type UserSeed = "sample" | ""
 
-export class UserRepo extends ServiceMap.Service<UserRepo>()("UserRepo", {
+export class UserRepo extends Context.Service<UserRepo>()("UserRepo", {
   make: Effect.gen(function*() {
     const cfg = yield* RepoConfig
 
