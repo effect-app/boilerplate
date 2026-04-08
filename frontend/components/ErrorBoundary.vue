@@ -3,18 +3,18 @@
     <template #error="{ error }">
       <v-container>
         <template
-          v-if="guard && error instanceof KnownFiberFailure && guard(Cause
-          .squash(error.effectCause))"
+          v-if="guard && error instanceof CauseException && guard(Cause
+          .squash(error.originalCause))"
         >
           <slot
             name="error"
-            :error="Cause.squash(error.effectCause) as E"
+            :error="Cause.squash(error.originalCause) as E"
           />
         </template>
         <template v-else>
           <error-cause
-            v-if="error instanceof KnownFiberFailure"
-            :cause="error.effectCause"
+            v-if="error instanceof CauseException"
+            :cause="error.originalCause"
           />
           <p v-else>
             Ein unerwarteter Fehler ist aufgetreten.
@@ -36,9 +36,9 @@
 <script setup lang="ts" generic="E">
 import { useRuntimeConfig } from "#imports"
 import { Cause } from "effect-app"
-import { KnownFiberFailure } from "@effect-app/vue"
 import type { Refinement } from "effect/Predicate"
 import Suspender from "./Suspender.vue"
+import { CauseException } from "effect-app/client/errors";
 
 defineProps<{ guard?: Refinement<unknown, E> }>()
 

@@ -1,4 +1,4 @@
-import { DefaultIntl } from "@effect-app/vue/experimental/commander"
+import { DefaultIntl } from "@effect-app/vue/commander"
 
 export const messages = {
   de: {

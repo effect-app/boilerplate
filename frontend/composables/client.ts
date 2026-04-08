@@ -2,12 +2,12 @@
 
 import { clientFor as clientFor_ } from "#resources/lib"
 import { OperationsClient } from "#resources/Operations"
-import { Commander } from "@effect-app/vue/experimental/commander"
-import { Confirm } from "@effect-app/vue/experimental/confirm"
-import { I18n } from "@effect-app/vue/experimental/intl"
-import * as Toast_ from "@effect-app/vue/experimental/toast"
-import { WithToast } from "@effect-app/vue/experimental/withToast"
-import { LegacyMutation, makeClient } from "@effect-app/vue/makeClient"
+import { Commander } from "@effect-app/vue/commander"
+import { Confirm } from "@effect-app/vue/confirm"
+import { I18n } from "@effect-app/vue/intl"
+import { makeClient } from "@effect-app/vue/makeClient"
+import * as Toast_ from "@effect-app/vue/toast"
+import { WithToast } from "@effect-app/vue/withToast"
 import { Effect, Layer, ManagedRuntime } from "effect-app"
 import { useToast } from "vue-toastification"
 import type { RT } from "~/plugins/runtime"
@@ -16,7 +16,7 @@ import { useIntl } from "./intl"
 export { useToast } from "vue-toastification"
 
 export { AsyncResult, makeContext } from "@effect-app/vue"
-export { composeQueries, mapHandler, pauseWhileProcessing, SuppressErrors, useIntervalPauseWhileProcessing, useMutation } from "@effect-app/vue"
+export { composeQueries, mapHandler, pauseWhileProcessing, useIntervalPauseWhileProcessing, useMutation } from "@effect-app/vue"
 
 export const useRuntime = () => useNuxtApp().$runtime
 
@@ -56,7 +56,6 @@ const globalLayers = Effect.sync(() => useRuntime().globalLayers).pipe(
 const viewLayers = Layer.mergeAll(Router.Default, intlLayer, toastLayer)
 const provideLayers = Layer
   .mergeAll(
-    LegacyMutation.Default.pipe(Layer.provide([toastLayer, intlLayer])),
     commanderLayer,
     viewLayers,
     WithToast.Default.pipe(Layer.provide(toastLayer)),
@@ -65,7 +64,7 @@ const provideLayers = Layer
   .pipe(Layer.provideMerge(globalLayers))
 
 // argh, deprecation comments get stripped by unimport, so we group them under "Legacy" now.
-export const { Command, clientFor, legacy } = makeClient(
+export const { Command, clientFor } = makeClient(
   () => ManagedRuntime.make(provideLayers, { memoMap: useRuntime().memoMap }),
   clientFor_,
   Router.Default
