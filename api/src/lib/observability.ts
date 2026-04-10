@@ -16,11 +16,11 @@ import { Config, Context, Effect, Layer, Redacted } from "effect-app"
 import { dropUndefinedT } from "effect-app/utils"
 import fs from "fs"
 import tcpPortUsed from "tcp-port-used"
-import { BaseConfig, envConfig } from "../config.js"
+import { baseConfig } from "../config.js"
 
 const localConsole = false
 
-const isRemoteConfig = envConfig.pipe(Config.map((env) => env !== "local-dev"))
+const isRemoteConfig = baseConfig.env.pipe(Config.map((env) => env !== "local-dev"))
 
 // somehow this has to happen up here, and not within effect, or spans are not propagated in async context?!
 // @ts-expect-error kept for side-effect initialization
@@ -46,18 +46,25 @@ export class ExporterRunning extends Context.Service<ExporterRunning>()("Exporte
   static readonly Default = Layer.effect(this, this.make)
 }
 
-const ResourceLive = BaseConfig.asEffect().pipe(
-  Effect.map((appConfig) =>
-    Resource.layer({
-      serviceName: appConfig.serviceName,
-      serviceVersion: appConfig.apiVersion,
-      attributes: {
-        [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: appConfig.env
-      }
-    })
-  ),
-  Layer.unwrap
-)
+const ResourceLive = Config
+  .all({
+    serviceName: baseConfig.serviceName,
+    apiVersion: baseConfig.apiVersion,
+    env: baseConfig.env
+  })
+  .asEffect()
+  .pipe(
+    Effect.map((appConfig) =>
+      Resource.layer({
+        serviceName: appConfig.serviceName,
+        serviceVersion: appConfig.apiVersion,
+        attributes: {
+          [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: appConfig.env
+        }
+      })
+    ),
+    Layer.unwrap
+  )
 
 const makeMetricsReader = Effect.gen(function*() {
   const isRemote = yield* isRemoteConfig
@@ -110,7 +117,11 @@ const filteredEntries = Object.entries(filterAttrs)
 
 const setupSentry = (options?: Sentry.NodeOptions) =>
   Effect.gen(function*() {
-    const appConfig = yield* BaseConfig
+    const appConfig = yield* Config.all({
+      sentry: baseConfig.sentry,
+      env: baseConfig.env,
+      apiVersion: baseConfig.apiVersion
+    })
     const isRemote = yield* isRemoteConfig
 
     Sentry.init({

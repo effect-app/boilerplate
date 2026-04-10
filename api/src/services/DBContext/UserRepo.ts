@@ -1,4 +1,4 @@
-import { RepoConfig } from "#config"
+import { apiConfig } from "#config"
 import { RepoDefault } from "#lib/layers"
 import { User, UserFromIdResolver, type UserId } from "#models/User"
 import { Model } from "@effect-app/infra"
@@ -19,7 +19,7 @@ export type UserSeed = "sample" | ""
 
 export class UserRepo extends Context.Service<UserRepo>()("UserRepo", {
   make: Effect.gen(function*() {
-    const cfg = yield* RepoConfig
+    const cfg = yield* apiConfig.repo
 
     const makeInitial = yield* Effect.cached(Effect.sync(() => {
       const seed = cfg.fakeUsers === "seed" ? "seed" : cfg.fakeUsers === "sample" ? "sample" : ""

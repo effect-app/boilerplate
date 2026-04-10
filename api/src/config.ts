@@ -1,4 +1,4 @@
-// codegen:start {preset: barrel, include: config/*.ts }
-export * from "./config/api.js"
-export * from "./config/base.js"
-// codegen:end
+import * as apiConfig from "./config/api.js"
+import * as baseConfig from "./config/base.js"
+
+export { apiConfig, baseConfig }

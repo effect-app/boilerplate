@@ -8,11 +8,11 @@ import * as HttpClientNode from "@effect/platform-node/NodeHttpClient"
 import * as HttpNode from "@effect/platform-node/NodeHttpServer"
 import { Context, Effect, Layer, Option, Redacted } from "effect-app"
 import { createServer } from "http"
-import { MergedConfig, SendgridConfig, StorageConfig } from "../config.js"
+import { apiConfig, baseConfig } from "../config.js"
 
 export const RepoDefault = Effect
   .gen(function*() {
-    const cfg = yield* StorageConfig
+    const cfg = yield* apiConfig.storage
     return StoreMakerLayer(cfg)
   })
   .pipe(Layer.unwrap)
@@ -21,7 +21,7 @@ export const RepoTest = StoreMakerLayer({ url: Redacted.make("mem://"), prefix: 
 
 export const EmailerLive = Effect
   .gen(function*() {
-    const cfg = yield* SendgridConfig
+    const cfg = yield* baseConfig.sendgrid
     return cfg.apiKey
       ? Sendgrid(cfg)
       : FakeSendgrid
@@ -38,7 +38,7 @@ export const ApiPortTag = Context.Service<{ port: number }>("@services/ApiPortTa
 
 export const HttpServerLive = Effect
   .gen(function*() {
-    let cfg = yield* MergedConfig
+    let cfg = yield* apiConfig.server
     const portOverride = yield* Effect.serviceOption(ApiPortTag)
     if (Option.isSome(portOverride)) cfg = { ...cfg, port: portOverride.value.port }
 

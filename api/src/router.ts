@@ -3,17 +3,17 @@ import * as MW from "#lib/middleware"
 import { Events } from "#services"
 import { reportError } from "@effect-app/infra/errorReporter"
 import { flow } from "effect"
-import { Console, Effect, Layer } from "effect-app"
+import { Config, Console, Effect, Layer } from "effect-app"
 import { HttpMiddleware, HttpRouter } from "effect-app/http"
 import { RpcSerialization } from "effect/unstable/rpc"
-import { BaseConfig, MergedConfig } from "./config.js"
+import { apiConfig, baseConfig } from "./config.js"
 
 const prodOrigins: string[] = []
 const demoOrigins: string[] = []
 
 const CORSMiddleware = Effect
   .gen(function*() {
-    const { env } = yield* BaseConfig
+    const env = yield* baseConfig.env
 
     return HttpRouter.middleware(
       flow(
@@ -40,14 +40,14 @@ const RequestContextMiddleware = HttpRouter.middleware(MW.RequestContextMiddlewa
 const HealthRoute = HttpRouter
   .use(
     Effect.fnUntraced(function*(router) {
-      const cfg = yield* BaseConfig
+      const cfg = yield* baseConfig.apiVersion
 
       // NO authtoken/requestcontext middleware!
       yield* router.add(
         "GET",
         "/.well-known/local/server-health",
         MW
-          .serverHealth(cfg.apiVersion)
+          .serverHealth(cfg)
           .pipe(Effect.tapCause(reportError("server-health error")))
       )
     })
@@ -81,10 +81,10 @@ const RootRoutes = Layer.mergeAll(
 
 const logServer = Effect
   .gen(function*() {
-    const cfg = yield* MergedConfig
+    const cfg = yield* Config.all({ server: apiConfig.server, apiVersion: baseConfig.apiVersion, env: baseConfig.env })
     // using Console.log for vscode to know we're ready
     yield* Console.log(
-      `Running on http://${cfg.host}:${cfg.port} at version: ${cfg.apiVersion}. ENV: ${cfg.env}`
+      `Running on http://${cfg.server.host}:${cfg.server.port} at version: ${cfg.apiVersion}. ENV: ${cfg.env}`
     )
   })
   .pipe(Layer.effectDiscard)
