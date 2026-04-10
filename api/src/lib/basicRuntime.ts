@@ -51,7 +51,7 @@ export const basicLayer = Layer
   .pipe(Layer.provide(NodeFileSystem.layer))
 
 export const basicRuntime = ManagedRuntime.make(basicLayer)
-await basicRuntime.services()
+await basicRuntime.context()
 
 const reportMainError = <E>(cause: Cause.Cause<E>) =>
   Cause.hasInterruptsOnly(cause) ? Effect.void : reportError("Main")(cause)

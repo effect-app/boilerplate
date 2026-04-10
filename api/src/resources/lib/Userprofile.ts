@@ -9,5 +9,5 @@ export class UserProfile extends Context.assignTag<UserProfile>("UserProfile")(
     roles: S.Array(Role).withDefault
   })
 ) {
-  static readonly fromEncoded = S.encodeKeys({ roles: "https://nomizz.com/roles" })(this)
+  static readonly Codec = S.revealCodec(S.encodeKeys({ roles: "https://nomizz.com/roles" })(this))
 }
