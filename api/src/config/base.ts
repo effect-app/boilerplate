@@ -1,14 +1,4 @@
-import dotenv from "dotenv"
 import { Config as C, Redacted, S } from "effect-app"
-
-const envFile = "./.env.local"
-
-const { error } = dotenv.config({ path: envFile })
-if (error) {
-  console.log("did not load .env.local")
-} else {
-  console.log("loading env from: " + envFile)
-}
 
 const FROM = {
   name: S.NonEmptyString255("@effect-app/boilerplate"),
