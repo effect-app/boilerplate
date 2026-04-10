@@ -53,7 +53,7 @@ export function createFullName(firstName: string, lastName: string) {
 export const UserId = UserProfileId
 export type UserId = UserProfileId
 
-export const Role = S.withDefaultMake(S.Literal("manager", "user"))
+export const Role = S.withDefaultMake(S.Literals(["manager", "user"]))
 export type Role = S.Schema.Type<typeof Role>
 
 export class UserFromIdResolver extends Context.Service<UserFromIdResolver, {
