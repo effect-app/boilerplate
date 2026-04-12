@@ -32,5 +32,3 @@ export const sentry = C.all({
       )
     )
 })
-
-export const SB_PREFIX = "Endpoint=sb://"

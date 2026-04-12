@@ -24,8 +24,6 @@ export const storage = Config.all({
     )
 })
 
-export const AUTH_DISABLED = process.env["AUTH_DISABLED"] === "true"
-
 export const repo = Config.all({
   fakeData: Config.string("fakeData").pipe(Config.withDefault("")),
   fakeUsers: Config.string("fakeUsers").pipe(Config.withDefault("sample"))
