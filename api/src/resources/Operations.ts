@@ -1,20 +1,20 @@
 import { Duration, Effect } from "effect-app"
 import { NotFoundError } from "effect-app/client/errors"
 import { Operation, OperationFailure, OperationId } from "effect-app/Operations"
-import { clientFor } from "./lib.js"
+import { clientFor, TaggedRequestFor } from "./lib.js"
 import * as S from "./lib/schema.js"
 
-export class FindOperation extends S.Req<FindOperation>()("FindOperation", {
+// codegen:start {preset: meta, sourcePrefix: src/resources/}
+const Req = TaggedRequestFor("Operations")
+// codegen:end
+
+export class FindOperation extends Req<FindOperation>()("FindOperation", {
   id: OperationId
 }, { allowAnonymous: true, allowRoles: ["user"], success: S.NullOr(Operation) }) {}
 
-// codegen:start {preset: meta, sourcePrefix: src/resources/}
-export const meta = { moduleName: "Operations" } as const
-// codegen:end
-
 // Extensions
 export const OperationsClient = Effect.gen(function*() {
-  const opsClient = yield* clientFor({ FindOperation, meta })
+  const opsClient = yield* clientFor({ FindOperation })
 
   function refreshAndWaitAForOperation<R2, E2, A2>(
     refresh: Effect.Effect<A2, E2, R2>,

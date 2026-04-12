@@ -1,12 +1,12 @@
 import { User } from "#models/User"
 import { NotFoundError } from "effect-app/client/errors"
-import { S } from "./lib.js"
+import { S, TaggedRequestFor } from "./lib.js"
 import { UserItem } from "./views/UserItem.js"
 
-export class Index extends S.Req<Index>()("Index", {}, { success: S.Array(UserItem), allowAnonymous: true }) {}
-
-export class GetMe extends S.Req<GetMe>()("GetMe", {}, { success: User, error: NotFoundError }) {}
-
 // codegen:start {preset: meta, sourcePrefix: src/resources/}
-export const meta = { moduleName: "Accounts" } as const
+const Req = TaggedRequestFor("Accounts")
 // codegen:end
+
+export class Index extends Req<Index>()("Index", {}, { success: S.Array(UserItem), allowAnonymous: true }) {}
+
+export class GetMe extends Req<GetMe>()("GetMe", {}, { success: User, error: NotFoundError }) {}
