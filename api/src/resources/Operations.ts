@@ -8,7 +8,7 @@ import * as S from "./lib/schema.js"
 const Req = TaggedRequestFor("Operations")
 // codegen:end
 
-export class FindOperation extends Req<FindOperation>()("FindOperation", {
+export class FindOperation extends Req.Query<FindOperation>()("FindOperation", {
   id: OperationId
 }, { allowAnonymous: true, allowRoles: ["user"], success: S.NullOr(Operation) }) {}
 

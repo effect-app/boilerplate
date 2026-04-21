@@ -6,18 +6,38 @@ import { StoreMakerLayer } from "@effect-app/infra/Store/index"
 import { NodeServices } from "@effect/platform-node"
 import * as HttpClientNode from "@effect/platform-node/NodeHttpClient"
 import * as HttpNode from "@effect/platform-node/NodeHttpServer"
+import { SqliteClient } from "@effect/sql-sqlite-node"
 import { Context, Effect, Layer, Option, Redacted } from "effect-app"
+import fs from "fs"
 import { createServer } from "http"
+
 import { apiConfig, baseConfig } from "../config.js"
+
+const ClientLive = SqliteClient
+  .layer({
+    filename: "./" + ".data" + "/db.db"
+  })
+  .pipe(Layer.provide(
+    Effect
+      .gen(function*() {
+        const path = "./" + ".data"
+        if (!fs.existsSync(path)) {
+          fs.mkdirSync(path)
+        }
+      })
+      .pipe(Layer.effectDiscard)
+  ))
 
 export const RepoDefault = Effect
   .gen(function*() {
     const cfg = yield* apiConfig.storage
-    return StoreMakerLayer(cfg)
+    return StoreMakerLayer(cfg).pipe(Layer.provide(ClientLive))
   })
   .pipe(Layer.unwrap)
 
-export const RepoTest = StoreMakerLayer({ url: Redacted.make("mem://"), prefix: "test_", dbName: "test" })
+export const RepoTest = StoreMakerLayer({ url: Redacted.make("mem://"), prefix: "test_", dbName: "test" }).pipe(
+  Layer.provide(ClientLive)
+)
 
 export const EmailerLive = Effect
   .gen(function*() {

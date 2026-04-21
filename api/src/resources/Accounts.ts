@@ -7,6 +7,6 @@ import { UserItem } from "./views/UserItem.js"
 const Req = TaggedRequestFor("Accounts")
 // codegen:end
 
-export class Index extends Req<Index>()("Index", {}, { success: S.Array(UserItem), allowAnonymous: true }) {}
+export class Index extends Req.Query<Index>()("Index", {}, { success: S.Array(UserItem), allowAnonymous: true }) {}
 
-export class GetMe extends Req<GetMe>()("GetMe", {}, { success: User, error: NotFoundError }) {}
+export class GetMe extends Req.Query<GetMe>()("GetMe", {}, { success: User, error: NotFoundError }) {}

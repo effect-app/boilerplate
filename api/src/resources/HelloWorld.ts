@@ -16,11 +16,11 @@ class Response extends S.Class<Response>("Response")({
   randomUser: UserView
 }) {}
 
-export class GetHelloWorld extends Req<GetHelloWorld>()("GetHelloWorld", {
+export class GetHelloWorld extends Req.Query<GetHelloWorld>()("GetHelloWorld", {
   echo: S.String
 }, { allowAnonymous: true, allowRoles: ["user"], success: Response }) {}
 
-export class SetState extends Req<SetState>()("SetState", {
+export class SetState extends Req.Command<SetState>()("SetState", {
   state: S.String,
   fail: S.Boolean
 }, { error: InvalidStateError, allowAnonymous: true, allowRoles: ["user"] }) {}
