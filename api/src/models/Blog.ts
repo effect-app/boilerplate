@@ -1,5 +1,5 @@
 import { S } from "effect-app"
-import { UserFromId } from "./User.js"
+import { UserId } from "./User.js"
 
 export const BlogPostId = S.prefixedStringId<BlogPostId>()("post", "BlogPostId")
 export interface BlogPostIdBrand {
@@ -14,9 +14,10 @@ export class BlogPost extends S.Opaque<BlogPost, BlogPost.Encoded>()(
       title: S.NonEmptyString255,
       body: S.NonEmptyString2k,
       createdAt: S.Date.withDefault,
-      author: UserFromId
+      authorId: UserId
+      //author: UserFromId
     })
-    .pipe(S.encodeKeys({ author: "authorId" }))
+    //.pipe(S.encodeKeys({ author: "authorId" }))
 ) {}
 
 // codegen:start {preset: model}

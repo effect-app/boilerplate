@@ -67,7 +67,7 @@ export class User extends S.Class<User, User.Encoded>("User")({
   name: FullName,
   email: S.Email,
   role: Role,
-  passwordHash: S.NonEmptyString255
+//  passwordHash: S.NonEmptyString255
 }) {
   get displayName() {
     return S.NonEmptyString2k(this.name.firstName + " " + this.name.lastName)

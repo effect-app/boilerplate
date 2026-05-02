@@ -31,7 +31,7 @@ export default Router(BlogRsc)({
         userRepo
           .getCurrentUser
           .pipe(
-            Effect.map((author) => (BlogPost.make({ ...req, author }))),
+            Effect.map((author) => (BlogPost.make({ ...req, authorId: author.id }))),
             Effect.tap(blogPostRepo.save)
           ),
       PublishPost: (req) =>

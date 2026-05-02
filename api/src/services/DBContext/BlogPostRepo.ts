@@ -27,7 +27,7 @@ export class BlogPostRepo extends Context.Service<BlogPostRepo>()("BlogPostRepo"
                   BlogPost.make({
                     title: NonEmptyString255("Test post " + i),
                     body: NonEmptyString2k("imma test body"),
-                    author: user
+                    authorId: user.id
                   })
                 )
             )

@@ -25,14 +25,22 @@ const [r] = blogClient.GetPosts.query()
       </v-btn>
     </div>
     Here's a Post List
-    <QueryResult :result="r" v-slot="{ latest, refreshing }">
-      <Delayed v-if="refreshing"><v-progress-circular /></Delayed>
+    <QueryResult
+v-slot="{ latest, refreshing }"
+:result="r"
+>
+      <Delayed v-if="refreshing">
+<v-progress-circular />
+</Delayed>
       <ul>
-        <li v-for="post in latest.items" :key="post.id">
+        <li
+v-for="post in latest.items"
+:key="post.id"
+>
           <nuxt-link :to="{ name: 'blog-id', params: { id: post.id } }">
             {{ post.title }}
           </nuxt-link>
-          by {{ post.author.displayName }}
+          by {{ post.authorId }}
         </li>
       </ul>
     </QueryResult>

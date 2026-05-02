@@ -8,7 +8,7 @@ import { Struct } from "effect-app"
 const Req = TaggedRequestFor("Blog")
 // codegen:end
 
-export class CreatePost extends Req.Command<CreatePost>()("CreatePost", Struct.pick(BlogPost.to.fields, ["title", "body"]), {
+export class CreatePost extends Req.Command<CreatePost>()("CreatePost", Struct.pick(BlogPost.fields, ["title", "body"]), {
   allowRoles: ["user"],
   success: S.Struct({ id: BlogPostId }),
   error: S.Union([NotFoundError, InvalidStateError, OptimisticConcurrencyException])
