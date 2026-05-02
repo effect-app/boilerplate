@@ -3,5 +3,5 @@ import { HelloWorldRsc } from "#resources"
 export const useHelloWorld = () => {
   const client = clientFor(HelloWorldRsc)
 
-  return {...client.helpers, ...client }
+  return {...client.helpers, client }
 }

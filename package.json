@@ -12,7 +12,22 @@
       "typescript": "patches/typescript.patch",
       "ts-plugin-sort-import-suggestions": "patches/ts-plugin-sort-import-suggestions.patch",
       "@tanstack/query-core": "patches/@tanstack__query-core.patch"
-    }
+    },
+    "ignoredBuiltDependencies": [
+      "@parcel/watcher",
+      "@scarf/scarf",
+      "@sentry/cli",
+      "core-js",
+      "dprint",
+      "esbuild",
+      "msgpackr-extract",
+      "protobufjs",
+      "unrs-resolver",
+      "vue-demi"
+    ],
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
   },
   "engines": {
     "pnpm": ">= 10.2.1"
@@ -79,8 +94,6 @@
     "vue": "$vue"
   },
   "dependencies": {
-    "date-fns": "^4.1.0",
-    "effect": "4.0.0-beta.59",
     "@effect/opentelemetry": "4.0.0-beta.59",
     "@effect/platform-node": "4.0.0-beta.59",
     "@opentelemetry/api": "^1.9",
@@ -94,6 +107,8 @@
     "@opentelemetry/sdk-trace-web": "^2.7.1",
     "@opentelemetry/semantic-conventions": "^1.40.0",
     "cross-env": "^10.1.0",
+    "date-fns": "^4.1.0",
+    "effect": "4.0.0-beta.59",
     "fast-check": "^4.7.0",
     "package-up": "^5.0.0",
     "patch-package": "^8.0.1",
@@ -115,6 +130,8 @@
     "@typescript-eslint/eslint-plugin": "^8.59.1",
     "@typescript-eslint/parser": "^8.59.1",
     "@typescript-eslint/scope-manager": "^8.59.1",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.7.0",
     "concurrently": "^9.2.1",
     "dprint": "^0.54.0",
     "effect-app": "4.0.0-beta.178",
@@ -129,8 +146,6 @@
     "eslint-plugin-sort-destructure-keys": "^3.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "eslint-watch": "^8.0.0",
-    "@vue/eslint-config-prettier": "^10.2.0",
-    "@vue/eslint-config-typescript": "^14.7.0",
     "madge": "^8.0.0",
     "nodemon": "^3.1.14",
     "npm-check-updates": "^22.1.0",

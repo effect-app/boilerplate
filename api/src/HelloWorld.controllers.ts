@@ -19,8 +19,8 @@ export default Router(HelloWorldRsc)({
         const user = yield* userRepo
           .tryGetCurrentUser
           .pipe(
-            Effect.map((u): UserView =>
-              new UserView({
+            Effect.map((u) =>
+              UserView.make({
                 id: u.id,
                 role: u.role,
                 displayName: S.NonEmptyString2k(`${u.name.firstName} ${u.name.lastName}`)
