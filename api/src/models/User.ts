@@ -29,7 +29,7 @@ export const LastName = S
 
 export type LastName = typeof LastName.Type
 
-export class FullName extends S.ExtendedClass<FullName, FullName.Encoded>("FullName")({
+export class FullName extends S.Class<FullName, FullName.Encoded>("FullName")({
   firstName: FirstName,
   lastName: LastName
 }) {
@@ -62,7 +62,7 @@ export class UserFromIdResolver extends Context.Service<UserFromIdResolver, {
   static readonly getUser = (userId: UserId) => UserFromIdResolver.use((_) => _.get(userId))
 }
 
-export class User extends S.ExtendedClass<User, User.Encoded>("User")({
+export class User extends S.Class<User, User.Encoded>("User")({
   id: UserId.withDefault,
   name: FullName,
   email: S.Email,
@@ -91,10 +91,10 @@ export const defaultEqual = pipe(Equivalence.String, Equivalence.mapInput((u: Us
 //
 /* eslint-disable */
 export namespace FullName {
-  export interface Encoded extends S.Struct.Encoded<typeof FullName["fields"]> {}
+  export interface Encoded extends S.StructNestedEncoded<typeof FullName> {}
 }
 export namespace User {
-  export interface Encoded extends S.Struct.Encoded<typeof User["fields"]> {}
+  export interface Encoded extends S.StructNestedEncoded<typeof User> {}
 }
 /* eslint-enable */
 //
