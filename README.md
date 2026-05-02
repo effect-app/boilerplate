@@ -1,4 +1,6 @@
-# @effect-app-boilerplate
+# Effect App Sample
+
+Demo basic usage of Models, Resources, Controllers, Clients, long running tasks and some SSE.
 
 ## Setup
 

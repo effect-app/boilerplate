@@ -12,6 +12,8 @@ import { Effect, Layer, ManagedRuntime } from "effect-app"
 import { useToast } from "vue-toastification"
 import type { RT } from "~/plugins/runtime"
 import { useIntl } from "./intl"
+import { UserViews } from "#resources/resolvers/UserResolver"
+import type { makeIntl } from "@effect-app/vue"
 
 export { useToast } from "vue-toastification"
 
@@ -31,7 +33,8 @@ export const run = <A, E>(
 
 export const runSync = <A, E>(effect: Effect.Effect<A, E, RT>) => useRuntime().runSync(effect)
 
-const intlLayer = I18n.toLayer(Effect.sync(useIntl))
+const intlLayer = I18n.toLayer(Effect.sync(useIntl as ReturnType<typeof makeIntl>["useIntl"]))
+
 // TODO: use optional CurrentToastId to auto assign toastId when not null?
 const toastLayer = Toast_.Toast.toLayer(
   Effect.sync(() => {
@@ -50,9 +53,9 @@ const commanderLayer = Commander.Default.pipe(
   Layer.provide([intlLayer, toastLayer])
 )
 
-const globalLayers = Effect.sync(() => useRuntime().globalLayers).pipe(
-  Layer.unwrap
-)
+const globalLayers = Layer.effect(UserViews, UserViews.make()).pipe(
+  Layer.provideMerge(Effect.sync(() => useRuntime().globalLayers).pipe(Layer.unwrap
+)))
 const viewLayers = Layer.mergeAll(Router.Default, intlLayer, toastLayer)
 const provideLayers = Layer
   .mergeAll(

@@ -61,12 +61,12 @@ export const OperationsClient = Effect.gen(function*() {
     self: Effect.Effect<OperationId, E, R>,
     cb?: (op: Operation) => void
   ) {
-    return Effect.andThen(self, (r) => _waitForOperation(r, cb))
+    return Effect.flatMap(self, (r) => _waitForOperation(r, cb))
   }
 
   function waitForOperation_(cb?: (op: Operation) => void) {
     return <Req, R, E>(self: (req: Req) => Effect.Effect<OperationId, E, R>) => (req: Req) =>
-      Effect.andThen(self(req), (r) => _waitForOperation(r, cb))
+      Effect.flatMap(self(req), (r) => _waitForOperation(r, cb))
   }
 
   const isFailure = S.is(OperationFailure)

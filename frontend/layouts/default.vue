@@ -35,6 +35,8 @@ const router = useRouter()
         <NuxtLink :to="{ name: 'index' }">
           Home
         </NuxtLink>
+        |
+        <NuxtLink :to="{ name: 'blog' }">Blog</NuxtLink>
       </v-app-bar-title>
 
       <div>{{ router.currentRoute.value.name }}</div>

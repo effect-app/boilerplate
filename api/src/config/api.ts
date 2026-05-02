@@ -8,7 +8,7 @@ const STORAGE_VERSION = "1"
 export const storage = Config.all({
   url: secretURL("url")
     .pipe(
-      Config.withDefault(SecretURL.fromString("sqlite://")),
+      Config.withDefault(SecretURL.fromString("disk://.data")),
       Config.nested("storage")
     ),
   dbName: Config.all({ env, serviceName }).pipe(

@@ -16,6 +16,7 @@ export const sendgrid = C.all({
   apiKey: C.redacted("sendgridApiKey").pipe(C.withDefault(
     Redacted.make("")
   )),
+  fakeMailAddress: C.string().pipe(C.withDefault("fake-{i}@example.com")),
   defaultFrom: C.succeed(FROM),
   subjectPrefix: env.pipe(C.map((env) => env === "prod" ? "" : `[${serviceName_}] [${env}] `))
 })
