@@ -77,7 +77,9 @@ export default defineNuxtConfig({
 
   // app doesn't need SSR, but also it causes problems with linking schema package.
   ssr: false,
-
+  experimental: {
+    viteEnvironmentApi: true,
+  },
   vite: {
     build: {
       minify: "terser",
