@@ -22,7 +22,7 @@
     "@playwright/test": "~1.59.1",
     "@types/node": "~25.6.0",
     "date-fns": "^4.1.0",
-    "npm-check-updates": "^21.0.3",
+    "npm-check-updates": "^22.1.0",
     "playwright-core": "^1.59.1",
     "playwright-watch": "^1.3.23",
     "prettier": "^3.8.3",
@@ -34,7 +34,7 @@
     "effect-app": "4.0.0-beta.178",
     "effect": "4.0.0-beta.59",
     "cross-fetch": "^4.1.0",
-    "eslint": "^10.2.1",
+    "eslint": "^10.3.0",
     "dprint": "^0.54.0"
   }
 }
