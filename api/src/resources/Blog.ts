@@ -1,6 +1,5 @@
 import { BlogPost, BlogPostId } from "#models/Blog"
 import { InvalidStateError, NotFoundError, OptimisticConcurrencyException } from "effect-app/client"
-import { OperationId } from "effect-app/Operations"
 import { S, TaggedRequestFor } from "./lib.js"
 import { BlogPostView } from "./views.js"
 import { Struct } from "effect-app"
@@ -27,7 +26,19 @@ export class GetPosts extends Req.Query<GetPosts>()("GetPosts", {}, {
   })
 }) {}
 
-export class PublishPost extends Req.Command<PublishPost>()("PublishPost", {
-  id: BlogPostId
-}, { allowRoles: ["user"], success: OperationId, error: S.Union([NotFoundError]) }) {}
+export class PublishProgress extends S.TaggedClass<PublishProgress>()("PublishProgress", {
+  completed: S.NonNegativeInt,
+  total: S.NonNegativeInt
+}) {}
 
+export class PublishComplete extends S.TaggedClass<PublishComplete>()("PublishComplete", {
+  result: S.NonEmptyString
+}) {}
+
+export class PublishPost extends Req.Stream<PublishPost>()("PublishPost", {
+  id: BlogPostId
+}, {
+  allowRoles: ["user"],
+  success: S.Union([PublishProgress, PublishComplete]),
+  error: S.Union([NotFoundError])
+}) {}

@@ -2,13 +2,13 @@
 import { BlogRsc } from "#resources"
 import type { ClientEvents } from "#resources"
 import { BlogPostId } from "#models/Blog"
+import * as AsyncResult from "effect/unstable/reactivity/AsyncResult"
 
 const { id } = useRouteParams({ id: BlogPostId })
 
 const blogClient = clientFor(BlogRsc)
-const opsClient = useOperationsClient()
 
-const [r, , reloadPost] = blogClient.FindPost.query({
+const [r] = blogClient.FindPost.query({
   id,
 })
 
@@ -24,18 +24,18 @@ onMountedWithCleanup(() => {
   }
 })
 
-const progress = ref("")
+const [publishResult, publishStream] = blogClient.PublishPost.mutateStream
 
-const pub = useMutation(
-  mapHandler(
-    blogClient.PublishPost,
-    opsClient.refreshAndWaitForOperation(reloadPost(), op => {
-      progress.value = `${op.progress?.completed}/${op.progress?.total}`
-    }),
-  ),
-)
+const progress = computed(() => {
+  const v = publishResult.value
+  if (AsyncResult.isSuccess(v) && v.value._tag === "PublishProgress") {
+    return `${v.value.completed}/${v.value.total}`
+  }
+  return ""
+})
+
 const publish = Command.fn(blogClient.PublishPost)(function* ({ id }: { id: BlogPostId }) {
-  return yield* pub({ id })
+  yield* publishStream({ id })
 }, Command.withDefaultToast())
 </script>
 
