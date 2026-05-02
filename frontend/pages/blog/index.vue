@@ -4,8 +4,8 @@ import { S } from "effect-app"
 
 const blogClient = clientFor(BlogRsc)
 
-const [, createPost] = useSafeMutation(blogClient.CreatePost)
-const [r] = useSafeQuery(blogClient.GetPosts)
+const createPost = blogClient.CreatePost.wrap(Command.withDefaultToast())
+const [r] = blogClient.GetPosts.query()
 </script>
 
 <template>
@@ -13,13 +13,12 @@ const [r] = useSafeQuery(blogClient.GetPosts)
     <div>
       a new Title and a new body
       <v-btn
+      :disabled="createPost.waiting"
         @click="
-          run(
-            createPost({
+            createPost.handle({
               title: S.NonEmptyString255(new Date().toString()),
               body: S.NonEmptyString2k('A body'),
-            }),
-          )
+            })
         "
       >
         Create new post

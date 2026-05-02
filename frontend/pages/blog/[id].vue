@@ -8,7 +8,7 @@ const { id } = useRouteParams({ id: BlogPostId })
 const blogClient = clientFor(BlogRsc)
 const opsClient = useOperationsClient()
 
-const [r, , reloadPost] = useSafeQuery(blogClient.FindPost, {
+const [r, , reloadPost] = blogClient.FindPost.query({
   id,
 })
 
@@ -26,15 +26,17 @@ onMountedWithCleanup(() => {
 
 const progress = ref("")
 
-const [publishing, publish] = useAndHandleMutation(
+const pub = useMutation(
   mapHandler(
     blogClient.PublishPost,
     opsClient.refreshAndWaitForOperation(reloadPost(), op => {
       progress.value = `${op.progress?.completed}/${op.progress?.total}`
     }),
   ),
-  "Publish Blog Post",
 )
+const publish = Command.fn(blogClient.PublishPost)(function* ({ id }: { id: BlogPostId }) {
+  return yield* pub({ id })
+}, Command.withDefaultToast())
 </script>
 
 <template>
@@ -44,9 +46,9 @@ const [publishing, publish] = useAndHandleMutation(
   <QueryResult :result="r" v-slot="{ latest, refreshing }">
     <Delayed v-if="refreshing"><v-progress-circular /></Delayed>
     <div>
-      <v-btn @click="run(publish({ id }))" :disabled="publishing.loading">
+      <v-btn @click="publish.handle({ id })" :disabled="publish.waiting">
         Publish to all blog sites
-        {{ publishing.loading ? `(${progress})` : "" }}
+        {{ publish.waiting ? `(${progress})` : "" }}
       </v-btn>
       <div>Title: {{ latest.title }}</div>
       <div>Body: {{ latest.body }}</div>

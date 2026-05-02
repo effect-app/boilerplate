@@ -1,53 +1,95 @@
 import { UserId } from "#models/User"
 import { clientFor } from "#resources/lib"
-import { Effect, Exit, Request, RequestResolver } from "effect"
-import { Array, Option, pipe, S } from "effect-app"
-import { ApiClientFactory, NotFoundError } from "effect-app/client"
-import { type Schema } from "effect-app/Schema"
+import { Context, Effect, Exit, Request, RequestResolver, SchemaGetter, SchemaIssue } from "effect"
+import { Array, type NonEmptyArray, Option, S } from "effect-app"
+import { ApiClientFactory, type NotFoundError } from "effect-app/client"
 import * as UsersRsc from "../Users.js"
 import { UserView } from "../views/UserView.js"
+import { NonEmptyString255 } from "effect-app/Schema"
 
-interface GetUserViewById extends Request.Request<UserView, NotFoundError<"User">> {
-  readonly _tag: "GetUserViewById"
-  readonly id: UserId
-}
-const GetUserViewById = Request.tagged<GetUserViewById>("GetUserViewById")
 
-const getUserViewByIdResolver = RequestResolver
-  .makeBatched((requests: GetUserViewById[]) =>
-    clientFor(UsersRsc).pipe(
-      Effect.flatMap((client) =>
-        client
-          .IndexUsers
-          .handler({ filterByIds: pipe(requests.map((_) => _.id), Array.toNonEmptyArray, Option.getOrUndefined)! })
-      ),
-      Effect.andThen(({ users }) =>
-        Effect.forEach(requests, (r) =>
-          Request.complete(
-            r,
-            Array
-              .findFirst(users, (_) => _.id === r.id ? Option.some(Exit.succeed(_)) : Option.none())
-              .pipe(Option.getOrElse(() => Exit.fail(new NotFoundError({ type: "User", id: r.id }))))
-          ), { discard: true })
-      ),
-      Effect.orDie,
-      Effect.catchAllCause((cause) =>
-        Effect.forEach(
-          requests,
-          (request) => Request.failCause(request, cause),
-          { discard: true }
+const makeUserViews = Effect.fn(function*() {
+  const apiClientFactory = yield* ApiClientFactory
+
+  class GetUserViewById extends Request.TaggedClass("GetUserViewById")<
+    {
+      readonly id: UserId
+    },
+    UserView,
+    NotFoundError<"User">
+  > {}
+
+  const client = clientFor(UsersRsc)
+
+  const getUserViewByIdResolver = yield* RequestResolver
+    .make((entries: NonEmptyArray<Request.Entry<GetUserViewById>>) =>
+      client.pipe(
+        Effect.provideService(ApiClientFactory, apiClientFactory),
+        Effect.flatMap(
+          (userClient) =>
+            Array.toNonEmptyArray(entries.map((_) => _.request)).pipe(
+              Option.map((_) =>
+                userClient.IndexUsers.handler({ filterByIds: _.map((_) => _.id) }).pipe(
+                  Effect.map((_) => _.users),
+                  Effect.orDie
+                )
+              ),
+              Option.getOrElse(() => Effect.succeed([]))
+            )
+        ),
+        Effect.flatMap(
+          (users) =>
+            Effect.forEach(entries, (entry) => {
+              const u = users.find((_) => _.id === entry.request.id)
+              return Request.complete(
+                entry,
+                u
+                  ? Exit.succeed(u)
+                  : Exit.succeed(
+                    UserView.make({
+                        id: entry.request.id,
+                        displayName: NonEmptyString255("(entfernt)"),
+                        role: "user"
+                      })
+                  ) // Exit.fail(new NotFoundError({ type: "User", id: r.id }))
+              )
+            }, { discard: true })
+        ),
+        Effect.provideContext(entries[0].context),
+        Effect.orDie,
+        Effect.catchCause((cause) =>
+          Effect.forEach(
+            entries,
+            (entry) => Request.failCause(entry, cause),
+            { discard: true }
+          )
         )
       )
     )
-  )
-  .pipe(RequestResolver.batchN(25), RequestResolver.contextFromServices(ApiClientFactory))
+    .pipe(
+      RequestResolver.batchN(25),
+      RequestResolver.withCache({ capacity: 1_000 })
+    )
 
-// TODO: How to globally cache - right now we had to move the RequestCache from the runtime to clientFor
-export const UserViewFromId: Schema<UserView, string, ApiClientFactory> = S.transformOrFail(
-  UserId,
-  S.typeSchema(UserView),
-  {
-    decode: (id) => Effect.request(GetUserViewById({ id }), getUserViewByIdResolver).pipe(Effect.orDie),
-    encode: (u) => Effect.succeed(u.id)
-  }
+  return (id: UserId) =>
+    Effect.request(new GetUserViewById({ id }), getUserViewByIdResolver).pipe(
+      Effect.orDie,
+      Effect.withSpan("UserViewFromIdResolver.getById " + id)
+    )
+})
+
+export class UserViews
+  extends Context.Service<UserViews, Effect.Success<ReturnType<typeof makeUserViews>>>()("UserViews")
+{
+  static readonly make = makeUserViews
+}
+
+export const UserViewFromId: S.Codec<UserView, string, UserViews> = UserId.pipe(
+  S.decodeTo(S.toType(UserView), {
+    decode: SchemaGetter.transformOrFail((id) => UserViews.use((_) => _(id))),
+    encode: SchemaGetter.transformOrFail(
+      (u) =>
+        Effect.try({ try: () => u.id, catch: (e) => new SchemaIssue.InvalidValue(Option.none(), { message: `${e}` }) })
+    )
+  })
 )

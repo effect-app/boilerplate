@@ -1,8 +1,13 @@
 import { UserId } from "#models/User"
-import { S } from "./lib.js"
+import { S, TaggedRequestFor } from "./lib.js"
 import { UserView } from "./views/UserView.js"
 
-export class IndexUsers extends S.Req<IndexUsers>()("IndexUsers", {
+
+// codegen:start {preset: meta, sourcePrefix: src/resources/}
+const Req = TaggedRequestFor("Users")
+// codegen:end
+
+export class IndexUsers extends Req.Query<IndexUsers>()("IndexUsers", {
   filterByIds: S.NonEmptyArray(UserId)
 }, {
   allowAnonymous: true,
@@ -12,6 +17,4 @@ export class IndexUsers extends S.Req<IndexUsers>()("IndexUsers", {
   })
 }) {}
 
-// codegen:start {preset: meta, sourcePrefix: src/resources/}
-export const meta = { moduleName: "Users" } as const
-// codegen:end
+

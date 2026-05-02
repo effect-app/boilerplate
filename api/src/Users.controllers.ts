@@ -14,8 +14,8 @@ export default Router(UsersRsc)({
       IndexUsers: (req) =>
         userRepo
           .query(Q.where("id", "in", req.filterByIds))
-          .pipe(Effect.andThen((users) => ({
-            users: Array.sort(users, Order.mapInput(Order.string, (_: UserView) => _.displayName))
+          .pipe(Effect.map((users) => ({
+            users: Array.sort(users, Order.mapInput(Order.String, (_: UserView) => _.displayName))
           })))
     })
   }

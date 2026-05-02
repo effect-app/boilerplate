@@ -25,15 +25,15 @@ export default Router(BlogRsc)({
       FindPost: (req) =>
         blogPostRepo
           .find(req.id)
-          .pipe(Effect.andThen(Option.getOrNull)),
+          .pipe(Effect.map(Option.getOrNull)),
       GetPosts: blogPostRepo
         .all
-        .pipe(Effect.andThen((items) => ({ items }))),
+        .pipe(Effect.map((items) => ({ items }))),
       CreatePost: (req) =>
         userRepo
           .getCurrentUser
           .pipe(
-            Effect.andThen((author) => (new BlogPost({ ...req, author }, true))),
+            Effect.map((author) => (BlogPost.make({ ...req, author }))),
             Effect.tap(blogPostRepo.save)
           ),
       *PublishPost(req) {
@@ -69,7 +69,7 @@ export default Router(BlogRsc)({
                       ),
                       Effect.delay(Duration.seconds(4))
                     ))),
-                Effect.andThen(() => "the answer to the universe is 41")
+                Effect.map(() => "the answer to the universe is 41")
               ),
           // while operation is running...
           (_opId) =>

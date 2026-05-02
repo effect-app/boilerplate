@@ -7,19 +7,23 @@ export interface BlogPostIdBrand {
 }
 export type BlogPostId = S.StringId & BlogPostIdBrand & `post-${string}`
 
-export class BlogPost extends S.ExtendedClass<BlogPost, BlogPost.Encoded>()({
-  id: BlogPostId.withDefault,
-  title: S.NonEmptyString255,
-  body: S.NonEmptyString2k,
-  createdAt: S.Date.withDefault,
-  author: S.propertySignature(UserFromId).pipe(S.fromKey("authorId"))
-}) {}
+export class BlogPost extends S.Opaque<BlogPost, BlogPost.Encoded>()(
+  S
+    .Struct({
+      id: BlogPostId.withDefault,
+      title: S.NonEmptyString255,
+      body: S.NonEmptyString2k,
+      createdAt: S.Date.withDefault,
+      author: UserFromId
+    })
+    .pipe(S.encodeKeys({ author: "authorId" }))
+) {}
 
 // codegen:start {preset: model}
 //
 /* eslint-disable */
 export namespace BlogPost {
-  export interface Encoded extends S.Struct.Encoded<typeof BlogPost["fields"]> {}
+  export interface Encoded extends S.StructNestedEncoded<typeof BlogPost> {}
 }
 /* eslint-enable */
 //
