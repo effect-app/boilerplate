@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 
-import { vueConfig } from "../eslint.vue.config.mjs"
+import { vueConfig } from "@effect-app/eslint-shared-config/eslint.vue.config"
 
 import path from "node:path"
 import { fileURLToPath } from "node:url"
@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename)
 export default [
   ...vueConfig(__dirname, false),
   {
-    ignores: [".nuxt/**", ".output/**", ".storybook/**"],
+    ignores: [".nuxt/**", ".output/**"],
   },
   {
     files: ["pages/**/*.vue", "components/**/*.vue", "layouts/**/*.vue"],
@@ -20,4 +20,9 @@ export default [
       "vue/multi-word-component-names": "off",
     },
   },
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "warn",
+    }
+  }
 ]

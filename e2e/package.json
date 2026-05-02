@@ -10,7 +10,7 @@
     "build": "tsc --build",
     "lint": "NODE_OPTIONS=--max-old-space-size=8192 ESLINT_TS=1 eslint .",
     "lint:watch": "ESLINT_TS=1 esw -w --changed --clear --ext ts,tsx .",
-    "autofix": "pnpm lint --fix",
+    "lint-fix": "pnpm lint --fix",
     "up": "pnpm run update && pnpm exec-update",
     "update": "pnpm ncu -u",
     "exec-update": "pnpm i",
@@ -19,29 +19,22 @@
     "watch": "pnpm build --watch"
   },
   "devDependencies": {
-    "@playwright/test": "~1.52.0",
-    "@types/node": "~22.15.16",
+    "@playwright/test": "~1.59.1",
+    "@types/node": "~25.6.0",
     "date-fns": "^4.1.0",
-    "eslint-config-prettier": "^10.1.3",
-    "eslint-import-resolver-typescript": "^4.3.4",
-    "eslint-import-resolver-webpack": "^0.13.10",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.4.0",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-sort-destructure-keys": "^2.0.0",
-    "eslint-plugin-unused-imports": "^4.1.4",
-    "npm-check-updates": "^18.0.1",
-    "playwright-core": "^1.52.0",
+    "npm-check-updates": "^21.0.3",
+    "playwright-core": "^1.59.1",
     "playwright-watch": "^1.3.23",
-    "prettier": "^3.5.3",
-    "typescript": "~5.8.3"
+    "prettier": "^3.8.3",
+    "typescript": "~6.0.2"
   },
   "dependencies": {
     "@effect-app-boilerplate/api": "workspace:*",
-    "@effect/platform-node": "0.77.10",
-    "effect-app": "^2.40.1",
-    "@effect/platform": "^0.80.20",
-    "effect": "^3.14.20",
-    "cross-fetch": "^4.1.0"
+    "@effect/platform-node": "4.0.0-beta.59",
+    "effect-app": "4.0.0-beta.178",
+    "effect": "4.0.0-beta.59",
+    "cross-fetch": "^4.1.0",
+    "eslint": "^10.2.1",
+    "dprint": "^0.54.0"
   }
 }

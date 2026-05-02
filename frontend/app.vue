@@ -2,9 +2,11 @@
 useApiEventSource()
 </script>
 <template>
-  <v-no-ssr>
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </v-no-ssr>
+  <client-only>
+    <ErrorBoundary>
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </ErrorBoundary>
+  </client-only>
 </template>

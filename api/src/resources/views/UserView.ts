@@ -1,8 +1,9 @@
 import { User } from "#models/User"
 import { S } from "#resources/lib"
 
-export class UserView extends S.ExtendedClass<UserView, UserView.Encoded>()({
-  ...User.pick("id", "role"),
+export class UserView extends S.Class<UserView, UserView.Encoded>("UserView")({
+  id: User.fields.id,
+  role: User.fields.role,
   displayName: S.NonEmptyString2k
 }) {}
 
@@ -10,7 +11,7 @@ export class UserView extends S.ExtendedClass<UserView, UserView.Encoded>()({
 //
 /* eslint-disable */
 export namespace UserView {
-  export interface Encoded extends S.Struct.Encoded<typeof UserView["fields"]> {}
+  export interface Encoded extends S.StructNestedEncoded<typeof UserView> {}
 }
 /* eslint-enable */
 //

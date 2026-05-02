@@ -1,5 +1,7 @@
 {
   "explorer.sortOrderLexicographicOptions": "upper",
+  "typescript.experimental.expandableHover": true,
+  "js/ts.hover.maximumLength": 5000,
   "typescript.preferences.includePackageJsonAutoImports": "on",
   "typescript.preferences.autoImportFileExcludePatterns": [
     "nuxt/dist",

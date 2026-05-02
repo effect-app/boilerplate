@@ -1,40 +1,35 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { Context, Effect, Equivalence, pipe, S, type Schema } from "effect-app"
+import { SchemaTransformation } from "effect"
+import { Context, Effect, Equivalence, pipe, S } from "effect-app"
 import { fakerArb } from "effect-app/faker"
 import { UserProfileId } from "effect-app/ids"
-import { AST } from "effect-app/Schema"
-import type * as A from "effect/Arbitrary"
 
 export const FirstName = S
   .NonEmptyString255
   .pipe(
-    S.annotations({
-      [AST.ArbitraryAnnotationId]: (): A.LazyArbitrary<string> => (fc) => fc.string()
+    S.annotate({
+      toArbitrary: () => (fc) => fc.string().map(S.NonEmptyString255)
     }),
     S.withDefaultMake
   )
 
-export type FirstName = Schema.Type<typeof FirstName>
+export type FirstName = typeof FirstName.Type
 
 export const DisplayName = FirstName
-export type DisplayName = Schema.Type<typeof DisplayName>
-
-S.Array(S.NonEmptyString255).pipe(
-  S.annotations({ [AST.ArbitraryAnnotationId]: (): A.LazyArbitrary<Array<string>> => (fc) => fc.tuple() })
-)
+export type DisplayName = typeof DisplayName.Type
 
 export const LastName = S
   .NonEmptyString255
   .pipe(
-    S.annotations({
-      [AST.ArbitraryAnnotationId]: (): A.LazyArbitrary<string> => fakerArb((faker) => faker.person.lastName)
+    S.annotate({
+      toArbitrary: () => (fc) => fakerArb((faker) => faker.person.lastName)(fc).map(S.NonEmptyString255)
     }),
     S.withDefaultMake
   )
 
-export type LastName = Schema.Type<typeof LastName>
+export type LastName = typeof LastName.Type
 
-export class FullName extends S.ExtendedClass<FullName, FullName.Encoded>()({
+export class FullName extends S.Class<FullName, FullName.Encoded>("FullName")({
   firstName: FirstName,
   lastName: LastName
 }) {
@@ -58,14 +53,16 @@ export function createFullName(firstName: string, lastName: string) {
 export const UserId = UserProfileId
 export type UserId = UserProfileId
 
-export const Role = S.withDefaultMake(S.Literal("manager", "user"))
-export type Role = Schema.Type<typeof Role>
+export const Role = S.withDefaultMake(S.Literals(["manager", "user"]))
+export type Role = S.Schema.Type<typeof Role>
 
-export class UserFromIdResolver
-  extends Context.TagId("UserFromId")<UserFromIdResolver, { get: (userId: UserId) => Effect<User> }>()
-{}
+export class UserFromIdResolver extends Context.Service<UserFromIdResolver, {
+  readonly get: (userId: UserId) => Effect.Effect<User>
+}>()("UserFromId") {
+  static readonly getUser = (userId: UserId) => UserFromIdResolver.use((_) => _.get(userId))
+}
 
-export class User extends S.ExtendedClass<User, User.Encoded>()({
+export class User extends S.Class<User, User.Encoded>("User")({
   id: UserId.withDefault,
   name: FullName,
   email: S.Email,
@@ -78,22 +75,26 @@ export class User extends S.ExtendedClass<User, User.Encoded>()({
   static readonly resolver = UserFromIdResolver
 }
 
-export const UserFromId: Schema<User, string, UserFromIdResolver> = S.transformOrFail(
-  UserId,
-  S.typeSchema(User),
-  { decode: User.resolver.get, encode: (u) => Effect.succeed(u.id) }
+export const UserFromId: S.Codec<User, string, UserFromIdResolver> = UserId.pipe(
+  S.decodeTo(
+    S.toType(User),
+    SchemaTransformation.transformOrFail({
+      decode: (id) => User.resolver.getUser(id),
+      encode: (u) => Effect.succeed(u.id)
+    })
+  )
 )
 
-export const defaultEqual = pipe(Equivalence.string, Equivalence.mapInput((u: User) => u.id))
+export const defaultEqual = pipe(Equivalence.String, Equivalence.mapInput((u: User) => u.id))
 
 // codegen:start {preset: model}
 //
 /* eslint-disable */
 export namespace FullName {
-  export interface Encoded extends S.Struct.Encoded<typeof FullName["fields"]> {}
+  export interface Encoded extends S.StructNestedEncoded<typeof FullName> {}
 }
 export namespace User {
-  export interface Encoded extends S.Struct.Encoded<typeof User["fields"]> {}
+  export interface Encoded extends S.StructNestedEncoded<typeof User> {}
 }
 /* eslint-enable */
 //

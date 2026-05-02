@@ -1,19 +1,26 @@
 import { RequestContext } from "@effect-app/infra/RequestContext"
-import { S } from "./lib.js"
+import { InvalidStateError } from "effect-app/client"
+import { S, TaggedRequestFor } from "./lib.js"
 import { UserView } from "./views.js"
 
-class Response extends S.Class<Response>()({
+// codegen:start {preset: meta, sourcePrefix: src/resources/}
+const Req = TaggedRequestFor("HelloWorld")
+// codegen:end
+
+class Response extends S.Class<Response>("Response")({
   now: S.Date.withDefault,
   echo: S.String,
+  state: S.String,
   context: RequestContext,
   currentUser: S.NullOr(UserView),
   randomUser: UserView
 }) {}
 
-export class GetHelloWorld extends S.Req<GetHelloWorld>()("GetHelloWorld", {
+export class GetHelloWorld extends Req.Query<GetHelloWorld>()("GetHelloWorld", {
   echo: S.String
 }, { allowAnonymous: true, allowRoles: ["user"], success: Response }) {}
 
-// codegen:start {preset: meta, sourcePrefix: src/resources/}
-export const meta = { moduleName: "HelloWorld" } as const
-// codegen:end
+export class SetState extends Req.Command<SetState>()("SetState", {
+  state: S.String,
+  fail: S.Boolean
+}, { error: InvalidStateError, allowAnonymous: true, allowRoles: ["user"] }) {}

@@ -9,12 +9,19 @@
     "lib": [
       "DOM",
       "dom.iterable",
-      "ES2022"
+      "ES2023"
     ],
     "strict": true,
     "noUncheckedIndexedAccess": true,
     // This is not desirable, as it's useful in generators.
     "noImplicitReturns": false,
+    // the funny jokers don't type their libs correctly with | undefined as option
+    "exactOptionalPropertyTypes": false,
     "checkJs": false
-  }
+  },
+  "references": [
+    {
+      "path": "../api"
+    },
+  ]
 }

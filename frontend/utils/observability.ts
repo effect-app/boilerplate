@@ -1,16 +1,13 @@
 import { layer } from "@effect/opentelemetry/WebSdk"
+import * as OtelApi from "@opentelemetry/api"
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http"
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-web"
-import * as Sentry from "@sentry/vue"
 import { browserTracingIntegration } from "@sentry/browser"
-import {
-  SentrySpanProcessor,
-  SentryPropagator,
-} from "@sentry/opentelemetry-node"
-import type { App } from "vue"
-import * as OtelApi from "@opentelemetry/api"
+import { SentryPropagator, SentrySpanProcessor } from "@sentry/opentelemetry-node"
+import * as Sentry from "@sentry/vue"
+import { Effect, Layer } from "effect-app"
 import { isErrorSilenced } from "effect-app/client/errors"
-import { Layer, Effect } from "effect-app"
+import type { App } from "vue"
 
 // import {
 //   ConsoleSpanExporter,
@@ -54,9 +51,9 @@ export const setupSentry = (app: App<Element>, isRemote: boolean) => {
     dsn: "FIXME",
     integrations: [
       browserTracingIntegration({
-        //routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-        //tracePropagationTargets: ["localhost", /^\//],
-      }),
+        // routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+        // tracePropagationTargets: ["localhost", /^\//],
+      })
     ],
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
@@ -75,9 +72,9 @@ export const setupSentry = (app: App<Element>, isRemote: boolean) => {
     beforeSend(event, hint) {
       if (
         // skip handled errors
-        hint.originalException &&
-        typeof hint.originalException === "object" &&
-        isErrorSilenced(hint.originalException)
+        hint.originalException
+        && typeof hint.originalException === "object"
+        && isErrorSilenced(hint.originalException)
       ) {
         console.warn("Sentry: skipped HandledError", hint.originalException)
         return null
@@ -87,7 +84,7 @@ export const setupSentry = (app: App<Element>, isRemote: boolean) => {
       }
       annotateTags(event.tags)
       return event
-    },
+    }
   })
 }
 
@@ -103,10 +100,10 @@ export const WebSdkLive = (resource: {
         new OTLPTraceExporter({
           headers: {}, // magic here !!!
 
-          url: "http://localhost:4000/api/traces",
-        }),
-      ),
-    ],
+          url: "http://localhost:4000/api/traces"
+        })
+      )
+    ]
   }))
 
 export const SentrySdkLive = (
@@ -115,18 +112,18 @@ export const SentrySdkLive = (
     readonly serviceVersion: string
     readonly attributes: OtelApi.Attributes
   },
-  _env: string,
+  _env: string
 ) =>
   Layer.merge(
     Layer.effectDiscard(
       Effect.sync(() => {
         OtelApi.propagation.setGlobalPropagator(new SentryPropagator())
-      }),
+      })
     ),
     layer(() => ({
       resource,
-      spanProcessor: [new SentrySpanProcessor()],
-    })),
+      spanProcessor: [new SentrySpanProcessor()]
+    }))
   )
 
 // registerInstrumentations({

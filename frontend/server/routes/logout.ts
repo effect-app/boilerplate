@@ -1,4 +1,4 @@
-export default defineEventHandler(event => {
+export default defineEventHandler((event) => {
   deleteCookie(event, "user-id")
   return sendRedirect(event, "/")
 })

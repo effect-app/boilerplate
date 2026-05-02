@@ -1,8 +1,8 @@
 import { ClientEvents } from "#resources"
+import { S } from "effect-app"
 import ReconnectingEventSource from "reconnecting-eventsource"
 import { bus } from "./bus"
 import { onMountedWithCleanup } from "./onMountedWithCleanup"
-import { S } from "effect-app"
 
 const parseEvent = S.decodeUnknownSync(ClientEvents)
 

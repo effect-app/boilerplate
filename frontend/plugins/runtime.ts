@@ -1,83 +1,128 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { initializeSync } from "@effect-app/vue/runtime"
-import * as Layer from "effect/Layer"
-import * as Runtime from "effect/Runtime"
 import { Effect, Option } from "effect-app"
+import * as Layer from "effect/Layer"
 import { WebSdkLive } from "~/utils/observability"
 import "effect-app/builtin"
-import { ref, shallowRef } from "vue"
-import { HttpClient } from "effect-app/http"
-import { FetchHttpClient } from "@effect/platform"
+import { initializeAsync, makeIntl } from "@effect-app/vue"
+import { useIntlKey } from "@effect-app/vue-components"
 import { ApiClientFactory } from "effect-app/client/apiClientFactory"
-import { defineNuxtPlugin, useRuntimeConfig } from "nuxt/app"
+import { HttpClient } from "effect-app/http"
+import * as FetchHttpClient from "effect/unstable/http/FetchHttpClient"
+import { Atom } from "effect/unstable/reactivity"
+import { RpcClient, RpcSerialization } from "effect/unstable/rpc"
+import { useRuntimeConfig } from "nuxt/app"
+import { ref } from "vue"
+import { messages } from "~/composables/intl"
 
 export const versionMatch = ref(true)
 
-export const runtime = shallowRef<ReturnType<typeof makeRuntime>>()
-
-function makeRuntime(feVersion: string, disableTracing: boolean) {
-  const apiLayers = ApiClientFactory.layer({
-    url: "/api/api",
-    headers: Option.none(),
-  }).pipe(
-    Layer.provide(
-      Layer.effect(
-        HttpClient.HttpClient,
-        Effect.map(
-          HttpClient.HttpClient,
-          HttpClient.tap(r =>
+async function makeRuntime(feVersion: string, disableTracing: boolean) {
+  const OurHttpClient = Layer
+    .effect(
+      HttpClient.HttpClient,
+      HttpClient.HttpClient.use((client) =>
+        Effect.succeed(
+          HttpClient.tap(client, (r) =>
             Effect.sync(() => {
               const remoteFeVersion = r.headers["x-fe-version"]
               if (remoteFeVersion) {
                 versionMatch.value = feVersion === remoteFeVersion
               }
-            }),
-          ),
-        ),
-      ),
-    ),
-    Layer.provide(FetchHttpClient.layer),
-    Layer.provide(
-      Layer.succeed(FetchHttpClient.RequestInit, { credentials: "include" }),
-    ),
-  )
+            }))
+        )
+      )
+    )
+    .pipe(
+      Layer.provideMerge(FetchHttpClient.layer),
+      Layer.provideMerge(
+        Layer.succeed(FetchHttpClient.RequestInit, { credentials: "include" })
+      )
+    )
 
-  const rt: {
-    runtime: Runtime.Runtime<RT>
-    clean: () => void
-  } = initializeSync(
-    // TODO: tracing when deployed
+  const apiLayers = ApiClientFactory
+    .layer({
+      url: "/api/api",
+      headers: Option.none()
+    })
+    .pipe(Layer.provide(OurHttpClient))
+
+  const globalLayers = apiLayers.pipe(Layer.provideMerge(
     disableTracing
-      ? apiLayers
-      : apiLayers.pipe(
-          Layer.merge(
-            WebSdkLive({
-              serviceName: "effect-app-boilerplate-frontend",
-              serviceVersion: feVersion,
-              attributes: {},
-            }),
-          ),
-        ),
-  )
-  return {
-    ...rt,
-    runFork: Runtime.runFork(rt.runtime),
-    runSync: Runtime.runSync(rt.runtime),
-    runPromise: Runtime.runPromise(rt.runtime),
-    runCallback: Runtime.runCallback(rt.runtime),
-  }
+      ? Layer.empty
+      : WebSdkLive({
+        serviceName: "effect-app-boilerplate-frontend",
+        serviceVersion: feVersion,
+        attributes: {}
+      })
+  )) // .pipe(Layer.provideMerge(Logger.minimumLogLevel(LogLevel.Debug)))
+
+  const rt = await initializeAsync(globalLayers)
+
+  Atom.runtime.addGlobalLayer(globalLayers)
+
+  return Object.assign(rt, { OurHttpClient, globalLayers })
 }
 
 // TODO: make sure the runtime provides these
 export type RT = ApiClientFactory
 
-export default defineNuxtPlugin(_ => {
+export default defineNuxtPlugin(async (nuxtApp) => {
   const config = useRuntimeConfig()
+  const isRemote = config.public.env !== "local-dev"
+  const disableTracing = !isRemote || !config.public.telemetry
 
-  const rt = makeRuntime(
+  const runtime = await makeRuntime(
     config.public.feVersion,
-    config.public.env !== "local-dev" || !config.public.telemetry,
+    disableTracing
+    // config.public.env,
+    // isRemote,
+    // !isRemote && !config.public.telemetry,
   )
 
-  runtime.value = rt
+  const RpcClientProtocolLayers = (path: string) =>
+    Layer.provideMerge(
+      RpcClient
+        .layerProtocolHttp({
+          url: "/api/api/rpc" + path
+        })
+        .pipe(Layer.provide(RpcSerialization.layerNdjson)),
+      runtime.OurHttpClient
+    )
+
+  const locale = ref("de" as "de" | "en")
+  const { useIntl: useIntl_ } = makeIntl(messages, locale)
+
+  const humanize = (str: string) => {
+    return str
+      .replace(/([A-Z])/g, " $1") // Add space before capital letters
+      .replace(/^./, (char) => char.toUpperCase()) // Capitalize the first letter
+      .trim() // Remove leading/trailing spaces
+  }
+
+  const useIntl = () => {
+    const intl = useIntl_()
+    return Object.assign(intl, {
+      namespaced: (namespace: string) => ({
+        fieldName: (name: string) =>
+          intl.formatMessage({
+            id: `${namespace}.fields.${name}`,
+            defaultMessage: intl.formatMessage({
+              id: `general.fields.${name}`,
+              defaultMessage: humanize(name)
+            })
+          })
+      })
+    })
+  }
+
+  // for OmegaForm
+  nuxtApp.vueApp.provide(useIntlKey, useIntl_ as ReturnType<typeof makeIntl>["useIntl"])
+
+  return {
+    provide: {
+      useIntl,
+      runtime,
+      RpcClientProtocolLayers
+    }
+  }
 })

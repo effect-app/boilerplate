@@ -32,6 +32,27 @@ Notes
 
 - Make sure you don't have the old Vue/Vetur vs code plugin installed, but the new ones only: "Vue.volar", "Vue.vscode-typescript-vue-plugin"
 
+### Helpful editor hints
+
+Add to keybinds:
+
+```json
+{
+    "key": "ctrl+shift+i",
+    "command": "editor.action.sourceAction",
+    "args": {
+        "kind": "source.addMissingImports",
+        "apply": "first"
+    }
+}
+```
+
+## Documentation
+
+The project uses a git submodule (`doc/`) that references the GitHub wiki. Use `effa wiki sync` to initialize/update the documentation submodule.
+
+**Note**: When using this boilerplate for a new project, update the submodule reference in `.gitmodules` to point to your project's wiki and reconfigure the git submodule with `git submodule set-url doc <new-wiki-url>`.
+
 ## Framework documentation
 
 [WIP](https://github.com/effect-ts-app/docs)

@@ -1,6 +1,1 @@
-export {
-  convertIn,
-  convertOut,
-  type FieldInfo,
-  buildFieldInfoFromFields,
-} from "@effect-app/vue/form"
+export { buildFieldInfoFromFields, convertIn, convertOut, type FieldInfo } from "@effect-app/vue/form"

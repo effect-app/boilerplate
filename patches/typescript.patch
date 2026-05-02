@@ -1,30 +1,6 @@
-diff --git a/lib/_tsc.js b/lib/_tsc.js
-index 586d0514b6842000c0869c18f737802b85bef13d..7346151ed8f828f4f97023b93ed4bfb5c2e8ef90 100644
---- a/lib/_tsc.js
-+++ b/lib/_tsc.js
-@@ -12630,7 +12630,7 @@ function isInternalDeclaration(node, sourceFile) {
- // src/compiler/utilities.ts
- var resolvingEmptyArray = [];
- var externalHelpersModuleNameText = "tslib";
--var defaultMaximumTruncationLength = 160;
-+var defaultMaximumTruncationLength = 3200;
- var noTruncationMaximumTruncationLength = 1e6;
- function getDeclarationOfKind(symbol, kind) {
-   const declarations = symbol.declarations;
-diff --git a/lib/typescript.js b/lib/typescript.js
-index dc0fe9a56bb4d9b08efe8b5948a60a74a4e9997b..21f310639c1efc4f59ed7b7872db8b2feef90694 100644
 --- a/lib/typescript.js
 +++ b/lib/typescript.js
-@@ -16213,7 +16213,7 @@ function isInternalDeclaration(node, sourceFile) {
- // src/compiler/utilities.ts
- var resolvingEmptyArray = [];
- var externalHelpersModuleNameText = "tslib";
--var defaultMaximumTruncationLength = 160;
-+var defaultMaximumTruncationLength = 3200;
- var noTruncationMaximumTruncationLength = 1e6;
- function getDeclarationOfKind(symbol, kind) {
-   const declarations = symbol.declarations;
-@@ -158232,9 +158232,128 @@ function getFixInfos(context, errorCode, pos, useAutoImportProvider) {
+@@ -159873,9 +159873,128 @@
    const packageJsonImportFilter = createPackageJsonImportFilter(context.sourceFile, context.preferences, context.host);
    return info && sortFixInfo(info, context.sourceFile, context.program, packageJsonImportFilter, context.host, context.preferences);
  }
@@ -100,7 +76,7 @@ index dc0fe9a56bb4d9b08efe8b5948a60a74a4e9997b..21f310639c1efc4f59ed7b7872db8b2f
 +    try {
 +      const filePath = path.resolve(pr, 'tsconfig.plugins.json');
 +      const content = fs.readFileSync(filePath, 'utf8');
-+      pluginConfig = JSON.parse(content).compilerOptions?.plugins?.find(p => p.name === "ts-plugin-sort-import-suggestions");
++      pluginConfig = JSON.parse(content).compilerOptions?.plugins?.find((p) => p.name === "ts-plugin-sort-import-suggestions");
 +
 +      if(pluginConfig) {
 +        // reverse arrays so that the position is the right prio (higher index means higher prio)
@@ -141,7 +117,7 @@ index dc0fe9a56bb4d9b08efe8b5948a60a74a4e9997b..21f310639c1efc4f59ed7b7872db8b2f
 +    const override = autoImportOrderModule.getOverridenModule(symbolName);
 +
 +    if(override) {
-+      const idx = sortedFixes.findIndex(f => f.fix.moduleSpecifier === override)
++      const idx = sortedFixes.findIndex((f) => f.fix.moduleSpecifier === override)
 +      if(idx !== -1 && idx !== 0) {
 +        const temp = sortedFixes[0]
 +        sortedFixes[0] = sortedFixes[idx]
@@ -154,38 +130,30 @@ index dc0fe9a56bb4d9b08efe8b5948a60a74a4e9997b..21f310639c1efc4f59ed7b7872db8b2f
  }
  function getFixInfosWithoutDiagnostic(context, symbolToken, useAutoImportProvider) {
    const info = getFixesInfoForNonUMDImport(context, symbolToken, useAutoImportProvider);
-@@ -158243,9 +158362,11 @@ function getFixInfosWithoutDiagnostic(context, symbolToken, useAutoImportProvide
- }
- function getBestFix(fixes, sourceFile, program, packageJsonImportFilter, host, preferences) {
-   if (!some(fixes)) return;
-+  // These will always be placed first if available, and are better than other kinds
-   if (fixes[0].kind === 0 /* UseNamespace */ || fixes[0].kind === 2 /* AddToExisting */) {
-     return fixes[0];
-   }
-+
-   return fixes.reduce(
-     (best, fix) => (
-       // Takes true branch of conditional if `fix` is better than `best`
-@@ -158263,13 +158384,19 @@ function getBestFix(fixes, sourceFile, program, packageJsonImportFilter, host, p
+@@ -159904,13 +160023,19 @@
  }
  function compareModuleSpecifiers(a, b, importingFile, program, preferences, allowsImportingSpecifier, toPath3) {
    if (a.kind !== 0 /* UseNamespace */ && b.kind !== 0 /* UseNamespace */) {
 -    return compareBooleans(
-+    return false
-+    || compareBooleans(
-       b.moduleSpecifierKind !== "node_modules" || allowsImportingSpecifier(b.moduleSpecifier),
-       a.moduleSpecifierKind !== "node_modules" || allowsImportingSpecifier(a.moduleSpecifier)
+-      b.moduleSpecifierKind !== "node_modules" || allowsImportingSpecifier(b.moduleSpecifier),
+-      a.moduleSpecifierKind !== "node_modules" || allowsImportingSpecifier(a.moduleSpecifier)
 -    ) || compareModuleSpecifierRelativity(a, b, preferences) || compareNodeCoreModuleSpecifiers(a.moduleSpecifier, b.moduleSpecifier, importingFile, program) || compareBooleans(
-+    )
-+    || compareModuleSpecifierRelativity(a, b, preferences)
-+    || compareNodeCoreModuleSpecifiers(a.moduleSpecifier, b.moduleSpecifier, importingFile, program)
-+    || compareBooleans(
-       isFixPossiblyReExportingImportingFile(a, importingFile.path, toPath3),
-       isFixPossiblyReExportingImportingFile(b, importingFile.path, toPath3)
+-      isFixPossiblyReExportingImportingFile(a, importingFile.path, toPath3),
+-      isFixPossiblyReExportingImportingFile(b, importingFile.path, toPath3)
 -    ) || compareNumberOfDirectorySeparators(a.moduleSpecifier, b.moduleSpecifier);
-+    )
-+    || autoImportOrderModule.compare(a, b)
-+    || compareNumberOfDirectorySeparators(a.moduleSpecifier, b.moduleSpecifier);
++    return false
++      || compareBooleans(
++          b.moduleSpecifierKind !== "node_modules" || allowsImportingSpecifier(b.moduleSpecifier),
++          a.moduleSpecifierKind !== "node_modules" || allowsImportingSpecifier(a.moduleSpecifier)
++      )
++      || compareModuleSpecifierRelativity(a, b, preferences)
++      || compareNodeCoreModuleSpecifiers(a.moduleSpecifier, b.moduleSpecifier, importingFile, program)
++      || compareBooleans(
++          isFixPossiblyReExportingImportingFile(a, importingFile.path, toPath3),
++          isFixPossiblyReExportingImportingFile(b, importingFile.path, toPath3)
++      )
++      || autoImportOrderModule.compare(a, b)
++      || compareNumberOfDirectorySeparators(a.moduleSpecifier, b.moduleSpecifier);
    }
    return 0 /* EqualTo */;
  }

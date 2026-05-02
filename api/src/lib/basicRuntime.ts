@@ -1,102 +1,96 @@
-import { AppLogger } from "#lib/logger"
 import { reportError } from "@effect-app/infra/errorReporter"
 import { logJson } from "@effect-app/infra/logger/jsonLogger"
-import { PlatformLogger } from "@effect/platform"
 import { NodeFileSystem } from "@effect/platform-node"
-import { defaultTeardown, type RunMain, type Teardown } from "@effect/platform/Runtime"
 import * as Sentry from "@sentry/node"
-import { constantCase } from "change-case"
-import { Cause, Console, Effect, Fiber, Layer, ManagedRuntime } from "effect-app"
-import { dual } from "effect-app/Function"
+import dotenv from "dotenv"
+import { Cause, Console, Effect, Fiber, Layer, ManagedRuntime, pipe, References } from "effect-app"
 import * as ConfigProvider from "effect/ConfigProvider"
 import * as Logger from "effect/Logger"
-import * as Level from "effect/LogLevel"
-import type * as Runtime from "effect/Runtime"
+import type * as LogLevel from "effect/LogLevel"
+import type { ManagedRuntime as ManagedRuntimeType } from "effect/ManagedRuntime"
+import * as Runtime from "effect/Runtime"
+import { DevTools } from "effect/unstable/devtools"
+import { TracingLive } from "./observability.js"
 
-const envProviderConstantCase = ConfigProvider.mapInputPath(
-  ConfigProvider.fromEnv({
-    pathDelim: "_", // i'd prefer "__"
-    seqDelim: ","
-  }),
-  constantCase
-)
+const envProviderConstantCase = ConfigProvider.fromEnv().pipe(ConfigProvider.constantCase)
+const baseConfigProvider = ConfigProvider.layer(envProviderConstantCase)
 
-const levels = {
-  [Level.Trace.label]: Level.Trace,
-  [Level.Debug.label]: Level.Debug,
-  [Level.Info.label]: Level.Info,
-  [Level.Warning.label]: Level.Warning,
-  [Level.Error.label]: Level.Error
+const levels: Record<string, LogLevel.LogLevel> = {
+  Trace: "Trace",
+  Debug: "Debug",
+  Info: "Info",
+  Warning: "Warn",
+  Error: "Error"
 }
 
-const configuredLogLevel = process.env["LOG_LEVEL"]
-const configuredEnv = process.env["ENV"]
+const handleDotEnv = Effect.gen(function*() {
+  const envFile = "./.env.local"
 
-const logLevel = configuredLogLevel
-  ? levels[configuredLogLevel]
-  : configuredEnv && configuredEnv === "prod"
-  ? Level.Info
-  : Level.Debug
-if (!logLevel) throw new Error(`Invalid LOG_LEVEL: ${configuredLogLevel}`)
+  const { error } = dotenv.config({ path: envFile })
+  if (error) {
+    console.log("did not load .env.local")
+  } else {
+    console.log("loading env from: " + envFile)
+  }
+})
 
-const devLog = Logger
-  .withSpanAnnotations(Logger.logfmtLogger)
-  .pipe(
-    PlatformLogger.toFile("./dev.log")
-  )
+const configProvider = baseConfigProvider.pipe(
+  Layer.provide(Layer.effectDiscard(handleDotEnv))
+)
 
-const addDevLog = Logger.addScoped(devLog).pipe(Layer.provide(NodeFileSystem.layer))
+const logLayers = Effect
+  .gen(function*() {
+    const configuredLogLevel = process.env["LOG_LEVEL"]
+    const configuredEnv = process.env["ENV"]
 
-export const basicLayer = Layer.mergeAll(
-  Logger.minimumLogLevel(logLevel),
-  Effect
-    .sync(() =>
-      configuredEnv && configuredEnv !== "local-dev"
-        ? logJson
-        : process.env["NO_CONSOLE_LOG"]
-        ? Layer.mergeAll(
-          Logger.remove(Logger.defaultLogger),
-          addDevLog
-        )
-        : Layer.mergeAll(
-          Logger.replace(Logger.defaultLogger, Logger.withSpanAnnotations(Logger.prettyLogger())),
-          addDevLog
-        )
+    const logLevel: LogLevel.LogLevel = configuredLogLevel
+      ? levels[configuredLogLevel] ?? (() => {
+        throw new Error(`Invalid LOG_LEVEL: ${configuredLogLevel}`)
+      })()
+      : configuredEnv && configuredEnv === "prod"
+      ? "Info"
+      : "Debug"
+
+    const devLog = Logger.formatLogFmt.pipe(
+      Logger.toFile("./dev.log")
     )
-    .pipe(Layer.unwrapEffect),
-  Layer.setConfigProvider(envProviderConstantCase)
+
+    const addDevLog = Logger.layer([devLog], { mergeWithExisting: true }).pipe(Layer.provide(NodeFileSystem.layer))
+    const log = configuredEnv && configuredEnv !== "local-dev"
+      ? logJson
+      : process.env["NO_CONSOLE_LOG"]
+      ? Layer.mergeAll(
+        Logger.layer([]),
+        addDevLog
+      )
+      : Layer.mergeAll(
+        Logger.layer([Logger.consolePretty()]),
+        addDevLog
+      )
+    return Layer.succeed(References.MinimumLogLevel, logLevel).pipe(Layer.merge(log))
+  })
+  .pipe(Layer.unwrap)
+
+const devTools = Effect
+  .sync(() => pipe(process.env["DT"] ? DevTools.layer() : Layer.empty, Layer.provideMerge(TracingLive)))
+  .pipe(Layer.unwrap)
+
+export const basicLayer = logLayers.pipe(
+  Layer.provideMerge(devTools),
+  Layer.provideMerge(configProvider)
 )
 
 export const basicRuntime = ManagedRuntime.make(basicLayer)
-await basicRuntime.runtime()
+const services = await basicRuntime.context()
 
 const reportMainError = <E>(cause: Cause.Cause<E>) =>
-  Cause.isInterruptedOnly(cause) ? Effect.void : reportError("Main")(cause)
+  Cause.hasInterruptsOnly(cause) ? Effect.void : reportError("Main")(cause)
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const runMainPlatform: RunMain = dual((args) => Effect.isEffect(args[0]), (effect: Effect.Effect<any, any>, options?: {
-  readonly disableErrorReporting?: boolean | undefined
-  readonly disablePrettyLogger?: boolean | undefined
-  readonly teardown?: Teardown | undefined
-}) => {
-  const teardown = options?.teardown ?? defaultTeardown
-  const keepAlive = setInterval(() => {}, 2 ** 31 - 1)
-
-  const fiber = Effect.runFork(
-    options?.disableErrorReporting === true
-      ? effect
-      : Effect.tapErrorCause(effect, (cause) => {
-        if (Cause.isInterruptedOnly(cause)) {
-          return Effect.void
-        }
-        return AppLogger.logError(cause)
-      })
-  )
-
+const runMainPlatform = Runtime.makeRunMain(({ fiber, teardown }) => {
   let signaled = !import.meta.hot
 
   fiber.addObserver((exit) => {
-    clearInterval(keepAlive)
     teardown(exit, (code) => {
       if (signaled) process.exit(code)
     })
@@ -106,7 +100,7 @@ const runMainPlatform: RunMain = dual((args) => Effect.isEffect(args[0]), (effec
     signaled = true
     process.removeListener("SIGINT", onSigint)
     process.removeListener("SIGTERM", onSigint)
-    fiber.unsafeInterruptAsFork(fiber.id())
+    fiber.interruptUnsafe(fiber.id)
   }
 
   process.once("SIGINT", onSigint)
@@ -120,13 +114,13 @@ const runMainPlatform: RunMain = dual((args) => Effect.isEffect(args[0]), (effec
   }
 })
 
-export function runMain<A, E>(eff: Effect<A, E, never>, filterReport?: (cause: Cause.Cause<E>) => boolean) {
+export function runMain<A, E>(eff: Effect.Effect<A, E, never>, filterReport?: (cause: Cause.Cause<E>) => boolean) {
   return runMainPlatform(
     eff
       .pipe(
-        Effect.tapErrorCause((cause) => !filterReport || filterReport(cause) ? reportMainError(cause) : Effect.void),
+        Effect.tapCause((cause) => !filterReport || filterReport(cause) ? reportMainError(cause) : Effect.void),
+        Effect.provideContext(services),
         Effect.ensuring(basicRuntime.disposeEffect),
-        Effect.provide(basicLayer),
         Effect.ensuring(
           Effect
             .andThen(
@@ -135,8 +129,8 @@ export function runMain<A, E>(eff: Effect<A, E, never>, filterReport?: (cause: C
             )
         )
       ),
-    { disablePrettyLogger: true, disableErrorReporting: true }
+    { disableErrorReporting: true }
   )
 }
 
-export type RT = typeof basicRuntime.runtime extends Runtime.Runtime<infer R> ? R : never
+export type RT = ManagedRuntimeType.Services<typeof basicRuntime>

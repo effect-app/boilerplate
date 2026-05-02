@@ -1,17 +1,28 @@
 <script setup lang="ts">
 import { AccountsRsc } from "#resources"
-import { useRouter } from "vue-router"
+import { AsyncResult } from "@effect-app/vue"
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
+import { Option, pipe } from "effect-app"
+import { useRouter } from "vue-router"
 
 const accountsClient = clientFor(AccountsRsc)
-const [userResult] = useSafeQuery(accountsClient.GetMe)
+const [userResult] = accountsClient.GetMe.query()
+const [usersResult] = accountsClient.Index.query()
+
+const firstUserId = computed(() =>
+  pipe(
+    AsyncResult.value(usersResult.value),
+    Option.flatMapNullishOr((users) => users[0]?.id),
+    Option.getOrNull
+  )
+)
 
 const appConfig = {
-  title: "@effect-app/boilerplate",
+  title: "@effect-app/boilerplate"
 }
 
 useHead({
-  title: appConfig.title,
+  title: appConfig.title
 })
 
 const router = useRouter()
@@ -21,7 +32,9 @@ const router = useRouter()
   <v-app>
     <v-app-bar app>
       <v-app-bar-title>
-        <NuxtLink :to="{ name: 'index' }">Home</NuxtLink>
+        <NuxtLink :to="{ name: 'index' }">
+          Home
+        </NuxtLink>
         |
         <NuxtLink :to="{ name: 'blog' }">Blog</NuxtLink>
       </v-app-bar-title>
@@ -34,12 +47,18 @@ const router = useRouter()
           <div><a href="/logout">Logout</a></div>
         </template>
         <template #error>
-          <a href="/login/No3o_xbwEh8z2gSbcantz">Login</a>
+          <a
+            v-if="firstUserId"
+            :href="`/login/${encodeURIComponent(firstUserId)}`"
+          >Login</a>
+          <span v-else>No users available</span>
         </template>
       </QueryResult>
     </v-app-bar>
     <v-main>
-      <slot />
+      <ErrorBoundary>
+        <slot />
+      </ErrorBoundary>
     </v-main>
 
     <v-footer app>

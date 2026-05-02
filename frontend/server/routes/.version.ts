@@ -1,6 +1,6 @@
 export default defineEventHandler(() => {
   const config = useRuntimeConfig()
   return {
-    version: config.public.feVersion,
+    version: config.public.feVersion
   }
 })
