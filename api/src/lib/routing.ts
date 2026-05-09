@@ -78,12 +78,8 @@ const RequireRolesLive = Layer.effect(
   })
 )
 
-class AppMiddlewareImpl extends AppMiddleware {
-  static Default = this.layer.pipe(Layer.provide([
-    AllowAnonymousLive,
-    RequireRolesLive,
-    DefaultGenericMiddlewaresLive
-  ]))
-}
-
-export const { Router, matchAll } = makeRouter(AppMiddlewareImpl)
+export const { Router, matchAll } = makeRouter(AppMiddleware.layer.pipe(Layer.provide([
+  AllowAnonymousLive,
+  RequireRolesLive,
+  DefaultGenericMiddlewaresLive
+])))

@@ -32,7 +32,7 @@ export default Router(HelloWorldRsc)({
             })
           )
 
-        return new GetHelloWorld.success({
+        return GetHelloWorld.success.make({
           context,
           echo,
           state,
