@@ -30,7 +30,7 @@ const router = useRouter()
 
 <template>
   <v-app>
-    <v-app-bar app>
+    <v-app-bar>
       <v-app-bar-title>
         <NuxtLink :to="{ name: 'index' }">
           Home
