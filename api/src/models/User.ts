@@ -8,7 +8,7 @@ export const FirstName = S
   .NonEmptyString255
   .pipe(
     S.annotate({
-      toArbitrary: () => (fc) => fc.string().map(S.NonEmptyString255)
+      toArbitrary: () => (fc) => fakerArb((faker) => faker.person.firstName)(fc).map(S.NonEmptyString255)
     }),
     S.withDefaultMake
   )
