@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { clientFor as clientFor_ } from "#resources/lib"
+import type { makeIntl } from "@effect-app/vue"
 import { Commander } from "@effect-app/vue/commander"
 import { Confirm } from "@effect-app/vue/confirm"
 import { I18n } from "@effect-app/vue/intl"
@@ -30,7 +31,7 @@ export const run = <A, E>(
 
 export const runSync = <A, E>(effect: Effect.Effect<A, E, RT>) => useRuntime().runSync(effect)
 
-const intlLayer = I18n.toLayer(Effect.sync(useIntl))
+const intlLayer = I18n.toLayer(Effect.sync(useIntl as ReturnType<typeof makeIntl>["useIntl"]))
 // TODO: use optional CurrentToastId to auto assign toastId when not null?
 const toastLayer = Toast_.Toast.toLayer(
   Effect.sync(() => {

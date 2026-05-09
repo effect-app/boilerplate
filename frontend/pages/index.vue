@@ -45,7 +45,7 @@ const req = ref(makeReq())
 const { client, getHelloWorldSuspenseQuery, setStateMutation } = useHelloWorld()
 const [helloWorld] = await getHelloWorldSuspenseQuery(req)
 
-const setState = client.SetState.fn(
+const setState = client.SetState.fn()(
   function*(fail: boolean) {
     // all state happens to be generated within the command but you're free to accept whichever parameters you like
     const input = { state: new Date().toISOString(), fail }
