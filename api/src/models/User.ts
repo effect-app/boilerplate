@@ -63,7 +63,7 @@ export class UserFromIdResolver extends Context.Service<UserFromIdResolver, {
 }
 
 export class User extends S.Class<User, User.Encoded>("User")({
-  id: UserId.withDefault,
+  id: UserId.withConstructorDefault,
   name: FullName,
   email: S.Email,
   role: Role,

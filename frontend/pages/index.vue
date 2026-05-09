@@ -42,7 +42,7 @@ const makeReq = () => ({
 
 const req = ref(makeReq())
 
-const { getHelloWorldSuspenseQuery, setStateMutation, client } = useHelloWorld()
+const { client, getHelloWorldSuspenseQuery, setStateMutation } = useHelloWorld()
 const [helloWorld] = await getHelloWorldSuspenseQuery(req)
 
 const setState = client.SetState.fn(

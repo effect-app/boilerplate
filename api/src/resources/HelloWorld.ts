@@ -8,7 +8,7 @@ const Req = TaggedRequestFor("HelloWorld")
 // codegen:end
 
 class Response extends S.Class<Response>("Response")({
-  now: S.Date.withDefault,
+  now: S.Date.withConstructorDefault,
   echo: S.String,
   state: S.String,
   context: RequestContext,

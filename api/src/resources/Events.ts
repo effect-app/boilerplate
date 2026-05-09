@@ -2,8 +2,8 @@ import { S } from "#resources/lib"
 import type { Schema } from "effect-app/Schema"
 
 export class BogusEvent extends S.TaggedClass<BogusEvent, BogusEvent.Encoded>()("BogusEvent", {
-  id: S.StringId.withDefault,
-  at: S.Date.withDefault
+  id: S.StringId.withConstructorDefault,
+  at: S.Date.withConstructorDefault
 }) {}
 
 export const ClientEvents = S.Union([BogusEvent])

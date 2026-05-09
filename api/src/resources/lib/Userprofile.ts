@@ -6,7 +6,7 @@ import { UserProfileId } from "effect-app/ids"
 export class UserProfile extends Context.assignTag<UserProfile>("UserProfile")(
   S.Class<UserProfile>("UserProfile")({
     sub: UserProfileId,
-    roles: S.Array(Role).withDefault
+    roles: S.Array(Role).withConstructorDefault
   })
 ) {
   static readonly Codec = S.revealCodec(S.encodeKeys({ roles: "https://nomizz.com/roles" })(this))
