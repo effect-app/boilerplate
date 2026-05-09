@@ -15,9 +15,12 @@
     "watch": "pnpm build --watch",
     "watch2": "pnpm clean-dist && pnpm check -w",
     "check": "NODE_OPTIONS=--max-old-space-size=8192 tsc --build",
-    "lint": "NODE_OPTIONS=--max-old-space-size=8192 ESLINT_TS=1 eslint src test",
-    "lint:watch": "ESLINT_TS=1 esw -w --changed --clear --ext ts,tsx src test",
-    "lint-fix": "pnpm lint --fix",
+    "lint:oxlint": "oxlint --quiet --type-aware src test",
+    "lint:oxlint:fix": "oxlint --quiet --type-aware --fix src test",
+    "format": "dprint fmt --config ../dprint.jsonc .",
+    "format:check": "dprint check --config ../dprint.jsonc .",
+    "lint": "pnpm lint:oxlint && pnpm format:check",
+    "lint-fix": "pnpm lint:oxlint:fix && pnpm format",
     "test": "vitest",
     "test:run": "pnpm run test run --passWithNoTests",
     "testsuite": "pnpm circular && pnpm run test:run && pnpm lint",
@@ -186,8 +189,9 @@
     "@types/express": "^5.0.6",
     "@types/redis": "^2.8.32",
     "@types/swagger-ui-express": "^4.1.8",
-    "eslint": "^10.3.0",
     "dprint": "^0.54.0",
+    "oxlint": "^1.62.0",
+    "oxlint-tsgolint": "^0.22.1",
     "typescript": "~6.0.2"
   }
 }

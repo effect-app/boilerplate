@@ -61,6 +61,7 @@
     "@types/http-proxy": "^1.17.17",
     "@types/markdown-it": "^14.1.2",
     "eslint": "^10.3.0",
+    "eslint-plugin-vuetify": "^2.7.2",
     "dprint": "^0.54.0",
     "h3": "^2.0.0",
     "nuxt": "~4.4.4",
