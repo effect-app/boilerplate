@@ -12,8 +12,8 @@ export namespace UserProfileService {
   }
 }
 
-const userProfileFromJson = S.fromJsonString(UserProfile.Codec)
-const userProfileFromJWT = parseJwt(UserProfile.Codec)
+const userProfileFromJson = S.fromJsonString(S.toCodecJson(UserProfile))
+const userProfileFromJWT = parseJwt(UserProfile)
 
 // Workaround: Schema.encodeKeys has a TypeScript inference limitation where it cannot resolve
 // DecodingServices through its complex mapped type, falling back to `unknown` from the `Top` constraint.

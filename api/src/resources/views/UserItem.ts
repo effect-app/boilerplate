@@ -1,10 +1,10 @@
 import { User } from "#models/User"
 import { S } from "#resources/lib"
 
-export class UserItem extends S.Class<UserItem, UserItem.Encoded>("UserItem")({
+export class UserItem extends S.Opaque<UserItem, UserItem.Encoded>()(S.Struct({
   id: User.fields.id,
   name: S.NonEmptyString2k
-}) {}
+})) {}
 
 // codegen:start {preset: model}
 //

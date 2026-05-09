@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { clientFor as clientFor_ } from "#resources/lib"
-import { OperationsClient } from "#resources/Operations"
 import { Commander } from "@effect-app/vue/commander"
 import { Confirm } from "@effect-app/vue/confirm"
 import { I18n } from "@effect-app/vue/intl"
@@ -69,5 +68,3 @@ export const { Command, clientFor } = makeClient(
   clientFor_,
   Router.Default
 )
-
-export const useOperationsClient = () => useRuntime().runSync(OperationsClient)

@@ -33,7 +33,7 @@ export class UserRepo extends Context.Service<UserRepo>()("UserRepo", {
                 .internet
                 .exampleEmail({ firstName: g.name.firstName, lastName: g.name.lastName })
             )
-            return new User({
+            return User.make({
               ...g,
               email: Email(generate(emailArb(fc)).value),
               role: i === 0 || i === 1 ? "manager" : "user"

@@ -100,7 +100,7 @@ export class MetricsReader extends Context.Service<MetricsReader>()("MetricsRead
   static readonly Live = Layer.effect(this, this.make).pipe(Layer.provide(ExporterRunning.Default))
 }
 
-const filteredOps = ["Import.AllOperations", "Operations.FindOperation"]
+const filteredOps = ["Import.AllOperations"]
 const filteredPaths = ["/.well-known/local/server-health", ...filteredOps.map((op) => `/${op}`)]
 const filteredMethods = ["OPTIONS"]
 const filterAttrs = {

@@ -7,14 +7,14 @@ import { UserView } from "./views.js"
 const Req = TaggedRequestFor("HelloWorld")
 // codegen:end
 
-class Response extends S.Class<Response>("Response")({
+class Response extends S.Opaque<Response>()(S.Struct({
   now: S.Date.withConstructorDefault,
   echo: S.String,
   state: S.String,
   context: RequestContext,
   currentUser: S.NullOr(UserView),
   randomUser: UserView
-}) {}
+})) {}
 
 export class GetHelloWorld extends Req.Query<GetHelloWorld>()("GetHelloWorld", {
   echo: S.String

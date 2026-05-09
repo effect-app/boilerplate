@@ -29,16 +29,16 @@ export const LastName = S
 
 export type LastName = typeof LastName.Type
 
-export class FullName extends S.Class<FullName, FullName.Encoded>("FullName")({
+export class FullName extends S.Opaque<FullName, FullName.Encoded>()(S.Struct({
   firstName: FirstName,
   lastName: LastName
-}) {
+})) {
   static render(this: void, fn: FullName) {
     return S.NonEmptyString2k(`${fn.firstName} ${fn.lastName}`)
   }
 
   static create(this: void, firstName: FirstName, lastName: LastName) {
-    return new FullName({ firstName, lastName })
+    return FullName.make({ firstName, lastName })
   }
 }
 
@@ -62,15 +62,15 @@ export class UserFromIdResolver extends Context.Service<UserFromIdResolver, {
   static readonly getUser = (userId: UserId) => UserFromIdResolver.use((_) => _.get(userId))
 }
 
-export class User extends S.Class<User, User.Encoded>("User")({
+export class User extends S.Opaque<User, User.Encoded>()(S.Struct({
   id: UserId.withConstructorDefault,
   name: FullName,
   email: S.Email,
   role: Role,
   passwordHash: S.NonEmptyString255
-}) {
-  get displayName() {
-    return S.NonEmptyString2k(this.name.firstName + " " + this.name.lastName)
+})) {
+  static displayName(this: void, u: User) {
+    return S.NonEmptyString2k(`${u.name.firstName} ${u.name.lastName}`)
   }
   static readonly resolver = UserFromIdResolver
 }
