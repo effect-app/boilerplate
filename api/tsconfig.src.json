@@ -39,7 +39,7 @@
       "../types/modules",
       "vite/types/importMeta.d.ts"
     ],
-    "outDir": "./dist",
+    "outDir": "./dist"
   },
   "include": [
     "./src/**/*.ts"

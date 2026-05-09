@@ -1,7 +1,5 @@
 import { FakeSendgrid } from "@effect-app/infra/Emailer/fake"
 import { Sendgrid } from "@effect-app/infra/Emailer/Sendgrid"
-import { Operations } from "@effect-app/infra/Operations"
-import { OperationsRepo } from "@effect-app/infra/OperationsRepo"
 import { StoreMakerLayer } from "@effect-app/infra/Store/index"
 import { NodeServices } from "@effect/platform-node"
 import * as HttpClientNode from "@effect/platform-node/NodeHttpClient"
@@ -15,12 +13,12 @@ import { apiConfig, baseConfig } from "../config.js"
 
 const ClientLive = SqliteClient
   .layer({
-    filename: "./" + ".data" + "/db.db"
+    filename: "./.data/db.db"
   })
   .pipe(Layer.provide(
     Effect
       .gen(function*() {
-        const path = "./" + ".data"
+        const path = "./.data"
         if (!fs.existsSync(path)) {
           fs.mkdirSync(path)
         }
@@ -47,10 +45,6 @@ export const EmailerLive = Effect
       : FakeSendgrid
   })
   .pipe(Layer.unwrap)
-
-export const OperationsDefault = Operations.Live.pipe(
-  Layer.provide(Layer.effect(OperationsRepo, OperationsRepo.make).pipe(Layer.provide(RepoTest)))
-)
 
 export const Platform = HttpClientNode.layerUndici
 

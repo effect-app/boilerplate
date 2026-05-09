@@ -6,6 +6,7 @@ import { NotFoundError, NotLoggedInError } from "@effect-app/infra/errors"
 import { generate } from "@effect-app/infra/test"
 import { Array, Context, Effect, Exit, Layer, Option, pipe, Request, RequestResolver, S } from "effect-app"
 import { fakerArb } from "effect-app/faker"
+import { UserProfileId } from "effect-app/ids"
 import { Email } from "effect-app/Schema"
 import fc from "fast-check"
 import { Q } from "../lib.js"
@@ -33,10 +34,13 @@ export class UserRepo extends Context.Service<UserRepo>()("UserRepo", {
                 .internet
                 .exampleEmail({ firstName: g.name.firstName, lastName: g.name.lastName })
             )
-            return new User({
+            const role = i === 0 || i === 1 ? "manager" : "user"
+            return User.make({
               ...g,
+              id: UserProfileId("fake-user-" + i),
+              name: { firstName: S.NonEmptyString255(`Fake${i}First`), lastName: S.NonEmptyString255(`Fake${i}Last`) },
               email: Email(generate(emailArb(fc)).value),
-              role: i === 0 || i === 1 ? "manager" : "user"
+              role
             })
           }),
         Array.toNonEmptyArray,

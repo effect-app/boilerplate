@@ -12,13 +12,13 @@ export default Router(AccountsRsc)({
       *Index() {
         const users = yield* userRepo.all
         return users.map((u) =>
-          new UserItem({
+          UserItem.make({
             id: u.id,
             name: S.NonEmptyString2k(`${u.name.firstName} ${u.name.lastName}`)
           })
         )
       },
-      GetMe: userRepo.getCurrentUser
+      GetMe: () => userRepo.getCurrentUser
     })
   }
 })

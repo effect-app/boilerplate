@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { User } from "#models/User"
 import { AccountsRsc } from "#resources"
 import { AsyncResult } from "@effect-app/vue"
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
@@ -30,7 +31,7 @@ const router = useRouter()
 
 <template>
   <v-app>
-    <v-app-bar app>
+    <v-app-bar>
       <v-app-bar-title>
         <NuxtLink :to="{ name: 'index' }">
           Home
@@ -41,7 +42,7 @@ const router = useRouter()
       &nbsp;
       <QueryResult :result="userResult">
         <template #default="{ latest }">
-          <div>{{ latest.displayName }}</div>
+          <div>{{ User.displayName(latest) }}</div>
           <div><a href="/logout">Logout</a></div>
         </template>
         <template #error>

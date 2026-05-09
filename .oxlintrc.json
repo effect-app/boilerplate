@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "extends": [
+    "./node_modules/@effect-app/eslint-shared-config/src/oxlintrc.json"
+  ],
+  "ignorePatterns": [
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/*.d.ts",
+    "**/*.css",
+    "**/*.scss",
+    "**/*.vue",
+    "**/*.json",
+    "**/*.md",
+    "**/*.js",
+    "**/*.jsx",
+    "**/vitest.config.ts",
+    "**/eslint.*.mjs",
+    "**/CHANGELOG.md",
+    "repos/**"
+  ]
+}
