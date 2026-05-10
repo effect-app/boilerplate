@@ -1,5 +1,5 @@
-import { ClientEvents } from "#resources"
-import { S } from "effect-app"
+import { ClientEvents } from "#resources/Events"
+import * as S from "effect-app/Schema"
 import ReconnectingEventSource from "reconnecting-eventsource"
 import { bus } from "./bus"
 import { onMountedWithCleanup } from "./onMountedWithCleanup"

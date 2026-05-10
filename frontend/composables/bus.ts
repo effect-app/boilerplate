@@ -1,4 +1,4 @@
-import type { ClientEvents } from "#resources"
+import type { ClientEvents } from "#resources/Events"
 
 import mitt from "mitt"
 

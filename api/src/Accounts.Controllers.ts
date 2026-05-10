@@ -1,8 +1,8 @@
 import { Router } from "#lib/routing"
-import { AccountsRsc } from "#resources"
+import * as AccountsRsc from "#resources/Accounts"
 import { UserItem } from "#resources/views/UserItem"
-import { UserRepo } from "#services"
-import { S } from "effect-app"
+import { UserRepo } from "#services/DBContext/UserRepo"
+import * as S from "effect-app/Schema"
 
 export default Router(AccountsRsc)({
   dependencies: [UserRepo.Default],

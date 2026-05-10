@@ -2,12 +2,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { AllowAnonymous, AppMiddleware, RequestContextMap, RequireRoles } from "#resources/lib"
-import { makeUserProfileFromAuthorizationHeader, makeUserProfileFromUserHeader, UserProfile } from "#services"
+import { makeUserProfileFromAuthorizationHeader, makeUserProfileFromUserHeader, UserProfile } from "#services/UserProfile"
 import { DefaultGenericMiddlewaresLive, makeRouter } from "@effect-app/infra/api/routing"
-import { Effect, Exit, Layer } from "effect"
-import { Option } from "effect-app"
 import { NotLoggedInError, UnauthorizedError } from "effect-app/client"
 import { type HttpHeaders } from "effect-app/http"
+import * as Option from "effect-app/Option"
+import * as Effect from "effect/Effect"
+import * as Exit from "effect/Exit"
+import * as Layer from "effect/Layer"
 import { AppLogger } from "./logger.js"
 
 const AllowAnonymousLive = Layer.effect(

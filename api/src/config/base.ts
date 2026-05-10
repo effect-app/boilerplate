@@ -1,4 +1,6 @@
-import { Config as C, Redacted, S } from "effect-app"
+import * as C from "effect-app/Config"
+import * as S from "effect-app/Schema"
+import * as Redacted from "effect/Redacted"
 
 const FROM = {
   name: S.NonEmptyString255("@effect-app/boilerplate"),

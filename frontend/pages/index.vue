@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useOmegaForm } from "@effect-app/vue-components"
 import { mdiSetAll } from "@mdi/js"
-import { Effect, S } from "effect-app"
+import * as Effect from "effect-app/Effect"
+import * as S from "effect-app/Schema"
 import type { Email, NonEmptyString255 } from "effect-app/Schema"
 import { useHelloWorld } from "~/composables/useHelloWorld"
 

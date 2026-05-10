@@ -1,12 +1,13 @@
 import { Router } from "#lib/routing"
-import { HelloWorldRsc } from "#resources"
+import * as HelloWorldRsc from "#resources/HelloWorld"
 import { GetHelloWorld } from "#resources/HelloWorld"
 import { UserView } from "#resources/views/UserView"
-import { UserRepo } from "#services"
+import { UserRepo } from "#services/DBContext/UserRepo"
 import { getRequestContext } from "@effect-app/infra/api/setupRequest"
 import { generate } from "@effect-app/infra/test"
-import { Effect, S } from "effect-app"
 import { InvalidStateError } from "effect-app/client"
+import * as Effect from "effect-app/Effect"
+import * as S from "effect-app/Schema"
 
 let state: string = "initial"
 export default Router(HelloWorldRsc)({

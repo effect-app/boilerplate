@@ -1,7 +1,7 @@
-import { ClientEvents } from "#resources"
-import { Events } from "#services"
+import { ClientEvents } from "#resources/Events"
+import { Events } from "#services/Events"
 import { makeSSE } from "@effect-app/infra/api/middlewares"
-import { Effect } from "effect-app"
+import * as Effect from "effect-app/Effect"
 
 export const makeEvents = Effect.gen(function*() {
   const events = yield* Events

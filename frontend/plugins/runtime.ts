@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Effect, Option } from "effect-app"
+import * as Effect from "effect-app/Effect"
+import * as Option from "effect-app/Option"
 import * as Layer from "effect/Layer"
 import { WebSdkLive } from "~/utils/observability"
 import "effect-app/builtin"

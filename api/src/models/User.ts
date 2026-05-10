@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { SchemaTransformation } from "effect"
-import { Context, Effect, Equivalence, pipe, S } from "effect-app"
+import * as Context from "effect-app/Context"
+import * as Effect from "effect-app/Effect"
 import { fakerArb } from "effect-app/faker"
+import { pipe } from "effect-app/Function"
 import { UserProfileId } from "effect-app/ids"
+import * as S from "effect-app/Schema"
+import * as Equivalence from "effect/Equivalence"
+import * as SchemaTransformation from "effect/SchemaTransformation"
 
 export const FirstName = S
   .NonEmptyString255

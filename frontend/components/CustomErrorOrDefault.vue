@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts" generic="E">
-import { Cause } from "effect-app"
+import * as Cause from "effect/Cause"
 import type { Refinement } from "effect/Predicate"
 import { computed } from "vue"
 

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { User } from "#models/User"
-import { AccountsRsc } from "#resources"
+import * as AccountsRsc from "#resources/Accounts"
 import { AsyncResult } from "@effect-app/vue"
 import { VueQueryDevtools } from "@tanstack/vue-query-devtools"
-import { Option, pipe } from "effect-app"
+import { pipe } from "effect-app/Function"
+import * as Option from "effect-app/Option"
 import { useRouter } from "vue-router"
 
 const accountsClient = clientFor(AccountsRsc)

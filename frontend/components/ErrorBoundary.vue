@@ -35,7 +35,7 @@
 
 <script setup lang="ts" generic="E">
 import { useRuntimeConfig } from "#imports"
-import { Cause } from "effect-app"
+import * as Cause from "effect/Cause"
 import type { Refinement } from "effect/Predicate"
 import Suspender from "./Suspender.vue"
 import { CauseException } from "effect-app/client/errors";

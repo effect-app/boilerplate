@@ -1,7 +1,11 @@
-import type { ClientEvents } from "#resources"
+import type { ClientEvents } from "#resources/Events"
 import { storeId } from "@effect-app/infra/Store/Memory"
-import { Context, Effect, Layer, PubSub, Stream } from "effect-app"
+import * as Context from "effect-app/Context"
+import * as Effect from "effect-app/Effect"
+import * as Layer from "effect-app/Layer"
 import type { NonEmptyReadonlyArray } from "effect/Array"
+import * as PubSub from "effect/PubSub"
+import * as Stream from "effect/Stream"
 
 export class Events extends Context.Service<Events>()("Events", {
   make: Effect.gen(function*() {

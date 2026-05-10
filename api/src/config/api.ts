@@ -1,4 +1,4 @@
-import { Config } from "effect-app"
+import * as Config from "effect-app/Config"
 import { secretURL } from "effect-app/Config/SecretURL"
 import * as SecretURL from "effect-app/Config/SecretURL"
 import { env, serviceName } from "./base.js"
