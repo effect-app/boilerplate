@@ -15,9 +15,9 @@ WORKDIR /app
 # pnpm fetch does require only lockfile
 COPY patches ./patches
 COPY pnpm-lock.yaml .npmrc ./
+COPY package.json pnpm-workspace.yaml ./
 RUN pnpm fetch --prod
 
-COPY package.json pnpm-workspace.yaml ./
 
 COPY /frontend/package.json /app/frontend/
 
