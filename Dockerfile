@@ -1,6 +1,6 @@
-FROM node:20-alpine
+FROM node:24-alpine
 
-RUN npm i -g pnpm
+RUN npm i -g pnpm@11
 
 # Install CUPS/AVAHI
 RUN apk update --no-cache && apk add --no-cache cups cups-filters avahi inotify-tools
