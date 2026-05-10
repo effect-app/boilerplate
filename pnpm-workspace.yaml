@@ -2,3 +2,29 @@ packages:
   - api
   - frontend
   - e2e
+overrides:
+  eslint-plugin-vue: 10.9.0
+  eslint-plugin-vuetify>eslint-plugin-vue: 10.9.0
+  typescript: 6.0.3
+patchedDependencies:
+  typescript: patches/typescript.patch
+  ts-plugin-sort-import-suggestions: patches/ts-plugin-sort-import-suggestions.patch
+  "@tanstack/query-core": patches/@tanstack__query-core.patch
+publicHoistPattern:
+  - "*change-case*"
+  - "*vue*"
+shamefullyHoist: true
+linkWorkspacePackages: deep
+preferWorkspacePackages: true
+allowBuilds:
+  better-sqlite3: true
+  "@parcel/watcher": false
+  "@scarf/scarf": false
+  "@sentry/cli": false
+  core-js: false
+  dprint: false
+  esbuild: false
+  msgpackr-extract: false
+  protobufjs: false
+  unrs-resolver: false
+  vue-demi: false

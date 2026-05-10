@@ -2,35 +2,11 @@
   "name": "@effect-app-boilerplate/root",
   "private": true,
   "type": "module",
-  "pnpm": {
-    "overrides": {
-      "eslint-plugin-vue": "10.9.0",
-      "eslint-plugin-vuetify>eslint-plugin-vue": "10.9.0"
-    },
-    "patchedDependencies": {
-      "typescript": "patches/typescript.patch",
-      "ts-plugin-sort-import-suggestions": "patches/ts-plugin-sort-import-suggestions.patch",
-      "@tanstack/query-core": "patches/@tanstack__query-core.patch"
-    },
-    "ignoredBuiltDependencies": [
-      "@parcel/watcher",
-      "@scarf/scarf",
-      "@sentry/cli",
-      "core-js",
-      "dprint",
-      "esbuild",
-      "msgpackr-extract",
-      "protobufjs",
-      "unrs-resolver",
-      "vue-demi"
-    ],
-    "onlyBuiltDependencies": [
-      "better-sqlite3"
-    ]
-  },
+  "packageManager": "pnpm@11.0.9",
   "engines": {
-    "pnpm": ">= 10.2.1"
+    "pnpm": ">= 11.0.9"
   },
+
   "scripts": {
     "all": "pnpm -r",
     "preinstall": "npx only-allow pnpm",
