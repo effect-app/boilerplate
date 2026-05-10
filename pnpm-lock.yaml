@@ -131,8 +131,8 @@ importers:
         specifier: ^0.54.0
         version: 0.54.0
       effect-app:
-        specifier: 4.0.0-beta.220
-        version: 4.0.0-beta.220(effect@4.0.0-beta.64)
+        specifier: 4.0.0-beta.221
+        version: 4.0.0-beta.221(effect@4.0.0-beta.64)
       enhanced-resolve:
         specifier: ^5.21.0
         version: 5.21.0
@@ -194,8 +194,8 @@ importers:
         specifier: ^12.31.0
         version: 12.31.0
       '@effect-app/infra':
-        specifier: 4.0.0-beta.220
-        version: 4.0.0-beta.220(@azure/cosmos@4.9.3)(@azure/service-bus@7.9.5)(@effect/vitest@4.0.0-beta.64(effect@4.0.0-beta.64)(vitest@4.1.5(@opentelemetry/api@1.9.0)(@types/node@25.6.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(sass@1.99.0)(terser@5.45.0)(tsx@4.21.0)(yaml@2.8.3))))(@sendgrid/helpers@8.0.0)(@sendgrid/mail@8.1.6)(@sentry/node@10.51.0(@opentelemetry/exporter-trace-otlp-http@0.216.0(@opentelemetry/api@1.9.0)))(@sentry/opentelemetry@10.51.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.40.0))(effect@4.0.0-beta.64)(jwt-decode@4.0.0)(redis@3.1.2)(redlock@5.0.0-beta.2)
+        specifier: 4.0.0-beta.221
+        version: 4.0.0-beta.221(@azure/cosmos@4.9.3)(@azure/service-bus@7.9.5)(@effect/vitest@4.0.0-beta.64(effect@4.0.0-beta.64)(vitest@4.1.5(@opentelemetry/api@1.9.0)(@types/node@25.6.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(sass@1.99.0)(terser@5.45.0)(tsx@4.21.0)(yaml@2.8.3))))(@sendgrid/helpers@8.0.0)(@sendgrid/mail@8.1.6)(@sentry/node@10.51.0(@opentelemetry/exporter-trace-otlp-http@0.216.0(@opentelemetry/api@1.9.0)))(@sentry/opentelemetry@10.51.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.40.0))(effect@4.0.0-beta.64)(jwt-decode@4.0.0)(redis@3.1.2)(redlock@5.0.0-beta.2)
       '@effect/opentelemetry':
         specifier: 4.0.0-beta.64
         version: 4.0.0-beta.64(@opentelemetry/api-logs@0.216.0)(@opentelemetry/api@1.9.0)(@opentelemetry/resources@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-logs@0.216.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-metrics@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-node@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-web@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.40.0)(effect@4.0.0-beta.64)
@@ -254,8 +254,8 @@ importers:
         specifier: 4.0.0-beta.64
         version: 4.0.0-beta.64
       effect-app:
-        specifier: 4.0.0-beta.220
-        version: 4.0.0-beta.220(effect@4.0.0-beta.64)
+        specifier: 4.0.0-beta.221
+        version: 4.0.0-beta.221(effect@4.0.0-beta.64)
       express:
         specifier: ^5.2.1
         version: 5.2.1
@@ -354,8 +354,8 @@ importers:
         specifier: 4.0.0-beta.64
         version: 4.0.0-beta.64
       effect-app:
-        specifier: 4.0.0-beta.220
-        version: 4.0.0-beta.220(effect@4.0.0-beta.64)
+        specifier: 4.0.0-beta.221
+        version: 4.0.0-beta.221(effect@4.0.0-beta.64)
     devDependencies:
       '@playwright/test':
         specifier: ~1.59.1
@@ -391,11 +391,11 @@ importers:
   frontend:
     dependencies:
       '@effect-app/vue':
-        specifier: 4.0.0-beta.220
-        version: 4.0.0-beta.220(@effect/atom-vue@4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(@effect/platform-browser@4.0.0-beta.64(effect@4.0.0-beta.64))(@sentry/browser@10.51.0)(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))
+        specifier: 4.0.0-beta.221
+        version: 4.0.0-beta.221(@effect/atom-vue@4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(@effect/platform-browser@4.0.0-beta.64(effect@4.0.0-beta.64))(@sentry/browser@10.51.0)(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))
       '@effect-app/vue-components':
-        specifier: 4.0.0-beta.220
-        version: 4.0.0-beta.220(@effect/atom-vue@4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(@effect/platform-browser@4.0.0-beta.64(effect@4.0.0-beta.64))(@mdi/js@7.4.47)(@sentry/browser@10.51.0)(effect@4.0.0-beta.64)(intl-messageformat@11.2.4)(mdi-js@1.0.1)(primeflex@4.0.0)(primeicons@7.0.0)(primevue@4.5.4(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))(vuetify@4.0.6(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))
+        specifier: 4.0.0-beta.221
+        version: 4.0.0-beta.221(@effect/atom-vue@4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(@effect/platform-browser@4.0.0-beta.64(effect@4.0.0-beta.64))(@mdi/js@7.4.47)(@sentry/browser@10.51.0)(effect@4.0.0-beta.64)(intl-messageformat@11.2.4)(mdi-js@1.0.1)(primeflex@4.0.0)(primeicons@7.0.0)(primevue@4.5.4(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))(vuetify@4.0.6(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))
       '@effect/atom-vue':
         specifier: 4.0.0-beta.64
         version: 4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))
@@ -466,8 +466,8 @@ importers:
         specifier: 4.0.0-beta.64
         version: 4.0.0-beta.64
       effect-app:
-        specifier: 4.0.0-beta.220
-        version: 4.0.0-beta.220(effect@4.0.0-beta.64)
+        specifier: 4.0.0-beta.221
+        version: 4.0.0-beta.221(effect@4.0.0-beta.64)
       highcharts:
         specifier: ^12.6.0
         version: 12.6.0
@@ -874,8 +874,8 @@ packages:
       typescript: ~6.0.3
     bundledDependencies: []
 
-  '@effect-app/infra@4.0.0-beta.220':
-    resolution: {integrity: sha512-QBftKgN8Mccno5ujwFS4CYD3Q+dHOW/FRPTq9bmfSw1rK66T/M6tREBGEZepnn0lPrjC2Wpd8ky5iPlGpx4jXQ==}
+  '@effect-app/infra@4.0.0-beta.221':
+    resolution: {integrity: sha512-qsJdLgmf43pbWTlSS4c1mb6O5PR1FsryusjaM9p/7EvZxPkWnTE6wtKvONT9E7Ku9QufvMsW7fMB1pXwm1jbdQ==}
     peerDependencies:
       '@azure/cosmos': ^4.9.3
       '@azure/service-bus': ^7.9.5
@@ -889,8 +889,8 @@ packages:
       redis: ^3.1.2
       redlock: ^4.2.0
 
-  '@effect-app/vue-components@4.0.0-beta.220':
-    resolution: {integrity: sha512-dsT3oRf3E18k1AhTZsLPt2fryRj8j+FqYizcxiY8I2Sjn2uT2y7FyXki2VoOUZiTVYJvB6updEE5k9DFQTxjEw==}
+  '@effect-app/vue-components@4.0.0-beta.221':
+    resolution: {integrity: sha512-9JoGO/+4C8kh4M2DDptzrM11vST6U9D1ZrZA8IYcrcuaG1dtJHe6Nq0Fm6Ppsc+NVjaiW2LD23eMDs0goUOqtQ==}
     peerDependencies:
       '@mdi/js': ^7.4.47
       effect: 4.0.0-beta.64
@@ -902,8 +902,8 @@ packages:
       vue: ^3.5.33
       vuetify: ^4.0.6
 
-  '@effect-app/vue@4.0.0-beta.220':
-    resolution: {integrity: sha512-JAUEFZugPP+7T/jkLy1UPkBYf3eVv9phcRpgqTGvlvSKAd6cXFakOuyhpZytcuUS5dv5iXVs0fNllXro7wqOtw==}
+  '@effect-app/vue@4.0.0-beta.221':
+    resolution: {integrity: sha512-o2iZsTGabjyQtyWlFBdu0AdAzSOZ2n8jmhgheqjPD5584Fmyw1v8v++7EdABcLPk86qsCsArnDLqIkhAFG816g==}
     peerDependencies:
       '@effect/atom-vue': ^4.0.0-beta.62
       '@effect/platform-browser': ^4.0.0-beta.62
@@ -5009,8 +5009,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  effect-app@4.0.0-beta.220:
-    resolution: {integrity: sha512-rOgrv+fSqlayFWxVbY494tT8NWMTKTPKS07CodGIr4KCDbIhUrbcR5a3AJxG9pqgdUJ7r6vcYVCNRyJLiiphLA==}
+  effect-app@4.0.0-beta.221:
+    resolution: {integrity: sha512-zceW+GZN9Wg0LAPWZVz0rcXIS5YsYE2qqy4SwzIK7PKPVkXv3MxdOvDEtfcdtH4uCrqqxhK1+ZnyWNs8OBmLFg==}
     peerDependencies:
       effect: 4.0.0-beta.64
 
@@ -9289,7 +9289,7 @@ snapshots:
       - supports-color
       - ts-jest
 
-  '@effect-app/infra@4.0.0-beta.220(@azure/cosmos@4.9.3)(@azure/service-bus@7.9.5)(@effect/vitest@4.0.0-beta.64(effect@4.0.0-beta.64)(vitest@4.1.5(@opentelemetry/api@1.9.0)(@types/node@25.6.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(sass@1.99.0)(terser@5.45.0)(tsx@4.21.0)(yaml@2.8.3))))(@sendgrid/helpers@8.0.0)(@sendgrid/mail@8.1.6)(@sentry/node@10.51.0(@opentelemetry/exporter-trace-otlp-http@0.216.0(@opentelemetry/api@1.9.0)))(@sentry/opentelemetry@10.51.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.40.0))(effect@4.0.0-beta.64)(jwt-decode@4.0.0)(redis@3.1.2)(redlock@5.0.0-beta.2)':
+  '@effect-app/infra@4.0.0-beta.221(@azure/cosmos@4.9.3)(@azure/service-bus@7.9.5)(@effect/vitest@4.0.0-beta.64(effect@4.0.0-beta.64)(vitest@4.1.5(@opentelemetry/api@1.9.0)(@types/node@25.6.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.6.1)(sass@1.99.0)(terser@5.45.0)(tsx@4.21.0)(yaml@2.8.3))))(@sendgrid/helpers@8.0.0)(@sendgrid/mail@8.1.6)(@sentry/node@10.51.0(@opentelemetry/exporter-trace-otlp-http@0.216.0(@opentelemetry/api@1.9.0)))(@sentry/opentelemetry@10.51.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.40.0))(effect@4.0.0-beta.64)(jwt-decode@4.0.0)(redis@3.1.2)(redlock@5.0.0-beta.2)':
     dependencies:
       '@azure/cosmos': 4.9.3
       '@azure/service-bus': 7.9.5
@@ -9302,7 +9302,7 @@ snapshots:
       change-case: 5.4.4
       cross-fetch: 4.1.0
       effect: 4.0.0-beta.64
-      effect-app: 4.0.0-beta.220(effect@4.0.0-beta.64)
+      effect-app: 4.0.0-beta.221(effect@4.0.0-beta.64)
       fast-check: 4.7.0
       jose: 6.2.3
       jwt-decode: 4.0.0
@@ -9315,14 +9315,14 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@effect-app/vue-components@4.0.0-beta.220(@effect/atom-vue@4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(@effect/platform-browser@4.0.0-beta.64(effect@4.0.0-beta.64))(@mdi/js@7.4.47)(@sentry/browser@10.51.0)(effect@4.0.0-beta.64)(intl-messageformat@11.2.4)(mdi-js@1.0.1)(primeflex@4.0.0)(primeicons@7.0.0)(primevue@4.5.4(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))(vuetify@4.0.6(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))':
+  '@effect-app/vue-components@4.0.0-beta.221(@effect/atom-vue@4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(@effect/platform-browser@4.0.0-beta.64(effect@4.0.0-beta.64))(@mdi/js@7.4.47)(@sentry/browser@10.51.0)(effect@4.0.0-beta.64)(intl-messageformat@11.2.4)(mdi-js@1.0.1)(primeflex@4.0.0)(primeicons@7.0.0)(primevue@4.5.4(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))(vuetify@4.0.6(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))':
     dependencies:
-      '@effect-app/vue': 4.0.0-beta.220(@effect/atom-vue@4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(@effect/platform-browser@4.0.0-beta.64(effect@4.0.0-beta.64))(@sentry/browser@10.51.0)(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))
+      '@effect-app/vue': 4.0.0-beta.221(@effect/atom-vue@4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(@effect/platform-browser@4.0.0-beta.64(effect@4.0.0-beta.64))(@sentry/browser@10.51.0)(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))
       '@mdi/js': 7.4.47
       '@opentelemetry/api': 1.9.0
       '@tanstack/vue-form': 1.27.7(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))
       effect: 4.0.0-beta.64
-      effect-app: 4.0.0-beta.220(effect@4.0.0-beta.64)
+      effect-app: 4.0.0-beta.221(effect@4.0.0-beta.64)
       highlight.js: 11.11.1
       intl-messageformat: 11.2.4
       mdi-js: 1.0.1
@@ -9339,7 +9339,7 @@ snapshots:
       - '@sentry/browser'
       - '@vue/composition-api'
 
-  '@effect-app/vue@4.0.0-beta.220(@effect/atom-vue@4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(@effect/platform-browser@4.0.0-beta.64(effect@4.0.0-beta.64))(@sentry/browser@10.51.0)(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))':
+  '@effect-app/vue@4.0.0-beta.221(@effect/atom-vue@4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))))(@effect/platform-browser@4.0.0-beta.64(effect@4.0.0-beta.64))(@sentry/browser@10.51.0)(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))':
     dependencies:
       '@effect/atom-vue': 4.0.0-beta.64(effect@4.0.0-beta.64)(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))
       '@effect/platform-browser': 4.0.0-beta.64(effect@4.0.0-beta.64)
@@ -9350,7 +9350,7 @@ snapshots:
       '@vueuse/core': 14.3.0(vue@3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e)))
       change-case: 5.4.4
       effect: 4.0.0-beta.64
-      effect-app: 4.0.0-beta.220(effect@4.0.0-beta.64)
+      effect-app: 4.0.0-beta.221(effect@4.0.0-beta.64)
       query-string: 9.3.1
       vue: 3.5.33(typescript@6.0.2(patch_hash=6a20b8df080eb8a9c34008e1802ecfd839f4e90e07f1ee97f78694dbd95a520e))
     transitivePeerDependencies:
@@ -13476,7 +13476,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  effect-app@4.0.0-beta.220(effect@4.0.0-beta.64):
+  effect-app@4.0.0-beta.221(effect@4.0.0-beta.64):
     dependencies:
       '@tsconfig/strictest': 2.0.8
       date-fns: 4.1.0
