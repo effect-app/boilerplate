@@ -1,4 +1,4 @@
-import { Effect } from "effect-app"
+import * as Effect from "effect-app/Effect"
 import { HttpHeaders, HttpMiddleware, HttpServerResponse } from "effect-app/http"
 import { type ReadonlyRecord } from "effect/Record"
 import * as HttpEffect from "effect/unstable/http/HttpEffect"

@@ -3,6 +3,38 @@
   "extends": [
     "./node_modules/@effect-app/eslint-shared-config/src/oxlintrc.json"
   ],
+  "rules": {
+    "eslint/no-restricted-imports": ["error", {
+      "paths": [
+        {
+          "name": ".",
+          "message": "Please import from the specific file instead. Imports from index in the same directory are almost always wrong (circular)."
+        },
+        {
+          "name": "./",
+          "message": "Please import from the specific file instead. Imports from index in the same directory are almost always wrong (circular)."
+        },
+        {
+          "name": "./index",
+          "message": "Please import from the specific file instead. Imports from index in the same directory are almost always wrong (circular)."
+        },
+        {
+          "name": "effect",
+          "message": "Import from a submodule instead, e.g. `import * as Effect from \"effect/Effect\"`."
+        },
+        {
+          "name": "effect-app",
+          "message": "Import from a submodule instead, e.g. `import * as S from \"effect-app/Schema\"`."
+        }
+      ],
+      "patterns": [
+        {
+          "group": ["@effect/*", "@effect-app/*", "!@effect/vitest"],
+          "message": "Import from a submodule instead, e.g. `import * as X from \"@effect/platform/HttpClient\"`."
+        }
+      ]
+    }]
+  },
   "ignorePatterns": [
     "**/dist/**",
     "**/node_modules/**",

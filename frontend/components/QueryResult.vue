@@ -42,8 +42,8 @@
 >
 import { AsyncResult } from "@effect-app/vue"
 import type { SupportedErrors } from "effect-app/client/errors"
+import * as Option from "effect-app/Option"
 import type { Refinement } from "effect/Predicate"
-import { $$ } from "~/prelude"
 import Delayed from "./Delayed.vue"
 
 defineProps<{
@@ -51,5 +51,5 @@ defineProps<{
   customErrorGuard?: Refinement<unknown, E2>
 }>()
 
-const getLatest = (result: AsyncResult.AsyncResult<A, E>): A | null => $$.Option.getOrNull(AsyncResult.value(result))
+const getLatest = (result: AsyncResult.AsyncResult<A, E>): A | null => Option.getOrNull(AsyncResult.value(result))
 </script>

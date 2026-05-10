@@ -1,4 +1,4 @@
-import { Option } from "effect-app"
+import * as Option from "effect-app/Option"
 // import { UsersRsc } from "#resources"
 import { makeHeadersHashMap, makeRuntime } from "./shared.js"
 

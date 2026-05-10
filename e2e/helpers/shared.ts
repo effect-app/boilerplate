@@ -1,8 +1,9 @@
 import { initializeSync } from "@effect-app/vue/runtime"
-import { FetchHttpClient } from "@effect/platform"
-import { HashMap, Layer } from "effect"
 import { ApiClientFactory, type ApiConfig } from "effect-app/client"
 import { typedKeysOf } from "effect-app/utils"
+import * as HashMap from "effect/HashMap"
+import * as Layer from "effect/Layer"
+import * as FetchHttpClient from "effect/unstable/http/FetchHttpClient"
 import { readFileSync } from "fs"
 
 export function makeRuntime(config: ApiConfig) {

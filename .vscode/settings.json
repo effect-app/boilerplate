@@ -29,8 +29,7 @@
   "editor.formatOnSaveMode": "file",
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "explicit",
-    "source.fixAll.eslint": "explicit",
-    "source.addMissingImports": "explicit"
+    "source.fixAll.eslint": "explicit"
   },
   "editor.defaultFormatter": "dprint.dprint",
   "[vue]": {

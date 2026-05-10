@@ -1,29 +1,29 @@
 {
   "compilerOptions": {
     "paths": {
-      "#core/*": [
-        "./src/core/*.js"
-      ],
-      "#resources": [
-        "./src/resources.js"
-      ],
-      "#models": [
-        "./src/models.js"
-      ],
-      "#resources/*": [
-        "./src/resources/*.js"
-      ],
-      "#models/*": [
-        "./src/models/*.js"
-      ],
       "#config": [
         "./src/config.js"
+      ],
+      "#config/*": [
+        "./src/config/*.js"
+      ],
+      "#core/*": [
+        "./src/core/*.js"
       ],
       "#lib/*": [
         "./src/lib/*.js"
       ],
-      "#services": [
-        "./src/services.js"
+      "#models": [
+        "./src/models.js"
+      ],
+      "#models/*": [
+        "./src/models/*.js"
+      ],
+      "#resources/*": [
+        "./src/resources/*.js"
+      ],
+      "#services/*": [
+        "./src/services/*.js"
       ]
     }
   },

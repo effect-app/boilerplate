@@ -1,7 +1,7 @@
 import { UserProfile } from "#resources/lib"
 import { parseJwt } from "@effect-app/infra/api/routing/schema/jwt"
-import type { Effect } from "effect"
-import { S } from "effect-app"
+import * as S from "effect-app/Schema"
+import type * as Effect from "effect/Effect"
 import type { SchemaError } from "effect/Schema"
 
 export { UserProfile } from "#resources/lib/Userprofile"

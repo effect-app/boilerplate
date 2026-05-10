@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { parseRouteParams, parseRouteParamsOption } from "@effect-app/vue/routeParams"
-import { Option, type S } from "effect-app"
+import * as Option from "effect-app/Option"
+import type * as S from "effect-app/Schema"
 import { typedKeysOf } from "effect-app/utils"
 
 export const useRouteParams = <NER extends Record<string, S.Codec<any, any>>>(

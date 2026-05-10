@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as MW from "#lib/middleware"
-import { Events } from "#services"
+import { Events } from "#services/Events"
 import { reportError } from "@effect-app/infra/errorReporter"
-import { flow } from "effect"
-import { Config, Console, Effect, Layer } from "effect-app"
+import * as Config from "effect-app/Config"
+import * as Console from "effect/Console"
+import * as Effect from "effect-app/Effect"
+import { flow } from "effect-app/Function"
 import { HttpMiddleware, HttpRouter } from "effect-app/http"
+import * as Layer from "effect-app/Layer"
 import { RpcSerialization } from "effect/unstable/rpc"
 import { apiConfig, baseConfig } from "./config.js"
 

@@ -108,16 +108,6 @@
         "default": "./_cjs/models.cjs"
       }
     },
-    "#resources": {
-      "import": {
-        "types": "./dist/resources.d.ts",
-        "default": "./dist/resources.js"
-      },
-      "require": {
-        "types": "./dist/resources.d.ts",
-        "default": "./_cjs/resources.cjs"
-      }
-    },
     "#models/*": {
       "import": {
         "types": "./dist/models/*.d.ts",
@@ -136,6 +126,16 @@
       "require": {
         "types": "./dist/resources/*.d.ts",
         "default": "./_cjs/resources/*.cjs"
+      }
+    },
+    "#services/*": {
+      "import": {
+        "types": "./dist/services/*.d.ts",
+        "default": "./dist/services/*.js"
+      },
+      "require": {
+        "types": "./dist/services/*.d.ts",
+        "default": "./_cjs/services/*.cjs"
       }
     }
   },
