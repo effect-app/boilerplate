@@ -1,5 +1,3 @@
-<!-- TODO(shared): contains project-specific examples (Mako/Empasa/EasyLife, carriers, bauhaus, omega). Generalize before downstream sync. -->
-
 # How We Build — PMs and Engineers Working Together
 
 A practical guide for everyone who writes stories, ships code, or reviews PRs in this repo. Read this once. Refer back when you're starting something new.
@@ -28,7 +26,7 @@ That place is [`docs/flows/`](./flows/).
 - **The business rules** — weight caps, sequencing, who can do what
 - **The end-to-end flow** — labeled stages from import to closeout
 - **Step-by-step user actions** — what someone clicks, in order
-- **Carriers, labels, closeout, notifications** — who's informed, what gets printed, what goes to ABAS
+- **Carriers, labels, closeout, notifications** — who's informed, what gets printed, what goes to the external accounting system
 - **Variants and scenarios** — named cases linked to test fixtures
 - **A story-writing checklist** — what to consider when changing this workflow
 - **For engineers** — file paths, controllers, e2e specs, state machines (at the bottom, kept separate)
@@ -47,25 +45,25 @@ A good story has four pieces above whatever bullet points or flow notes the PM a
 
 One or two lines about the customer pain or business reason behind the change. Not "the boss asked for it" — the actual motivation. Engineers use this to make judgment calls when the spec doesn't cover an edge case.
 
-> *Bauhaus complained that pallets shipped to Berlin keep arriving with cartons sliding off. We want to prevent stacks taller than 4 pallets for that destination.*
+> *The company complained that pallets shipped to a particular destination keep arriving with cartons sliding off. We want to prevent stacks taller than 4 pallets for that destination.*
 
 ### 2. Acceptance criteria
 
 How will we know it works? Rough is fine — the PM doesn't need to write test code. Just say what should be true after the change.
 
-> *Stack height > 4 should show an error in the pack-spot dialog and prevent the user from confirming. Stack height ≤ 4 still allowed for Bauhaus pallets.*
+> *Stack height > 4 should show an error in the pack-spot dialog and prevent the user from confirming. Stack height ≤ 4 still allowed for this workflow's pallets.*
 
 ### 3. Out of scope
 
 What this story is **not** about. This kills more ambiguity than anything else. Engineers and AI agents are good at scope-creep when scope is unclear.
 
-> *Not changing the 5-pallet limit for other sites. Not touching Dachser, which already disallows stacking entirely.*
+> *Not changing the 5-pallet limit for other sites. Not touching carrier B, which already disallows stacking entirely.*
 
 ### 4. Touched flows
 
 A link to the flow doc section(s) this change applies to. This is the diff target.
 
-> *Applies to [Mako Bauhaus § Business rules](./flows/mako/bauhaus.md#the-big-business-rules) — specifically the "Stack height ≤5 pallets" row.*
+> *Applies to [\<company-a\> § Business rules](./flows/<company-a>/<workflow>.md#the-big-business-rules) — specifically the "Stack height ≤5 pallets" row.*
 
 That's it. The bullets describing the actual change come after.
 

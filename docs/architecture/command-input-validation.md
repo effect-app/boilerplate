@@ -1,5 +1,3 @@
-<!-- TODO(shared): contains project-specific examples (Mako/Empasa/EasyLife, carriers, bauhaus, omega). Generalize before downstream sync. -->
-
 # Command Input Validation: gate at the caller, not inside
 
 Default rule: a `Command.fn` body assumes its input is valid. All presence / non-empty / "user picked something" checks live in the caller. Two valid ways to gate the trigger:
@@ -66,7 +64,7 @@ const pack = packListClient.Pack.fn()(
   :optional-input="packInput"
   :disabled="pack.waiting || isWeightOverLimit"
 >
-  Verpacken
+  Pack
 </CommandButton>
 ```
 
@@ -106,7 +104,7 @@ Right — child emits `{ amount, article }`, parent wires straight through:
 
 ```vue
 <!-- child: NotThereDialog.vue -->
-<script setup lang="ts" generic="A extends MakoTask | BauhausTask | EasyLifeTask">
+<script setup lang="ts" generic="A extends TaskA | TaskB">
 const props = defineProps<{ selectedArticle: A | null /* … */ }>()
 const emit = defineEmits<{ (e: "not-there", v: { amount: PositiveInt; article: A }): void }>()
 

@@ -1,5 +1,3 @@
-<!-- TODO(shared): contains project-specific examples (Mako/Empasa/EasyLife, carriers, bauhaus, omega). Generalize before downstream sync. -->
-
 # Command Pattern for Mutations
 
 Use a Command for any user-triggered mutation that needs loading state, confirmation, toasts, or side effects after the write. The Command encapsulates **the whole procedure from start to finish** — confirmation, mutation, success-side state changes, navigation.
@@ -105,8 +103,8 @@ Share blocking across related commands via `blockKey` / `waitKey` options. `Comm
 `state` is captured at `.handle()` time and frozen for the duration. It's also surfaced in i18n messages as template variables, so a single action key can render different toasts depending on context:
 
 ```ts
-"action.Bauhaus/ShipList.UpdateStackability":
-  "{mode, select, stack {Stapeln} resetAll {Alle entstapeln} other {Stapelbarkeit aktualisieren}}"
+"action.ShipList.UpdateStackability":
+  "{mode, select, stack {Stack} resetAll {Reset all} other {Update stackability}}"
 ```
 
 `waitKey`/`blockKey` with dynamic keys enable per-item state in lists (see `Command.family()` below).
@@ -120,7 +118,7 @@ Self-closing, label-from-intl is the default form:
 <CommandButton :command="myCommand" :input="inputValue" color="primary" />
 
 <!-- BAD: hardcoded text overrides the intl label -->
-<CommandButton :command="myCommand" :input="inputValue">Verpacken</CommandButton>
+<CommandButton :command="myCommand" :input="inputValue">Pack</CommandButton>
 
 <!-- BAD: re-binding what CommandButton already handles -->
 <CommandButton :command="cmd" :disabled="cmd.blocked" :loading="cmd.waiting" />
@@ -190,7 +188,7 @@ const pause = cartClient.PausePacking.fn(
 
 const deleteUser = userClient.DeleteUser.fn(
   function*() {
-    yield* Command.confirmOrInterrupt("Benutzer wirklich löschen?")  // custom message
+    yield* Command.confirmOrInterrupt("Really delete user?")  // custom message
     yield* userClient.DeleteUser.mutate({ userId })
   },
   Command.withDefaultToast()
@@ -232,9 +230,9 @@ const toggle = Command.fn("toggleFavorite", {
 Effect services — `Router.push`, `I18n.formatMessage`, `Toast`, `Command` — are available natively. No hook imports, no `Effect.promise` wrapping:
 
 ```ts
-const claim = pickListClient.ClaimMakoList.fn(
+const claim = pickListClient.ClaimList.fn(
   function*() {
-    yield* pickListClient.ClaimMakoList.mutate
+    yield* pickListClient.ClaimList.mutate
     yield* Router.push({ name: "my-list" })
   },
   Command.withDefaultToast()
@@ -249,7 +247,7 @@ When you render commands in a `v-for` loop and need independent loading/disabled
 const deleteUser = Command.family((userId: UserId) =>
   Command.fn(deleteUserByIdMutation)(
     function*() {
-      yield* Command.confirmOrInterrupt("Benutzer wirklich löschen?")
+      yield* Command.confirmOrInterrupt("Really delete user?")
       yield* deleteUserByIdMutation({ userId })
     },
     Command.withDefaultToast()
@@ -289,11 +287,11 @@ Command.withDefaultToast({
 })
 ```
 
-DE defaults (in `frontend/composables/intl.ts`):
-- `handle.waiting` → `"Wird ausgeführt..."`
-- `handle.success` → `"{action} erfolgreich"`
-- `handle.with_errors` → `"{action} fehlgeschlagen"`
-- `handle.confirmation` → `"Bestätigen: {action}?"`
+Defaults (in `frontend/composables/intl.ts`):
+- `handle.waiting` → `"Running..."`
+- `handle.success` → `"{action} succeeded"`
+- `handle.with_errors` → `"{action} failed"`
+- `handle.confirmation` → `"Confirm: {action}?"`
 
 ## Standalone `Command.fn(mutation)` / `useAllowed`
 
@@ -302,7 +300,7 @@ When you don't have a `client.Action.fn(...)` (e.g. composing mutations from hoo
 ```ts
 const deleteUser = Command.fn(deleteUserByIdMutation)(
   function*() {
-    yield* Command.confirmOrInterrupt("Sicher?")
+    yield* Command.confirmOrInterrupt("Are you sure?")
     yield* deleteUserByIdMutation({ userId })
   },
   Command.withDefaultToast()
@@ -365,7 +363,7 @@ Use `typeof client.Action.Input`:
 const addOrderToCart = pickListClient.AddOrderToCart.fn(
   function*(input: typeof pickListClient.AddOrderToCart.Input) {
     yield* pickListClient.AddOrderToCart.mutate(input)
-    yield* Router.push({ name: "bauhaus-commission-my-list" })
+    yield* Router.push({ name: "commission-my-list" })
   },
   Command.withDefaultToast()
 )
@@ -376,9 +374,9 @@ const addOrderToCart = pickListClient.AddOrderToCart.fn(
 Omit the parameter; call `.handle()` with no args (not `.handle({})`):
 
 ```ts
-const claim = pickListClient.ClaimMakoList.fn(
+const claim = pickListClient.ClaimList.fn(
   function*() {
-    yield* pickListClient.ClaimMakoList.mutate
+    yield* pickListClient.ClaimList.mutate
     yield* Router.push({ name: "my-list" })
   },
   Command.withDefaultToast()
@@ -473,7 +471,7 @@ Declaration order matters: `meClient` first, then anything that references `meCl
 
 ## i18n: action keys are mandatory
 
-When adding a new API action (request class), add a translation in `frontend/composables/intl.ts` for **both** DE and EN. Without it, toasts show the raw key (`Bauhaus/ShipList.ReprintCdcLabel erfolgreich`).
+When adding a new API action (request class), add a translation in `frontend/composables/intl.ts` for each supported locale. Without it, toasts show the raw key (e.g. `ShipList.ReprintLabel succeeded`).
 
 Key format: `"action.{moduleName}.{ActionClassName}"`. `moduleName` comes from the resource's `meta.moduleName`.
 
@@ -482,20 +480,20 @@ Key format: `"action.{moduleName}.{ActionClassName}"`. `moduleName` comes from t
 Most actions need a short label for the button and a longer one for the toast. Use ICU `_isLabel` select:
 
 ```ts
-"action.MultiPick/PickList.AbortMultiPickList":
-  "{_isLabel, select, true {Abbrechen} other {Pickliste abbrechen}}",
+"action.PickList.AbortPickList":
+  "{_isLabel, select, true {Abort} other {Abort pick list}}",
 
 // same text for both → plain string is fine
-"action.Bauhaus/PickList.MarkOutOfStock": "Vergriffen markieren",
+"action.PickList.MarkOutOfStock": "Mark out of stock",
 
 // combine with other ICU vars
 "action.Overview.ChangeBlocked":
-  "Artikel {blocked, select, true {sperren} other {entsperren}}",
+  "{blocked, select, true {Block} other {Unblock}} item",
 ```
 
 The command system sets `_isLabel = true` when rendering as a button label, `false` for toasts. Use the select form when:
-- The toast needs more context than the button (`"Drucken"` button → `"CDC-Label erneut gedruckt"` toast).
-- Different verb form (`"Import"` button → `"Importieren"` toast).
+- The toast needs more context than the button (short button label → longer toast).
+- Different verb form (`"Import"` button → `"Importing"` toast).
 - The button label would be too long.
 
 ## Migration cheatsheet
@@ -525,8 +523,8 @@ const action = client.Action.fn(
 
 ```ts
 // BEFORE
-const cancelList = pickListClient.AbortMakoList.mutate.wrap(
-  (mutate) => confirmDialogOrInterrupt("Sicher?", "Abbrechen?").pipe(
+const cancelList = pickListClient.AbortList.mutate.wrap(
+  (mutate) => confirmDialogOrInterrupt("Are you sure?", "Abort?").pipe(
     Effect.andThen(mutate),
     Effect.andThen(() => Router.push({ name: "commission" }))
   ),
@@ -534,10 +532,10 @@ const cancelList = pickListClient.AbortMakoList.mutate.wrap(
 )
 
 // AFTER — generator reads top-to-bottom
-const cancelList = pickListClient.AbortMakoList.fn(
+const cancelList = pickListClient.AbortList.fn(
   function*() {
     yield* Command.confirmOrInterrupt()
-    yield* pickListClient.AbortMakoList.mutate
+    yield* pickListClient.AbortList.mutate
     yield* Router.push({ name: "commission" })
   },
   Command.withDefaultToast()
@@ -574,7 +572,6 @@ const addOrder = client.AddOrder.fn(
 ```ts
 // BAD — toast fires on the promise, not the Effect's success
 void run(updateStackability({ shipmentId, action })).then(() => toast.success("Updated"))
-
 // GOOD — toast is the command's job
 const updateStackability = client.UpdateStackability.mutate.wrap(Command.withDefaultToast())
 updateStackability.handle({ shipmentId, action })

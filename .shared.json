@@ -1,7 +1,7 @@
 {
   "$schema": "https://github.com/effect-app/shared/raw/main/.versions/v1.json",
   "repo": "github.com/effect-app/shared",
-  "ref": "cea84b77a49f",
+  "ref": "a3e1806f7b7e",
   "synced_at": "2026-05-23",
   "artifacts": {
     "docs/architecture": "docs/architecture",
@@ -9,8 +9,6 @@
     "e2e/helpers": "e2e/helpers",
     "ts-plugins/prefer-namespace-import": "scripts/ts-plugins/prefer-namespace-import"
   },
-  "exclude": [
-    "e2e/helpers/command.ts"
-  ],
-  "exclude_reason": "command.ts requires project adapter (intl + resources). Sync in once adapter pattern lands w/ effa CLI."
+  "exclude": [],
+  "exclude_reason": "Project-local files (e.g. e2e/helpers/adapter.ts) never exist in shared, so do not need exclusion."
 }

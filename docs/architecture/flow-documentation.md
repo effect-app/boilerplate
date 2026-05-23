@@ -1,8 +1,6 @@
-<!-- TODO(shared): contains project-specific examples (Mako/Empasa/EasyLife, carriers, bauhaus, omega). Generalize before downstream sync. -->
-
 # Flow Documentation — The Living Spec
 
-**Mandatory reading** for anyone (human or AI) touching warehouse flow code. Reinforce in code reviews.
+**Mandatory reading** for anyone (human or AI) touching workflow code. Reinforce in code reviews.
 
 ## What it is
 
@@ -16,10 +14,9 @@ Layout:
 ```
 docs/flows/
 ├── README.md                ← top-level index + glossary + cross-cutting
-├── shared/                  ← cross-company concepts (one-pick, multi-pick)
-├── easy-life/               ← per-workflow docs
-├── empasa/
-├── mako/
+├── shared/                  ← cross-company concepts
+├── <company-a>/             ← per-workflow docs
+├── <company-b>/
 ├── e2e-coverage-gaps.md     ← gap analysis surfaced from docs
 └── e2e-duplicate-walks.md   ← duplicate-walk audit
 ```

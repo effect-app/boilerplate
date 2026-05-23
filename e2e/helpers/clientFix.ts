@@ -1,5 +1,3 @@
-// TODO(shared): contains project-specific references. Generalize before downstream sync. See README.
-
 import type * as Effect from "effect-app/Effect"
 
 // tsgo bug workaround: `Client<M, ModuleName>` resolves each handler's `R` to

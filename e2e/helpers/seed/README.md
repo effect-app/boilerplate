@@ -1,5 +1,3 @@
-<!-- TODO(shared): contains project-specific examples (Mako/Empasa/EasyLife, carriers, bauhaus, omega). Generalize before downstream sync. -->
-
 # `e2e/helpers/seed/` — Composite API Seed Helpers
 
 Per the [walk-once + API-seed rule](../../../docs/architecture/e2e-state-pattern.md), specs walk a workflow via UI **exactly once** per workflow. Variants, edge cases, and branches reach their starting state via API calls — not by re-walking the UI.
@@ -11,11 +9,11 @@ This directory holds the composite helpers that perform those state transitions.
 ```ts
 // In a spec, after importing the sample CSV/JSON:
 const clients = await runtimes.userRuntime.runPromise(
-  setupDropshippingPickedState()
+  setupWorkflowPickedState()
 )
 
 // Now exercise only the divergent behavior:
-await page.goto("/dropshipping/package")
+await page.goto("/example-workflow/package")
 // … the unique UI/API assertions for this test
 ```
 
@@ -23,7 +21,7 @@ await page.goto("/dropshipping/package")
 
 When you find yourself writing the same 30+ lines of setup at the top of 3 or more specs, that's a candidate. Extract into a function here, named for the **state it leaves the system in**, not the steps it runs.
 
-Good names: `setupDropshippingPickedState`, `seedBauhausShipmentInCarrierBookedState`, `advanceMarkisenTruckToLoaded`.
+Good names: `setupWorkflowPickedState`, `seedShipmentInCarrierBookedState`, `advanceTruckToLoaded`.
 
 Bad names: `runPickFlow`, `setupTest`, `prepare`.
 
@@ -44,8 +42,7 @@ Each helper:
 
 | Helper            | What state it produces                                                                                                                                                             |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dropshipping.ts` | `setupDropshippingPickedState` — cart picked + pack spot + pack cart claimed; `setupDropshippingPickedCartOnly` — cart picked, before pack side                                    |
-| `bauhaus.ts`      | `setupBauhausPickedCart` — every item across every order on the cart marked picked + cart marked Full; `setupBauhausClaimedCart` — picker claimed StartPicking but no items marked |
-| `bucket.ts`       | `readBucket` / `resetBucket` — read or clear the per-namespace ABAS bucket of captured Closing / DeliveryNoteClosing / CSV-upload events                                           |
+| `<workflow>.ts`   | `setupWorkflowPickedState` — cart picked + pack spot + pack cart claimed; `setupWorkflowPickedCartOnly` — cart picked, before pack side                                            |
+| `bucket.ts`       | `readBucket` / `resetBucket` — read or clear the per-namespace bucket of captured events sent to the external accounting system                                                    |
 
 Add a row when you add a helper.

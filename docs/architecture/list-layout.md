@@ -1,12 +1,10 @@
-<!-- TODO(shared): contains project-specific examples (Mako/Empasa/EasyLife, carriers, bauhaus, omega). Generalize before downstream sync. -->
-
 # List Layout: per-item Actions inside the body slot
 
 Default rule: when a page renders a `<List>` (or any container whose body slot iterates over rows / panels) and each row exposes actions tied to that row's data, render those actions as a dedicated component **inside the body slot**. Do not lift the actions into a top-level form gated by a `selectedItem` ref.
 
 The body slot's mount lifecycle is the guard. While the panel is open, the component exists with a non-null `item` prop; when the panel collapses or the row leaves the list, the component unmounts and its state is discarded. No `v-if="selectedItem"`, no nullable-item branches in computeds, no provide/inject across slot scopes.
 
-Applies to every list-shaped page in the app — packer pages, commission pages, dashboards with expandable rows — wherever the action set depends on a single selected entity.
+Applies to every list-shaped page in the app — wherever the action set depends on a single selected entity.
 
 Companion to [command-input-validation.md](./command-input-validation.md) (commands take validated input) and [query-shape-list-vs-get.md](./query-shape-list-vs-get.md) (project at the boundary).
 
@@ -73,7 +71,7 @@ The implicit guard is the panel's mount lifecycle. State (selection, draft form 
 
 Anything whose subscription / identity must survive a panel re-mount lives in the parent:
 
-- **Event-source connections** (`useWeightScaleEventSource`, SSE feeds, websocket subscriptions). Opening / closing the connection every time the user expands a panel is wasteful and racy. Owned by the shell, passed down as a prop.
+- **Event-source connections** (hardware event sources, SSE feeds, websocket subscriptions). Opening / closing the connection every time the user expands a panel is wasteful and racy. Owned by the shell, passed down as a prop.
 - **Suspense query roots.** TanStack already caches, but the suspense boundary has to live above `<List>`. Shell owns the queries; `ItemActions` reads from props.
 - **One-time projections.** Shape transforms applied via `select` on the parent's query (see [query-shape-list-vs-get.md](./query-shape-list-vs-get.md#project-once-at-the-query-not-in-every-consumer)). Each `ItemActions` instance receives the already-projected shape and never re-derives.
 
@@ -89,7 +87,7 @@ const actionsRef = useTemplateRef<InstanceType<typeof ItemActions>>("actionsRef"
 
 const onEvent = Command.fn("…")(function*(payload: string) {
   const handler = actionsRef.value
-  if (!handler) return yield* new InvalidStateError("Bitte ein Element auswählen")
+  if (!handler) return yield* new InvalidStateError("Please select an item")
   yield* handler.handleEvent(payload)
 }, Command.withDefaultToast({ onSuccess: null, onWaiting: null }))
 ```
@@ -134,8 +132,8 @@ The per-row command emits `unpackPending` (or similar) when it finishes; the she
 
 ## Concrete instances
 
-- `frontend/workflows/mako/pages/standard/package/` — split shell + `_components/Actions.vue` + `_components/ActionsPacked.vue`.
-- `frontend/workflows/mako/pages/bauhaus/package/` — same shape, with workflow-specific extras (pallet dialog, building-block flow) entirely inside `Actions.vue`.
-- `frontend/workflows/easy-life/pages/dropshipping/package/` — same shape; the most recent convergence. Before the refactor, it ran a `selectedOrder` ref with a top-of-page form gated by `v-if`; the migration to this layout shrank the shell from ~750 lines to ~270.
+- `frontend/workflows/<workflow-a>/pages/package/` — split shell + `_components/Actions.vue` + `_components/ActionsPacked.vue`.
+- `frontend/workflows/<workflow-b>/pages/package/` — same shape, with workflow-specific extras (pallet dialog, building-block flow) entirely inside `Actions.vue`.
+- `frontend/workflows/<workflow-c>/pages/package/` — same shape; the most recent convergence. Before the refactor, it ran a `selectedOrder` ref with a top-of-page form gated by `v-if`; the migration to this layout shrank the shell from ~750 lines to ~270.
 
 When adding a new list-shaped page, start from this shape; if you find yourself adding a `selectedItem` ref to gate a top-level form, stop and move the form into a body-slot child instead.
