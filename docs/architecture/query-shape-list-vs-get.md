@@ -139,7 +139,7 @@ Before: each workflow dashboard (`bauhaus`, `dropshipping`, `easy-life`, `manufa
 After:
 
 - `Work.Get({ workType }) → WorkInfo` (non-nullable).
-- The `Work` service interface added `findByType(workType)` alongside the bulk `get`. Each tenant implementation (`Mako`, `EasyLife`, `Empasa`) dispatches `findByType` to its single per-workflow compute and falls through to `null` for unsupported types.
+- The `Work` service interface added `findByType(workType)` alongside the bulk `get`. Each tenant implementation dispatches `findByType` to its single per-workflow compute and falls through to `null` for unsupported types.
 - The controller flips `null` → `Effect.die` because a caller asking for a workflow the tenant doesn't run is a defect, not a user-facing miss.
 - The home page that renders every workflow still uses `Work.List`.
 

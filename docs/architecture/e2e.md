@@ -1,6 +1,6 @@
 # E2E Tests
 
-End-to-end tests live in `e2e/` and run on Playwright. They drive the real frontend against a real backend per company (Mako, Easy-Life, Empasa).
+End-to-end tests live in `e2e/` and run on Playwright. They drive the real frontend against a real backend per company.
 
 > **Mandatory pattern: walk a flow via UI exactly once per workflow; API-seed all variants.**
 > See [E2E State Pattern](./e2e-state-pattern.md) for the full rule + helpers.

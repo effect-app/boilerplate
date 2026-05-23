@@ -111,7 +111,7 @@ const markToastHandled = async (toast: Locator): Promise<void> => {
  * @param responseOption - Optional overrides; default Playwright timeout is 30 s.
  * @returns The value returned by {@link callback}.
  */
-/** A resource command class identified by its dotted `id` (e.g. `"Bauhaus/PackList.SaveItems"`). */
+/** A resource command class identified by its dotted `id` (e.g. `"WorkflowA/PackList.SaveItems"`). */
 export type RpcResource = { readonly id: string }
 
 /** Predicate matching a Playwright {@link Response}, or a resource to derive one from. */
@@ -122,7 +122,7 @@ export type ResponseMatch =
 /**
  * Build a Playwright response predicate from a resource command class.
  *
- * Resource ids follow `${path}.${action}` (e.g. `"Bauhaus/PackList.SaveItems"`);
+ * Resource ids follow `${path}.${action}` (e.g. `"WorkflowA/PackList.SaveItems"`);
  * RPC URLs follow `/rpc/${path}?action=${action}`. Splitting on the last dot
  * gives both halves, and the `action` is matched with `[?&]action=NAME(&|$)`
  * so that prefixes (e.g. `Pack` vs `PackArticles`) don't collide.

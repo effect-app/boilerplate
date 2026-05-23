@@ -26,7 +26,7 @@ Custom progress shapes are fine when the default `{ completed, total }` doesn't 
 ## Server: declare the request as a stream
 
 ```ts
-// api/src/Mako/Standard/resources/Overview.ts
+// api/src/<workflow>/resources/Overview.ts
 export class RetryLabel extends Req.Command<RetryLabel>()(
   "RetryLabel",
   {},
@@ -167,7 +167,7 @@ Sometimes the stream needs to carry both intermediate progress events **and** a 
 Co-locate the progress / final tagged structs with the resource and combine them via `S.TaggedUnion`:
 
 ```ts
-// api/src/Mako/Standard/resources/Overview.ts
+// api/src/<workflow>/resources/Overview.ts
 export class ImportProgress extends S.Opaque<ImportProgress, ImportProgress.Encoded>()(
   S.TaggedStruct("ImportProgress", {
     completed: S.NonNegativeInt,
@@ -310,7 +310,7 @@ For sub-second mutations, plain `.fn()` + `Command.withDefaultToast()` is fine �
 
 ## Concrete instances
 
-- `api/src/Mako/services/Import.ts` — full import pipeline (`Stream.callback` + `Operations.run` + emailer side channel for failures).
-- `api/src/services/PickImport.ts` — OnePick / MultiPick validate-and-import (`operations.run` + per-item `operations.update`).
-- `api/src/Mako/Standard/Overview.Controllers.ts` (`RetryLabel`) — `Stream.unwrap` over a queryAndSave pipeline.
-- `frontend/workflows/mako/components/StandardImport.vue`, `frontend/workflows/empasa/components/Manufacturing/Import.vue`, `frontend/workflows/easy-life/components/Import.vue` — client wiring with `Command.withDefaultToastStream({ progress: operationProgress })`.
+- `api/src/<workflow>/services/Import.ts` — full import pipeline (`Stream.callback` + `Operations.run` + emailer side channel for failures).
+- `api/src/services/PickImport.ts` — pick-workflow validate-and-import (`operations.run` + per-item `operations.update`).
+- `api/src/<workflow>/Overview.Controllers.ts` (`RetryLabel`) — `Stream.unwrap` over a queryAndSave pipeline.
+- `frontend/workflows/<workflow>/components/Import.vue` — client wiring with `Command.withDefaultToastStream({ progress: operationProgress })`.

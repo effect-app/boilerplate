@@ -1,6 +1,6 @@
 # Resource and Controller Layout
 
-Convention for ordering declarations in resource files and controllers. Apply to every `**/resources/*.ts` and `*.Controllers.ts` file. Reference implementation: [`api/src/MultiPick/resources/Overview.ts`](../../api/src/MultiPick/resources/Overview.ts) and [`api/src/MultiPick/Overview.Controllers.ts`](../../api/src/MultiPick/Overview.Controllers.ts).
+Convention for ordering declarations in resource files and controllers. Apply to every `**/resources/*.ts` and `*.Controllers.ts` file.
 
 ## Naming
 
@@ -11,7 +11,7 @@ Request classes use the following name patterns. Pick the most specific one that
 | `List` | Sole list query in the resource. | `List` |
 | `List*` | Additional list queries; suffix disambiguates. | `ListByCDC`, `ListLogin`, `ListOrders` |
 | `Get` | Sole singular query (e.g. by-id). **Non-nullable success schema.** Missing row → typed `NotFoundError` (most cases) or `Effect.die` (only when input is not user-controllable). | `Get` |
-| `Get*` | Additional singular queries; suffix names the read. Same non-nullable rule. | `GetById`, `GetCloseList`, `GetSettings`, `GetSettingsHold`, `GetMarkisenLabelPreview` |
+| `Get*` | Additional singular queries; suffix names the read. Same non-nullable rule. | `GetById`, `GetCloseList`, `GetSettings`, `GetLabelPreview` |
 | `Find` / `Find*` | Singular query that may return `null` / no result. Absence is part of the normal contract. | `Find`, `FindByGTIN`, `FindActiveCart` |
 
 `Get` vs `Find` split is **non-nullable success vs nullable success**. How missing rows surface from a `Get` depends on who picked the input: typed `NotFoundError` when the user could plausibly have picked a stale/invalid key, `Effect.die` only when the input is not user-controllable (tenant enum, own dashboard's own workflow). See [query-shape-list-vs-get.md](./query-shape-list-vs-get.md#backend-pattern) for the full rule.

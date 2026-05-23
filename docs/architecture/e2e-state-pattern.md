@@ -22,10 +22,10 @@ Currently the suite has **~150–180 sec/run** of redundant walks across top 3 h
 ### One UI happy path per workflow
 
 ```ts
-// e2e/tests/mako/bauhaus/full-workflow.spec.ts
+// e2e/tests/<workflow>/full-workflow.spec.ts
 test.slow()  // legitimately walks pick → pack → close end-to-end
-test("Bauhaus full workflow", async ({ page, runtimes }) => {
-  await importCSV("mako/sample_Gersthofen.json")
+test("<workflow> full workflow", async ({ page, runtimes }) => {
+  await importCSV("<workflow>/sample.json")
   // walk the UI from start to finish
 })
 ```
@@ -33,22 +33,22 @@ test("Bauhaus full workflow", async ({ page, runtimes }) => {
 ### Variants seeded via API helpers
 
 ```ts
-// e2e/tests/mako/bauhaus/variants/stacking.spec.ts
+// e2e/tests/<workflow>/variants/stacking.spec.ts
 test("Stack height 5 allowed, 6 rejected", async ({ runtimes }) => {
-  const { shipmentId } = await seedBauhausShipment({
+  const { shipmentId } = await seedShipment({
     site: "Berlin",
-    carrier: "SCHENKER",
+    carrier: "carrier-a",
     pallets: 6,  // pre-built 6-tall stack via API
   })
   // single UI assertion: stack-height-6 dialog shows error
 })
 
-test("Dachser pallets cannot stack", async ({ runtimes }) => {
-  const { shipmentId } = await seedBauhausShipment({
-    carrier: "DACHSER",
+test("Non-stackable carrier pallets cannot stack", async ({ runtimes }) => {
+  const { shipmentId } = await seedShipment({
+    carrier: "carrier-b",
     pallets: 2,
   })
-  // assert stackability dropdown disabled for Dachser
+  // assert stackability dropdown disabled for non-stackable carrier
 })
 ```
 
@@ -56,10 +56,10 @@ test("Dachser pallets cannot stack", async ({ runtimes }) => {
 
 ```
 e2e/helpers/seed/
-├── bauhaus.ts        seedShipment(...) advanceToStepD(...) putCartInTransferredState(...)
-├── dropshipping.ts   seedBatch(...) setupDropshippingPickedState(...)
-├── multipick.ts      seedDeliveryNotes(...)
-├── markisen.ts       seedTruck(...) loadTruck(...)
+├── <workflow-a>.ts   seedShipment(...) advanceToStepD(...) putCartInTransferredState(...)
+├── <workflow-b>.ts   seedBatch(...) setupPickedState(...)
+├── <workflow-c>.ts   seedDeliveryNotes(...)
+├── <workflow-d>.ts   seedTruck(...) loadTruck(...)
 └── _shared.ts        loginAs(role), apiClient(ctx)
 ```
 
@@ -68,7 +68,7 @@ Each helper calls real controllers — same path the UI takes. No backdoor DB mi
 ### POMs expose `jumpTo(state)`
 
 ```ts
-const cart = new BauhausCart(page)
+const cart = new WorkflowCart(page)
 await cart.jumpTo("transferred", { cartId })
 // no UI walk; cart now in transferred state
 ```
@@ -82,7 +82,7 @@ E2E is NOT the place for:
 - **Carrier API request structure** → unit-test `api/src/services/Ship/*.ts`
 - **Stack validator algorithm** → pure function, unit test
 - **Projection flag math** → unit/integration tests over repo data
-- **ABAS event serialization** → schema tests
+- **External-system event serialization** → schema tests
 - **PDF byte-level layout** → visual regression only for top-priority labels
 - **Mailer subject/recipient** → integration test w/ test transport
 
@@ -139,7 +139,7 @@ When refactoring an old spec toward this pattern:
 ## Existing helpers (already in repo)
 
 `e2e/helpers/import.ts`:
-- `importCSV(path)` / `importDropshippingJSON(filePath)` / `insertItems(req)`
+- `importCSV(path)` / `importJSON(filePath)` / `insertItems(req)`
 
 `e2e/helpers/act.ts`:
 - `waitForResponse(callback, matcher)` / `handleToast()` / `actButton()`

@@ -30,7 +30,7 @@ export const GetShipmentResponse = S.TaggedUnion(ClosedShipmentDetail, OpenShipm
 // guard usage:
 GetShipmentResponse.isA.Open(shipment)            // narrows to OpenShipmentDetail
 GetShipmentResponse.isA.Closed(shipment)          // narrows to ClosedShipmentDetail
-const inProgress = ShipmentState.isAnyOf("SchenkerBooked", "LabelsAssigned")
+const inProgress = ShipmentState.isAnyOf("Booked", "LabelsAssigned")
 inProgress(shipment.shipmentState)
 ```
 
@@ -44,7 +44,7 @@ const closedData       = computed(() => shipment.value._tag === "Closed" ? shipm
 const isClosingInProgress = computed(() => {
   if (isFinished.value) return false
   const state = shipment.value._tag === "Open" ? shipment.value.shipmentState : undefined
-  return state?._tag === "SchenkerBooked" || state?._tag === "LabelsAssigned"
+  return state?._tag === "Booked" || state?._tag === "LabelsAssigned"
 })
 ```
 
@@ -52,13 +52,13 @@ const isClosingInProgress = computed(() => {
 <!-- GOOD — guard in the template, full type narrowing inside the block -->
 <template v-if="GetShipmentResponse.isA.Closed(shipment)">
   {{ shipment.labelUrl }}
-  {{ shipment.schenkerTransactionId }}
+  {{ shipment.carrierTransactionId }}
 </template>
 ```
 
 ## Group related form state into one ref
 
-When **not** using OmegaForm, group related form fields into a single `ref` instead of one ref per field. Reduces variable noise and keeps related state colocated.
+When **not** using a form helper, group related form fields into a single `ref` instead of one ref per field. Reduces variable noise and keeps related state colocated.
 
 ```ts
 // BAD
@@ -70,4 +70,4 @@ const editableText    = ref("")
 const emailDraft = ref({ from: "", subject: "", text: "" })
 ```
 
-For anything bigger than a few fields with validation, reach for [OmegaForm](./omega-form.md) instead.
+For anything bigger than a few fields with validation, reach for the form helper instead.

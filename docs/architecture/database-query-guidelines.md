@@ -26,7 +26,7 @@ userRepo.query(
 )
 ```
 
-See `api/src/Mako/Standard/PackSpots.Controllers.ts`.
+See `api/src/<workflow>/PackSpots.Controllers.ts`.
 
 ### Also good
 
@@ -39,9 +39,9 @@ Q.relation("items").every(Q.where("state._tag", "picked"))
 
 See:
 
-- `api/src/MultiPick/Overview.Controllers.ts`
-- `api/src/Mako/Bauhaus/Overview.Controllers.ts`
-- `api/src/EasyLife/Standard/Overview.Controllers.ts`
+- `api/src/<workflow-a>/Overview.Controllers.ts`
+- `api/src/<workflow-b>/Overview.Controllers.ts`
+- `api/src/<workflow-c>/Overview.Controllers.ts`
 
 ### Bad
 
@@ -56,7 +56,7 @@ Problems:
 - loads nested `items` arrays just to answer an existence question
 - duplicates query intent in application code
 
-Current example: `api/src/Mako/Bauhaus/PickCarts.Controllers.ts`.
+Current example: `api/src/<workflow>/PickCarts.Controllers.ts`.
 
 ### Rule
 
@@ -77,15 +77,15 @@ orderRepo.query(
 )
 ```
 
-See `api/src/Mako/services/Dashboard.ts`.
+See `api/src/<workflow>/services/Dashboard.ts`.
 
 ### Also good
 
 ```ts
-Q.project(StandardModels.Order.mapFields(Struct.pick(["id"])), "project")
+Q.project(WorkflowModels.Order.mapFields(Struct.pick(["id"])), "project")
 ```
 
-See `api/src/Mako/services/Reset.ts`.
+See `api/src/<workflow>/services/Reset.ts`.
 
 ### Bad
 
@@ -133,9 +133,9 @@ Q.projectComputed(
 
 See:
 
-- `api/src/EasyLife/Standard/Overview.Controllers.ts`
-- `api/src/Mako/Bauhaus/Overview.Controllers.ts`
-- `api/src/Mako/Standard/Overview.Controllers.ts`
+- `api/src/<workflow-a>/Overview.Controllers.ts`
+- `api/src/<workflow-b>/Overview.Controllers.ts`
+- `api/src/<workflow-c>/Overview.Controllers.ts`
 
 ### Bad
 
@@ -214,12 +214,12 @@ A state machine's branches usually carry different fields. Project each branch i
 const shipmentGetPalletStateProjection = S.Union([
   PalletInitialState.mapFields(Struct.pick(["_tag", "dimensions"])),
   PalletReadyState.mapFields(Struct.pick(["_tag", "dimensions", "palletLabel"])),
-  BauhausPalletLabelCreatedState.mapFields(Struct.pick(["_tag", "dimensions", "palletLabel"])),
+  PalletLabelCreatedState.mapFields(Struct.pick(["_tag", "dimensions", "palletLabel"])),
   PalletPrintedState.mapFields(Struct.pick(["_tag", "dimensions", "palletLabel"]))
 ])
 ```
 
-See `api/src/Mako/Bauhaus/ShipList.Controllers.ts` (`Get`, `ReprintLabel`, `ReprintTransferList`).
+See `api/src/<workflow>/ShipList.Controllers.ts` (`Get`, `ReprintLabel`, `ReprintTransferList`).
 
 Each branch lists only the fields the render path reads on that tag. `_tag` is always picked so union discrimination still works after decode.
 
@@ -244,7 +244,7 @@ yield* shipmentRepo.query(
 )
 ```
 
-See `api/src/Mako/Bauhaus/ShipList.Controllers.ts` (`PrintTransferList`).
+See `api/src/<workflow>/ShipList.Controllers.ts` (`PrintTransferList`).
 
 ### Good (narrow read)
 
@@ -266,7 +266,7 @@ const shipment = yield* shipmentRepo.get(shipmentId)
 Problems:
 
 - pulls every nested array (orderIds, full pallet list, full state) from Cosmos
-- runs the full document decoder — including any `S.transform` that fans out to resolvers (e.g. `MakoUserFromId` → `GetUserById` per `createdBy`)
+- runs the full document decoder — including any `S.transform` that fans out to resolvers (e.g. `UserFromId` → `GetUserById` per `createdBy`)
 - couples the handler to fields it never reads
 
 ### Rule
@@ -301,7 +301,7 @@ List: {
 }
 ```
 
-See `api/src/Mako/Bauhaus/PackList.Controllers.ts` and `Order.Controllers.ts` (`Get`).
+See `api/src/<workflow>/PackList.Controllers.ts` and `Order.Controllers.ts` (`Get`).
 
 `Q.project(S.toEncoded(OrderView), "project")` tells Cosmos to return rows already shaped to the encoded `OrderView`. `raw:` on the handler returns them straight to the transport — no decode pass, so resolver-backed transforms never run.
 
@@ -339,7 +339,7 @@ BuildingBlockPallet
   .pipe(S.encodeKeys({ createdBy: "createdById" }))
 ```
 
-See `api/src/Mako/Bauhaus/BuildingBlockPallet.Controllers.ts` and `ShipList.Controllers.ts`.
+See `api/src/<workflow>/BuildingBlockPallet.Controllers.ts` and `ShipList.Controllers.ts`.
 
 ### Rule
 
@@ -360,7 +360,7 @@ static readonly render = (
 ) => ...
 ```
 
-See `api/src/Mako/Bauhaus/models/packages.ts`.
+See `api/src/<workflow>/models/packages.ts`.
 
 ### Rule
 
