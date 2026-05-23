@@ -1,0 +1,16 @@
+{
+  "$schema": "https://github.com/effect-app/shared/raw/main/.versions/v1.json",
+  "repo": "github.com/effect-app/shared",
+  "ref": "fb07fcb062e4",
+  "synced_at": "2026-05-23",
+  "artifacts": {
+    "docs/architecture": "docs/architecture",
+    "docs/how-we-build.md": "docs/how-we-build.md",
+    "e2e/helpers": "e2e/helpers",
+    "ts-plugins/prefer-namespace-import": "scripts/ts-plugins/prefer-namespace-import"
+  },
+  "exclude": [
+    "e2e/helpers/command.ts"
+  ],
+  "exclude_reason": "command.ts requires project adapter (intl + resources). Sync in once adapter pattern lands w/ effa CLI."
+}
