@@ -1,7 +1,7 @@
 {
   "$schema": "https://github.com/effect-app/shared/raw/main/.versions/v1.json",
   "repo": "github.com/effect-app/shared",
-  "ref": "fb07fcb062e4",
+  "ref": "cea84b77a49f",
   "synced_at": "2026-05-23",
   "artifacts": {
     "docs/architecture": "docs/architecture",
