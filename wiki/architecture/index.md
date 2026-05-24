@@ -4,7 +4,7 @@ This folder covers how the application is configured and how it selects workflow
 
 ## Process & documentation (read first)
 
-- **[Flow Documentation — The Living Spec](./flow-documentation.md)** ← what `docs/flows/` is, why it's mandatory, update-in-PR rule
+- **[Flow Documentation — The Living Spec](./flow-documentation.md)** ← what `wiki/flows/` is, why it's mandatory, update-in-PR rule
 - **[E2E State Pattern — Walk Once, API-Seed Variants](./e2e-state-pattern.md)** ← test design rule
 
 ## Technical architecture
@@ -24,4 +24,4 @@ This folder covers how the application is configured and how it selects workflow
 
 ## Business flow catalog
 
-See [`docs/flows/`](../flows/README.md) for per-company, per-workflow operating reference (carriers, labels, closeout, business rules, variants).
+See [`wiki/flows/`](../flows/README.md) for per-company, per-workflow operating reference (carriers, labels, closeout, business rules, variants).

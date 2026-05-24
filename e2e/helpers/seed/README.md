@@ -1,6 +1,6 @@
 # `e2e/helpers/seed/` — Composite API Seed Helpers
 
-Per the [walk-once + API-seed rule](../../../docs/architecture/e2e-state-pattern.md), specs walk a workflow via UI **exactly once** per workflow. Variants, edge cases, and branches reach their starting state via API calls — not by re-walking the UI.
+Per the [walk-once + API-seed rule](../../../wiki/architecture/e2e-state-pattern.md), specs walk a workflow via UI **exactly once** per workflow. Variants, edge cases, and branches reach their starting state via API calls — not by re-walking the UI.
 
 This directory holds the composite helpers that perform those state transitions. Each helper calls the same controllers the UI does — no DB shortcuts, no fixtures bypass — so seeded state is realistic.
 

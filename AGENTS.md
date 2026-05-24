@@ -1,6 +1,16 @@
 # Agent Instructions
 
-This is the Effect App library  itory, focusing on functional programming patterns and effect systems in TypeScript, wrapping and extending the Effect library.
+This is the `@effect-app/boilerplate` starter — a TypeScript monorepo seed (`api/` Effect backend + `frontend/` Nuxt + `e2e/` Playwright) for projects built on the Effect App ecosystem.
+
+## Architecture + conventions
+
+[`wiki/architecture/`](./wiki/architecture/index.md) is the source of truth for patterns:
+import rules, resource/controller layout, command pattern, query shapes,
+database query guidelines, e2e state pattern, vue conventions, etc.
+
+These are **synced** from [`effect-app/shared`](https://github.com/effect-app/shared) via `effa sync` — see [`wiki/shared-sync.md`](./wiki/shared-sync.md).
+
+When changing a synced doc: edit in place, then `effa sync-push --pr` to propagate upstream.
 
 ## Development Workflow
 
@@ -20,20 +30,16 @@ This is the Effect App library  itory, focusing on functional programming patter
 
 ### Mandatory Validation Steps
 
-#### New Features
+After making **all** changes, run from the **repository root**:
 
-- Run `pnpm lint-fix` (available inside each package) after editing files
-<!-- - Always run tests after making changes: `pnpm test <test_file.ts>` -->
-- Run type checking: `pnpm check` (available inside each package
-  - If type checking continues to fail, run `pnpm clean` to clear caches, then re-run `pnpm check`
-<!-- - Build the project: `pnpm build`
-- Check JSDoc examples compile: `pnpm docgen` -->
+```sh
+pnpm check && pnpm lint-fix
+```
 
-#### Migrations
-
-- Run `pnpm eslint fix ./src/<file.ts>` inside the package root after editing files
-- Run type checking: `pnpm check` inside the package root after editing files
-  - If type checking continues to fail, run `pnpm clean` to clear caches, then re-run `pnpm tsc ./src/<file.ts>`
+- `pnpm check` runs type checking for all packages. Because packages depend on each other (e.g. `frontend` and `e2e` depend on `api`), always run from the root to catch cross-package type errors.
+- `pnpm lint-fix` auto-formats and fixes lint issues across all packages.
+- If type checking continues to fail, run `pnpm clean` from the root to clear caches, then re-run `pnpm check`.
+- Note: `pnpm check` for `frontend` runs `nuxt prepare` automatically; if `lint-fix` fails with `.nuxt/tsconfig.json not found`, run `pnpm check` first, then `pnpm lint-fix`.
 
 
 ## Code Style Guidelines
@@ -78,6 +84,29 @@ class MyService extends Context.Service<MyService, {
 ## Checking Array is not empty
 
 Avoid `.length > 0` or `.length === 0` or `!.length` or `!!.length` checks, use `Array.isArrayNonEmpty` for type narrowing by default.
+
+## Resource and controller layout
+
+Resource files (`**/resources/*.ts`) and controllers (`*.Controllers.ts`) follow a
+fixed declaration order: `List`, `List*`, `Get`, `Get*`, then commands alphabetically.
+Helper classes (`S.Opaque`, views, errors, inputs) sit immediately before the request
+that uses them. See [wiki/architecture/resource-and-controller-layout.md](./wiki/architecture/resource-and-controller-layout.md).
+
+## Vue conventions
+
+`.vue` files have extra constraints (e.g. don't shadow `Array`). See [wiki/architecture/vue-conventions.md](./wiki/architecture/vue-conventions.md).
+
+## Schema defaults: `withConstructorDefault` vs `withDecodingDefault`
+
+All `.withConstructorDefault` extensions exposed by `effect-app` (`S.DateValid.withConstructorDefault`, `S.Boolean.withConstructorDefault`, `S.Array(...).withConstructorDefault`, `S.NullOr(...).withConstructorDefault`, `StringId.withConstructorDefault`, branded ids, etc.) are **construction-only**:
+
+- Applied when the field is omitted from input to a Schema constructor / `.make(...)` call.
+- **NOT** applied during `decode` (JSON, database rows, RPC payloads). A stored record missing the field will still fail to decode.
+- Therefore `.withConstructorDefault` MUST NOT be used as a just-in-time migration mechanism for database fields.
+
+Do not reach for `withDecodingDefault*` as a substitute either. A missing field in persisted data is just as likely to be data corruption as it is an old-shape document; silently substituting a default hides the problem and can poison downstream aggregates.
+
+Prefer an **explicit, preferably versioned** migration of database data (a schema-version field, a one-shot backfill, or a transform on read gated on an explicit version marker) over decode-time fallbacks. Don't shove missing fields under the rug.
 
 <!-- ## Barrel files
 

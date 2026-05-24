@@ -15,11 +15,11 @@ The bullets assumed shared context. That worked when everyone had been in the sa
 
 We don't want to fix this by writing every story from scratch. That would be wasteful — most of what's in the system is stable. We want **diff-style stories** (small, focused, "change X to Y") to keep working, but we need somewhere for the "X" to actually live in writing.
 
-That place is [`docs/flows/`](./flows/).
+That place is [`wiki/flows/`](./flows/).
 
 ## The flow docs — what they are
 
-`docs/flows/` is the single source of truth for every customer-facing workflow we run. One file per workflow, per company. Each file describes:
+`wiki/flows/` is the single source of truth for every customer-facing workflow we run. One file per workflow, per company. Each file describes:
 
 - **What the workflow is for** — the business purpose, in plain English
 - **Who's involved** — pickers, packers, managers, admins
@@ -33,7 +33,7 @@ That place is [`docs/flows/`](./flows/).
 
 The structure is deliberate: PMs and BAs read the top, engineers read all of it.
 
-Browse the catalog at [`docs/flows/README.md`](./flows/README.md).
+Browse the catalog at [`wiki/flows/README.md`](./flows/README.md).
 
 ## How stories should be written
 
@@ -98,7 +98,7 @@ What is not OK: shipping new behavior to production without an e2e test exercisi
 
 Same rule applies to AI agents. If an agent ships a behavior change, it must also write the test or open a paired PR doing so.
 
-There's a discipline to *how* to write the test, too — see [`docs/architecture/e2e-state-pattern.md`](./architecture/e2e-state-pattern.md) for the walk-once + API-seed rule. Adding a redundant full-flow walk to cover a variant is worse than adding nothing.
+There's a discipline to *how* to write the test, too — see [`wiki/architecture/e2e-state-pattern.md`](./architecture/e2e-state-pattern.md) for the walk-once + API-seed rule. Adding a redundant full-flow walk to cover a variant is worse than adding nothing.
 
 ## How code reviewers reinforce this
 
@@ -106,7 +106,7 @@ Reviewers (including Copilot, see [`.github/copilot-instructions.md`](../.github
 
 The phrasing we use:
 
-> "This PR changes [behavior X] but `docs/flows/<company>/<workflow>.md` still describes the old behavior. Per the same-PR rule in `docs/architecture/flow-documentation.md`, please update [specific section]."
+> "This PR changes [behavior X] but `wiki/flows/<company>/<workflow>.md` still describes the old behavior. Per the same-PR rule in `wiki/architecture/flow-documentation.md`, please update [specific section]."
 
 Reviewers should be specific. Generic "see the docs" comments get ignored.
 
@@ -167,9 +167,9 @@ This is why the same-PR rule isn't a nice-to-have. It's the price of admission f
 
 ### When you onboard or come back from leave
 
-1. Browse `docs/flows/` for the company you work with
+1. Browse `wiki/flows/` for the company you work with
 2. Read the company README and any workflow you'll touch
-3. Skim recent git log of `docs/flows/<company>/` to see what changed while you were away
+3. Skim recent git log of `wiki/flows/<company>/` to see what changed while you were away
 
 ## What this isn't
 
@@ -179,10 +179,8 @@ It's also not optional. The cost of skipping it shows up later — in confused e
 
 ## Where to go from here
 
-- **Catalog of flows** → [`docs/flows/README.md`](./flows/README.md)
-- **Why we treat flow docs as living specs** → [`docs/architecture/flow-documentation.md`](./architecture/flow-documentation.md)
+- **Catalog of flows** → [`wiki/flows/README.md`](./flows/README.md)
+- **Why we treat flow docs as living specs** → [`wiki/architecture/flow-documentation.md`](./architecture/flow-documentation.md)
 - **AI agent instructions** → [`AGENTS.md`](../AGENTS.md)
 - **PR review enforcement** → [`.github/copilot-instructions.md`](../.github/copilot-instructions.md)
-- **Long-term docs strategy** (plan, not executed) → [`docs/documentation-strategy.md`](./documentation-strategy.md)
-
-If you have feedback on this process, talk to Patrick. We'd rather iterate on the rules than have people quietly ignoring them.
+If you have feedback on this process, talk to your team leads. We'd rather iterate on the rules than have people quietly ignoring them.

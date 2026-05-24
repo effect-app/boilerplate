@@ -6,8 +6,8 @@ How shared architecture docs, e2e helpers, and ts-plugins move between this proj
 
 | Local path | Source of truth | Sync method |
 |---|---|---|
-| `docs/architecture/*` | `effect-app/shared` `docs/architecture/` | `effa sync` (strict) |
-| `docs/how-we-build.md` | `effect-app/shared` | `effa sync` (strict) |
+| `wiki/architecture/*` | `effect-app/shared` `wiki/architecture/` | `effa sync` (strict) |
+| `wiki/how-we-build.md` | `effect-app/shared` | `effa sync` (strict) |
 | `e2e/helpers/*` (except `adapter.ts`) | `effect-app/shared` `e2e/helpers/` | `effa sync` (strict) |
 | `e2e/helpers/adapter.ts` | **project-local** | hand-edited per project |
 | `scripts/ts-plugins/prefer-namespace-import/` | `effect-app/shared` `ts-plugins/...` | `effa sync` (strict) |
@@ -40,7 +40,7 @@ git add -A && git commit
 
 ### Edit a shared doc in-flow (then propagate)
 
-1. Edit the file in this project as if it were local (e.g. `docs/architecture/import-rules.md`).
+1. Edit the file in this project as if it were local (e.g. `wiki/architecture/import-rules.md`).
 2. Verify the rule by using it locally.
 3. `effa sync-diff` — confirms the file is `M`.
 4. `effa sync-push --pr -m "tighten cross-workflow namespace rule"`

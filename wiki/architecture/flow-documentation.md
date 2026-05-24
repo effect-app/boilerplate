@@ -4,7 +4,7 @@
 
 ## What it is
 
-`docs/flows/` is the single source of truth for every customer-facing workflow.
+`wiki/flows/` is the single source of truth for every customer-facing workflow.
 
 - **Primary audience: Business Analyst / Product Manager.** Plain-English business rules + carriers + closeout + variants.
 - **Secondary audience: engineers + AI.** Each flow doc has a **"For engineers"** section at the bottom w/ file paths, controllers, e2e specs, state machines.
@@ -12,7 +12,7 @@
 Layout:
 
 ```
-docs/flows/
+wiki/flows/
 ├── README.md                ← top-level index + glossary + cross-cutting
 ├── shared/                  ← cross-company concepts
 ├── <company-a>/             ← per-workflow docs
@@ -46,12 +46,12 @@ Engineers reading the story load the referenced doc + apply the diff. Less ambig
 
 If your PR changes a workflow's behavior, **update the flow doc in the same PR**. Same merge gate as code.
 
-Code review checklist includes: "Did this PR change a flow's behavior? Is `docs/flows/<company>/<workflow>.md` updated?"
+Code review checklist includes: "Did this PR change a flow's behavior? Is `wiki/flows/<company>/<workflow>.md` updated?"
 
 ### 3. AI agents must consult flow docs
 
 When asked to work on a workflow:
-1. Read the relevant `docs/flows/<company>/<workflow>.md` first
+1. Read the relevant `wiki/flows/<company>/<workflow>.md` first
 2. Treat its **Business rules** + **Glossary** as authoritative for terms + constraints
 3. The **For engineers** section has file paths to dig deeper
 4. If the doc doesn't answer a question, ask + update the doc after
@@ -79,7 +79,7 @@ This applies to AI agents and humans equally. If an agent ships a behavior chang
 
 ## What to put in a flow doc
 
-See [docs/flows/README.md](../flows/README.md) for the pattern. Every flow doc has:
+See [wiki/flows/README.md](../flows/README.md) for the pattern. Every flow doc has:
 
 1. **What this workflow is for** — 1–2 sentences, business purpose
 2. **Who's involved** — roles + actions
@@ -93,7 +93,7 @@ See [docs/flows/README.md](../flows/README.md) for the pattern. Every flow doc h
 
 ## What NOT to put
 
-- Architectural patterns (those belong in `docs/architecture/*.md`)
+- Architectural patterns (those belong in `wiki/architecture/*.md`)
 - Implementation strategy (those go in PR description or planning docs that get deleted post-merge)
 - Performance benchmarks (separate concern)
 - API request schemas (the controller is the source of truth; link to it)

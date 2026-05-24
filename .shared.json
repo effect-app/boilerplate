@@ -1,11 +1,11 @@
 {
   "$schema": "https://github.com/effect-app/shared/raw/main/.versions/v1.json",
   "repo": "github.com/effect-app/shared",
-  "ref": "6dad66fab8c3",
-  "synced_at": "2026-05-23",
+  "ref": "74b12da05248",
+  "synced_at": "2026-05-24",
   "artifacts": {
-    "docs/architecture": "docs/architecture",
-    "docs/how-we-build.md": "docs/how-we-build.md",
+    "wiki/architecture": "wiki/architecture",
+    "wiki/how-we-build.md": "wiki/how-we-build.md",
     "e2e/helpers": "e2e/helpers",
     "ts-plugins/prefer-namespace-import": "scripts/ts-plugins/prefer-namespace-import"
   },
