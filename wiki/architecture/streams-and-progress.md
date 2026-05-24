@@ -196,7 +196,7 @@ export class Import extends Req.Command<Import>()(
 ```
 
 Why `S.TaggedUnion` (not `S.Union`):
-- Gives free `ImportEvent.isA.ImportProgress(event)` / `ImportEvent.isA.ImportFinal(event)` type guards in templates (see [vue-conventions.md § TaggedUnion type guards in templates](./vue-conventions.md#taggedunion-type-guards-in-templates)).
+- Gives free `ImportEvent.guards.ImportProgress(event)` / `ImportEvent.guards.ImportFinal(event)` type guards in templates (see [vue-conventions.md § TaggedUnion type guards in templates](./vue-conventions.md#taggedunion-type-guards-in-templates)).
 - Makes the discriminator a real field on the wire, not a positional assumption.
 - Extending the union (a third event tag) is a local change — no `_tag === "..."` chains to update.
 
@@ -246,7 +246,7 @@ export function importProgress<E>(
 ): Progress | undefined {
   if (!AsyncResult.isSuccess(result) || !result.waiting) return undefined
   const ev = result.value
-  if (!ImportEvent.isA.ImportProgress(ev)) return undefined  // ignore the final on the toast
+  if (!ImportEvent.guards.ImportProgress(ev)) return undefined  // ignore the final on the toast
   const text = `${ev.completed}/${ev.total}`
   return ev.total === 0 ? text : { text, percentage: Math.round((ev.completed / ev.total) * 100) }
 }
@@ -261,7 +261,7 @@ const importFiles = importClient.Import.fn(
   function*(input: typeof importClient.Import.Input) {
     yield* importClient.Import.mutate(input).pipe(
       Stream.tap((ev) =>
-        ImportEvent.isA.ImportFinal(ev)
+        ImportEvent.guards.ImportFinal(ev)
           ? Effect.sync(() => { importFinal.value = ev })
           : Effect.void
       ),

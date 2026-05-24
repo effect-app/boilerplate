@@ -18,7 +18,7 @@ Outside `.vue` files (`.ts`), keep importing as `Array`.
 
 ## TaggedUnion type guards in templates
 
-Prefer `S.TaggedUnion` over `S.Union` for discriminated unions — it generates `.isA` / `.isAnyOf` helpers that double as TypeScript type guards.
+Prefer `S.TaggedUnion` over `S.Union` for discriminated unions — it generates `.guards` / `.isAnyOf` helpers that double as TypeScript type guards.
 
 ```ts
 // BAD — S.Union requires manual `_tag` checks and provides no guard helpers
@@ -28,13 +28,13 @@ export const GetShipmentResponse = S.Union(ClosedShipmentDetail, OpenShipmentDet
 export const GetShipmentResponse = S.TaggedUnion(ClosedShipmentDetail, OpenShipmentDetail)
 
 // guard usage:
-GetShipmentResponse.isA.Open(shipment)            // narrows to OpenShipmentDetail
-GetShipmentResponse.isA.Closed(shipment)          // narrows to ClosedShipmentDetail
+GetShipmentResponse.guards.Open(shipment)            // narrows to OpenShipmentDetail
+GetShipmentResponse.guards.Closed(shipment)          // narrows to ClosedShipmentDetail
 const inProgress = ShipmentState.isAnyOf("Booked", "LabelsAssigned")
 inProgress(shipment.shipmentState)
 ```
 
-**Don't introduce `computed` properties whose only job is to check a `_tag`.** `computed` does not narrow types; guards do. After `v-if="GetShipmentResponse.isA.Closed(shipment)"`, TypeScript knows `shipment` is `ClosedShipmentDetail` inside the block — properties like `shipment.labelUrl` resolve directly without `?.` or `!`.
+**Don't introduce `computed` properties whose only job is to check a `_tag`.** `computed` does not narrow types; guards do. After `v-if="GetShipmentResponse.guards.Closed(shipment)"`, TypeScript knows `shipment` is `ClosedShipmentDetail` inside the block — properties like `shipment.labelUrl` resolve directly without `?.` or `!`.
 
 ```ts
 // BAD — every computed re-implements the same check and none of them narrow types for siblings
@@ -50,7 +50,7 @@ const isClosingInProgress = computed(() => {
 
 ```vue
 <!-- GOOD — guard in the template, full type narrowing inside the block -->
-<template v-if="GetShipmentResponse.isA.Closed(shipment)">
+<template v-if="GetShipmentResponse.guards.Closed(shipment)">
   {{ shipment.labelUrl }}
   {{ shipment.carrierTransactionId }}
 </template>
