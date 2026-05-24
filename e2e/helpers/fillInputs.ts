@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from "@playwright/test"
+import { expect, type Locator, type Page } from "../fixtures/default.ts"
 
 export function fillInputs(values: Record<string, string | boolean>) {
   return async (page: Page) => {

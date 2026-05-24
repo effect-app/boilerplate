@@ -2,40 +2,90 @@
   "compilerOptions": {
     "plugins": [
       {
-        "name": "ts-plugin-sort-import-suggestions",
-        "moveUpPatterns": [
-          "\\.{1,2}/",
-          "^(?:\\.\\./)+",
-          "^#",
-          "^@/",
-          "effect-app",
-          "^@effect-app/",
-          "effect",
-          "^@effect/"
+        "name": "ts-plugin-prefer-namespace-import",
+        // Opt-in namespace-import quickfix (e.g. unresolved `Effect` -> `import * as Effect from "effect-app/Effect"`).
+        // Disabled for now; flip to `true` to enable.
+        "enableNamespaceImport": false,
+        "mappings": {
+          "Effect": "effect-app/Effect"
+        },
+        "preferOver": [
+          {
+            "prefer": ["effect-app", "@effect-app/"],
+            "hide": ["effect", "@effect/"]
+          }
         ],
-        "moveDownPatterns": [
-          "^node_modules/"
-        ],
-        "overrides": {
-          "effect-app": [
-            "Array",
-            "Option",
-            "Either"
+        "sortImports": {
+          "enabled": true,
+          "moveUpPatterns": [
+            "^\\./",
+            "^\\../",
+            "^(?:\\.\\./)+",
+            "^#",
+            "^@/",
+            "effect-app",
+            "^@effect-app/",
+            "effect",
+            "^@effect/"
+          ],
+          "moveDownPatterns": [
+            "^node_modules/"
+          ],
+          "overrides": {
+            "effect-app": [
+              "Array",
+              "Option",
+              "Either"
+            ]
+          }
+        },
+        // Rule 7: flag `const { x } = NS` where NS is a namespace import.
+        "destructureNamespace": {
+          "enabled": true,
+          "ignoreNames": []
+        },
+        // Rules 1 & 2: flag `export *` barrels in company / workflow roots and
+        // self re-exports of same-named submodules. Populate with project-specific
+        // workflow-root filenames (e.g. ["EasyLife.ts", "Mako.ts"]).
+        "forbiddenBarrels": {
+          "enabled": true,
+          "forbiddenBarrelBasenames": []
+        },
+        // Rules 3, 4, 9: refactor cross-workflow named imports into the
+        // workflow-prefixed namespace form. Only triggers when the import
+        // crosses a workflow boundary; same-workflow sibling imports stay
+        // unchanged. Workflow boundary is detected via `workflowMarker`.
+        "crossWorkflowNamespace": {
+          "enabled": true,
+          "workflowMarker": "services/DBContext.ts",
+          "modules": [
+            {
+              "specifierPattern": "/services/[A-Z]\\w*Repo(\\.(?:js|ts))?$",
+              "targetBasename": "DBContext.ts",
+              "aliasSuffix": "DB"
+            },
+            { "specifierPattern": "/services/DBContext(\\.(?:js|ts))?$", "aliasSuffix": "DB" },
+            { "specifierPattern": "/models(\\.(?:js|ts))?$", "aliasSuffix": "Models" },
+            { "specifierPattern": "/events(\\.(?:js|ts))?$", "aliasSuffix": "Events" },
+            { "specifierPattern": "/core(\\.(?:js|ts))?$", "aliasSuffix": "Core" }
           ]
         }
       },
-      // {
-      //   "name": "@effect/language-service",
-      //   "ignoreEffectWarningsInTscExitCode": true,
-      //   "diagnosticSeverity": {
-      //     "missingEffectServiceDependency": "error",
-      //     "effectFnOpportunity": "warning",
-      //     "globalErrorInEffectFailure": "warning",
-      //     "returnEffectInGen": "warning",
-      //     "preferSchemaOverJson": "off",
-      //     "unnecessaryEffectGen": "warning"
-      //   }
-      // }
+      {
+        "name": "@effect/language-service",
+        "ignoreEffectWarningsInTscExitCode": true,
+        "namespaceImportPackages": ["effect", "@effect/*", "effect-app", "@effect-app/*"],
+        "topLevelNamedReexports": "follow",
+        "diagnosticSeverity": {
+          "missingEffectServiceDependency": "error",
+          "effectFnOpportunity": "warning",
+          "globalErrorInEffectFailure": "warning",
+          "preferSchemaOverJson": "off",
+          "unnecessaryEffectGen": "warning",
+          "effectSucceedWithVoid": "off",
+          "importFromBarrel": "warning"
+        }
+      }
     ]
   }
 }

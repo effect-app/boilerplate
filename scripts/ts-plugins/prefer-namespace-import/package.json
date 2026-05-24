@@ -1,0 +1,13 @@
+{
+  "name": "ts-plugin-prefer-namespace-import",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TypeScript LS plugin: quick-fix for unresolved identifiers that prefers a configured namespace import (e.g. `import * as Effect from \"effect-app/Effect\"`).",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "peerDependencies": {
+    "typescript": "*"
+  }
+}

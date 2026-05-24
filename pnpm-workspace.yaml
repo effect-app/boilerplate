@@ -2,3 +2,4 @@ packages:
   - api
   - frontend
   - e2e
+  - scripts/ts-plugins/*

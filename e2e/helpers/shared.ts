@@ -1,23 +1,35 @@
-import { initializeSync } from "@effect-app/vue/runtime"
-import { ApiClientFactory, type ApiConfig } from "effect-app/client"
-import { typedKeysOf } from "effect-app/utils"
-import * as HashMap from "effect/HashMap"
-import * as Layer from "effect/Layer"
+import { initializeAsync } from "@effect-app/vue/runtime"
+import { ApiClientFactory, type ApiConfig } from "effect-app/client/apiClientFactory"
+import * as Layer from "effect-app/Layer"
 import * as FetchHttpClient from "effect/unstable/http/FetchHttpClient"
 import { readFileSync } from "fs"
+import { resolveStorageState } from "../playwright.config.ts"
+import { type Company, resolveStorageStateName } from "./companyPorts.ts"
+import { E2EContext } from "./runtime.ts"
 
-export function makeRuntime(config: ApiConfig) {
-  const layers = ApiClientFactory.layer(config).pipe(Layer.provide(FetchHttpClient.layer))
-  const runtime = initializeSync(layers)
+export async function makeRuntime(namespace: string, config: ApiConfig) {
+  const layers = ApiClientFactory.layer(config).pipe(
+    Layer.provide(FetchHttpClient.layer),
+    Layer.merge(Layer.succeed(E2EContext, E2EContext.of({ namespace })))
+  )
+  const runtime = await initializeAsync(layers)
 
   return runtime
 }
 
-export function makeHeaders(namespace: string, role?: "manager") {
+export function makeHeaders(
+  namespace: string,
+  port: number | null,
+  role?: "user" | "manager",
+  company?: Company
+) {
   const basicAuthCredentials = process.env["BASIC_AUTH_CREDENTIALS"]
   let cookie: string | undefined = undefined
   if (role) {
-    const f = readFileSync("./storageState." + role + ".json", "utf-8")
+    const stateFile = company
+      ? resolveStorageStateName(`storageState.${role}.json`, company)
+      : `storageState.${role}.json`
+    const f = readFileSync(resolveStorageState(stateFile), "utf-8")
     const p = JSON.parse(f) as { cookies: { name: string; value: string }[] }
     const cookies = p.cookies
     cookie = cookies.map((_) => `${_.name}=${_.value}`).join(";")
@@ -27,14 +39,10 @@ export function makeHeaders(namespace: string, role?: "manager") {
       ? { "authorization": `Basic ${Buffer.from(basicAuthCredentials).toString("base64")}` }
       : undefined),
     ...(cookie ? { "Cookie": cookie } : undefined),
-    "x-store-id": namespace
+    "x-store-id": namespace,
+    "x-port": port?.toString() ?? undefined,
+    "x-e2e-print-skip": "1"
   }
-}
-
-export function makeHeadersHashMap(namespace: string, role?: "manager") {
-  const headers = makeHeaders(namespace, role)
-  const keys = typedKeysOf(headers)
-  return HashMap.make(...keys.map((_) => [_, headers[_]!] as const))
 }
 
 type Env = ApiClientFactory

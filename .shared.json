@@ -1,0 +1,14 @@
+{
+  "$schema": "https://github.com/effect-app/shared/raw/main/.versions/v1.json",
+  "repo": "github.com/effect-app/shared",
+  "ref": "3718263652b5",
+  "synced_at": "2026-05-24",
+  "artifacts": {
+    "wiki/architecture": "wiki/architecture",
+    "wiki/how-we-build.md": "wiki/how-we-build.md",
+    "e2e/helpers": "e2e/helpers",
+    "ts-plugins/prefer-namespace-import": "scripts/ts-plugins/prefer-namespace-import"
+  },
+  "exclude": [],
+  "exclude_reason": "Project-local files (e.g. e2e/helpers/adapter.ts) never exist in shared, so do not need exclusion."
+}
