@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:24-alpine
 
 RUN npm i -g pnpm
 
@@ -26,7 +26,7 @@ COPY api/package.json ./api/
 RUN pnpm install --frozen-lockfile --prod
 #RUN --mount=type=cache,target=/root/.pnpm pnpm_CACHE_FOLDER=/root/.pnpm pnpm install --frozen-lockfile --prod
 
-COPY api/dist ./api/dist
+COPY api/src ./api/src
 
 #COPY data ./data
 

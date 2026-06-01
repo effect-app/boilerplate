@@ -104,9 +104,9 @@
  */
 // Project-local adapter: re-exports the project's intl action messages.
 // See adapter.ts in the consuming project (created on first sync).
-import { type ActionIntlKey, deActionMessages } from "./adapter.js"
 import type { Locator, Page } from "playwright"
 import { handleToast, handleToastFailure, type ResponseMatch, type RpcResource, rpcResponseMatcher, waitForResponse as waitForResponseHelper } from "./act.ts"
+import { type ActionIntlKey, deActionMessages } from "./adapter.js"
 
 export { type ResponseMatch, type RpcResource, rpcResponseMatcher }
 

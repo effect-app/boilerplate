@@ -1,7 +1,7 @@
 import * as Config from "effect-app/Config"
 import { secretURL } from "effect-app/Config/SecretURL"
 import * as SecretURL from "effect-app/Config/SecretURL"
-import { env, serviceName } from "./base.js"
+import { env, serviceName } from "./base.ts"
 
 const STORAGE_VERSION = "1"
 
@@ -38,4 +38,4 @@ export const server = Config.all({
   baseUrl: Config.string("baseUrl").pipe(Config.withDefault("http://localhost:4000"))
 })
 
-export * from "./base.js"
+export * from "./base.ts"

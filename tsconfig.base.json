@@ -2,5 +2,8 @@
   "extends": [
     "./node_modules/effect-app/tsconfig.base.json",
     "./tsconfig.plugins.json"
-  ]
+  ],
+  "compilerOptions": {
+    "emitDeclarationOnly": true
+  }
 }

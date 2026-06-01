@@ -1,7 +1,7 @@
 import { makeRpcClient } from "effect-app/client"
 import { ApiClientFactory } from "effect-app/client/apiClientFactory"
 import * as Layer from "effect-app/Layer"
-import { AppMiddleware } from "./middleware.js"
+import { AppMiddleware } from "./middleware.ts"
 
 export const { TaggedRequestFor } = makeRpcClient(AppMiddleware)
 

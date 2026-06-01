@@ -1,7 +1,7 @@
 import { User } from "#models/User"
 import { NotFoundError } from "effect-app/client/errors"
-import { S, TaggedRequestFor } from "./lib.js"
-import { UserItem } from "./views/UserItem.js"
+import { S, TaggedRequestFor } from "./lib.ts"
+import { UserItem } from "./views/UserItem.ts"
 
 // codegen:start {preset: meta, sourcePrefix: src/resources/}
 const Req = TaggedRequestFor("Accounts")

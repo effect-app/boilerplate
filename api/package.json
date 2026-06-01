@@ -6,7 +6,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "circular": "pnpm circular:src && pnpm circular:dist",
+    "circular": "pnpm circular:src",
     "circular:src": "madge --circular --ts-config ./tsconfig.json --extensions ts ./src",
     "circular:dist": "madge --circular --extensions js ./dist",
     "clean": "rm -rf dist test/dist",
@@ -24,119 +24,55 @@
     "test": "vitest",
     "test:run": "pnpm run test run --passWithNoTests",
     "testsuite": "pnpm circular && pnpm run test:run && pnpm lint",
-    "dev": "NODE_ENV=development nodemon --signal SIGTERM --exec pnpm dev:tsx",
-    "dev:compiled": "pnpm start:compiled",
-    "dev:tsx": "pnpm start:tsx",
+    "dev": "NODE_ENV=development nodemon --signal SIGTERM --exec node ./src/main.ts",
     "dev:vite": "vite-node --watch ./src/main.ts",
-    "start": "pnpm start:compiled",
-    "debug": "tsx ./src/main.ts --inspect",
-    "start:compiled": "node -r source-map-support/register ./dist/main.js",
-    "start:tsx": "tsx ./src/main.ts",
+    "start": "node ./src/main.ts",
+    "debug": "node --inspect ./src/main.ts",
     "ncu": "ncu",
     "extract:i18n": "formatjs extract './**/*.ts' --ignore './**/*.d.ts' --format src/i18n/extraction-formatter.cjs --id-interpolation-pattern '[sha512:contenthash:base64:6]' --out-file src/i18n/extracted/en.json"
   },
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": {
-        "types": "./dist/index.d.ts",
-        "default": "./_cjs/index.cjs"
-      }
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
     },
     "./*": {
-      "import": {
-        "types": "./dist/*.d.ts",
-        "default": "./dist/*.js"
-      },
-      "require": {
-        "types": "./dist/*.d.ts",
-        "default": "./_cjs/*.cjs"
-      }
+      "types": "./src/*.ts",
+      "default": "./src/*.ts"
     }
   },
   "imports": {
     "#api": {
-      "import": {
-        "types": "./dist/api.d.ts",
-        "default": "./dist/api.js"
-      },
-      "require": {
-        "types": "./dist/api.d.ts",
-        "default": "./_cjs/api.cjs"
-      }
+      "types": "./src/api.ts",
+      "default": "./src/api.ts"
     },
     "#config": {
-      "import": {
-        "types": "./dist/config.d.ts",
-        "default": "./dist/config.js"
-      },
-      "require": {
-        "types": "./dist/config.d.ts",
-        "default": "./_cjs/config.cjs"
-      }
+      "types": "./src/config.ts",
+      "default": "./src/config.ts"
     },
     "#lib/*": {
-      "import": {
-        "types": "./dist/lib/*.d.ts",
-        "default": "./dist/lib/*.js"
-      },
-      "require": {
-        "types": "./dist/lib/*.d.ts",
-        "default": "./_cjs/lib/*.cjs"
-      }
+      "types": "./src/lib/*.ts",
+      "default": "./src/lib/*.ts"
     },
     "#core/*": {
-      "import": {
-        "types": "./dist/core/*.d.ts",
-        "default": "./dist/core/*.js"
-      },
-      "require": {
-        "types": "./dist/core/*.d.ts",
-        "default": "./_cjs/core/*.cjs"
-      }
+      "types": "./src/core/*.ts",
+      "default": "./src/core/*.ts"
     },
     "#models": {
-      "import": {
-        "types": "./dist/models.d.ts",
-        "default": "./dist/models.js"
-      },
-      "require": {
-        "types": "./dist/models.d.ts",
-        "default": "./_cjs/models.cjs"
-      }
+      "types": "./src/models.ts",
+      "default": "./src/models.ts"
     },
     "#models/*": {
-      "import": {
-        "types": "./dist/models/*.d.ts",
-        "default": "./dist/models/*.js"
-      },
-      "require": {
-        "types": "./dist/models/*.d.ts",
-        "default": "./_cjs/models/*.cjs"
-      }
+      "types": "./src/models/*.ts",
+      "default": "./src/models/*.ts"
     },
     "#resources/*": {
-      "import": {
-        "types": "./dist/resources/*.d.ts",
-        "default": "./dist/resources/*.js"
-      },
-      "require": {
-        "types": "./dist/resources/*.d.ts",
-        "default": "./_cjs/resources/*.cjs"
-      }
+      "types": "./src/resources/*.ts",
+      "default": "./src/resources/*.ts"
     },
     "#services/*": {
-      "import": {
-        "types": "./dist/services/*.d.ts",
-        "default": "./dist/services/*.js"
-      },
-      "require": {
-        "types": "./dist/services/*.d.ts",
-        "default": "./_cjs/services/*.cjs"
-      }
+      "types": "./src/services/*.ts",
+      "default": "./src/services/*.ts"
     }
   },
   "dependencies": {
@@ -144,12 +80,12 @@
     "@azure/cosmos": "^4.9.3",
     "@azure/service-bus": "^7.9.5",
     "@azure/storage-blob": "^12.31.0",
-    "@effect-app/infra": "4.0.0-beta.222",
-    "effect-app": "4.0.0-beta.222",
-    "@effect/opentelemetry": "4.0.0-beta.64",
-    "@effect/platform-node": "4.0.0-beta.64",
-    "@effect/sql-sqlite-node": "4.0.0-beta.64",
-    "@effect/vitest": "4.0.0-beta.64",
+    "@effect-app/infra": "4.0.0-beta.260",
+    "effect-app": "4.0.0-beta.260",
+    "@effect/opentelemetry": "4.0.0-beta.74",
+    "@effect/platform-node": "4.0.0-beta.74",
+    "@effect/sql-sqlite-node": "4.0.0-beta.74",
+    "@effect/vitest": "4.0.0-beta.74",
     "@formatjs/cli": "^6.14.4",
     "@formatjs/intl": "4.1.8",
     "@mollie/api-client": "^4.5.0",
@@ -164,7 +100,7 @@
     "cross-fetch": "^4.1.0",
     "date-fns": "^4.1.0",
     "dotenv": "^17.4.2",
-    "effect": "4.0.0-beta.64",
+    "effect": "4.0.0-beta.74",
     "express": "^5.2.1",
     "express-compression": "^1.0.2",
     "express-oauth2-jwt-bearer": "^1.8.0",
@@ -177,7 +113,6 @@
     "redlock": "^5.0.0-beta.2",
     "redoc": "^2.5.2",
     "redoc-express": "^2.1.3",
-    "source-map-support": "^0.5.21",
     "stopwatch-node": "^1.1.0",
     "swagger-ui-express": "^5.0.1",
     "tcp-port-used": "^1.0.2",

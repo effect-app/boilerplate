@@ -1,36 +1,37 @@
 {
   "extends": "./tsconfig.src.json",
   "compilerOptions": {
+    "erasableSyntaxOnly": true,
     "rootDir": "./test",
     "outDir": "./test/dist",
     "tsBuildInfoFile": "./test/dist/.tsbuildinfo",
     "paths": {
       "#api": [
-        "./src/api.js"
+        "./src/api.ts"
       ],
       "#core/*": [
-        "./src/core/*.js"
+        "./src/core/*.ts"
       ],
       "#resources": [
-        "./src/resources.js"
+        "./src/resources.ts"
       ],
       "#models": [
-        "./src/models.js"
+        "./src/models.ts"
       ],
       "#resources/*": [
-        "./src/resources/*.js"
+        "./src/resources/*.ts"
       ],
       "#models/*": [
-        "./src/models/*.js"
+        "./src/models/*.ts"
       ],
       "#config": [
-        "./src/config.js"
+        "./src/config.ts"
       ],
       "#lib/*": [
-        "./src/lib/.*.js"
+        "./src/lib/*.ts"
       ],
       "#services": [
-        "./src/services.js"
+        "./src/services.ts"
       ]
     }
   },

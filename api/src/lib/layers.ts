@@ -13,7 +13,7 @@ import * as Redacted from "effect/Redacted"
 import fs from "fs"
 import { createServer } from "http"
 
-import { apiConfig, baseConfig } from "../config.js"
+import { apiConfig, baseConfig } from "../config.ts"
 
 const ClientLive = SqliteClient
   .layer({

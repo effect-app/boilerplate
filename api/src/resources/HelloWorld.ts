@@ -1,7 +1,7 @@
-import { RequestContext } from "@effect-app/infra/RequestContext"
 import { InvalidStateError } from "effect-app/client"
-import { S, TaggedRequestFor } from "./lib.js"
-import { UserView } from "./views.js"
+import { RequestContext } from "effect-app/RequestContext"
+import { S, TaggedRequestFor } from "./lib.ts"
+import { UserView } from "./views.ts"
 
 // codegen:start {preset: meta, sourcePrefix: src/resources/}
 const Req = TaggedRequestFor("HelloWorld")

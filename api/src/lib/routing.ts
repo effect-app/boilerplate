@@ -3,14 +3,14 @@
 
 import { AllowAnonymous, AppMiddleware, RequestContextMap, RequireRoles } from "#resources/lib"
 import { makeUserProfileFromAuthorizationHeader, makeUserProfileFromUserHeader, UserProfile } from "#services/UserProfile"
-import { DefaultGenericMiddlewaresLive, makeRouter } from "@effect-app/infra/api/routing"
+import { DefaultGenericMiddlewaresLive, makeRouter } from "@effect-app/infra/routing"
 import { NotLoggedInError, UnauthorizedError } from "effect-app/client"
 import { type HttpHeaders } from "effect-app/http"
 import * as Option from "effect-app/Option"
 import * as Effect from "effect/Effect"
 import * as Exit from "effect/Exit"
 import * as Layer from "effect/Layer"
-import { AppLogger } from "./logger.js"
+import { AppLogger } from "./logger.ts"
 
 const AllowAnonymousLive = Layer.effect(
   AllowAnonymous,

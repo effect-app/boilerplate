@@ -3,13 +3,13 @@ import * as MW from "#lib/middleware"
 import { Events } from "#services/Events"
 import { reportError } from "@effect-app/infra/errorReporter"
 import * as Config from "effect-app/Config"
-import * as Console from "effect/Console"
 import * as Effect from "effect-app/Effect"
 import { flow } from "effect-app/Function"
 import { HttpMiddleware, HttpRouter } from "effect-app/http"
 import * as Layer from "effect-app/Layer"
+import * as Console from "effect/Console"
 import { RpcSerialization } from "effect/unstable/rpc"
-import { apiConfig, baseConfig } from "./config.js"
+import { apiConfig, baseConfig } from "./config.ts"
 
 const prodOrigins: string[] = []
 const demoOrigins: string[] = []

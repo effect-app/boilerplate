@@ -29,7 +29,8 @@
     ]
   },
   "engines": {
-    "pnpm": ">= 10.2.1"
+    "pnpm": ">= 10.2.1",
+    "node": ">= 24.11.0"
   },
   "scripts": {
     "all": "pnpm -r",
@@ -95,8 +96,8 @@
     "vue": "$vue"
   },
   "dependencies": {
-    "@effect/opentelemetry": "4.0.0-beta.64",
-    "@effect/platform-node": "4.0.0-beta.64",
+    "@effect/opentelemetry": "4.0.0-beta.74",
+    "@effect/platform-node": "4.0.0-beta.74",
     "@opentelemetry/api": "^1.9",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.216.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.216.0",
@@ -109,7 +110,7 @@
     "@opentelemetry/semantic-conventions": "^1.40.0",
     "cross-env": "^10.1.0",
     "date-fns": "^4.1.0",
-    "effect": "4.0.0-beta.64",
+    "effect": "4.0.0-beta.74",
     "fast-check": "^4.7.0",
     "package-up": "^5.0.0",
     "patch-package": "^8.0.1",
@@ -118,16 +119,16 @@
     "vue": "^3.5.33"
   },
   "devDependencies": {
-    "@effect-app/cli": "2.1.0-beta.21",
-    "@effect-app/eslint-codegen-model": "2.0.0-beta.17",
-    "@effect-app/eslint-shared-config": "0.6.0-beta.25",
-    "@effect/language-service": "^0.85.1",
+    "@effect-app/cli": "2.1.0-beta.26",
+    "@effect-app/eslint-codegen-model": "2.0.0-beta.22",
+    "@effect-app/eslint-shared-config": "0.6.0-beta.30",
+    "@effect/language-service": "^0.86.2",
     "@tsconfig/strictest": "^2.0.8",
     "@types/lodash": "^4.17.24",
     "@types/node": "~25.6.0",
     "concurrently": "^9.2.1",
     "dprint": "^0.54.0",
-    "effect-app": "4.0.0-beta.222",
+    "effect-app": "4.0.0-beta.260",
     "enhanced-resolve": "^5.21.0",
     "madge": "^8.0.0",
     "nodemon": "^3.1.14",

@@ -40,9 +40,9 @@ Each helper:
 
 ## Files
 
-| Helper            | What state it produces                                                                                                                                                             |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<workflow>.ts`   | `setupWorkflowPickedState` — cart picked + pack spot + pack cart claimed; `setupWorkflowPickedCartOnly` — cart picked, before pack side                                            |
-| `bucket.ts`       | `readBucket` / `resetBucket` — read or clear the per-namespace bucket of captured events sent to the external accounting system                                                    |
+| Helper          | What state it produces                                                                                                                  |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `<workflow>.ts` | `setupWorkflowPickedState` — cart picked + pack spot + pack cart claimed; `setupWorkflowPickedCartOnly` — cart picked, before pack side |
+| `bucket.ts`     | `readBucket` / `resetBucket` — read or clear the per-namespace bucket of captured events sent to the external accounting system         |
 
 Add a row when you add a helper.

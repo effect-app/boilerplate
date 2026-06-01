@@ -35,9 +35,9 @@
   },
   "dependencies": {
     "@effect-app-boilerplate/api": "workspace:*",
-    "@effect/platform-node": "4.0.0-beta.64",
-    "effect-app": "4.0.0-beta.222",
-    "effect": "4.0.0-beta.64",
+    "@effect/platform-node": "4.0.0-beta.74",
+    "effect-app": "4.0.0-beta.260",
+    "effect": "4.0.0-beta.74",
     "cross-fetch": "^4.1.0",
     "dprint": "^0.54.0"
   }

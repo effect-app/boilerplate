@@ -17,7 +17,7 @@ import type { ManagedRuntime as ManagedRuntimeType } from "effect/ManagedRuntime
 import * as References from "effect/References"
 import * as Runtime from "effect/Runtime"
 import { DevTools } from "effect/unstable/devtools"
-import { TracingLive } from "./observability.js"
+import { TracingLive } from "./observability.ts"
 
 const envProviderConstantCase = ConfigProvider.fromEnv().pipe(ConfigProvider.constantCase)
 const baseConfigProvider = ConfigProvider.layer(envProviderConstantCase)

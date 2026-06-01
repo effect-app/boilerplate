@@ -20,7 +20,7 @@ import { dropUndefinedT } from "effect-app/utils"
 import * as Redacted from "effect/Redacted"
 import fs from "fs"
 import tcpPortUsed from "tcp-port-used"
-import { baseConfig } from "../config.js"
+import { baseConfig } from "../config.ts"
 
 const localConsole = false
 
@@ -56,7 +56,6 @@ const ResourceLive = Config
     apiVersion: baseConfig.apiVersion,
     env: baseConfig.env
   })
-  .asEffect()
   .pipe(
     Effect.map((appConfig) =>
       Resource.layer({

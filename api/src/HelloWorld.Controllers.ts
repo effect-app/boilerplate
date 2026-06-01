@@ -3,11 +3,11 @@ import * as HelloWorldRsc from "#resources/HelloWorld"
 import { GetHelloWorld } from "#resources/HelloWorld"
 import { UserView } from "#resources/views/UserView"
 import { UserRepo } from "#services/DBContext/UserRepo"
-import { getRequestContext } from "@effect-app/infra/api/setupRequest"
 import { generate } from "@effect-app/infra/test"
 import { InvalidStateError } from "effect-app/client"
 import * as Effect from "effect-app/Effect"
 import * as S from "effect-app/Schema"
+import { getRequestContext } from "effect-app/setupRequest"
 
 let state: string = "initial"
 export default Router(HelloWorldRsc)({

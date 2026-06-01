@@ -5,10 +5,10 @@ import * as HttpEffect from "effect/unstable/http/HttpEffect"
 import { HttpServerRequest } from "effect/unstable/http/HttpServerRequest"
 import z from "zlib"
 
-export * from "@effect-app/infra/api/middlewares"
+export * from "@effect-app/infra/middlewares"
 
 // codegen:start {preset: barrel, include: ./middleware/*.ts}
-export * from "./middleware/events.js"
+export * from "./middleware/events.ts"
 // codegen:end
 
 export const gzip = HttpMiddleware.make(

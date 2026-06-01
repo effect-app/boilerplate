@@ -1,29 +1,30 @@
 {
   "compilerOptions": {
+    "erasableSyntaxOnly": true,
     "paths": {
       "#config": [
-        "./src/config.js"
+        "./src/config.ts"
       ],
       "#config/*": [
-        "./src/config/*.js"
+        "./src/config/*.ts"
       ],
       "#core/*": [
-        "./src/core/*.js"
+        "./src/core/*.ts"
       ],
       "#lib/*": [
-        "./src/lib/*.js"
+        "./src/lib/*.ts"
       ],
       "#models": [
-        "./src/models.js"
+        "./src/models.ts"
       ],
       "#models/*": [
-        "./src/models/*.js"
+        "./src/models/*.ts"
       ],
       "#resources/*": [
-        "./src/resources/*.js"
+        "./src/resources/*.ts"
       ],
       "#services/*": [
-        "./src/services/*.js"
+        "./src/services/*.ts"
       ]
     }
   },

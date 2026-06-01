@@ -4,6 +4,7 @@
     "lib": [
       "esnext"
     ],
+    "allowJs": true,
     "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "esModuleInterop": true,
     "rootDir": "./src",
@@ -11,28 +12,28 @@
     "moduleResolution": "Node16",
     "paths": {
       "#core/*": [
-        "./src/core/*.js"
+        "./src/core/*.ts"
       ],
       "#resources": [
-        "./src/resources.js"
+        "./src/resources.ts"
       ],
       "#models": [
-        "./src/models.js"
+        "./src/models.ts"
       ],
       "#resources/*": [
-        "./src/resources/*.js"
+        "./src/resources/*.ts"
       ],
       "#models/*": [
-        "./src/models/*.js"
+        "./src/models/*.ts"
       ],
       "#config": [
-        "./src/config.js"
+        "./src/config.ts"
       ],
       "#lib/*": [
-        "./src/lib/.*.js"
+        "./src/lib/*.ts"
       ],
       "#services": [
-        "./src/services.js"
+        "./src/services.ts"
       ]
     },
     "types": [

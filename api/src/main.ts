@@ -4,10 +4,10 @@ import * as Effect from "effect-app/Effect"
 import { setFaker } from "effect-app/faker"
 import * as Layer from "effect-app/Layer"
 import * as Record from "effect/Record"
-import { api } from "./api.js"
-import { apiConfig } from "./config.js"
-import { runMain } from "./lib/basicRuntime.js"
-import { AppLogger } from "./lib/logger.js"
+import { api } from "./api.ts"
+import { apiConfig } from "./config.ts"
+import { runMain } from "./lib/basicRuntime.ts"
+import { AppLogger } from "./lib/logger.ts"
 
 setFaker(faker)
 const logConfig = Effect.gen(function*() {
@@ -15,7 +15,7 @@ const logConfig = Effect.gen(function*() {
     Record.map(
       { ...apiConfig },
       (_) =>
-        (_ as Config.Config<unknown>).asEffect().pipe(
+        (_ as Config.Config<unknown>).pipe(
           Effect.catch((err: unknown) => Effect.succeed("ERROR: " + err))
         )
     )
