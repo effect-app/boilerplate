@@ -1,3 +1,9 @@
+<!-- Space: SA -->
+<!-- Parent: Scanner Wiki -->
+<!-- Parent: Architecture -->
+<!-- Parent: Architecture (shared) -->
+<!-- Title: Query Shape: List vs Get -->
+
 # Query Shape: List vs Get
 
 Default rule: if a page needs **one** entity, expose a `Get` (or `Find`) endpoint for that entity. Do not load `List` and `.find()` the one you want on the client.

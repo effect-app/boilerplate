@@ -1,3 +1,9 @@
+<!-- Space: SA -->
+<!-- Parent: Scanner Wiki -->
+<!-- Parent: Architecture -->
+<!-- Parent: Architecture (shared) -->
+<!-- Title: Import / Naming Rules -->
+
 # Import / Naming Rules
 
 ## Goals
@@ -20,6 +26,8 @@
    - Within the same workflow, keep local sibling imports (`./services/OrderRepo.js`).
    - When importing **upward** from a workflow into a parent/shared scope (e.g. `Domain/WorkflowA/...` importing `../services/CartRepo.js`), keep named imports — don't wrap parent helpers in a workflow namespace inside files that already live under that scope.
      Direct imports from concrete service modules still make sense for non-repo services like `Dashboard`, `Mailer`, or `Import`.
+10. **One umbrella alias per `src` root — no per-file or per-symbol aliases.** Each package exposes a single `#<Root>/*` subpath alias per top-level `src` directory (`#Amazon/*` → `src/Amazon/*`, `#Empasa/*`, `#models/*`, `#resources/*`, …), declared once in `package.json#imports` and mirrored in every `tsconfig*.json` `paths`. Do **not** add narrow aliases like `#services/PickImport`, `#OnePick/*`, or `#messages/PrintOnePick` that point into a subtree the umbrella already covers — they duplicate the umbrella and silently rot when files move. Reach moved code through the umbrella (`#Amazon/services/PickImport`, `#Amazon/OnePick/models`). The frontend follows the same shape: one nuxt alias per aliased `api/src/<root>` (`#Amazon` → `../api/src/Amazon`), enforced by the `guard_fe_alias_coverage` CI step (`ROOTS` in `.github/workflows/_build.yml` + `api_shared` in `.github/build-filters.yml`).
+11. **A refactor that moves or renames a module goes all the way through.** Update *every* reference in the same change — internal `#` aliases, relative paths, `package.json#imports`, all `tsconfig*.json` `paths`, the `package.json#exports` field used by external consumers (e2e, frontend), and the consumers themselves. Then **delete** the old aliases and re-exports. Never leave a back-compat shim: no alias still pointing at the pre-move location, no `./OldName/*` export forwarding to the new path, no re-export "for consumers". A move is complete only when `grep` for the old path returns zero hits across `api`, `e2e`, and `frontend`.
 
 ## When the workflow-namespace form applies
 

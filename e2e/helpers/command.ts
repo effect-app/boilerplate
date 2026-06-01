@@ -105,7 +105,7 @@
 // Project-local adapter: re-exports the project's intl action messages.
 // See adapter.ts in the consuming project (created on first sync).
 import type { Locator, Page } from "playwright"
-import { handleToast, handleToastFailure, type ResponseMatch, type RpcResource, rpcResponseMatcher, waitForResponse as waitForResponseHelper } from "./act.ts"
+import { handleToast, handleToastFailure, handleToastOrPostcondition, type ResponseMatch, type RpcResource, rpcResponseMatcher, waitForResponse as waitForResponseHelper } from "./act.ts"
 import { type ActionIntlKey, deActionMessages } from "./adapter.js"
 
 export { type ResponseMatch, type RpcResource, rpcResponseMatcher }
@@ -232,6 +232,16 @@ export interface CommandClickOptions {
    * the moment of the click (e.g. a dynamic cart ID).
    */
   vars?: IntlVars
+  /**
+   * Durable assertion for the state this command should produce.
+   *
+   * When set, command toasts remain useful signals: failure/error toasts fail
+   * fast, success/progress toasts prove the command is moving, and progress
+   * toasts extend patience. But the success toast is no longer the only way to
+   * pass; if it is missed under load, the durable postcondition can still
+   * settle the command.
+   */
+  postcondition?: () => Promise<void>
 }
 
 /**
@@ -624,6 +634,7 @@ function buildCommand<I extends ActionId>(
 
     if (clickOptions?.skipToast) {
       await doClick()
+      if (clickOptions.postcondition) await clickOptions.postcondition()
       return
     }
 
@@ -637,7 +648,11 @@ function buildCommand<I extends ActionId>(
       if (clickOptions?.toastTimeout !== undefined) successOpts.timeout = clickOptions.toastTimeout
       if (clickOptions?.progressTimeout !== undefined) successOpts.progressTimeout = clickOptions.progressTimeout
       if (clickOptions?.allowWarnings !== undefined) successOpts.allowWarnings = clickOptions.allowWarnings
-      await handleToast(page, effectiveToastPrefix, doClick, successOpts)
+      if (clickOptions?.postcondition) {
+        await handleToastOrPostcondition(page, effectiveToastPrefix, doClick, clickOptions.postcondition, successOpts)
+      } else {
+        await handleToast(page, effectiveToastPrefix, doClick, successOpts)
+      }
     }
   }
 

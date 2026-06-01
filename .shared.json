@@ -1,8 +1,8 @@
 {
   "$schema": "https://github.com/effect-app/shared/raw/main/.versions/v1.json",
   "repo": "github.com/effect-app/shared",
-  "ref": "3718263652b5",
-  "synced_at": "2026-05-24",
+  "ref": "55cee7502c5a",
+  "synced_at": "2026-06-01",
   "artifacts": {
     "wiki/architecture": "wiki/architecture",
     "wiki/how-we-build.md": "wiki/how-we-build.md",

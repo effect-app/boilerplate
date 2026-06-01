@@ -1,3 +1,9 @@
+<!-- Space: SA -->
+<!-- Parent: Scanner Wiki -->
+<!-- Parent: Architecture -->
+<!-- Parent: Architecture (shared) -->
+<!-- Title: Resource and Controller Layout -->
+
 # Resource and Controller Layout
 
 Convention for ordering declarations in resource files and controllers. Apply to every `**/resources/*.ts` and `*.Controllers.ts` file.
@@ -36,6 +42,61 @@ Do not name queries with bare nouns (`Settings`, `Orders`) or with `Preview*` pr
 6. Trailing `// codegen:start {preset: model} ... // codegen:end` block and `export namespace ...` declarations stay at the bottom.
 
 The class body is preserved byte-for-byte during a reorder. No reformatting.
+
+## Splitting queries from commands
+
+Keep a single public resource module for ordinary consumers, but split query
+classes into a query-only sibling when command invalidation would otherwise
+create a circular import.
+
+Pattern:
+
+- `resources/Foo.Queries.ts` contains only query request classes and their view
+  schemas.
+- `resources/Foo.ts` re-exports `Foo.Queries.ts`, defines the same `Req`
+  namespace, then defines commands.
+- Commands in other resources import query classes from `Foo.Queries.ts` for
+  invalidation.
+- Frontend and controllers keep importing `resources/Foo` unless they only need
+  a query class for resource-level invalidation.
+- Query-only split files must use the original resource module name in
+  `TaggedRequestFor(...)`. The shared codegen config strips `.Queries` from
+  `meta`-generated module names; if a project does not have that shared default,
+  configure `stripSuffixes: [.Queries]` at the plugin/config level or on the
+  file. File-level `stripSuffixes` overrides plugin/config defaults.
+
+```ts
+// resources/PickCarts.Queries.ts
+// codegen:start {preset: meta, sourcePrefix: src/EasyLife/}
+const Req = TaggedRequestFor("Standard/PickCarts")
+// codegen:end
+
+export class List extends Req.Query<List>()("List", {}, {
+  allowRoles: ["user"],
+  success: S.Struct({ carts: S.Array(CartState) })
+}) {}
+```
+
+```ts
+// resources/PickCarts.ts
+import { List as DropshippingPickList } from "../../Dropshipping/resources/PickList.Queries.ts"
+import { GetStats } from "./PickCarts.Queries.ts"
+
+export * from "./PickCarts.Queries.ts"
+
+const Req = TaggedRequestFor("Standard/PickCarts")
+
+export class Assign extends Req.Command<Assign>()(
+  "Assign",
+  { cartId: OneOrMoreCarts },
+  { allowRoles: ["user"] },
+  (queryKey) => [queryKey, GetMe, GetStats, DropshippingPickList]
+) {}
+```
+
+Do not solve circular invalidation by configuring `clientFor(Resource, () => …)`
+in a page. Resource definitions are the source of truth for which query caches a
+mutation changes.
 
 ## Controller file order
 

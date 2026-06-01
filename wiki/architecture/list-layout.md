@@ -1,3 +1,9 @@
+<!-- Space: SA -->
+<!-- Parent: Scanner Wiki -->
+<!-- Parent: Architecture -->
+<!-- Parent: Architecture (shared) -->
+<!-- Title: List Layout -->
+
 # List Layout: per-item Actions inside the body slot
 
 Default rule: when a page renders a `<List>` (or any container whose body slot iterates over rows / panels) and each row exposes actions tied to that row's data, render those actions as a dedicated component **inside the body slot**. Do not lift the actions into a top-level form gated by a `selectedItem` ref.

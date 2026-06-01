@@ -1,3 +1,4 @@
+import { E2E_FLAGS_HEADER, encodeE2EFlags } from "@macs-scanner/api/lib/e2e"
 import * as Context from "effect-app/Context"
 import * as Effect from "effect-app/Effect"
 import * as Option from "effect-app/Option"
@@ -70,7 +71,7 @@ async function makeRuntimes_(namespace: string, page?: Page, port = 5001, compan
     page.setExtraHTTPHeaders({
       "x-store-id": namespace,
       "x-port": port.toString(),
-      "x-e2e-print-skip": "1"
+      [E2E_FLAGS_HEADER]: encodeE2EFlags([{ _tag: "PrintSkip" }, { _tag: "AbasShortCircuit" }])
     })
 
   if (page) await setupPage(page)

@@ -1,3 +1,9 @@
+<!-- Space: SA -->
+<!-- Parent: Scanner Wiki -->
+<!-- Parent: Architecture -->
+<!-- Parent: Architecture (shared) -->
+<!-- Title: Command Input Validation -->
+
 # Command Input Validation: gate at the caller, not inside
 
 Default rule: a `Command.fn` body assumes its input is valid. All presence / non-empty / "user picked something" checks live in the caller. Two valid ways to gate the trigger:

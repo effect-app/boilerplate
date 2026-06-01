@@ -1,6 +1,6 @@
 # `e2e/helpers/seed/` — Composite API Seed Helpers
 
-Per the [walk-once + API-seed rule](../../../wiki/architecture/e2e-state-pattern.md), specs walk a workflow via UI **exactly once** per workflow. Variants, edge cases, and branches reach their starting state via API calls — not by re-walking the UI.
+Per the [walk-once + API-seed rule](../../../wiki/app-architecture/e2e-state-pattern.md), specs walk a workflow via UI **exactly once** per workflow. Variants, edge cases, and branches reach their starting state via API calls — not by re-walking the UI.
 
 This directory holds the composite helpers that perform those state transitions. Each helper calls the same controllers the UI does — no DB shortcuts, no fixtures bypass — so seeded state is realistic.
 
@@ -40,9 +40,12 @@ Each helper:
 
 ## Files
 
-| Helper          | What state it produces                                                                                                                  |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `<workflow>.ts` | `setupWorkflowPickedState` — cart picked + pack spot + pack cart claimed; `setupWorkflowPickedCartOnly` — cart picked, before pack side |
-| `bucket.ts`     | `readBucket` / `resetBucket` — read or clear the per-namespace bucket of captured events sent to the external accounting system         |
+| Helper                 | What state it produces                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<workflow>.ts`        | `setupWorkflowPickedState` — cart picked + pack spot + pack cart claimed; `setupWorkflowPickedCartOnly` — cart picked, before pack side                                                                                                                                                                                                                                                                                                                                |
+| `bucket.ts`            | `readBucket` / `resetBucket` — read or clear the per-namespace bucket of captured events sent to the external accounting system                                                                                                                                                                                                                                                                                                                                        |
+| `bauhaus-splitting.ts` | `seedBauhausPackedGroup` — every part Initial, every order packed onto a BB pallet; `advanceBauhausGroupToLabelsAssigned` — every part LabelsAssigned (composes the pack helper if needed); `advanceBauhausGroupToRootAbasPending` — root RootAbasPending while parts stay LabelsAssigned (drives FinalizeGroup with the `x-e2e-finalize-abort-after-publish` header, catches the controller's expected die); `advanceBauhausGroupToClosed` — root + every part Closed |
+| `empasa/markisen`      | `setupMarkisenScannedTruck` — truck claimed and all active items scanned/printed; `setupMarkisenLoadedTruck` — scanned truck advanced to loaded                                                                                                                                                                                                                                                                                                                        |
+| `mako/standard`        | `setupStandardPickedCart` — Standard cart claimed, current order fully picked, cart marked Full and ready for packing                                                                                                                                                                                                                                                                                                                                                  |
 
 Add a row when you add a helper.

@@ -1,4 +1,5 @@
 import { initializeAsync } from "@effect-app/vue/runtime"
+import { E2E_FLAGS_HEADER, encodeE2EFlags } from "@macs-scanner/api/lib/e2e"
 import { ApiClientFactory, type ApiConfig } from "effect-app/client/apiClientFactory"
 import * as Layer from "effect-app/Layer"
 import * as FetchHttpClient from "effect/unstable/http/FetchHttpClient"
@@ -41,7 +42,7 @@ export function makeHeaders(
     ...(cookie ? { "Cookie": cookie } : undefined),
     "x-store-id": namespace,
     "x-port": port?.toString() ?? undefined,
-    "x-e2e-print-skip": "1"
+    [E2E_FLAGS_HEADER]: encodeE2EFlags([{ _tag: "PrintSkip" }, { _tag: "AbasShortCircuit" }])
   }
 }
 

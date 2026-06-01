@@ -61,13 +61,18 @@
  */
 import { type Locator, type Page, type Response } from "playwright"
 import { expect } from "playwright/test"
+import * as adapter from "./adapter.js"
 
 /**
- * Vue-Toastification renders each toast as `.Vue-Toastification__toast`.
- * Locators in {@link handleToast} / {@link handleToastFailure} scope to this
- * class so substring matches don't accidentally hit body text.
+ * CSS selector for a single toast container. Locators in {@link handleToast} /
+ * {@link handleToastFailure} scope to this class so substring matches don't
+ * accidentally hit body text. The toast library differs per project
+ * (vue-toastification, Vuetify, PrimeVue, …), so a project may override it by
+ * exporting `toastSelector` from its project-local `adapter.ts`; otherwise it
+ * defaults to vue-toastification's class.
  */
-const TOAST_SELECTOR = ".Vue-Toastification__toast"
+const TOAST_SELECTOR: string = (adapter as { toastSelector?: string }).toastSelector
+  ?? ".Vue-Toastification__toast"
 /**
  * Attribute set on a toast container once its outcome (success / warnings /
  * failure / error) has been observed.  Subsequent toast locators filter it out
@@ -82,21 +87,37 @@ const TOAST_HANDLED_ATTR = "data-e2e-toast-handled"
  * Mark a toast as handled and dispatch a click on its container in one
  * evaluate (single round-trip; no Playwright actionability waits).  The
  * attribute makes the next handleToast's `:not([data-e2e-toast-handled])`
- * filter skip this toast immediately; the click triggers vue-toastification's
+ * filter skip this toast immediately; the click triggers the toast library's
  * dismiss so the toast is removed from internal state — without that, long
- * test runs would hit the default `maxToasts: 20` and silently drop later
- * toasts.  Exit animation is already 0s via the CSS in
- * `e2e/fixtures/shared.ts:disableToastAnimation`.
+ * test runs could hit a library's max-visible-toasts cap and silently drop
+ * later toasts.  Exit animation is already 0s via the CSS in
+ * `disableToastAnimation`.
  */
 const markToastHandled = async (toast: Locator): Promise<void> => {
   await toast.first().evaluate(
-    (el, attr) => {
-      const container = ((el as HTMLElement).closest(".Vue-Toastification__toast") ?? el) as HTMLElement
+    (el, [attr, selector]) => {
+      const container = ((el as HTMLElement).closest(selector) ?? el) as HTMLElement
       container.setAttribute(attr, "1")
       container.click()
     },
-    TOAST_HANDLED_ATTR
+    [TOAST_HANDLED_ATTR, TOAST_SELECTOR] as const
   )
+}
+
+const markVisibleTerminalToastsHandled = async (page: Page, action: string): Promise<void> => {
+  const toastBase = page.locator(`${TOAST_SELECTOR}:not([${TOAST_HANDLED_ATTR}])`)
+  const terminalToasts = [
+    toastBase.filter({ hasText: `${action} erfolgreich, mit Warnungen` }),
+    toastBase.filter({ hasText: `${action} erfolgreich` }),
+    toastBase.filter({ hasText: `${action} fehlgeschlagen` }),
+    toastBase.filter({ hasText: `${action} unerwarteter Fehler` })
+  ]
+
+  for (const toast of terminalToasts) {
+    while (await toast.first().isVisible().catch(() => false)) {
+      await markToastHandled(toast)
+    }
+  }
 }
 
 /**
@@ -210,14 +231,14 @@ export async function actCard(locator: Locator) {
  *
  * Automatically derives progress / failure / warning toast texts from the
  * success text using the `handle.*` intl patterns:
- * - `"{action} wird ausgeführt..."` — progress (extends deadline by
+ * - `"{action} wird ausgeführt..."` — progress (adds
  *   {@link options.progressTimeout}, default 5 s).
  * - `"{action} fehlgeschlagen"` / `"unerwarteter Fehler"` — immediate failure.
  * - `"{action} erfolgreich, mit Warnungen"` — treated as failure unless
  *   {@link options.allowWarnings} is `true`.
  *
  * If the action succeeds or fails very quickly the progress toast may never
- * appear — that is fine, it is only used to extend the deadline.
+ * appear — that is fine, it is only used to add time to the deadline.
  *
  * **Note:** if the user cancels the operation (e.g. dismisses a confirmation
  * dialog) no toast may appear at all. In that case `handleToast` will time
@@ -229,8 +250,8 @@ export async function actCard(locator: Locator) {
  * @param callback - The action that triggers the toast (e.g. a form submit).
  * @param options.timeout - Initial timeout in ms (default 10 000).
  * @param options.allowWarnings - Accept "mit Warnungen" toasts as success.
- * @param options.progressTimeout - Timeout window to use after a progress toast
- *   appears (default 5 000).
+ * @param options.progressTimeout - Time added when a progress toast appears or
+ *   changes text (default 5 000).
  */
 export async function handleToast(
   page: Page,
@@ -238,6 +259,8 @@ export async function handleToast(
   callback: () => Promise<void>,
   options?: { timeout?: number; allowWarnings?: boolean; progressTimeout?: number }
 ) {
+  await markVisibleTerminalToastsHandled(page, action)
+
   const timeout = options?.timeout ?? 10_000
   const progressTimeout = options?.progressTimeout ?? 5_000
   let deadline = Date.now() + timeout
@@ -248,6 +271,33 @@ export async function handleToast(
   const failureToast = toastBase.filter({ hasText: `${action} fehlgeschlagen` })
   const errorToast = toastBase.filter({ hasText: `${action} unerwarteter Fehler` })
   const warningsToast = toastBase.filter({ hasText: `${action} erfolgreich, mit Warnungen` })
+  let lastProgressText: string | null = null
+  const refreshProgressDeadline = async () => {
+    const current = await progressToast.first().textContent({ timeout: 250 }).catch(() => null)
+    if (current !== null && current !== lastProgressText) {
+      lastProgressText = current
+      deadline += progressTimeout
+    }
+  }
+  const waitForProgressTextChange = (previous: string, timeout: number) =>
+    page
+      .waitForFunction(
+        ({ selector, handledAttr, progressPrefix, previous }) =>
+          Array
+            .from(document.querySelectorAll(`${selector}:not([${handledAttr}])`))
+            .some((el) => {
+              const text = el.textContent ?? ""
+              return text.includes(progressPrefix) && text !== previous
+            }),
+        {
+          selector: TOAST_SELECTOR,
+          handledAttr: TOAST_HANDLED_ATTR,
+          progressPrefix: `${action} wird ausgeführt`,
+          previous
+        },
+        { timeout }
+      )
+      .then(() => "progress-changed" as const)
 
   const waitForResult = async (): Promise<"success" | "warnings"> => {
     while (true) {
@@ -296,9 +346,11 @@ export async function handleToast(
       if (result === "error") throw new Error(`Error toast detected: "${action} unerwarteter Fehler"`)
 
       // progress spotted — extend deadline and keep waiting for a terminal toast
-      deadline = Date.now() + progressTimeout
+      await refreshProgressDeadline()
       const remainingAfterProgress = Math.max(deadline - Date.now(), 1)
-      const progressChecks: Promise<"success" | "progress-hidden" | "failure" | "error" | "warnings">[] = [
+      const progressChecks: Promise<
+        "success" | "progress-hidden" | "progress-changed" | "failure" | "error" | "warnings"
+      >[] = [
         successToast
           .first()
           .waitFor({ state: "visible", timeout: remainingAfterProgress })
@@ -320,9 +372,15 @@ export async function handleToast(
           .waitFor({ state: "visible", timeout: remainingAfterProgress })
           .then(() => "warnings" as const)
       ]
+      if (lastProgressText !== null) {
+        progressChecks.push(waitForProgressTextChange(lastProgressText, remainingAfterProgress))
+      }
       const progressResult = await Promise.race(progressChecks)
       for (const p of progressChecks) p.catch(() => {})
-      if (progressResult === "progress-hidden") continue
+      if (progressResult === "progress-hidden" || progressResult === "progress-changed") {
+        await refreshProgressDeadline()
+        continue
+      }
       if (progressResult === "success") {
         if (await warningsToast.first().isVisible()) {
           if (!options?.allowWarnings) {
@@ -350,6 +408,184 @@ export async function handleToast(
 }
 
 /**
+ * Execute an action while watching command toasts and a durable postcondition.
+ *
+ * Success/progress toasts are treated as command signals: useful for fast
+ * feedback and progress extension, but not required when the durable
+ * postcondition proves the page/domain state caught up. Failure/error toasts
+ * still fail fast.
+ *
+ * Use this for commands where a terminal toast is reliable feedback but can be
+ * missed by the browser under load, or where the toast can arrive before the UI
+ * has finished query invalidation / rerender.
+ */
+export async function handleToastOrPostcondition(
+  page: Page,
+  action: string,
+  callback: () => Promise<void>,
+  postcondition: () => Promise<void>,
+  options?: { timeout?: number; allowWarnings?: boolean; progressTimeout?: number }
+) {
+  await markVisibleTerminalToastsHandled(page, action)
+
+  const timeout = options?.timeout ?? 10_000
+  const progressTimeout = options?.progressTimeout ?? 5_000
+  let deadline = Date.now() + timeout
+
+  const toastBase = page.locator(`${TOAST_SELECTOR}:not([${TOAST_HANDLED_ATTR}])`)
+  const successToast = toastBase.filter({ hasText: `${action} erfolgreich` })
+  const progressToast = toastBase.filter({ hasText: `${action} wird ausgeführt` })
+  const failureToast = toastBase.filter({ hasText: `${action} fehlgeschlagen` })
+  const errorToast = toastBase.filter({ hasText: `${action} unerwarteter Fehler` })
+  const warningsToast = toastBase.filter({ hasText: `${action} erfolgreich, mit Warnungen` })
+  let lastProgressText: string | null = null
+  const refreshProgressDeadline = async () => {
+    const current = await progressToast.first().textContent({ timeout: 250 }).catch(() => null)
+    if (current !== null && current !== lastProgressText) {
+      lastProgressText = current
+      deadline += progressTimeout
+    }
+  }
+  const waitForProgressTextChange = (previous: string, timeout: number) =>
+    page
+      .waitForFunction(
+        ({ selector, handledAttr, progressPrefix, previous }) =>
+          Array
+            .from(document.querySelectorAll(`${selector}:not([${handledAttr}])`))
+            .some((el) => {
+              const text = el.textContent ?? ""
+              return text.includes(progressPrefix) && text !== previous
+            }),
+        {
+          selector: TOAST_SELECTOR,
+          handledAttr: TOAST_HANDLED_ATTR,
+          progressPrefix: `${action} wird ausgeführt`,
+          previous
+        },
+        { timeout }
+      )
+      .then(() => "progress-changed" as const)
+
+  const waitForResult = async (): Promise<"success" | "warnings" | "failure" | "error"> => {
+    while (true) {
+      const remaining = Math.max(deadline - Date.now(), 1)
+      const checks: Promise<"success" | "progress" | "failure" | "error" | "warnings">[] = [
+        successToast
+          .first()
+          .waitFor({ state: "visible", timeout: remaining })
+          .then(() => "success" as const),
+        progressToast
+          .first()
+          .waitFor({ state: "visible", timeout: remaining })
+          .then(() => "progress" as const),
+        failureToast
+          .first()
+          .waitFor({ state: "visible", timeout: remaining })
+          .then(() => "failure" as const),
+        errorToast
+          .first()
+          .waitFor({ state: "visible", timeout: remaining })
+          .then(() => "error" as const),
+        warningsToast
+          .first()
+          .waitFor({ state: "visible", timeout: remaining })
+          .then(() => "warnings" as const)
+      ]
+
+      const result = await Promise.race(checks)
+      for (const p of checks) p.catch(() => {})
+
+      if (result !== "progress") return result
+
+      await refreshProgressDeadline()
+      const remainingAfterProgress = Math.max(deadline - Date.now(), 1)
+      const progressChecks: Promise<
+        "success" | "progress-hidden" | "progress-changed" | "failure" | "error" | "warnings"
+      >[] = [
+        successToast
+          .first()
+          .waitFor({ state: "visible", timeout: remainingAfterProgress })
+          .then(() => "success" as const),
+        progressToast
+          .first()
+          .waitFor({ state: "hidden", timeout: remainingAfterProgress })
+          .then(() => "progress-hidden" as const),
+        failureToast
+          .first()
+          .waitFor({ state: "visible", timeout: remainingAfterProgress })
+          .then(() => "failure" as const),
+        errorToast
+          .first()
+          .waitFor({ state: "visible", timeout: remainingAfterProgress })
+          .then(() => "error" as const),
+        warningsToast
+          .first()
+          .waitFor({ state: "visible", timeout: remainingAfterProgress })
+          .then(() => "warnings" as const)
+      ]
+      if (lastProgressText !== null) {
+        progressChecks.push(waitForProgressTextChange(lastProgressText, remainingAfterProgress))
+      }
+      const progressResult = await Promise.race(progressChecks)
+      for (const p of progressChecks) p.catch(() => {})
+      if (progressResult === "progress-hidden" || progressResult === "progress-changed") {
+        await refreshProgressDeadline()
+        continue
+      }
+      return progressResult
+    }
+  }
+
+  const toastPromise = waitForResult()
+    .then((result) => ({ _tag: "toast" as const, result }))
+    .catch((error: unknown) => ({ _tag: "toast-timeout" as const, error }))
+  const statePromise = (async () => {
+    await callback()
+    await postcondition()
+    return { _tag: "postcondition" as const }
+  })()
+
+  const first = await Promise.race([toastPromise, statePromise])
+  if (first._tag === "postcondition") {
+    const lateToastGraceMs = Math.min(1000, Math.max(deadline - Date.now(), 1))
+    const lateToast = await Promise.race([
+      toastPromise,
+      page.waitForTimeout(lateToastGraceMs).then(() => ({ _tag: "no-late-toast" as const }))
+    ])
+    if (lateToast._tag === "toast") {
+      if (lateToast.result === "failure") throw new Error(`Failure toast detected: "${action} fehlgeschlagen"`)
+      if (lateToast.result === "error") throw new Error(`Error toast detected: "${action} unerwarteter Fehler"`)
+      if (lateToast.result === "warnings" && !options?.allowWarnings) {
+        throw new Error(`Warnings toast detected: "${action} erfolgreich, mit Warnungen"`)
+      }
+      await markToastHandled(lateToast.result === "warnings" ? warningsToast : successToast)
+    }
+    return
+  }
+
+  if (first._tag === "toast-timeout") {
+    await statePromise
+    return
+  }
+
+  if (first.result === "failure") {
+    statePromise.catch(() => {})
+    throw new Error(`Failure toast detected: "${action} fehlgeschlagen"`)
+  }
+  if (first.result === "error") {
+    statePromise.catch(() => {})
+    throw new Error(`Error toast detected: "${action} unerwarteter Fehler"`)
+  }
+  if (first.result === "warnings" && !options?.allowWarnings) {
+    statePromise.catch(() => {})
+    throw new Error(`Warnings toast detected: "${action} erfolgreich, mit Warnungen"`)
+  }
+
+  await markToastHandled(first.result === "warnings" ? warningsToast : successToast)
+  await statePromise
+}
+
+/**
  * Execute an action and wait for a **failure** toast to appear, then dismiss it.
  *
  * Inverse of {@link handleToast}: succeeds when a failure/error toast is seen;
@@ -363,8 +599,8 @@ export async function handleToast(
  *   automatically: `"{action} fehlgeschlagen"`, `"{action} unerwarteter Fehler"`.
  * @param callback - The action that triggers the toast (e.g. a button click).
  * @param options.timeout - Initial timeout in ms (default 10 000).
- * @param options.progressTimeout - Timeout window to use after a progress toast
- *   appears (default 5 000).
+ * @param options.progressTimeout - Time added when a progress toast appears or
+ *   changes text (default 5 000).
  */
 export async function handleToastFailure(
   page: Page,
@@ -372,6 +608,8 @@ export async function handleToastFailure(
   callback: () => Promise<void>,
   options?: { timeout?: number; progressTimeout?: number }
 ) {
+  await markVisibleTerminalToastsHandled(page, action)
+
   const timeout = options?.timeout ?? 10_000
   const progressTimeout = options?.progressTimeout ?? 5_000
   let deadline = Date.now() + timeout
@@ -381,6 +619,33 @@ export async function handleToastFailure(
   const progressToast = toastBase.filter({ hasText: `${action} wird ausgeführt` })
   const failureToast = toastBase.filter({ hasText: `${action} fehlgeschlagen` })
   const errorToast = toastBase.filter({ hasText: `${action} unerwarteter Fehler` })
+  let lastProgressText: string | null = null
+  const refreshProgressDeadline = async () => {
+    const current = await progressToast.first().textContent({ timeout: 250 }).catch(() => null)
+    if (current !== null && current !== lastProgressText) {
+      lastProgressText = current
+      deadline += progressTimeout
+    }
+  }
+  const waitForProgressTextChange = (previous: string, timeout: number) =>
+    page
+      .waitForFunction(
+        ({ selector, handledAttr, progressPrefix, previous }) =>
+          Array
+            .from(document.querySelectorAll(`${selector}:not([${handledAttr}])`))
+            .some((el) => {
+              const text = el.textContent ?? ""
+              return text.includes(progressPrefix) && text !== previous
+            }),
+        {
+          selector: TOAST_SELECTOR,
+          handledAttr: TOAST_HANDLED_ATTR,
+          progressPrefix: `${action} wird ausgeführt`,
+          previous
+        },
+        { timeout }
+      )
+      .then(() => "progress-changed" as const)
 
   const waitForResult = async (): Promise<"failure" | "error"> => {
     while (true) {
@@ -413,9 +678,9 @@ export async function handleToastFailure(
       if (result === "failure" || result === "error") return result
 
       // progress spotted — extend deadline and keep waiting for a terminal toast
-      deadline = Date.now() + progressTimeout
+      await refreshProgressDeadline()
       const remainingAfterProgress = Math.max(deadline - Date.now(), 1)
-      const progressChecks: Promise<"success" | "progress-hidden" | "failure" | "error">[] = [
+      const progressChecks: Promise<"success" | "progress-hidden" | "progress-changed" | "failure" | "error">[] = [
         successToast
           .first()
           .waitFor({ state: "visible", timeout: remainingAfterProgress })
@@ -433,9 +698,15 @@ export async function handleToastFailure(
           .waitFor({ state: "visible", timeout: remainingAfterProgress })
           .then(() => "error" as const)
       ]
+      if (lastProgressText !== null) {
+        progressChecks.push(waitForProgressTextChange(lastProgressText, remainingAfterProgress))
+      }
       const progressResult = await Promise.race(progressChecks)
       for (const p of progressChecks) p.catch(() => {})
-      if (progressResult === "progress-hidden") continue
+      if (progressResult === "progress-hidden" || progressResult === "progress-changed") {
+        await refreshProgressDeadline()
+        continue
+      }
       if (progressResult === "success") {
         throw new Error(`Expected failure but got success toast: "${action} erfolgreich"`)
       }

@@ -1,3 +1,7 @@
+<!-- Space: SA -->
+<!-- Parent: Scanner Wiki -->
+<!-- Title: How We Build -->
+
 # How We Build — PMs and Engineers Working Together
 
 A practical guide for everyone who writes stories, ships code, or reviews PRs in this repo. Read this once. Refer back when you're starting something new.
@@ -98,7 +102,7 @@ What is not OK: shipping new behavior to production without an e2e test exercisi
 
 Same rule applies to AI agents. If an agent ships a behavior change, it must also write the test or open a paired PR doing so.
 
-There's a discipline to *how* to write the test, too — see [`wiki/architecture/e2e-state-pattern.md`](./architecture/e2e-state-pattern.md) for the walk-once + API-seed rule. Adding a redundant full-flow walk to cover a variant is worse than adding nothing.
+There's a discipline to *how* to write the test, too — see [`wiki/app-architecture/e2e-state-pattern.md`](./app-architecture/e2e-state-pattern.md) for the walk-once + API-seed rule. Adding a redundant full-flow walk to cover a variant is worse than adding nothing.
 
 ## How code reviewers reinforce this
 
@@ -106,7 +110,7 @@ Reviewers (including Copilot, see [`.github/copilot-instructions.md`](../.github
 
 The phrasing we use:
 
-> "This PR changes [behavior X] but `wiki/flows/<company>/<workflow>.md` still describes the old behavior. Per the same-PR rule in `wiki/architecture/flow-documentation.md`, please update [specific section]."
+> "This PR changes [behavior X] but `wiki/flows/<company>/<workflow>.md` still describes the old behavior. Per the same-PR rule in `wiki/app-architecture/flow-documentation.md`, please update [specific section]."
 
 Reviewers should be specific. Generic "see the docs" comments get ignored.
 
@@ -158,6 +162,14 @@ This is why the same-PR rule isn't a nice-to-have. It's the price of admission f
 3. In the PR description, state: "Flow doc updated: ✅" or "Flow doc not updated because [reason]" — and "E2E coverage: added / follow-up tracked / internal-only"
 4. Mention which flow doc sections you touched
 
+### Before handing work to PM/QA (engineer)
+
+1. Verify the changed flow works end-to-end at least once in the target environment (usually Demo)
+2. Do a basic functional check yourself before asking PM/QA to test
+3. If external systems are part of the change (especially printing), run a real integration check and confirm the expected output is produced
+4. Check Honeycomb for the request path: validate spans/events, look for errors, and confirm no obvious latency regressions
+5. Only hand over to PM/QA after those checks are done; include what you verified in your handoff note
+
 ### When you review a PR (everyone)
 
 1. Did the behavior change? Did the doc change?
@@ -180,7 +192,7 @@ It's also not optional. The cost of skipping it shows up later — in confused e
 ## Where to go from here
 
 - **Catalog of flows** → [`wiki/flows/README.md`](./flows/README.md)
-- **Why we treat flow docs as living specs** → [`wiki/architecture/flow-documentation.md`](./architecture/flow-documentation.md)
+- **Why we treat flow docs as living specs** → [`wiki/app-architecture/flow-documentation.md`](./app-architecture/flow-documentation.md)
 - **AI agent instructions** → [`AGENTS.md`](../AGENTS.md)
 - **PR review enforcement** → [`.github/copilot-instructions.md`](../.github/copilot-instructions.md)
 If you have feedback on this process, talk to your team leads. We'd rather iterate on the rules than have people quietly ignoring them.

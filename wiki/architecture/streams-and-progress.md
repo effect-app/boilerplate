@@ -1,3 +1,9 @@
+<!-- Space: SA -->
+<!-- Parent: Scanner Wiki -->
+<!-- Parent: Architecture -->
+<!-- Parent: Architecture (shared) -->
+<!-- Title: Streams and Realtime Progress -->
+
 # Streams and Realtime Progress
 
 Long-running mutations (imports, mass re-label, bulk re-pick, validate-and-import flows) should report progress to the user while they run instead of leaving the UI in an indeterminate "Wird ausgeführt..." spinner. The pattern is a **stream command**: the server declares the request as `stream: true`, returns a `Stream<Progress, E, R>`, and the client uses `Command.withDefaultToastStream` to render progress inline in the toast.
@@ -40,7 +46,7 @@ export class RetryLabel extends Req.Command<RetryLabel>()(
 
 - `stream: true` flips the request from "single-response RPC" to "stream of responses".
 - `success: OperationProgress` is the schema of **each emitted value**, not a single terminal result. The stream ends when the underlying work finishes.
-- The fourth argument is the query-invalidation map (see [command-pattern.md § Query invalidation via `clientFor`](./command-pattern.md#query-invalidation-via-clientfor)).
+- The fourth argument is the query-invalidation map (see [command-pattern.md § Query invalidation belongs in resources](./command-pattern.md#query-invalidation-belongs-in-resources)).
 
 ### Controller / service: return a `Stream`
 

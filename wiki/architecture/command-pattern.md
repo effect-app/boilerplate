@@ -1,3 +1,9 @@
+<!-- Space: SA -->
+<!-- Parent: Scanner Wiki -->
+<!-- Parent: Architecture -->
+<!-- Parent: Architecture (shared) -->
+<!-- Title: Command Pattern for Mutations -->
+
 # Command Pattern for Mutations
 
 Use a Command for any user-triggered mutation that needs loading state, confirmation, toasts, or side effects after the write. The Command encapsulates **the whole procedure from start to finish** — confirmation, mutation, success-side state changes, navigation.
@@ -449,25 +455,67 @@ const retryLabel = overviewClient.RetryLabel.mutate.wrap()(
 <CommandButton :command="retryLabel" />
 ```
 
-## Query invalidation via `clientFor`
+## Query invalidation belongs in resources
 
-Pass a second arg to `clientFor()` to configure cross-query invalidation on mutations. Used to be the legacy `queryInvalidation` option on `useAndHandleMutation`.
+Configure mutation cache invalidation on the `Req.Command` definition in the
+resource file. Do not pass query invalidation as the second argument to
+`clientFor()` at a page/component call site. A mutation's data dependencies are
+part of the API contract, not a local UI detail; every consumer of the command
+should get the same cache behavior.
 
 ```ts
-const meClient = clientFor(MeRsc)  // must come BEFORE clients that reference its query key
-const cartClient = clientFor(CartsRsc, () => ({
-  FullCart: (queryKey) => [
-    { filters: { queryKey } },
-    { filters: { queryKey: makeQueryKey(meClient.GetMe) } }
-  ],
-  CheckinCart: (queryKey) => [
-    { filters: { queryKey } },
-    { filters: { queryKey: makeQueryKey(meClient.GetMe) } }
-  ]
-}))
+import { GetMe } from "#resources/Me"
+import { List as PickCartsList } from "./PickCarts.Queries.ts"
+
+const invalidatePicking = (queryKey: readonly string[]) => [
+  queryKey,
+  GetMe,
+  GetStats,
+  PickCartsList
+]
+
+export class Full extends Req.Command<Full>()(
+  "Full",
+  {},
+  { allowRoles: ["user"] },
+  invalidatePicking
+) {}
 ```
 
-Declaration order matters: `meClient` first, then anything that references `meClient.GetMe`.
+Use real query request classes in the invalidation list whenever possible. If a
+command in resource A must invalidate a query in resource B, import the query
+class from B's query-only module instead of configuring it in `clientFor()`.
+
+```ts
+import { List as DropshippingPickList } from "../../Dropshipping/resources/PickList.Queries.ts"
+
+const invalidatePickLists = (queryKey: readonly string[]) => [
+  queryKey,
+  GetMe,
+  GetStats,
+  DropshippingPickList
+]
+```
+
+### Auth/user state after mutations
+
+When a command changes the current user's claimed resource, invalidate `GetMe`
+from the command's resource definition. Do not manually assign `store.user` in
+the page to predict the new user state.
+
+```ts
+export class Release extends Req.Command<Release>()(
+  "Release",
+  { cartId: OneOrMoreCarts },
+  { allowRoles: ["user"] },
+  (queryKey) => [queryKey, GetMe, GetStats]
+) {}
+```
+
+The client mutation invalidates/refetches affected queries before the command
+body continues to success-side effects such as navigation. Route guards and
+headers should observe the refreshed `GetMe` cache/store instead of a local
+optimistic write.
 
 ## i18n: action keys are mandatory
 

@@ -1,27 +1,26 @@
-# Architecture
+<!-- Space: SA -->
+<!-- Parent: Scanner Wiki -->
+<!-- Parent: Architecture -->
+<!-- Title: Architecture (shared) -->
 
-This folder covers how the application is configured and how it selects workflows.
+# Architecture (shared, effect-app)
 
-## Process & documentation (read first)
+This folder holds **cross-project effect-app architecture** that is synced between multiple effect-app applications. Changes here may affect other repos.
 
-- **[Flow Documentation — The Living Spec](./flow-documentation.md)** ← what `wiki/flows/` is, why it's mandatory, update-in-PR rule
-- **[E2E State Pattern — Walk Once, API-Seed Variants](./e2e-state-pattern.md)** ← test design rule
+For app-specific architecture, see [`../app-architecture/index.md`](../app-architecture/index.md).
+Entry point for both: [`../architecture.md`](../architecture.md).
 
 ## Technical architecture
 
-- [Configuration and companies](./configuration-and-tenancy.md)
 - [Database query guidelines](./database-query-guidelines.md)
-- [Workflow: routing and selection](./workflow.md)
-- [Import / Export rules](./import-rules.md)
+- [Import / Naming rules](./import-rules.md)
 - [Resource and Controller Layout](./resource-and-controller-layout.md)
 - [Query Shape: List vs Get](./query-shape-list-vs-get.md)
 - [Command Pattern for Mutations](./command-pattern.md)
 - [Command Input Validation](./command-input-validation.md)
+- [Durable Workflows & DurableDeferred](./durable-workflows.md) — idempotency keys, resume vs restart, write-once deferred slots, token routing, compensation vs `ensuring`, replay-safe activities.
 - [Streams and Realtime Progress](./streams-and-progress.md)
 - [List Layout: per-item Actions](./list-layout.md)
 - [Vue Conventions](./vue-conventions.md)
-- [E2E Tests](./e2e.md)
-
-## Business flow catalog
-
-See [`wiki/flows/`](../flows/README.md) for per-company, per-workflow operating reference (carriers, labels, closeout, business rules, variants).
+- [OmegaForm](./omega-form.md)
+- [Playwright POM design](./playwright-poms.md)

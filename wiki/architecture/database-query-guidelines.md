@@ -1,3 +1,9 @@
+<!-- Space: SA -->
+<!-- Parent: Scanner Wiki -->
+<!-- Parent: Architecture -->
+<!-- Parent: Architecture (shared) -->
+<!-- Title: Database Query Guidelines -->
+
 # Database Query Guidelines
 
 Default rule: push filtering, counting, pagination, projection, and simple derivations into the repository query. Do not pull full documents into memory unless the endpoint truly needs them.

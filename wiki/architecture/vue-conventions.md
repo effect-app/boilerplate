@@ -1,3 +1,9 @@
+<!-- Space: SA -->
+<!-- Parent: Scanner Wiki -->
+<!-- Parent: Architecture -->
+<!-- Parent: Architecture (shared) -->
+<!-- Title: Vue Conventions -->
+
 # Vue Conventions
 
 Conventions specific to `.vue` single-file components in `frontend/`.
