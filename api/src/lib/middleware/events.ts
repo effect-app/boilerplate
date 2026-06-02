@@ -3,7 +3,9 @@ import { Events } from "#services/Events"
 import { makeSSE } from "@effect-app/infra/middlewares"
 import * as Effect from "effect-app/Effect"
 
+// @effect-diagnostics effect/returnEffectInGen:off
 export const makeEvents = Effect.gen(function*() {
   const events = yield* Events
+
   return makeSSE(ClientEvents)(events.stream)
 })
