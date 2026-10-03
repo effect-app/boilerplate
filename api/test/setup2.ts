@@ -18,9 +18,9 @@ const ApiLive = api
 
 const ApiClientLive = Effect
   .gen(function*() {
-    const url = yield* Config.string("apiUrl").pipe(Config.withDefault("http://127.0.0.1:" + PORT))
+    const url = yield* Config.String("apiUrl").pipe(Config.withDefault("http://127.0.0.1:" + PORT))
     const headers = yield* Config
-      .schema(Config.Record(S.String, S.String), "headers")
+      .schema(S.Record(S.String, S.String), "headers")
       .pipe(Config.option)
     return ApiClientFactory.layer({ url, headers })
   })

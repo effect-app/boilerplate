@@ -3,3 +3,65 @@ packages:
   - frontend
   - e2e
   - scripts/ts-plugins/*
+  #- libs/packages/* # link
+  #- libs # link
+
+# --- Migrated from .npmrc (pnpm 11 only reads auth/registry from .npmrc) ---
+publicHoistPattern:
+  - "*change-case*"
+  - "vue"
+  - "vue-*"
+  - "@vue/*"
+  - "@vueuse/*"
+  - "@vitejs/plugin-vue"
+# nodeLinker: hoisted
+
+# --- Migrated from package.json "pnpm" field (pnpm 11 no longer reads it) ---
+# allowBuilds map (allowlist; others blocked)
+allowBuilds:
+  "@parcel/watcher": false
+  "@scarf/scarf": false
+  "@sentry/cli": false
+  better-sqlite3: true
+  core-js: false
+  dprint: false
+  esbuild: false
+  msgpackr-extract: false
+  protobufjs: false
+  unrs-resolver: false
+  vue-demi: false
+
+overrides:
+  effect: 4.0.0
+  "@effect/vitest": 4.0.0
+  "@effect/opentelemetry": 4.0.0
+  "@effect/platform-node": 4.0.0
+  "@effect/platform-node-shared": 4.0.0
+  "@effect/platform-browser": 4.0.0
+  "@effect/sql-sqlite-node": 4.0.0
+  "@effect/atom-vue": 4.0.0
+  # Single OTel api instance: peer contexts otherwise split sdk-metrics etc.
+  # into duplicate private-class instances that are not assignable to each other.
+  "@opentelemetry/api": 1.9.1
+  "@tanstack/vue-form": 1.23.5
+  "@tanstack/form-core": 1.24.1
+  "@tanstack/store": 0.7.7
+  "@tanstack/vue-store": 0.7.7
+  vue: 3.5.38
+  "@vue/compiler-sfc": 3.5.38
+  "@vue/server-renderer": 3.5.38
+  "@vue/shared": 3.5.38
+  # vue-tsc / tsserver / eslint: tsgo via TNB. API/e2e --build still uses
+  # @typescript/native-preview patched from effect-app/tsgo (facade emit).
+  typescript: npm:typescript-native-bridge@6.0.3-bridge.12.tsgo.7.0.2
+
+patchedDependencies:
+  madge: patches/madge.patch
+  "@tanstack/query-core": patches/@tanstack__query-core.patch
+
+# --- Preserve pnpm 10 behavior 1:1 (these defaults changed in pnpm 11) ---
+optimisticRepeatInstall: false # pnpm 11 default: true
+verifyDepsBeforeRun: false # pnpm 11 default: install
+minimumReleaseAge: 0 # pnpm 11 default: 1440
+strictDepBuilds: false # pnpm 11 default: true
+blockExoticSubdeps: false # pnpm 11 default: true

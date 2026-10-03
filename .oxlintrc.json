@@ -1,9 +1,36 @@
 {
-  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "$schema": "./node_modules/@effect/tsgo/oxlint-schema.json",
   "extends": [
     "./node_modules/@effect-app/eslint-shared-config/src/oxlintrc.json"
   ],
+  "jsPlugins": [
+    {
+      "name": "codegen",
+      "specifier": "@effect-app/eslint-codegen-model/oxlint"
+    },
+    {
+      "name": "rpc-module-name",
+      "specifier": "./scripts/oxlint-rpc-module-name/index.js"
+    }
+  ],
+  "options": {
+    "typeAware": true
+  },
+  "plugins": [
+    "effecttsgo"
+  ],
   "rules": {
+    "effecttsgo/any-unknown-in-error-context": "off",
+    "effecttsgo/layer-merge-all-with-dependencies": "off",
+    "effecttsgo/schema-sync-in-effect": "off",
+    "effecttsgo/strict-effect-provide": "off",
+    "effecttsgo/missing-effect-service-dependency": "error",
+    "effecttsgo/effect-fn-opportunity": "warn",
+    "effecttsgo/global-error-in-effect-failure": "warn",
+    "effecttsgo/prefer-schema-over-json": "off",
+    "effecttsgo/unnecessary-effect-gen": "warn",
+    "effecttsgo/effect-succeed-with-void": "off",
+    "rpc-module-name/module-name": "error",
     "eslint/no-restricted-imports": ["error", {
       "paths": [
         {
@@ -25,6 +52,10 @@
         {
           "name": "effect-app",
           "message": "Import from a submodule instead, e.g. `import * as S from \"effect-app/Schema\"`."
+        },
+        {
+          "name": "effect/http",
+          "message": "Import from the specific HTTP submodule instead, e.g. `effect/http/HttpClient`; the aggregate barrel pulls server-only router modules into frontend builds."
         }
       ],
       "patterns": [
@@ -35,9 +66,30 @@
       ]
     }]
   },
+  "overrides": [
+    {
+      "files": [
+        "api/test/**/*.ts"
+      ],
+      "rules": {
+        "typescript/no-unnecessary-type-assertion": "off"
+      }
+    },
+    {
+      "files": [
+        "scripts/**/*.test.ts"
+      ],
+      "rules": {
+        "typescript/no-floating-promises": "off"
+      }
+    }
+  ],
   "ignorePatterns": [
     "**/dist/**",
     "**/node_modules/**",
+    "**/.nuxt/**",
+    "**/.output/**",
+    "**/test-out/**",
     "**/*.d.ts",
     "**/*.css",
     "**/*.scss",
@@ -49,6 +101,9 @@
     "**/vitest.config.ts",
     "**/eslint.*.mjs",
     "**/CHANGELOG.md",
+    "**/auto-imports.d.ts",
+    "**/wallaby.cjs",
+    "**/wallaby.base.cjs",
     "repos/**"
   ]
 }

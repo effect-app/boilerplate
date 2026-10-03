@@ -9,13 +9,14 @@ Companion to [E2E Architecture](./e2e.md). Mandatory pattern for new specs + ref
 ## Why
 
 UI walks are expensive:
+
 - Browser nav + paint waits + animation settle = 3–10× slower than API calls
 - Each step adds flake surface (selector misses, race conditions, toast stacking)
 - Repeated walks bloat CI minutes + test files
 
 API-seeded state hits the same controllers the UI does. State is realistic, drift-resistant, fast.
 
-Currently the suite has **~150–180 sec/run** of redundant walks across top 3 hotspots — see [duplicate-walks audit](../flows/e2e-duplicate-walks.md).
+Track redundant walks; each one is a candidate for an API-seeded variant.
 
 ## The pattern
 
@@ -23,9 +24,9 @@ Currently the suite has **~150–180 sec/run** of redundant walks across top 3 h
 
 ```ts
 // e2e/tests/<workflow>/full-workflow.spec.ts
-test.slow()  // legitimately walks pick → pack → close end-to-end
+test.slow() // legitimately walks the workflow end-to-end
 test("<workflow> full workflow", async ({ page, runtimes }) => {
-  await importCSV("<workflow>/sample.json")
+  await importSample("<workflow>/sample.json")
   // walk the UI from start to finish
 })
 ```
@@ -35,20 +36,20 @@ test("<workflow> full workflow", async ({ page, runtimes }) => {
 ```ts
 // e2e/tests/<workflow>/variants/stacking.spec.ts
 test("Stack height 5 allowed, 6 rejected", async ({ runtimes }) => {
-  const { shipmentId } = await seedShipment({
+  const { orderId } = await seedOrder({
     site: "Berlin",
-    carrier: "carrier-a",
-    pallets: 6,  // pre-built 6-tall stack via API
+    provider: "provider-a",
+    items: 6 // pre-built 6-tall stack via API
   })
   // single UI assertion: stack-height-6 dialog shows error
 })
 
-test("Non-stackable carrier pallets cannot stack", async ({ runtimes }) => {
-  const { shipmentId } = await seedShipment({
-    carrier: "carrier-b",
-    pallets: 2,
+test("Non-stackable provider items cannot stack", async ({ runtimes }) => {
+  const { orderId } = await seedOrder({
+    provider: "provider-b",
+    items: 2
   })
-  // assert stackability dropdown disabled for non-stackable carrier
+  // assert the option is disabled for a non-stackable provider
 })
 ```
 
@@ -56,10 +57,10 @@ test("Non-stackable carrier pallets cannot stack", async ({ runtimes }) => {
 
 ```
 e2e/helpers/seed/
-├── <workflow-a>.ts   seedShipment(...) advanceToStepD(...) putCartInTransferredState(...)
-├── <workflow-b>.ts   seedBatch(...) setupPickedState(...)
-├── <workflow-c>.ts   seedDeliveryNotes(...)
-├── <workflow-d>.ts   seedTruck(...) loadTruck(...)
+├── <workflow-a>.ts   seedOrder(...) advanceToStepD(...) putOrderInTransferredState(...)
+├── <workflow-b>.ts   seedBatch(...) setupDoneState(...)
+├── <workflow-c>.ts   seedDocuments(...)
+├── <workflow-d>.ts   seedContainer(...) loadContainer(...)
 └── _shared.ts        loginAs(role), apiClient(ctx)
 ```
 
@@ -68,9 +69,9 @@ Each helper calls real controllers — same path the UI takes. No backdoor DB mi
 ### POMs expose `jumpTo(state)`
 
 ```ts
-const cart = new WorkflowCart(page)
-await cart.jumpTo("transferred", { cartId })
-// no UI walk; cart now in transferred state
+const order = new WorkflowOrder(page)
+await order.jumpTo("transferred", { orderId })
+// no UI walk; order now in transferred state
 ```
 
 Implemented in terms of seed helpers.
@@ -79,11 +80,11 @@ Implemented in terms of seed helpers.
 
 E2E is NOT the place for:
 
-- **Carrier API request structure** → unit-test `api/src/services/Ship/*.ts`
+- **External API request structure** → unit-test `api/src/services/<Provider>/*.ts`
 - **Stack validator algorithm** → pure function, unit test
 - **Projection flag math** → unit/integration tests over repo data
 - **External-system event serialization** → schema tests
-- **PDF byte-level layout** → visual regression only for top-priority labels
+- **PDF byte-level layout** → visual regression only for top-priority documents
 - **Mailer subject/recipient** → integration test w/ test transport
 
 Move these. Keep e2e for: "user clicks button X, sees outcome Y, given state Z".
@@ -97,7 +98,7 @@ Move these. Keep e2e for: "user clicks button X, sees outcome Y, given state Z".
 │   ├── <concern-1>.spec.ts      ← API-seeded, focused UI assertion
 │   ├── <concern-2>.spec.ts
 │   └── ...
-└── carrier/                     ← integration-level carrier tests if needed
+└── provider/                    ← integration-level provider tests if needed
     └── ...
 ```
 
@@ -107,16 +108,16 @@ Aim: `variants/*.spec.ts` average 5–10 sec each — most steps API, one UI ass
 
 **New or changed business behavior must be exercised by an e2e spec before it reaches production.** Two acceptable paths:
 
-| Path | When OK |
-|---|---|
-| **Tests-with-merge** | PR includes the e2e spec covering the new/changed behavior. Merges + ships. |
-| **Behind feature toggle** | PR may merge without e2e *only* if the new behavior is gated behind a feature flag disabled in prod. A follow-up PR adds the e2e spec before the flag flips on. |
+| Path                      | When OK                                                                                                                                                         |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tests-with-merge**      | PR includes the e2e spec covering the new/changed behavior. Merges + ships.                                                                                     |
+| **Behind feature toggle** | PR may merge without e2e _only_ if the new behavior is gated behind a feature flag disabled in prod. A follow-up PR adds the e2e spec before the flag flips on. |
 
 What's **not** OK: new behavior reaching prod without e2e coverage of the divergence. Manual QA does not count.
 
 This applies to AI agents and humans equally. If an agent ships a behavior change, it must also write the test or open a paired PR doing so.
 
-Note: adding a *bad* e2e test (full-flow walk for a variant assertion) is worse than adding no test — see Acceptance criteria below.
+Note: adding a _bad_ e2e test (full-flow walk for a variant assertion) is worse than adding no test — see Acceptance criteria below.
 
 ## Acceptance criteria for new specs
 
@@ -138,13 +139,15 @@ When refactoring an old spec toward this pattern:
 
 ## Existing helpers (already in repo)
 
-`e2e/helpers/import.ts`:
-- `importCSV(path)` / `importJSON(filePath)` / `insertItems(req)`
+`e2e/helpers/command.ts`:
+
+- `command(resource)` — RPC-triggering clicks with an intl-derived label + toast wait.
 
 `e2e/helpers/act.ts`:
+
 - `waitForResponse(callback, matcher)` / `handleToast()` / `actButton()`
 
-Composite seed helpers are missing — see [duplicate-walks audit](../flows/e2e-duplicate-walks.md) for what to add first.
+Composite seed helpers live in `e2e/helpers/seed/` — see its README for the extraction rules.
 
 ## How AI uses this pattern
 
@@ -156,7 +159,5 @@ Composite seed helpers are missing — see [duplicate-walks audit](../flows/e2e-
 ## Cross-references
 
 - [E2E Architecture](./e2e.md)
-- [POM Architecture](../../e2e/tests/poms/ARCHITECTURE.md)
-- [Coverage Gaps](../flows/e2e-coverage-gaps.md)
-- [Duplicate Walks Audit](../flows/e2e-duplicate-walks.md)
+- [Playwright POM design](./playwright-poms.md)
 - [Flow Documentation Rules](./flow-documentation.md)

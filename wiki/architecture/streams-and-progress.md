@@ -1,14 +1,16 @@
 <!-- Space: SA -->
-<!-- Parent: Scanner Wiki -->
 <!-- Parent: Architecture -->
 <!-- Parent: Architecture (shared) -->
 <!-- Title: Streams and Realtime Progress -->
 
 # Streams and Realtime Progress
 
-Long-running mutations (imports, mass re-label, bulk re-pick, validate-and-import flows) should report progress to the user while they run instead of leaving the UI in an indeterminate "Wird ausgeführt..." spinner. The pattern is a **stream command**: the server declares the request as `stream: true`, returns a `Stream<Progress, E, R>`, and the client uses `Command.withDefaultToastStream` to render progress inline in the toast.
+Long-running mutations (imports, mass re-label, bulk re-run, validate-and-import flows) should report progress to the user while they run instead of leaving the UI in an indeterminate "Wird ausgeführt..." spinner. The pattern is a **stream command**: the server declares the request as `stream: true`, returns a `Stream<Progress, E, R>`, and the client uses `Command.withDefaultToastStream` to render progress inline in the toast.
+
+Durable workflows that are triggered by a foreground user action should normally expose a progress stream too. If the workflow can take long enough that the user waits for it, or if it performs multiple external steps (external system, mail, storage), model those steps as progress events instead of making the user stare at a generic waiting toast. Use a plain one-shot command only when the workflow is genuinely quick, invisible/background-only, or the user is not expected to wait for it.
 
 Companions:
+
 - [command-pattern.md](./command-pattern.md) — `.fn()` / `CommandButton` baseline.
 - [query-shape-list-vs-get.md](./query-shape-list-vs-get.md) — shaping the emitted progress payload.
 
@@ -17,12 +19,14 @@ Companions:
 Use `OperationProgress` (`api/src/models/Operations.ts`) when the operation has a known total and processes items:
 
 ```ts
-export class OperationProgress extends S.Opaque<OperationProgress, OperationProgress.Encoded>()(
-  S.Struct({
-    completed: S.NonNegativeInt,
-    total: S.NonNegativeInt
-  })
-) {}
+export class OperationProgress
+  extends S.Opaque<OperationProgress, OperationProgress.Encoded>()(
+    S.Struct({
+      completed: S.NonNegativeInt,
+      total: S.NonNegativeInt
+    })
+  )
+{}
 ```
 
 Co-located with `Operation` (the persisted record) and the `ImportOperationFailure` / `OperationSuccess` tagged union used for terminal results.
@@ -36,17 +40,21 @@ Custom progress shapes are fine when the default `{ completed, total }` doesn't 
 export class RetryLabel extends Req.Command<RetryLabel>()(
   "RetryLabel",
   {},
-  { stream: true, success: OperationProgress },
-  (queryKey) => [
-    { filters: { queryKey } },
-    { filters: { queryKey: makeQueryKey(List) } }
-  ]
+  { stream: true, success: OperationProgress }
 ) {}
 ```
 
 - `stream: true` flips the request from "single-response RPC" to "stream of responses".
 - `success: OperationProgress` is the schema of **each emitted value**, not a single terminal result. The stream ends when the underlying work finishes.
-- The fourth argument is the query-invalidation map (see [command-pattern.md § Query invalidation belongs in resources](./command-pattern.md#query-invalidation-belongs-in-resources)).
+- Query invalidation is derived from recorded repository dependencies. Do **not**
+  reintroduce manual `queryInvalidation`, `invalidatesQueries` 4th-args, or
+  `InvalidationSet.use` for normal resource refreshes — see
+  [command-pattern.md](./command-pattern.md#repository-derived-query-invalidation-is-the-default).
+- Repository writes are accumulated independently of per-value RPC metadata and published when the finite HTTP response stream settles. Success, failure, and client interruption all flush writes already performed. The long-lived `/events` SSE stream is deliberately excluded.
+- Settlement-only publication is the default. An application can opt into realtime stream publication so accumulated writes drain before every emitted HTTP stream chunk and once more when the stream exits; the option can also be scoped to selected long-running stream routes.
+- On the originating client, `makeStreamMutation2` flushes derived write-deps **once** when the first write set is visible on a stream value, then again when the stream settles. Server invalidation keys stay settlement-only — flushing them per chunk refetches live list queries on each emitted item. Screens that must show item-level progress during the open stream should still render the stream payload in-page (a count emitted mid-stream is a batch cursor, not a live counter).
+
+Realtime publication makes other clients converge while a long operation is still running and bounds lost freshness when a stream never reaches a clean terminal state. It also increases SSE traffic and downstream query reloads, exposes intermediate committed states, and ties publication frequency to transport chunks rather than domain transactions. Prefer settlement-only for short streams or all-or-nothing operations. Use realtime mode when intermediate repository writes are intentionally visible and useful; frontend invalidation buffering should still absorb bursts according to each screen's responsiveness needs.
 
 ### Controller / service: return a `Stream`
 
@@ -61,7 +69,6 @@ RetryLabel: () =>
       Effect.flatMap((user) =>
         orderRepo.queryAndSavePure(/* ... */)
       ),
-      Effect.tap(() => Invalidation.InvalidationSet.use((_) => _.add(makeQueryKey(List)))),
       Effect.map((items) => /* return Stream<OperationProgress, E> */)
     )
   )
@@ -72,7 +79,7 @@ RetryLabel: () =>
 ```ts
 const userImport = (streams: readonly { content: string | File; name: string }[]) => {
   const id = StringId.make()
-  return Stream.callback<OperationProgress, InvalidStateError | …, CurrentSettings>((queue) =>
+  return Stream.callback<OperationProgress, InvalidStateError | …, CurrentUser>((queue) =>
     importStream(id, streams, (p) => Effect.sync(() => Queue.offerUnsafe(queue, p)))
       .pipe(
         Effect.tap(/* error post-processing */),
@@ -89,9 +96,86 @@ const userImport = (streams: readonly { content: string | File; name: string }[]
 ```
 
 Key points:
+
 - The work is `Effect.forkChild` / `withPermits(1)` / `forkDaemonReport` so concurrent invocations are bounded.
 - `Effect.onExit` translates the underlying Exit into `Queue.end` (success) / `Queue.failCause` (error). Without this the stream never terminates on failure.
 - `Effect.ensuring(publish)` flushes any final state regardless of outcome.
+
+### Durable workflow progress hubs
+
+Foreground durable workflows that publish live progress by `requestId` should
+use an in-memory PubSub hub instead of polling run-state. Keep the wire progress
+schema co-located with the resource, but let a small helper own the common
+envelope:
+
+```ts
+export interface WorkflowTerminalEvent {
+  readonly _tag: "Parked"
+  readonly requestId: NonEmptyString255
+  readonly step: WorkflowStep
+  readonly attempt: PositiveInt
+  readonly error: string
+}
+
+export class WorkflowProgressHub
+  extends Context.Service<WorkflowProgressHub>()("WorkflowProgressHub", {
+    make: makeProgressHub<
+      NonEmptyString255,
+      WorkflowProgress,
+      WorkflowTerminalEvent
+    >()
+  })
+{
+  static Default = Layer.effect(this, this.make)
+}
+```
+
+The helper exposes:
+
+- `publish({ requestId, progress })` for values sent to the client stream.
+- `publishTerminal(event)` for side-channel terminal events such as parked
+  retries.
+- `subscribe(requestId)` and `subscribeTerminal(requestId)` for controller
+  adapters such as `streamRunProgress`.
+
+### Data dependencies from durable workflows
+
+Repository-derived query invalidation relies on the request-scoped
+`DataDependencyRecorder`. Durable workflow bodies run in a separate workflow
+execution context, so repository writes inside the workflow cannot record into
+the HTTP request's recorder directly. Bridge this in the workflow wrapper:
+
+1. Install a hub-backed `DataDependencyRecorder` inside the durable workflow
+   body.
+2. Publish read/write dependency events keyed by `requestId`, or by the
+   workflow execution id when no request id exists.
+3. While the caller effect is running, record the matching events into the
+   caller's request recorder and let the normal RPC wrapper emit the metadata.
+4. When no caller subscription remains, publish the workflow's accumulated
+   writes directly when that execution segment settles. This covers discarded,
+   suspended, resumed, and otherwise detached workflow execution without also
+   publishing a duplicate for an attached caller.
+
+Callers do not pass dependency channels. Stream controllers continue to
+subscribe only to progress:
+
+```ts
+streamRunProgress({
+  prepare,
+  subscribe: (requestId) => progressHub.subscribe(requestId),
+  done: WorkflowProgressDone.make({})
+})
+```
+
+Plain one-shot workflow commands use the same bridge. Their dependency metadata
+is recorded before `Workflow.execute` returns, so the final RPC response carries
+the accumulated writes just like any other command.
+
+The caller bridge is live, not a durable event log. A later subscriber may miss
+old progress and dependency metadata, but detached workflow writes also produce
+a generic SSE invalidation at execution-segment settlement. This is a cache
+invalidation signal, not an ordered domain-event stream: clients refetch current
+repository state rather than replaying workflow changes.
 
 ### `Operations` service — when the work must outlive the request
 
@@ -99,7 +183,7 @@ A stream command's fiber dies when the client disconnects. For background work t
 
 ```ts
 // api/src/services/Operations.ts
-const op = yield* operations.run(
+const op = yield * operations.run(
   (opId) =>
     importEffect(items, (progress) => operations.update(opId, progress))
       .pipe(Effect.withSpan("Import")),
@@ -110,16 +194,18 @@ const op = yield* operations.run(
 ```
 
 `Operations.run`:
+
 - Forks a daemon fiber via `RequestFiberSet.forkDaemonReportUnexpected` (survives request lifetime).
 - Persists the operation row via `OperationsRepo` (`addOp`).
 - On exit, writes a terminal `OperationSuccess` or `OperationFailure` row via `finishOp`.
 - Cleans up rows older than 1 hour on a `Schedule.fixed(Duration.minutes(20))` schedule.
 
 `operations.update(opId, progress)` writes `progress: OperationProgress` to the `Operation` row mid-flight. Clients can either:
+
 - Subscribe to the stream returned by the command for live updates, **or**
 - Poll `operations.find(opId)` if the page is re-entered after a refresh.
 
-The stream + `Operations.run` are independent — many imports do both: emit progress on the stream **and** persist it so a tab refresh can pick up the in-progress operation.
+The stream + `Operations.run` are independent — many imports do both: emit progress on the stream **and** persist it so a tab refresh can resume the in-progress operation.
 
 ## Client: `Command.withDefaultToastStream`
 
@@ -149,14 +235,15 @@ export function operationProgress<A, E>(
   if (!AsyncResult.isSuccess(result) || !result.waiting) return undefined
   const p = result.value
   if (!isOperationProgress(p)) return undefined
+  if (p.total === 0) return undefined
   const text = `${p.completed}/${p.total}`
-  return p.total === 0 ? text : { text, percentage: Math.round((p.completed / p.total) * 100) }
+  return { text, percentage: Math.round((p.completed / p.total) * 100) }
 }
 ```
 
 - Returns `undefined` when the stream hasn't emitted yet or has completed — the toast falls back to the default waiting / success / error text.
-- Returns a string when `total === 0` (unbounded progress) — toast shows the text without a bar.
-- Returns `{ text, percentage }` when the total is known — toast shows a determinate bar.
+- Returns `undefined` while `total === 0` — the operation has not discovered a displayable total yet, so the toast stays on the default waiting text instead of showing `0/0`.
+- Returns `{ text, percentage }` when the total is known — toast shows `completed/total` with a determinate bar.
 
 For custom progress shapes, write a sibling helper with the same `(result) => Progress | undefined` signature.
 
@@ -174,12 +261,14 @@ Co-locate the progress / final tagged structs with the resource and combine them
 
 ```ts
 // api/src/<workflow>/resources/Overview.ts
-export class ImportProgress extends S.Opaque<ImportProgress, ImportProgress.Encoded>()(
-  S.TaggedStruct("ImportProgress", {
-    completed: S.NonNegativeInt,
-    total: S.NonNegativeInt
-  })
-) {}
+export class ImportProgress
+  extends S.Opaque<ImportProgress, ImportProgress.Encoded>()(
+    S.TaggedStruct("ImportProgress", {
+      completed: S.NonNegativeInt,
+      total: S.NonNegativeInt
+    })
+  )
+{}
 
 export class ImportFinal extends S.Opaque<ImportFinal, ImportFinal.Encoded>()(
   S.TaggedStruct("ImportFinal", {
@@ -196,12 +285,12 @@ export type ImportEvent = S.Schema.Type<typeof ImportEvent>
 export class Import extends Req.Command<Import>()(
   "Import",
   { files: S.NonEmptyArray(FileInput) },
-  { stream: true, success: ImportEvent },
-  (queryKey) => [{ filters: { queryKey } }, { filters: { queryKey: makeQueryKey(List) } }]
+  { stream: true, success: ImportEvent }
 ) {}
 ```
 
 Why `S.TaggedUnion` (not `S.Union`):
+
 - Gives free `ImportEvent.guards.ImportProgress(event)` / `ImportEvent.guards.ImportFinal(event)` type guards in templates (see [vue-conventions.md § TaggedUnion type guards in templates](./vue-conventions.md#taggedunion-type-guards-in-templates)).
 - Makes the discriminator a real field on the wire, not a positional assumption.
 - Extending the union (a third event tag) is a local change — no `_tag === "..."` chains to update.
@@ -252,9 +341,10 @@ export function importProgress<E>(
 ): Progress | undefined {
   if (!AsyncResult.isSuccess(result) || !result.waiting) return undefined
   const ev = result.value
-  if (!ImportEvent.guards.ImportProgress(ev)) return undefined  // ignore the final on the toast
+  if (!ImportEvent.guards.ImportProgress(ev)) return undefined // ignore the final on the toast
+  if (ev.total === 0) return undefined
   const text = `${ev.completed}/${ev.total}`
-  return ev.total === 0 ? text : { text, percentage: Math.round((ev.completed / ev.total) * 100) }
+  return { text, percentage: Math.round((ev.completed / ev.total) * 100) }
 }
 ```
 
@@ -268,7 +358,9 @@ const importFiles = importClient.Import.fn(
     yield* importClient.Import.mutate(input).pipe(
       Stream.tap((ev) =>
         ImportEvent.guards.ImportFinal(ev)
-          ? Effect.sync(() => { importFinal.value = ev })
+          ? Effect.sync(() => {
+            importFinal.value = ev
+          })
           : Effect.void
       ),
       Stream.runDrain
@@ -308,15 +400,16 @@ For sub-second mutations, plain `.fn()` + `Command.withDefaultToast()` is fine �
 
 ## Anti-patterns
 
-- **Polling `Operations.find(opId)` instead of subscribing to the stream.** The stream already pushes; polling adds latency and load. Only fall back to polling for "page re-opened after refresh, pick up where we left off".
+- **Polling `Operations.find(opId)` instead of subscribing to the stream.** The stream already pushes; polling adds latency and load. Only fall back to polling for "page re-opened after refresh, resume where we left off".
+- **Relying on query invalidation for in-page progress of a `stream: true` command.** The toast and any page-owned stream ref update per chunk; list queries stay on their last snapshot until the stream settles. If the only CTA lives behind those queries, an externally started job looks stuck until it parks or the page reloads.
 - **Stream that never ends on failure.** If you `Stream.callback`, you **must** wire `Effect.onExit` to `Queue.failCause` — otherwise the toast hangs forever on errors.
 - **Emitting raw counts as a `number` schema.** Use `OperationProgress` (`{ completed, total }`) so the client renders a determinate bar. Naked numbers force every consumer to invent its own formatter.
 - **Forgetting `Effect.ensuring(publish)` / cleanup hooks.** Long imports hold permits (`withPermits(1)`); on failure / cancellation they need to release them or subsequent invocations deadlock.
 - **Mixing stream commands and non-stream commands in `Promise.all`.** Stream commands aren't promises; sequence them with `yield*` in a single command body if they must run together.
+- **Polling DB / run-state for same-process progress.** When the producing workflow and the subscriber run in the **same process**, push updates through an in-process `PubSub` hub, not by polling run-state or the database. Reserve polling for the cross-process / page-reopened-after-refresh fallback.
 
 ## Concrete instances
 
 - `api/src/<workflow>/services/Import.ts` — full import pipeline (`Stream.callback` + `Operations.run` + emailer side channel for failures).
-- `api/src/services/PickImport.ts` — pick-workflow validate-and-import (`operations.run` + per-item `operations.update`).
-- `api/src/<workflow>/Overview.Controllers.ts` (`RetryLabel`) — `Stream.unwrap` over a queryAndSave pipeline.
+- `api/src/<workflow>/Overview.Controllers.ts` (`RetryLabel`) — `Stream.unwrap` over a query-and-save pipeline.
 - `frontend/workflows/<workflow>/components/Import.vue` — client wiring with `Command.withDefaultToastStream({ progress: operationProgress })`.

@@ -1,6 +1,7 @@
 import Toast from "vue-toastification"
 
 // Import the CSS or use your own!
+// oxlint-disable-next-line no-unassigned-import
 import "vue-toastification/dist/index.css"
 
 export default defineNuxtPlugin((nuxtApp) => {

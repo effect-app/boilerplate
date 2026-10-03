@@ -9,29 +9,26 @@
       "#api": [
         "./src/api.ts"
       ],
-      "#core/*": [
-        "./src/core/*.ts"
-      ],
-      "#resources": [
-        "./src/resources.ts"
-      ],
-      "#models": [
-        "./src/models.ts"
-      ],
-      "#resources/*": [
-        "./src/resources/*.ts"
-      ],
-      "#models/*": [
-        "./src/models/*.ts"
-      ],
       "#config": [
         "./src/config.ts"
       ],
       "#lib/*": [
         "./src/lib/*.ts"
       ],
-      "#services": [
-        "./src/services.ts"
+      "#core/*": [
+        "./src/core/*.ts"
+      ],
+      "#models": [
+        "./src/models.ts"
+      ],
+      "#models/*": [
+        "./src/models/*.ts"
+      ],
+      "#resources/*": [
+        "./src/resources/*.ts"
+      ],
+      "#services/*": [
+        "./src/services/*.ts"
       ]
     }
   },

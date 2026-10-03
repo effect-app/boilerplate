@@ -1,4 +1,3 @@
-import { E2E_FLAGS_HEADER, encodeE2EFlags } from "@macs-scanner/api/lib/e2e"
 import * as Context from "effect-app/Context"
 import * as Effect from "effect-app/Effect"
 import * as Option from "effect-app/Option"
@@ -8,11 +7,9 @@ import { makeHeaders, makeRuntime } from "./shared.ts"
 
 type Runtime = Awaited<ReturnType<typeof makeRuntime>>
 
-// const baseUrl = process.env["BASE_URL"] ?? "http://localhost:5500"
-
 export class E2EContext extends Context.Service<E2EContext, { namespace: string }>()("E2EContext") {}
 
-export const makeAnonRuntime = async (namespace: string, port = 5001, company?: Company) => {
+export const makeAnonRuntime = async (namespace: string, port = 3610, company?: Company) => {
   const apiUrl = process.env["API_URL"] ?? "http://localhost:" + port
   const url = apiUrl
   const runtime = await makeRuntime(
@@ -26,9 +23,7 @@ export const makeAnonRuntime = async (namespace: string, port = 5001, company?: 
   return runtime
 }
 
-async function makeRuntimes_(namespace: string, page?: Page, port = 5001, company?: Company) {
-  // console.log("Making runtimes for namespace:", namespace)
-
+async function makeRuntimes_(namespace: string, page?: Page, port = 3610, company?: Company) {
   const apiUrl = process.env["API_URL"] ?? "http://localhost:" + port
   const url = apiUrl
   const anonRuntime = await makeRuntime(
@@ -70,8 +65,7 @@ async function makeRuntimes_(namespace: string, page?: Page, port = 5001, compan
   const setupPage = (page: Page) =>
     page.setExtraHTTPHeaders({
       "x-store-id": namespace,
-      "x-port": port.toString(),
-      [E2E_FLAGS_HEADER]: encodeE2EFlags([{ _tag: "PrintSkip" }, { _tag: "AbasShortCircuit" }])
+      "x-port": port.toString()
     })
 
   if (page) await setupPage(page)
@@ -102,9 +96,9 @@ async function makeRuntimes_(namespace: string, page?: Page, port = 5001, compan
   return r
 }
 
-export const makeRuntimes = (namespace: string, page: Page, port = 5001, company?: Company) =>
+export const makeRuntimes = (namespace: string, page: Page, port = 3610, company?: Company) =>
   makeRuntimes_(namespace, page, port, company)
-export const makeRuntimesNoSetup = (namespace: string, port = 5001, company?: Company) =>
+export const makeRuntimesNoSetup = (namespace: string, port = 3610, company?: Company) =>
   makeRuntimes_(namespace, undefined, port, company)
 
 export type Runtimes = Awaited<ReturnType<typeof makeRuntimes_>>

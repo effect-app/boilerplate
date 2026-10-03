@@ -1,5 +1,4 @@
 <!-- Space: SA -->
-<!-- Parent: Scanner Wiki -->
 <!-- Parent: Architecture -->
 <!-- Parent: Architecture (shared) -->
 <!-- Title: List Layout -->
@@ -20,7 +19,7 @@ Companion to [command-input-validation.md](./command-input-validation.md) (comma
 PageShell.vue
 ├─ data loads (Promise.all of suspense queries — query results outlive every panel)
 ├─ subscriptions hoisted to parent (SSE, websockets — see below)
-├─ <GlobalListener @event="...">    ← if there's one global event source per page (scanner, hotkey)
+├─ <GlobalListener @event="...">    ← if there's one global event source per page (hardware input, hotkey)
 └─ <List>
     ├─ #Top-Action-Menu
     │   ├─ <div id="top-action-menu" />     ← portal target for per-item Teleport
@@ -57,14 +56,14 @@ The implicit guard is the panel's mount lifecycle. State (selection, draft form 
 - Page-stable refs / subscriptions that **must not** re-mount when a panel switches (see "Hoist subscriptions" below).
 - `<List>` lifecycle plumbing: any `listKey` remount after a confirm flow, the active-tab state, watchers that re-select an item after a server round-trip.
 - Commands with **no item context**: bulk-release, page-level pause, dashboard-wide refresh.
-- Global event listeners (the keyboard buffer for a barcode scanner, a hotkey listener) — these own the subscription and delegate per-event to the active item's handler.
+- Global event listeners (the keyboard buffer for a hardware input, a hotkey listener) — these own the subscription and delegate per-event to the active item's handler.
 
 ### `_components/ItemActions.vue` (per-item, owns the form)
 
 - `defineProps<{ item; …shared resources }>()` — `item` is non-null.
 - Selection composables scoped to the item (`useSelectableSingle(computed(() => props.item), …)`).
 - Per-item commands: edit, submit, undo, the per-row half of any global event.
-- `defineExpose({ … })` exposing any handler the page-level listener needs to route into (e.g. `scan`).
+- `defineExpose({ … })` exposing any handler the page-level listener needs to route into (e.g. `handleEvent`).
 - `<Teleport to="#top-action-menu" defer>` projects the form into the page-level action area; the rest of the body renders inline inside the slot.
 
 ### `_components/ItemReadOnly.vue` (per-item, no commands)
@@ -81,15 +80,17 @@ Anything whose subscription / identity must survive a panel re-mount lives in th
 - **Suspense query roots.** TanStack already caches, but the suspense boundary has to live above `<List>`. Shell owns the queries; `ItemActions` reads from props.
 - **One-time projections.** Shape transforms applied via `select` on the parent's query (see [query-shape-list-vs-get.md](./query-shape-list-vs-get.md#project-once-at-the-query-not-in-every-consumer)). Each `ItemActions` instance receives the already-projected shape and never re-derives.
 
-Commands stay in the child even when they read parent-stable refs, because their **handler identity matters per item**: toast keys, optimistic state, scan-delegate hooks all want to be torn down when the item unmounts.
+Commands stay in the child even when they read parent-stable refs, because their **handler identity matters per item**: toast keys, optimistic state, hardware-delegate hooks all want to be torn down when the item unmounts.
 
 ## Global events: page-level listener, per-item handler
 
-The pattern for a barcode scanner, hotkey, or any single-listener input that should act on the currently-active item:
+The pattern for a hardware input, hotkey, or any single-listener input that should act on the currently-active item:
 
 ```ts
 // shell
-const actionsRef = useTemplateRef<InstanceType<typeof ItemActions>>("actionsRef")
+const actionsRef = useTemplateRef<InstanceType<typeof ItemActions>>(
+  "actionsRef"
+)
 
 const onEvent = Command.fn("…")(function*(payload: string) {
   const handler = actionsRef.value
@@ -109,7 +110,7 @@ The shell owns the subscription (one buffer, one listener, one set of teardown h
 
 ## Per-row inline actions on the active panel
 
-Some actions are intrinsically per-row (an unpack button on each completed sub-package, a remove button on each line item). Render them **inside `ItemActions`** rather than the shell, because they need to mutate the same selection / form state the rest of the component owns. The body slot only renders for the expanded panel, so the row data is always paired with the active `props.item`.
+Some actions are intrinsically per-row (a split button on each completed child row, a remove button on each line item). Render them **inside `ItemActions`** rather than the shell, because they need to mutate the same selection / form state the rest of the component owns. The body slot only renders for the expanded panel, so the row data is always paired with the active `props.item`.
 
 After a server round-trip, the item may flicker — leave one tab, briefly re-enter the other before settling. A `pendingItemId` ref + a watcher on the relevant list in the shell handles re-selection once the cache settles:
 
@@ -127,19 +128,19 @@ watch(visibleItems, (current) => {
 }, { flush: "post" })
 ```
 
-The per-row command emits `unpackPending` (or similar) when it finishes; the shell stores the id and lets the watcher re-select.
+The per-row command emits `pending` (or similar) when it finishes; the shell stores the id and lets the watcher re-select.
 
 ## Anti-patterns this layout retired
 
 - **`selectedItem` plumbed into a top-of-page form.** Required `v-if` guards everywhere, an explicit `null` branch in every computed, and a `useSelectable` instance with a nullable root. Touching the form for one item could leak state into the next.
 - **Bodies in the shell, commands in a sibling child.** Forced provide/inject or template-ref drilling to bridge them — and provide/inject **does not work** for this, because slot content renders in the parent scope where the child's `provide` is not reachable.
 - **Resubscribing to a long-lived feed on every panel switch.** Drops events during the gap between unmount and remount, exhausts upstream connection limits, makes "is the feed connected?" a per-panel UI question.
-- **A page-level scan handler that walks the DOM for the "currently expanded" panel.** Use a template ref into `ItemActions` instead — explicit, typed, no stale-DOM races.
+- **A page-level event handler that walks the DOM for the "currently expanded" panel.** Use a template ref into `ItemActions` instead — explicit, typed, no stale-DOM races.
 
 ## Concrete instances
 
-- `frontend/workflows/<workflow-a>/pages/package/` — split shell + `_components/Actions.vue` + `_components/ActionsPacked.vue`.
-- `frontend/workflows/<workflow-b>/pages/package/` — same shape, with workflow-specific extras (pallet dialog, building-block flow) entirely inside `Actions.vue`.
-- `frontend/workflows/<workflow-c>/pages/package/` — same shape; the most recent convergence. Before the refactor, it ran a `selectedOrder` ref with a top-of-page form gated by `v-if`; the migration to this layout shrank the shell from ~750 lines to ~270.
+- `frontend/workflows/<workflow-a>/pages/order/` — split shell + `_components/Actions.vue` + `_components/ActionsDone.vue`.
+- `frontend/workflows/<workflow-b>/pages/order/` — same shape, with workflow-specific extras (nested dialog, multi-step flow) entirely inside `Actions.vue`.
+- `frontend/workflows/<workflow-c>/pages/order/` — same shape. Before the refactor, it ran a `selectedOrder` ref with a top-of-page form gated by `v-if`; the migration to this layout shrank the shell from ~750 lines to ~270.
 
 When adding a new list-shaped page, start from this shape; if you find yourself adding a `selectedItem` ref to gate a top-level form, stop and move the form into a body-slot child instead.

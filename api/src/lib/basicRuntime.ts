@@ -9,6 +9,7 @@ import * as Layer from "effect-app/Layer"
 import * as Cause from "effect/Cause"
 import * as ConfigProvider from "effect/ConfigProvider"
 import * as Console from "effect/Console"
+import { DevTools } from "effect/devtools"
 import * as Fiber from "effect/Fiber"
 import * as Logger from "effect/Logger"
 import type * as LogLevel from "effect/LogLevel"
@@ -16,17 +17,16 @@ import * as ManagedRuntime from "effect/ManagedRuntime"
 import type { ManagedRuntime as ManagedRuntimeType } from "effect/ManagedRuntime"
 import * as References from "effect/References"
 import * as Runtime from "effect/Runtime"
-import { DevTools } from "effect/unstable/devtools"
 import { TracingLive } from "./observability.ts"
 
-const envProviderConstantCase = ConfigProvider.fromEnv().pipe(ConfigProvider.constantCase)
-const baseConfigProvider = ConfigProvider.layer(envProviderConstantCase)
+const envProviderConstantCase = () => Effect.sync(() => ConfigProvider.fromEnv().pipe(ConfigProvider.constantCase))
+const baseConfigProvider = ConfigProvider.layer(envProviderConstantCase())
 
-const levels: Record<string, LogLevel.LogLevel> = {
+const levels: Record<string, LogLevel.Severity> = {
   Trace: "Trace",
   Debug: "Debug",
   Info: "Info",
-  Warning: "Warn",
+  Warn: "Warn",
   Error: "Error"
 }
 
@@ -50,7 +50,7 @@ const logLayers = Effect
     const configuredLogLevel = process.env["LOG_LEVEL"]
     const configuredEnv = process.env["ENV"]
 
-    const logLevel: LogLevel.LogLevel = configuredLogLevel
+    const logLevel: LogLevel.Severity = configuredLogLevel
       ? levels[configuredLogLevel] ?? (() => {
         throw new Error(`Invalid LOG_LEVEL: ${configuredLogLevel}`)
       })()

@@ -8,7 +8,7 @@ import { flow } from "effect-app/Function"
 import { HttpMiddleware, HttpRouter } from "effect-app/http"
 import * as Layer from "effect-app/Layer"
 import * as Console from "effect/Console"
-import { RpcSerialization } from "effect/unstable/rpc"
+import { RpcSerialization } from "effect/rpc"
 import { apiConfig, baseConfig } from "./config.ts"
 
 const prodOrigins: string[] = []

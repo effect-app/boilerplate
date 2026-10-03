@@ -2,33 +2,119 @@
 
 This is the `@effect-app/boilerplate` starter — a TypeScript monorepo seed (`api/` Effect backend + `frontend/` Nuxt + `e2e/` Playwright) for projects built on the Effect App ecosystem.
 
-## Architecture + conventions
+- Package manager: `pnpm` (v11, pinned via `packageManager`)
+- Base branch: `main`
+
+## Read First
 
 [`wiki/architecture/`](./wiki/architecture/index.md) is the source of truth for patterns:
 import rules, resource/controller layout, command pattern, query shapes,
-database query guidelines, e2e state pattern, vue conventions, etc.
+database query guidelines, tagged state machines, error model, vue conventions, etc.
 
 These are **synced** from [`effect-app/shared`](https://github.com/effect-app/shared) via `effa sync` — see [`wiki/shared-sync.md`](./wiki/shared-sync.md).
 
 When changing a synced doc: edit in place, then `effa sync-push --pr` to propagate upstream.
 
-## Development Workflow
+For implementation work, start at the index and load only the docs that match the task.
 
-- The git base branch is `main`
-- Use `pnpm` as the package manager
+## Design
 
-### Core Principles
+**Inspect the existing system first.** Before proposing an approach, find the implementations
+that play the same role — sibling modules, commands, pages, builders — and name them.
 
-- **Zero Tolerance for Errors**: All automated checks must pass
-- **No `as any` / `as unknown` casts**: These are never acceptable fixes. Understand the actual types and fix the root cause. If a type mismatch exists, find the correct v4 API, update the type signatures, or restructure the code.
-- **Clarity over Cleverness**: Choose clear, maintainable solutions
-- **Conciseness**: Keep code and any wording concise and to the point. Sacrifice grammar for the sake of concision.
-- **Reduce comments**: Avoid comments unless absolutely required to explain unusual or complex logic. Comments in jsdocs are acceptable.
-- **Look for effect sources inside `repos/effect-v4`**
-- **Never import local `repos` files**: Always use the latest online (pre-release) versions of packages instead. `repos` is just for reference, also includes examples, tests, and migration documentation.
-- **Never webfetch from the `effect-v3` and `effect-v4` repos**: just use the locally included under `repos`
+Then present **two angles**, both accounting for the existing system:
 
-### Mandatory Validation Steps
+1. **The pragmatic fit** — the smallest change that works within the current architecture,
+   constraints, and migration cost, matching how the named peers already do it.
+2. **The greenfield ideal** — how this would look if built fresh today, unconstrained.
+   If that shape is better than the peers, the path must include updating those peers,
+   as a stated path (this change or a tracked follow-up).
+
+Keep it brief — a paragraph or a few bullets per angle. Record on every non-trivial PR:
+`Design angles: <assumed goal> — peers <named> (<pattern>); follow <X> / migrate <Y> via <path> / n/a (trivial)`.
+
+## Hard Rules
+
+- In Markdown, when inline code contains a backtick, use a double-backtick
+  delimiter: ``code ` containing a backtick``. Do not escape the inner backtick
+  with a slash.
+- No `as any` / `as unknown`. Fix the real type.
+- No `@ts-expect-error` / `@ts-ignore`. Fix the underlying type or schema wiring.
+- No retry/sleep/nudge fixes for flakes. Find the root cause.
+- `withConstructorDefault` is not a decode/migration default: it runs on `.make()`,
+  not on decode. A new required field on persisted data needs an explicit,
+  preferably versioned migration or a jitM-style backfill at the store boundary.
+- `.make()` / `.makeFrom()` **strip any property the target schema doesn't declare**,
+  so build state from a spread instead of hand-copying fields:
+  `State.make({ ...state, ...dropTag(event), byUserId })`. A later key overrides an
+  earlier spread (order matters).
+- No local imports from `repos/*`; use packages. `repos/effect` and `repos/effect-app`
+  are reference source only. Never webfetch Effect; read the local `repos/effect`.
+- `effect` / `effect-app` / `@effect-app/*` resolve from the **registry** by
+  default, so edits to `repos/*` source are dormant in the app. To test a
+  repos change locally, run `pnpm embedded:effect:link` first (links the vendored
+  source into the workspace), then `pnpm install`. `pnpm embedded:effect:status`
+  shows linked-vs-registry; `pnpm embedded:effect:unlink` reverts.
+- **Do not add `pnpm` patches for `effect-app` / `@effect-app/*`.** Either link the
+  vendored source (`pnpm embedded:effect:link`) or upstream the fix and adopt the
+  new published release.
+- Use one `#<Root>/*` alias per `src` dir. No per-file aliases, old shims, or
+  unfinished moves.
+- **No manual command→query invalidation.** Do not add `Req.Command` 4th-arg
+  `invalidatesQueries` callbacks, page-level `queryInvalidation`, or `clientFor`
+  invalidation maps. Queries register repository reads; commands publish repository
+  writes; the client invalidates by intersection. See
+  [wiki/architecture/command-pattern.md](./wiki/architecture/command-pattern.md).
+- **Refactors end in a clean state — full replace, no leftovers.** When renaming
+  a symbol, class, function, module, or file, update **every** reference and
+  delete the old name. No back-compat aliases, no re-export shims at the old path,
+  never both names resolvable at once.
+- Tests must import production logic. Do not copy business logic into tests.
+- `.vue` files wire UI to logic; tested logic belongs in `.ts` modules or
+  composables.
+
+## Validation
+
+### Agent ship gate (static on every push, browser e2e on ready / publish)
+
+**`pre-push` (`scripts/agent-pre-push.ts`) is the agent ship gate.** Humans are
+**not** forced through it. Agents are detected via `GROK_AGENT` / `T3_AGENT` /
+`AI_AGENT` / Claude / Cursor / Codex env markers.
+
+| Branch PR state         | Agent pre-push                            |
+| ----------------------- | ----------------------------------------- |
+| No open PR              | **static gate** (`pnpm validate:changed`) |
+| **Draft**               | **static gate** (`pnpm validate:changed`) |
+| **Ready** for review    | full ship gate                            |
+| `gh` / PR lookup failed | full ship gate (**fail closed**)          |
+
+- **`pnpm validate:changed`** runs `check` / `lint-fix` / `test` only for the
+  packages you touched (api / frontend / e2e), via `scripts/lib/changes.ts`.
+  Root-config / lockfile changes fall back to the full gate. `pnpm validate:plan`
+  prints the plan.
+- **Browser E2E attestation** — when browser e2e is affected, the full gate asks
+  whether the relevant Playwright specs have been run. Only an explicit
+  `y` / `yes` within five seconds passes; `no`, empty input, timeout, or no
+  interactive terminal blocks.
+- **Publish path (required):** `pnpm pr:ready` — runs the same ship gate, then
+  marks the PR ready. Agents must **not** call `gh pr ready` (or the
+  ready-for-review API) directly. `scripts/install-git-hooks.ts` installs
+  `.tools/bin/gh`, a policy shim that blocks those commands unless
+  `AGENT_PR_SHIP=1` (set only by `pr:ready`). Put `$REPO/.tools/bin` **first** on
+  `PATH` in agent sessions so the shim wins over system `gh`.
+- The gate result is cached per HEAD SHA in `.run/agent-ship-gate.json`, so one
+  commit is validated once no matter how many times you push or publish it.
+  Force a re-run only when diagnosing the gate: `AGENT_SHIP_GATE_FORCE=1`.
+- Dirty worktrees are rejected: commit before pushing. If the hook rewrites files
+  (`lint-fix` / dprint), stage those rewrites, commit, and push again.
+- **Never** `git push --no-verify` / `git commit --no-verify`.
+  **Never** set `SKIP_AGENT_PREPUSH` (human escape hatch only).
+
+**Do not run whole-suite checks by hand as routine verification** — the gate runs
+them, once, and CI is the backstop. The exception is narrow, targeted proof while
+iterating: the one test you are fixing, or typechecking the package you edited.
+
+### Mandatory validation steps
 
 After making **all** changes, run from the **repository root**:
 
@@ -36,11 +122,15 @@ After making **all** changes, run from the **repository root**:
 pnpm check && pnpm lint-fix
 ```
 
-- `pnpm check` runs type checking for all packages. Because packages depend on each other (e.g. `frontend` and `e2e` depend on `api`), always run from the root to catch cross-package type errors.
+- `pnpm check` type-checks all packages (tsgo; frontend via `vue-tsc`). Because
+  packages depend on each other (e.g. `frontend` and `e2e` depend on `api`),
+  always run from the root to catch cross-package type errors.
 - `pnpm lint-fix` auto-formats and fixes lint issues across all packages.
-- If type checking continues to fail, run `pnpm clean` from the root to clear caches, then re-run `pnpm check`.
-- Note: `pnpm check` for `frontend` runs `nuxt prepare` automatically; if `lint-fix` fails with `.nuxt/tsconfig.json not found`, run `pnpm check` first, then `pnpm lint-fix`.
-
+- `pnpm rbuild` (`clean` + `check`) is not part of routine validation — reach for
+  it only for unexplained weirdness that survives a normal check.
+- Note: `pnpm check` for `frontend` runs `nuxt prepare` automatically; if
+  `lint-fix` fails with `.nuxt/tsconfig.json not found`, run `pnpm check` first,
+  then `pnpm lint-fix`.
 
 ## Code Style Guidelines
 
@@ -108,59 +198,48 @@ Do not reach for `withDecodingDefault*` as a substitute either. A missing field 
 
 Prefer an **explicit, preferably versioned** migration of database data (a schema-version field, a one-shot backfill, or a transform on read gated on an explicit version marker) over decode-time fallbacks. Don't shove missing fields under the rug.
 
-<!-- ## Barrel files
+## Git workflow
 
-The `index.ts` files are automatically generated. Do not manually edit them. Use
-`pnpm codegen` to regenerate barrel files after adding or removing modules. -->
+- **Work in committable increments — commit each before moving on.** Each commit
+  builds and passes its checks; no end-of-task mega-commit.
+- **On `main`, branch first** for feature work — unless told "commit and push" on
+  `main`.
+- **Commit and push as the natural completion of a task** — the user opts _out_
+  ("don't push"), not in.
+- **Rebase before publishing or the final ready-PR push.** Fetch `origin` and
+  rebase a PR targeting `main` onto the latest `origin/main` before the ship gate.
+  Use `--force-with-lease` when updating rebased branches.
+- **Squash-merge repo: new commit per change on a pushed branch, avoid `--amend`**
+  (reserve it for local/unpushed commits or a deliberate rebase).
 
-<!-- ## Running test code
+## PRs
 
-If you need to run some code for testing or debugging purposes, create a new
-file in the `scratchpad/` directory at the root of the repository. You can then
-run the file with `node scratchpad/your-file.ts`.
+The PR description is the shared, portable record any agent resumes from — open
+early, keep it current.
 
-Make sure to delete the file after you are done testing. -->
-
-<!-- ## Testing
-
-Before writing tests, look at existing tests in the codebase for similar
-functionality to follow established patterns.
-
-- Test files are located in `packages/*/test/` directories for each package
-- Main Effect library tests: `packages/effect/test/`
-- Always verify implementations with tests
-- Run specific tests with: `pnpm test <filename>`
-
-### it.effect Testing Pattern
-
-- Use `it.effect` for all Effect-based tests, not `Effect.runSync` with regular `it`
-- Import `{ assert, describe, it }` from `@effect/vitest`
-- Never use `expect` from vitest in Effect tests - use `assert` methods instead
-- All tests should use `it.effect("description", () => Effect.gen(function*() { ... }))`
-
-Before writing tests, look at existing tests in the codebase for similar
-functionality to follow established patterns.
-
-### Type level tests
-
-Type level tests are located in the `dtslint` directories of each package.
-
-You can run them with `pnpm test-types <filename>`.
-
-Take a look at the existing `.tst.ts` files for examples of how to write type
-level tests. They use the `tstyche` testing library. -->
-
-## Changesets
-
-All pull requests must include a changeset. You can create changesets in the
-`.changeset/` directory.
-
-The have the following format:
+Use real Markdown H2 headings in exactly this order:
 
 ```md
----
-"package-name": patch | minor | major
----
+## Why
 
-A description of the change.
+## What
+
+## How
+
+## Remarks
 ```
+
+Do not replace these headings with bold labels, inline code, or a flat list.
+Prefer concise, discursive paragraphs under them. Use bullets only when they
+materially improve clarity.
+
+- **Always open a draft as early as possible:** once the first meaningful commit
+  gives reviewers anything useful to inspect, push it and open the draft.
+- **Publish only when done:** `pnpm pr:ready` (ship gate, then undraft). Do not
+  use raw `gh pr ready`.
+- **Keep the PR description in sync at every commit** — final description = net
+  diff to `main`, no filler.
+- PR description must include:
+  - `Flow doc updated: ✅ / ❌ (reason)` — or `n/a` while no flow docs exist
+  - `E2E coverage: added / follow-up tracked / internal-only`
+  - `Design angles: <assumed goal> — peers <named> (<pattern>); follow <X> / migrate <Y> via <path> / n/a (trivial)`

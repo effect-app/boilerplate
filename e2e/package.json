@@ -7,7 +7,8 @@
   "scripts": {
     "test": "playwright test",
     "test:watch": "playwright-watch test",
-    "build": "tsc --build",
+    "build": "node ../scripts/tsgo-or-tsc.ts --build tsconfig.json --stopBuildOnErrors",
+    "check": "node ../scripts/tsgo-or-tsc.ts --build tsconfig.json --stopBuildOnErrors",
     "lint:oxlint": "oxlint --quiet --type-aware .",
     "lint:oxlint:fix": "oxlint --quiet --type-aware --fix .",
     "format": "dprint fmt --config ../dprint.jsonc .",
@@ -24,21 +25,16 @@
   "devDependencies": {
     "@playwright/test": "~1.60.0",
     "@types/node": "~25.9.1",
-    "date-fns": "^4.4.0",
     "npm-check-updates": "^22.2.1",
-    "oxlint": "^1.67.0",
-    "oxlint-tsgolint": "^0.23.0",
-    "playwright-core": "^1.60.0",
-    "playwright-watch": "^1.3.23",
-    "prettier": "^3.8.3",
-    "typescript": "~6.0.2"
+    "playwright": "1.60.0",
+    "typescript": "6.0.3"
   },
   "dependencies": {
     "@effect-app-boilerplate/api": "workspace:*",
-    "@effect/platform-node": "4.0.0-beta.74",
-    "effect-app": "4.0.0-beta.262",
-    "effect": "4.0.0-beta.74",
-    "cross-fetch": "^4.1.0",
-    "dprint": "^0.54.0"
+    "@effect-app/vue": "4.0.0-beta.332",
+    "@effect/platform-node": "^4.0.0",
+    "effect": "^4.0.0",
+    "effect-app": "4.0.0-beta.332",
+    "playwright-watch": "^1.3.23"
   }
 }

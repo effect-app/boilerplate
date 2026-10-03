@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import * as Context from "effect-app/Context"
-import * as Effect from "effect-app/Effect"
-import { fakerArb } from "effect-app/faker"
+import type * as Effect from "effect-app/Effect"
 import { pipe } from "effect-app/Function"
 import { UserProfileId } from "effect-app/ids"
 import * as S from "effect-app/Schema"
 import * as Equivalence from "effect/Equivalence"
-import * as SchemaTransformation from "effect/SchemaTransformation"
+import * as SchemaGetter from "effect/SchemaGetter"
+
+// Name-shaped arbitrary constraints (native arbitrary generation has no faker hook).
+const nameSamples = S.makeFilter<string>(() => undefined, {
+  arbitraryConstraint: { patterns: [{ source: "^[A-Z][a-z]{2,11}$", flags: "" }] }
+})
 
 export const FirstName = S
   .NonEmptyString255
   .pipe(
-    S.annotate({
-      toArbitrary: () => (fc) => fakerArb((faker) => faker.person.firstName)(fc).map(S.NonEmptyString255)
-    }),
+    S.check(nameSamples),
     S.withDefaultMake
   )
 
@@ -25,9 +27,7 @@ export type DisplayName = typeof DisplayName.Type
 export const LastName = S
   .NonEmptyString255
   .pipe(
-    S.annotate({
-      toArbitrary: () => (fc) => fakerArb((faker) => faker.person.lastName)(fc).map(S.NonEmptyString255)
-    }),
+    S.check(nameSamples),
     S.withDefaultMake
   )
 
@@ -82,10 +82,10 @@ export class User extends S.Opaque<User, User.Encoded>()(S.Struct({
 export const UserFromId: S.Codec<User, string, UserFromIdResolver> = UserId.pipe(
   S.decodeTo(
     S.toType(User),
-    SchemaTransformation.transformOrFail({
-      decode: (id) => User.resolver.getUser(id),
-      encode: (u) => Effect.succeed(u.id)
-    })
+    {
+      decode: SchemaGetter.transformEffect((id) => User.resolver.getUser(id)),
+      encode: SchemaGetter.transform((u) => u.id)
+    }
   )
 )
 

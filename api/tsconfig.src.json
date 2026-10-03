@@ -11,20 +11,8 @@
     // keep in here, cause madge can't detect it from extended tsconfig
     "moduleResolution": "Node16",
     "paths": {
-      "#core/*": [
-        "./src/core/*.ts"
-      ],
-      "#resources": [
-        "./src/resources.ts"
-      ],
-      "#models": [
-        "./src/models.ts"
-      ],
-      "#resources/*": [
-        "./src/resources/*.ts"
-      ],
-      "#models/*": [
-        "./src/models/*.ts"
+      "#api": [
+        "./src/api.ts"
       ],
       "#config": [
         "./src/config.ts"
@@ -32,8 +20,20 @@
       "#lib/*": [
         "./src/lib/*.ts"
       ],
-      "#services": [
-        "./src/services.ts"
+      "#core/*": [
+        "./src/core/*.ts"
+      ],
+      "#models": [
+        "./src/models.ts"
+      ],
+      "#models/*": [
+        "./src/models/*.ts"
+      ],
+      "#resources/*": [
+        "./src/resources/*.ts"
+      ],
+      "#services/*": [
+        "./src/services/*.ts"
       ]
     },
     "types": [

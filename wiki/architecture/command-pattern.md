@@ -1,5 +1,4 @@
 <!-- Space: SA -->
-<!-- Parent: Scanner Wiki -->
 <!-- Parent: Architecture -->
 <!-- Parent: Architecture (shared) -->
 <!-- Title: Command Pattern for Mutations -->
@@ -9,6 +8,7 @@
 Use a Command for any user-triggered mutation that needs loading state, confirmation, toasts, or side effects after the write. The Command encapsulates **the whole procedure from start to finish** — confirmation, mutation, success-side state changes, navigation.
 
 Companions:
+
 - [command-input-validation.md](./command-input-validation.md) — gate the trigger at the caller; command body assumes valid input.
 - [list-layout.md](./list-layout.md) — per-item commands inside the body slot.
 
@@ -18,13 +18,16 @@ Commands are **not** designed to be composable. They model a single user intent 
 
 ```ts
 // BAD — composing commands
-const closeAndPrint = () => { cmdClose.handle(); cmdPrint.handle() }
+const closeAndNotify = () => {
+  cmdClose.handle()
+  cmdNotify.handle()
+}
 
 // GOOD — extract the shared work as Effects, compose them inside one command
-const closeAndPrint = client.Close.fn(
+const closeAndNotify = client.Close.fn(
   function*(input) {
     yield* client.Close.mutate(input)
-    yield* printLabelEffect(input.id)
+    yield* notifyEffect(input.id)
   },
   Command.withDefaultToast()
 )
@@ -50,14 +53,16 @@ const closeAndPrint = client.Close.fn(
 
 ## `.fn()` vs `.mutate.wrap()`
 
-| Use | Form | Why |
-|---|---|---|
+| Use                                             | Form                                                   | Why                                                                                |
+| ----------------------------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------- |
 | Side effects, confirmation, post-mutation logic | `.fn(function*() { ... }, Command.withDefaultToast())` | Generator reads top-to-bottom; sync code doesn't need `Effect.sync(...)` wrapping. |
-| Simple passthrough — no custom logic | `.mutate.wrap(Command.withDefaultToast())` | One-liner, no body needed. |
+| Simple passthrough — no custom logic            | `.mutate.wrap(Command.withDefaultToast())`             | One-liner, no body needed.                                                         |
 
 ```ts
 // GOOD: passthrough
-const scanAndPrint = itemsClient.ScanAndPrintItem.mutate.wrap(Command.withDefaultToast())
+const createAndNotify = itemsClient.CreateItem.mutate.wrap(
+  Command.withDefaultToast()
+)
 
 // GOOD: side effects
 const reset = meClient.Reset.fn(
@@ -77,13 +82,14 @@ Commands returned by `.fn()` / `.mutate.wrap()` expose:
 
 ```ts
 {
-  handle:  (arg: I) => RuntimeFiber  // fire-and-forget
-  waiting: ComputedRef<boolean>      // this command is executing → :loading
-  blocked: ComputedRef<boolean>      // this command OR a related one is executing → :disabled
-  result:  ComputedRef<Result<A, E>> // last execution outcome
-  allowed: ComputedRef<boolean>      // gate via `allowed()` option; CommandButton hides when false
-  action:  ComputedRef<string>       // i18n action label
-  label:   ComputedRef<string>       // i18n button label
+  handle: ;
+  ;((arg: I) => RuntimeFiber) // fire-and-forget
+  waiting: ComputedRef<boolean> // this command is executing → :loading
+  blocked: ComputedRef<boolean> // this command OR a related one is executing → :disabled
+  result: ComputedRef<Result<A, E>> // last execution outcome
+  allowed: ComputedRef<boolean> // gate via `allowed()` option; CommandButton hides when false
+  action: ComputedRef<string> // i18n action label
+  label: ComputedRef<string> // i18n button label
 }
 ```
 
@@ -109,8 +115,8 @@ Share blocking across related commands via `blockKey` / `waitKey` options. `Comm
 `state` is captured at `.handle()` time and frozen for the duration. It's also surfaced in i18n messages as template variables, so a single action key can render different toasts depending on context:
 
 ```ts
-"action.ShipList.UpdateStackability":
-  "{mode, select, stack {Stack} resetAll {Reset all} other {Update stackability}}"
+"action.OrderList.UpdateStatus":
+  "{mode, select, single {Set status} all {Reset all statuses} other {Update status}}"
 ```
 
 `waitKey`/`blockKey` with dynamic keys enable per-item state in lists (see `Command.family()` below).
@@ -124,7 +130,7 @@ Self-closing, label-from-intl is the default form:
 <CommandButton :command="myCommand" :input="inputValue" color="primary" />
 
 <!-- BAD: hardcoded text overrides the intl label -->
-<CommandButton :command="myCommand" :input="inputValue">Pack</CommandButton>
+<CommandButton :command="myCommand" :input="inputValue">Apply</CommandButton>
 
 <!-- BAD: re-binding what CommandButton already handles -->
 <CommandButton :command="cmd" :disabled="cmd.blocked" :loading="cmd.waiting" />
@@ -136,7 +142,13 @@ Self-closing, label-from-intl is the default form:
 - Accepts all `v-btn` props (`variant`, `color`, `size`, `block`).
 - Icon-only: pass `empty`.
   ```vue
-  <CommandButton :command="updateStackability" :input="{ shipmentId, action }" :icon="mdiSwapVertical" size="x-small" empty />
+  <CommandButton
+    :command="updateStatus"
+    :input="{ orderId, action }"
+    :icon="mdiSwapVertical"
+    size="x-small"
+    empty
+  />
   ```
 - Optional input (command may take args or none): pass `:input="undefined"` and make the generator parameter optional.
 
@@ -184,17 +196,17 @@ For non-button clickable containers, conditional `v-on` is correct — it contro
 Prefer `Command.confirmOrInterrupt()` — uses the command's i18n action name as the default title:
 
 ```ts
-const pause = cartClient.PausePacking.fn(
+const pause = orderClient.Pause.fn(
   function*(input) {
-    yield* Command.confirmOrInterrupt()                       // uses i18n action label
-    yield* cartClient.PausePacking.mutate(input)
+    yield* Command.confirmOrInterrupt() // uses i18n action label
+    yield* orderClient.Pause.mutate(input)
   },
   Command.withDefaultToast()
 )
 
 const deleteUser = userClient.DeleteUser.fn(
   function*() {
-    yield* Command.confirmOrInterrupt("Really delete user?")  // custom message
+    yield* Command.confirmOrInterrupt("Really delete user?") // custom message
     yield* userClient.DeleteUser.mutate({ userId })
   },
   Command.withDefaultToast()
@@ -204,7 +216,7 @@ const deleteUser = userClient.DeleteUser.fn(
 Custom-button dialogs use `alertAddEffectOrInterrupt`:
 
 ```ts
-yield* alertAddEffectOrInterrupt(
+yield * alertAddEffectOrInterrupt(
   { title: "Delete?", body: "This cannot be undone." },
   { name: "Delete", color: "red", returnValue: true },
   { name: "Cancel", color: "grey", returnValue: false }
@@ -236,9 +248,9 @@ const toggle = Command.fn("toggleFavorite", {
 Effect services — `Router.push`, `I18n.formatMessage`, `Toast`, `Command` — are available natively. No hook imports, no `Effect.promise` wrapping:
 
 ```ts
-const claim = pickListClient.ClaimList.fn(
+const claim = itemClient.Claim.fn(
   function*() {
-    yield* pickListClient.ClaimList.mutate
+    yield* itemClient.Claim.mutate
     yield* Router.push({ name: "my-list" })
   },
   Command.withDefaultToast()
@@ -273,7 +285,9 @@ Replace previous toasts instead of stacking them — useful for inline-edit fiel
 
 ```ts
 Command.fn(updateMutation, { waitKey: (id) => `${id}.${item}.name` })(
-  function*() { yield* updateMutation(item, { name: newName }) },
+  function*() {
+    yield* updateMutation(item, { name: newName })
+  },
   Command.withDefaultToast({ stableToastId: (id) => `${id}.${item}.name` })
 )
 ```
@@ -294,6 +308,7 @@ Command.withDefaultToast({
 ```
 
 Defaults (in `frontend/composables/intl.ts`):
+
 - `handle.waiting` → `"Running..."`
 - `handle.success` → `"{action} succeeded"`
 - `handle.with_errors` → `"{action} failed"`
@@ -318,7 +333,9 @@ For permission-gated commands, use `useAllowed().allowed(...)` as a separate `v-
 ```ts
 const retryLabelIsAllowed = useAllowed().allowed(OverviewRsc.RetryLabel)
 const retryLabel = overviewClient.RetryLabel.fn(
-  function*(input) { yield* overviewClient.RetryLabel.mutate(input) },
+  function*(input) {
+    yield* overviewClient.RetryLabel.mutate(input)
+  },
   Command.withDefaultToast()
 )
 ```
@@ -341,7 +358,7 @@ The rule "no wrapper functions around `.handle()`" has narrow, well-defined exce
 
 ```ts
 const onSubmit = () => {
-  if (!isFormValid.value) return                  // local validation guard OK
+  if (!isFormValid.value) return // local validation guard OK
   createPortfolio.handle({ input: formStore.value })
 }
 ```
@@ -354,10 +371,10 @@ The rule lives in [command-input-validation.md](./command-input-validation.md): 
 
 Two genuine reasons to read a ref **inside** the body instead:
 
-1. **Page-stable refs** (`props.order.id`, `effectiveCarrier`). Stable for the page lifetime; the user isn't filling them in. Keep the `:input` payload focused on the user's actual choice.
-2. **Non-UI triggers** — scan handlers, SSE events, job retries — where the caller can't pre-validate. Surface a typed `InvalidStateError` instead of a silent `return`.
+1. **Page-stable refs** (`props.order.id`, `effectiveRegion`). Stable for the page lifetime; the user isn't filling them in. Keep the `:input` payload focused on the user's actual choice.
+2. **Non-UI triggers** — external event handlers, SSE events, job retries — where the caller can't pre-validate. Surface a typed `InvalidStateError` instead of a silent `return`.
 
-Reading user-filled form refs in the body (`selectedArticle.value`, `countNotThere.value`) is **not** in this list. Push the gating into the child component and have it emit the full payload — see the "Dialogs and child components: emit the full payload" section of `command-input-validation.md`.
+Reading user-filled form refs in the body (`selectedItem.value`, `quantity.value`) is **not** in this list. Push the gating into the child component and have it emit the full payload — see the "Dialogs and child components: emit the full payload" section of `command-input-validation.md`.
 
 ## `.fn()` TypeScript gotchas
 
@@ -366,10 +383,10 @@ Reading user-filled form refs in the body (`selectedArticle.value`, `countNotThe
 Use `typeof client.Action.Input`:
 
 ```ts
-const addOrderToCart = pickListClient.AddOrderToCart.fn(
-  function*(input: typeof pickListClient.AddOrderToCart.Input) {
-    yield* pickListClient.AddOrderToCart.mutate(input)
-    yield* Router.push({ name: "commission-my-list" })
+const addOrder = orderClient.AddOrder.fn(
+  function*(input: typeof orderClient.AddOrder.Input) {
+    yield* orderClient.AddOrder.mutate(input)
+    yield* Router.push({ name: "my-list" })
   },
   Command.withDefaultToast()
 )
@@ -380,9 +397,9 @@ const addOrderToCart = pickListClient.AddOrderToCart.fn(
 Omit the parameter; call `.handle()` with no args (not `.handle({})`):
 
 ```ts
-const claim = pickListClient.ClaimList.fn(
+const claim = itemClient.Claim.fn(
   function*() {
-    yield* pickListClient.ClaimList.mutate
+    yield* itemClient.Claim.mutate
     yield* Router.push({ name: "my-list" })
   },
   Command.withDefaultToast()
@@ -395,10 +412,12 @@ const claim = pickListClient.ClaimList.fn(
 When the input is page-stable (a prop), bake it in and let `.handle()` take no args:
 
 ```ts
-const retryLabel = deliveryNoteClient.RetryLabel.fn(
+const retryLabel = orderClient.RetryLabel.fn(
   function*() {
-    yield* deliveryNoteClient.RetryLabel.mutate({ id: props.item.deliveryNoteId })
-    yield* props.getPickList
+    yield* orderClient.RetryLabel.mutate({
+      id: props.item.orderId
+    })
+    yield* props.getOrder
   },
   Command.withDefaultToast()
 )
@@ -412,17 +431,23 @@ This is the "page-stable ref" exception above, not "read form state in body".
 `yield*` in a `for` loop replaces the old `await run(exec(...))` chain:
 
 ```ts
-const pickedCmd = pickListClient.PickedPickList.fn(
+const markDoneCmd = itemClient.MarkDone.fn(
   function*(position: number) {
-    if (pickAll.value) {
-      for (const a of latestPickList.value.tasks) {
-        yield* pickListClient.PickedPickList.mutate({ articleId: a.articleId, position: S.NonNegativeInt(position) })
+    if (markAll.value) {
+      for (const a of latestItems.value.tasks) {
+        yield* itemClient.MarkDone.mutate({
+          itemId: a.itemId,
+          position: S.NonNegativeInt(position)
+        })
       }
-      pickAll.value = false
+      markAll.value = false
     } else {
-      yield* pickListClient.PickedPickList.mutate({ articleId: selectedArticle.value!.articleId, position: S.NonNegativeInt(position) })
+      yield* itemClient.MarkDone.mutate({
+        itemId: selectedItem.value!.itemId,
+        position: S.NonNegativeInt(position)
+      })
     }
-    showCartDialog.value = false
+    showDetailDialog.value = false
   },
   Command.withDefaultToast()
 )
@@ -430,7 +455,7 @@ const pickedCmd = pickListClient.PickedPickList.fn(
 
 ## Streams and realtime progress
 
-For long-running mutations (imports, bulk re-label, mass re-pick) declare the request as a **stream command** on the server and use `Command.withDefaultToastStream` on the client. The toast updates in place with the progress; the mutation completes when the stream ends.
+For long-running mutations (imports, bulk re-label, bulk re-run) declare the request as a **stream command** on the server and use `Command.withDefaultToastStream` on the client. The toast updates in place with the progress; the mutation completes when the stream ends.
 
 See [streams-and-progress.md](./streams-and-progress.md) for the full pattern, server / client / view-schema details, and the `operationProgress` helper.
 
@@ -441,8 +466,7 @@ Quick version:
 export class RetryLabel extends Req.Command<RetryLabel>()(
   "RetryLabel",
   {},
-  { stream: true, success: OperationProgress },
-  (queryKey) => [{ filters: { queryKey } }, { filters: { queryKey: makeQueryKey(List) } }]
+  { stream: true, success: OperationProgress }
 ) {}
 
 // frontend
@@ -455,71 +479,93 @@ const retryLabel = overviewClient.RetryLabel.mutate.wrap()(
 <CommandButton :command="retryLabel" />
 ```
 
-## Query invalidation belongs in resources
+## Repository-derived query invalidation is the default
 
-Configure mutation cache invalidation on the `Req.Command` definition in the
-resource file. Do not pass query invalidation as the second argument to
-`clientFor()` at a page/component call site. A mutation's data dependencies are
-part of the API contract, not a local UI detail; every consumer of the command
-should get the same cache behavior.
+Queries record the repositories they read, and successful commands return the
+repositories they wrote. The client automatically invalidates every live query
+whose recorded reads intersect those writes. This works across resource/RPC
+namespaces and adapter boundaries; matching names or imports are not
+required. A workflow prelude can forward repository dependencies from durable
+workflow activities to the originating command.
 
-```ts
-import { GetMe } from "#resources/Me"
-import { List as PickCartsList } from "./PickCarts.Queries.ts"
+### Do not reintroduce manual query-key lists
 
-const invalidatePicking = (queryKey: readonly string[]) => [
-  queryKey,
-  GetMe,
-  GetStats,
-  PickCartsList
-]
+**Never** add any of the following for normal resource work (new or edited
+commands included):
 
-export class Full extends Req.Command<Full>()(
-  "Full",
-  {},
-  { allowRoles: ["user"] },
-  invalidatePicking
-) {}
-```
+- `Req.Command` 4th-arg `invalidatesQueries` callbacks
+  (e.g. `() => [SomeQuery]`, `(queryKey) => [queryKey]`)
+- client/page `queryInvalidation` options on mutations
+- `clientFor(Resource, invalidationMap)` wiring
+- `InvalidationSet.add` / `Invalidates` annotations for repository-backed
+  projections
 
-Use real query request classes in the invalidation list whenever possible. If a
-command in resource A must invalidate a query in resource B, import the query
-class from B's query-only module instead of configuring it in `clientFor()`.
+That includes multi-repository projections and adapter-facing queries: if a
+query goes through `repo.query` / `find` / `all` and the command writes those
+repositories (or a durable workflow that records the same writes), the
+intersection is enough. Do not "help" derived invalidation with a hand-maintained
+query list — agents and humans reintroducing those lists is a regression.
 
-```ts
-import { List as DropshippingPickList } from "../../Dropshipping/resources/PickList.Queries.ts"
+There is **no** default namespace invalidation of a command's own resource key.
+Same-resource lists refresh because they share repository reads with the
+command's writes, not because someone listed `(queryKey) => [queryKey]`.
 
-const invalidatePickLists = (queryKey: readonly string[]) => [
-  queryKey,
-  GetMe,
-  GetStats,
-  DropshippingPickList
-]
-```
+### Unobservable dependencies
+
+Manual query-key invalidation is only for dependencies the recorder cannot see
+(in-memory signals, external systems, pure semantic fan-out with no tracked
+read/write). Prefer recording a `DataDependencies.signal(...)` (read on the
+query, write on the command) so derived invalidation still applies. Do not add
+a query-key list "just in case," for `GetMe`, for "refresh the list after
+save," or because another resource's projection looks virtual.
+
+If you believe a case is truly unobservable after checking the handler's repo
+access, stop and confirm before adding any explicit invalidation API — do not
+copy a 4th-arg callback from older code or library docs.
 
 ### Auth/user state after mutations
 
-When a command changes the current user's claimed resource, invalidate `GetMe`
-from the command's resource definition. Do not manually assign `store.user` in
-the page to predict the new user state.
-
-```ts
-export class Release extends Req.Command<Release>()(
-  "Release",
-  { cartId: OneOrMoreCarts },
-  { allowRoles: ["user"] },
-  (queryKey) => [queryKey, GetMe, GetStats]
-) {}
-```
+When a command writes the user repository, live `GetMe` queries are invalidated
+automatically. Do not add an explicit `GetMe` invalidation or manually assign
+session user in the page to predict the new user state.
 
 The client mutation invalidates/refetches affected queries before the command
 body continues to success-side effects such as navigation. Route guards and
-headers should observe the refreshed `GetMe` cache/store instead of a local
+headers should observe the refreshed `GetMe` cache / layout session instead of a local
 optimistic write.
+
+### `disableQueryInvalidation` for background saves
+
+Some commands are background saves whose writes should not trigger query
+refetches (e.g. debounced auto-save of edited rows). Set
+`disableQueryInvalidation: true` in the Command config to suppress **all**
+invalidation sources — residual manual keys (if any), server-returned
+`metadata.invalidateQueries`, and repository-derived write-dependency matching.
+
+```ts
+export class SaveItems extends Req.Command<SaveItems>()(
+  "SaveItems",
+  { orderId: OrderId, items: S.Array(Rows) },
+  { allowRoles: ["user"], disableQueryInvalidation: true }
+) {}
+```
+
+This is a blunt instrument. It stops the mutation from refetching _any_ live
+query, so only use it when the command's writes are genuinely irrelevant to
+the currently displayed data (the UI will refresh them through another path,
+e.g. a subsequent explicit action or route change).
+
+#### Alternative: `DataDependencyRecorder` suppression (not yet implemented)
+
+The conceptually purer approach is to suppress write-recording at the source
+instead of filtering downstream. Wrap the handler in a context that provides a
+no-op `DataDependencyRecorder`, so `orderRepo.save(...)` calls inside it don't
+record writes and repository-derived invalidation never fires. Not implemented
+yet — revisit if a second use case needs "suppress derived invalidation only".
 
 ## i18n: action keys are mandatory
 
-When adding a new API action (request class), add a translation in `frontend/composables/intl.ts` for each supported locale. Without it, toasts show the raw key (e.g. `ShipList.ReprintLabel succeeded`).
+When adding a new API action (request class), add a translation in `frontend/composables/intl.ts` for each supported locale. Without it, toasts show the raw key (e.g. `OrderList.RetryLabel succeeded`).
 
 Key format: `"action.{moduleName}.{ActionClassName}"`. `moduleName` comes from the resource's `meta.moduleName`.
 
@@ -528,11 +574,11 @@ Key format: `"action.{moduleName}.{ActionClassName}"`. `moduleName` comes from t
 Most actions need a short label for the button and a longer one for the toast. Use ICU `_isLabel` select:
 
 ```ts
-"action.PickList.AbortPickList":
-  "{_isLabel, select, true {Abort} other {Abort pick list}}",
+"action.OrderList.Abort":
+  "{_isLabel, select, true {Abort} other {Abort order list}}",
 
 // same text for both → plain string is fine
-"action.PickList.MarkOutOfStock": "Mark out of stock",
+"action.OrderList.MarkOutOfStock": "Mark out of stock",
 
 // combine with other ICU vars
 "action.Overview.ChangeBlocked":
@@ -540,6 +586,7 @@ Most actions need a short label for the button and a longer one for the toast. U
 ```
 
 The command system sets `_isLabel = true` when rendering as a button label, `false` for toasts. Use the select form when:
+
 - The toast needs more context than the button (short button label → longer toast).
 - Different verb form (`"Import"` button → `"Importing"` toast).
 - The button label would be too long.
@@ -571,20 +618,21 @@ const action = client.Action.fn(
 
 ```ts
 // BEFORE
-const cancelList = pickListClient.AbortList.mutate.wrap(
-  (mutate) => confirmDialogOrInterrupt("Are you sure?", "Abort?").pipe(
-    Effect.andThen(mutate),
-    Effect.andThen(() => Router.push({ name: "commission" }))
-  ),
+const cancelList = orderClient.Abort.mutate.wrap(
+  (mutate) =>
+    confirmDialogOrInterrupt("Are you sure?", "Abort?").pipe(
+      Effect.andThen(mutate),
+      Effect.andThen(() => Router.push({ name: "list" }))
+    ),
   Command.withDefaultToast()
 )
 
 // AFTER — generator reads top-to-bottom
-const cancelList = pickListClient.AbortList.fn(
+const cancelList = orderClient.Abort.fn(
   function*() {
     yield* Command.confirmOrInterrupt()
-    yield* pickListClient.AbortList.mutate
-    yield* Router.push({ name: "commission" })
+    yield* orderClient.Abort.mutate
+    yield* Router.push({ name: "list" })
   },
   Command.withDefaultToast()
 )
@@ -619,10 +667,12 @@ const addOrder = client.AddOrder.fn(
 
 ```ts
 // BAD — toast fires on the promise, not the Effect's success
-void run(updateStackability({ shipmentId, action })).then(() => toast.success("Updated"))
+void run(updateStatus({ orderId, action })).then(() => toast.success("Updated"))
 // GOOD — toast is the command's job
-const updateStackability = client.UpdateStackability.mutate.wrap(Command.withDefaultToast())
-updateStackability.handle({ shipmentId, action })
+const updateStatus = client.UpdateStatus.mutate.wrap(
+  Command.withDefaultToast()
+)
+updateStatus.handle({ orderId, action })
 ```
 
 ### `await cmd.handle(...)` in user code

@@ -6,7 +6,7 @@
 
 `wiki/flows/` is the single source of truth for every customer-facing workflow.
 
-- **Primary audience: Business Analyst / Product Manager.** Plain-English business rules + carriers + closeout + variants.
+- **Primary audience: Business Analyst / Product Manager.** Plain-English business rules + external systems + closeout + variants.
 - **Secondary audience: engineers + AI.** Each flow doc has a **"For engineers"** section at the bottom w/ file paths, controllers, e2e specs, state machines.
 
 Layout:
@@ -14,16 +14,15 @@ Layout:
 ```
 wiki/flows/
 ├── README.md                ← top-level index + glossary + cross-cutting
-├── shared/                  ← cross-company concepts
-├── <company-a>/             ← per-workflow docs
-├── <company-b>/
-├── e2e-coverage-gaps.md     ← gap analysis surfaced from docs
-└── e2e-duplicate-walks.md   ← duplicate-walk audit
+├── shared/                  ← cross-workflow concepts
+├── <workflow-a>/            ← per-workflow docs
+└── <workflow-b>/
 ```
 
 ## Why it matters
 
 Before flow docs existed, the entire system state lived in heads. Consequences:
+
 - New joiners + AI agents couldn't be productive without weeks of pairing
 - Anyone returning after vacation re-asked the same questions
 - The PM's stories were thin because there was no canonical "current state" to diff against
@@ -36,6 +35,7 @@ Flow docs replace that w/ a written contract everyone (human + AI) can cite.
 ### 1. Stories diff against flow docs
 
 When the PM (or anyone) writes a story:
+
 - Reference the relevant flow doc + section
 - Express the change as a **diff** against documented behavior
 - Don't restate full context — the doc holds it
@@ -46,12 +46,13 @@ Engineers reading the story load the referenced doc + apply the diff. Less ambig
 
 If your PR changes a workflow's behavior, **update the flow doc in the same PR**. Same merge gate as code.
 
-Code review checklist includes: "Did this PR change a flow's behavior? Is `wiki/flows/<company>/<workflow>.md` updated?"
+Code review checklist includes: "Did this PR change a flow's behavior? Is `wiki/flows/<workflow>.md` updated?"
 
 ### 3. AI agents must consult flow docs
 
 When asked to work on a workflow:
-1. Read the relevant `wiki/flows/<company>/<workflow>.md` first
+
+1. Read the relevant `wiki/flows/<workflow>.md` first
 2. Treat its **Business rules** + **Glossary** as authoritative for terms + constraints
 3. The **For engineers** section has file paths to dig deeper
 4. If the doc doesn't answer a question, ask + update the doc after
@@ -79,14 +80,14 @@ This applies to AI agents and humans equally. If an agent ships a behavior chang
 
 ## What to put in a flow doc
 
-See [wiki/flows/README.md](../flows/README.md) for the pattern. Every flow doc has:
+See `wiki/flows/README.md` for the pattern. Every flow doc has:
 
 1. **What this workflow is for** — 1–2 sentences, business purpose
 2. **Who's involved** — roles + actions
 3. **Business rules** — named, in a table
 4. **End-to-end flow** — labeled stages
 5. **Step-by-step user actions** — plain-English
-6. **Carriers, labels, closeout, notifications**
+6. **External systems, labels, closeout, notifications**
 7. **Variants** — linked to sample fixtures
 8. **Story-writing checklist** — what to cover when diffing this flow
 9. **For engineers** — file paths, API surface, state machines, e2e
@@ -105,11 +106,10 @@ See [wiki/flows/README.md](../flows/README.md) for the pattern. Every flow doc h
 - **At PR-write time.** Reference the doc section in PR description.
 - **In Copilot reviews.** Comment when a PR changes flow behavior without updating the doc.
 
-See [`.github/copilot-instructions.md`](../../.github/copilot-instructions.md) for full AI/Copilot reinforcement.
+See the project's Copilot/AI instructions for full reinforcement.
 
 ## Cross-references
 
 - [E2E State Pattern](./e2e-state-pattern.md) — walk-once + API-seed rule for tests
 - [E2E Architecture](./e2e.md) — playwright + POM design
-- [Flow Catalog README](../flows/README.md) — entry point to all flow docs
-- [Outdated Docs Inventory](../flows/outdated-docs.md) — pre-flow-doc artifacts that need reconciling
+- [Playwright POM design](./playwright-poms.md) — POM naming and locator rules

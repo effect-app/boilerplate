@@ -2,11 +2,9 @@ import { apiConfig } from "#config"
 import { RepoDefault } from "#lib/layers"
 import { User, UserFromIdResolver, type UserId } from "#models/User"
 import { NotFoundError, NotLoggedInError } from "@effect-app/infra/errors"
-import { generate } from "@effect-app/infra/test"
 import * as Array from "effect-app/Array"
 import * as Context from "effect-app/Context"
 import * as Effect from "effect-app/Effect"
-import { fakerArb } from "effect-app/faker"
 import { pipe } from "effect-app/Function"
 import { UserProfileId } from "effect-app/ids"
 import * as Layer from "effect-app/Layer"
@@ -17,7 +15,6 @@ import { Email } from "effect-app/Schema"
 import * as Exit from "effect/Exit"
 import * as Request from "effect/Request"
 import * as RequestResolver from "effect/RequestResolver"
-import fc from "fast-check"
 import { Q } from "../lib.ts"
 import { UserProfile } from "../UserProfile.ts"
 
@@ -37,19 +34,13 @@ export class UserRepo extends Context.Service<UserRepo>()("UserRepo", {
         Array
           .range(1, 8)
           .map((_, i): User => {
-            const g = generate(S.toArbitrary(User)).value
-            const emailArb = fakerArb((_) => () =>
-              _
-                .internet
-                .exampleEmail({ firstName: g.name.firstName, lastName: g.name.lastName })
-            )
             const role = i === 0 || i === 1 ? "manager" : "user"
             return User.make({
-              ...g,
               id: UserProfileId("fake-user-" + i),
               name: { firstName: S.NonEmptyString255(`Fake${i}First`), lastName: S.NonEmptyString255(`Fake${i}Last`) },
-              email: Email(generate(emailArb(fc)).value),
-              role
+              email: Email(`fake${i}@example.com`),
+              role,
+              passwordHash: S.NonEmptyString255(`fake-password-${i}`)
             })
           }),
         Array.toNonEmptyArray,
@@ -95,7 +86,7 @@ export class UserRepo extends Context.Service<UserRepo>()("UserRepo", {
     return RequestResolver
       .make((entries: [Request.Entry<GetUserById>, ...Array<Request.Entry<GetUserById>>]) =>
         Effect.gen(function*() {
-          const users = yield* userRepo.query(Q.where("id", "in", entries.map((e) => e.request.id)))
+          const users = yield* userRepo.query(Q.where("id", "in", entries.map((e) => e.request.id))).pipe(Effect.orDie)
           for (const entry of entries) {
             const user = Array.findFirst(users, (u) => u.id === entry.request.id)
             entry.completeUnsafe(

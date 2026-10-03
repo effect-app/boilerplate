@@ -24,17 +24,18 @@
  *
  *   `"action.Standard/PickCarts.Assign": "Übernehmen"` → label = toast = "Übernehmen"
  *
- * For `_isLabel` ICU select patterns the `true` branch becomes the button label
- * and the `other` branch becomes the toast prefix:
+ * Optional sibling `action.{id}.action` is the toast prefix when it differs from
+ * the button label:
  *
- *   `"action.Standard/Order.Cancel": "{_isLabel, select, true {Abbrechen} other {Auftrag stornieren}}"`
+ *   `"action.Standard/Order.Cancel": "Abbrechen"`
+ *   `"action.Standard/Order.Cancel.action": "Auftrag stornieren"`
  *   → label = "Abbrechen", toastPrefix = "Auftrag stornieren"
  *
  * For ICU patterns with runtime variables, pass `vars` with the variable values
  * so that the resolved label and toast prefix match what the UI renders:
  *
  *   `"action.CartManagement.ChangeBlockedState"`:
- *   `"{_isLabel, select, true {Wagen {state, select, Blocked {blockieren} other {freigeben}}} other {...}}"`
+ *   `"Wagen {state, select, Blocked {blockieren} other {freigeben}}"`
  *   → with `vars: { state: "Blocked" }`: label = "Wagen blockieren"
  *
  * ## Option layers
@@ -106,7 +107,7 @@
 // See adapter.ts in the consuming project (created on first sync).
 import type { Locator, Page } from "playwright"
 import { handleToast, handleToastFailure, handleToastOrPostcondition, type ResponseMatch, type RpcResource, rpcResponseMatcher, waitForResponse as waitForResponseHelper } from "./act.ts"
-import { type ActionIntlKey, deActionMessages } from "./adapter.js"
+import { type ActionIntlKey, deActionMessages, lookupActionCopy } from "./adapter.js"
 
 export { type ResponseMatch, type RpcResource, rpcResponseMatcher }
 
@@ -117,13 +118,13 @@ export type PlaywrightClickOptions = Parameters<Locator["click"]>[0]
 export type IntlVars = Readonly<Record<string, string>>
 
 /**
- * The set of resource-command ids that have an entry in {@link deActionMessages}.
- * Derived from the `action.${id}` keys, this constrains {@link command} to
- * resources whose intl message actually exists — typos and missing translations
- * surface at compile time instead of producing a `[action.X]` fallback string
- * at runtime.
+ * The set of resource-command ids that have a default entry in {@link deActionMessages}.
+ * Derived from the `action.${id}` keys, excluding optional `.action` toast-prefix
+ * siblings. Typos and missing translations surface at compile time instead of
+ * producing a `[action.X]` fallback string at runtime.
  */
-export type ActionId = ActionIntlKey extends `action.${infer R}` ? R : never
+export type ActionId = ActionIntlKey extends `action.${infer R}` ? R extends `${string}.action` ? never : R
+  : never
 
 /** Options set at {@link command} creation time or at `.bind()` time. */
 export interface CommandOptions {
@@ -495,32 +496,18 @@ function resolveIcu(message: string, vars: IntlVars): string {
 // ---------------------------------------------------------------------------
 
 /**
- * Parse an ICU action message into a button label and a toast prefix.
- *
- * Handles the `{_isLabel, select, true {Label} other {Toast}}` pattern (with
- * arbitrary nesting inside each branch) using a brace-aware parser.  When
- * `vars` are provided the branches are resolved with {@link resolveIcu} before
- * being returned.
- *
- * Falls back to using the raw (or ICU-resolved) message string for both label
- * and toast prefix when the pattern is absent.
+ * Resolve the button label and toast prefix from the catalog.
+ * Optional `action.{id}.action` is the toast prefix; otherwise both use the default key.
  */
-function parseIntlMessage(message: string, vars?: IntlVars): { label: string; toastPrefix: string } {
-  if (message.startsWith("{_isLabel,")) {
-    const end = findClosingBrace(message, 0)
-    if (end === message.length - 1) {
-      const inner = message.slice(1, end) // _isLabel, select, true {...} other {...}
-      const branchPart = inner.replace(/^_isLabel,\s*select,\s*/, "")
-      const branches = parseBranches(branchPart)
-      if (branches && branches["true"] !== undefined && branches["other"] !== undefined) {
-        const label = vars ? resolveIcu(branches["true"], vars) : branches["true"]
-        const toastPrefix = vars ? resolveIcu(branches["other"], vars) : branches["other"]
-        return { label, toastPrefix }
-      }
-    }
+function parseIntlMessage(
+  intlKey: string,
+  vars?: IntlVars
+): { label: string; toastPrefix: string } {
+  const raw = lookupActionCopy(deActionMessages, intlKey)
+  if (!vars || Object.keys(vars).length === 0) {
+    return { label: raw.label, toastPrefix: raw.action }
   }
-  const resolved = vars ? resolveIcu(message, vars) : message
-  return { label: resolved, toastPrefix: resolved }
+  return { label: resolveIcu(raw.label, vars), toastPrefix: resolveIcu(raw.action, vars) }
 }
 
 // ---------------------------------------------------------------------------
@@ -558,12 +545,8 @@ function buildCommand<I extends ActionId>(
   baseLocator: Locator | undefined
 ): Command {
   const intlKey = `action.${resource.id}` as ActionIntlKey
-  const rawMessage: string | undefined = (deActionMessages as Record<string, string>)[intlKey]
-  if (rawMessage === undefined) {
-    throw new Error(`No intl message found for ${intlKey} — add it to deActionMessages or override label/toastPrefix`)
-  }
   const creationVars: IntlVars = options?.vars ?? {}
-  const creationParsed = parseIntlMessage(rawMessage, Object.keys(creationVars).length > 0 ? creationVars : undefined)
+  const creationParsed = parseIntlMessage(intlKey, Object.keys(creationVars).length > 0 ? creationVars : undefined)
 
   const baseLabel = options?.label ?? creationParsed.label
   const baseToastPrefix = options?.toastPrefix ?? creationParsed.toastPrefix
@@ -590,7 +573,7 @@ function buildCommand<I extends ActionId>(
       : bindVars
     const hasClickVars = !!clickOptions?.vars
     const resolved = hasClickVars
-      ? parseIntlMessage(rawMessage, effectiveVars)
+      ? parseIntlMessage(intlKey, effectiveVars)
       : { label: bindLabel, toastPrefix: bindToastPrefix }
 
     const effectiveLabel = clickOptions?.label ?? resolved.label
@@ -662,7 +645,7 @@ function buildCommand<I extends ActionId>(
       : creationVars
     const hasBindVars = !!bindOptions?.vars
     const bindParsed = hasBindVars
-      ? parseIntlMessage(rawMessage, bindVars)
+      ? parseIntlMessage(intlKey, bindVars)
       : creationParsed
     // cascade bind > create > ICU: creation-time label/toastPrefix overrides
     // (options.*) must survive .bind(), exactly as bindExact falls back to baseExact

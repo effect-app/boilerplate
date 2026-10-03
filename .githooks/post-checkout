@@ -1,0 +1,107 @@
+#!/bin/sh
+# 1) After a branch/worktree checkout: drop TypeScript project-reference emit so
+#    tsgo --build never typechecks against foreign-tree .tsbuildinfo / .d.ts.
+# 2) Reconcile pnpm when package.json / lockfile changed.
+
+PATH="$HOME/.local/bin:$HOME/.local/share/pnpm:$HOME/Library/pnpm:$HOME/.local/share/mise/shims:/run/current-system/sw/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:$PATH"
+export PATH
+
+# post-checkout also runs after file-only checkouts; those are not a tree switch.
+[ "${3:-0}" = "1" ] || exit 0
+
+wt_root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+[ -f "$wt_root/package.json" ] || exit 0
+
+# --- TS build-cache wipe (every branch / worktree checkout) -----------------
+#
+# Why: `pnpm check` is `tsgo --build` with composite + incremental +
+# emitDeclarationOnly. Outputs live in package `dist/` (gitignored). After
+# checkout/rebase, sources belong to HEAD but dist may still be from another
+# branch. tsgo can treat projects as up-to-date and typecheck new sources
+# against old .d.ts → phantom errors that vanish on `pnpm rbuild` (clean+check).
+#
+# Workaround only — remove when upstream incremental invalidation is reliable
+# and the effect-app/tsgo pin includes the fixes.
+clean_ts_project_emit() {
+  root=$1
+  removed=0
+
+  # Per-package clean targets (mirror package.json "clean" for TS projects).
+  # Frontend uses vue-tsc --noEmit (no composite emit graph); still drop dist
+  # so branch switches do not leave stale FE build output either.
+  for d in \
+    "$root/api/dist" \
+    "$root/api/test/dist" \
+    "$root/e2e/test-out" \
+    "$root/e2e/dist" \
+    "$root/frontend/dist"
+  do
+    if [ -e "$d" ]; then
+      rm -rf "$d"
+      removed=1
+    fi
+  done
+
+  # api/package.json clean: test/dist-*
+  for d in "$root"/api/test/dist-*; do
+    [ -e "$d" ] || continue
+    rm -rf "$d"
+    removed=1
+  done
+
+  # Stray *.tsbuildinfo outside known dist dirs (never under node_modules/repos).
+  # Capture paths first so `removed` is not trapped in a pipeline subshell.
+  if [ -d "$root" ]; then
+    tsbuild_files=$(
+      find "$root" \
+        \( -path "$root/node_modules" -o -path "$root/repos" -o -path "$root/.git" -o -path "$root/.run" \) -prune -o \
+        -type f -name '*.tsbuildinfo' -print 2>/dev/null || true
+    )
+    if [ -n "$tsbuild_files" ]; then
+      printf '%s\n' "$tsbuild_files" | while IFS= read -r f; do
+        [ -n "$f" ] || continue
+        rm -f "$f"
+      done
+      removed=1
+    fi
+  fi
+
+  if [ "$removed" = 1 ]; then
+    echo "post-checkout: cleared TypeScript project emit (dist / tsbuildinfo) under $root" >&2
+    echo "post-checkout: workaround for tsgo stale incremental cache after tree switch — see .githooks/README.md" >&2
+  fi
+}
+
+clean_ts_project_emit "$wt_root"
+
+if [ "${T3CODE_DEFER_DEPENDENCY_INSTALL:-0}" = "1" ]; then
+  echo "post-checkout: dependency installation deferred to workspace initialization" >&2
+  exit 0
+fi
+
+# --- pnpm install when lockfile / package.json changed -----------------------
+[ -f "$wt_root/pnpm-lock.yaml" ] || exit 0
+state_file="$wt_root/node_modules/.pnpm-checkout-state"
+state=$(cksum "$wt_root/package.json" "$wt_root/pnpm-lock.yaml" | cksum | awk '{print $1 ":" $2}')
+if [ -f "$wt_root/node_modules/.modules.yaml" ] && [ "$(cat "$state_file" 2>/dev/null)" = "$state" ]; then
+  exit 0
+fi
+command -v pnpm >/dev/null 2>&1 || {
+  echo "post-checkout: pnpm not on PATH; node_modules not installed" >&2
+  exit 1
+}
+
+export CI=1
+echo "post-checkout: pnpm install in $wt_root" >&2
+cd "$wt_root" || exit 1
+if pnpm install --frozen-lockfile --prefer-offline \
+    --config.package-import-method=hardlink \
+    --config.confirmModulesPurge=false
+then
+  printf '%s\n' "$state" >"$state_file"
+else
+  status=$?
+  echo "post-checkout: dependency preparation failed (exit $status); worktree remains usable but degraded" >&2
+  [ "${T3CODE_WORKTREE_PREPARATION_STRICT:-0}" = "1" ] && exit "$status"
+  exit 0
+fi

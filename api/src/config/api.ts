@@ -15,7 +15,7 @@ export const storage = Config.all({
     Config.map(({ env, serviceName }) => `${serviceName}${env === "prod" ? "" : env === "demo" ? "-demo" : "-dev"}`)
   ),
   prefix: Config
-    .string("prefix")
+    .String("prefix")
     .pipe(
       Config
         .nested("storage"),
@@ -25,17 +25,17 @@ export const storage = Config.all({
 })
 
 export const repo = Config.all({
-  fakeData: Config.string("fakeData").pipe(Config.withDefault("")),
-  fakeUsers: Config.string("fakeUsers").pipe(Config.withDefault("sample"))
+  fakeData: Config.String("fakeData").pipe(Config.withDefault("")),
+  fakeUsers: Config.String("fakeUsers").pipe(Config.withDefault("sample"))
 })
 
-const port = Config.int("port").pipe(Config.withDefault(3610))
-export const host = Config.string("host").pipe(Config.withDefault("0.0.0.0"))
+const port = Config.Int("port").pipe(Config.withDefault(3610))
+export const host = Config.String("host").pipe(Config.withDefault("0.0.0.0"))
 export const server = Config.all({
   host,
   port,
-  devPort: Config.int("devPort").pipe(Config.orElse(() => port.pipe(Config.map((_) => _ + 1)))),
-  baseUrl: Config.string("baseUrl").pipe(Config.withDefault("http://localhost:4000"))
+  devPort: Config.Int("devPort").pipe(Config.orElse(() => port.pipe(Config.map((_) => _ + 1)))),
+  baseUrl: Config.String("baseUrl").pipe(Config.withDefault("http://localhost:4000"))
 })
 
 export * from "./base.ts"

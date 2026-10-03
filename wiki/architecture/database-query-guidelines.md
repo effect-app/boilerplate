@@ -1,5 +1,4 @@
 <!-- Space: SA -->
-<!-- Parent: Scanner Wiki -->
 <!-- Parent: Architecture -->
 <!-- Parent: Architecture (shared) -->
 <!-- Title: Database Query Guidelines -->
@@ -10,13 +9,13 @@ Default rule: push filtering, counting, pagination, projection, and simple deriv
 
 ## Good vs bad at a glance
 
-| Prefer | Avoid |
-|---|---|
+| Prefer                                                                        | Avoid                                                                                      |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | `Q.count`, relation `count()`, `any()`, `every()`, `sum()`, `distinctCount()` | Loading full rows, then using `.length`, `.some`, `.every`, `new Set(...)`, or manual sums |
-| `Q.page({ take: ... })` at query time | Loading an unbounded result set and slicing/filtering later |
-| `Q.project(...)` with `Struct.pick(...)` / `mapFields(...)` | Fetching full documents when only a few fields are needed |
-| `Q.projectComputed(..., Q.computed(...))` | Fetching nested arrays just to derive booleans, counts, ids, weights, or totals |
-| One source of truth for a condition | Re-checking the same condition again in JS/TS after the DB already narrowed the set |
+| `Q.page({ take: ... })` at query time                                         | Loading an unbounded result set and slicing/filtering later                                |
+| `Q.project(...)` with `Struct.pick(...)` / `mapFields(...)`                   | Fetching full documents when only a few fields are needed                                  |
+| `Q.projectComputed(..., Q.computed(...))`                                     | Fetching nested arrays just to derive booleans, counts, ids, weights, or totals            |
+| One source of truth for a condition                                           | Re-checking the same condition again in JS/TS after the DB already narrowed the set        |
 
 ## 1. Count and page in the database
 
@@ -32,15 +31,17 @@ userRepo.query(
 )
 ```
 
-See `api/src/<workflow>/PackSpots.Controllers.ts`.
+See `api/src/<workflow>/Items.Controllers.ts`.
 
 ### Also good
 
 ```ts
 Q.relation("items").count()
-Q.relation("items").count(Q.where("state._tag", "in", ["picked", "packed", "out-of-stock"]))
-Q.relation("items").any(Q.where("state._tag", "packed"))
-Q.relation("items").every(Q.where("state._tag", "picked"))
+Q.relation("items").count(
+  Q.where("state._tag", "in", ["active", "done", "out-of-stock"])
+)
+Q.relation("items").any(Q.where("state._tag", "done"))
+Q.relation("items").every(Q.where("state._tag", "done"))
 ```
 
 See:
@@ -53,7 +54,7 @@ See:
 
 ```ts
 const orders = yield* orderRepo.query(...)
-const hasPickingItem = orders.some((o) => o.items.some((i) => i.state._tag === "picking"))
+const hasActiveItem = orders.some((o) => o.items.some((i) => i.state._tag === "active"))
 ```
 
 Problems:
@@ -62,7 +63,7 @@ Problems:
 - loads nested `items` arrays just to answer an existence question
 - duplicates query intent in application code
 
-Current example: `api/src/<workflow>/PickCarts.Controllers.ts`.
+Current example: `api/src/<workflow>/Items.Controllers.ts`.
 
 ### Rule
 
@@ -78,8 +79,8 @@ If the caller only needs a few fields, only select those fields.
 
 ```ts
 orderRepo.query(
-  Q.where("state._tag", "in", ["initial", "valid", "packed"]),
-  Q.project(Order.mapFields(Struct.pick(["carrier", "state"])), "project")
+  Q.where("state._tag", "in", ["initial", "valid", "done"]),
+  Q.project(Order.mapFields(Struct.pick(["region", "state"])), "project")
 )
 ```
 
@@ -121,18 +122,21 @@ If a list view needs derived fields, compute them in the query.
 ```ts
 Q.projectComputed(
   S.Struct({
-    articleCount: NonNegativeInt,
-    allItemsPicked: S.Boolean,
+    itemCount: NonNegativeInt,
+    allItemsDone: S.Boolean,
     weight: Kilogram,
-    articleIds: S.Array(ArticleId)
+    itemIds: S.Array(ItemId)
   }),
   Q.computed({
-    articleCount: Q.relation("items").count(),
-    allItemsPicked: Q.relation("items").every(Q.where("state._tag", "picked")),
+    itemCount: Q.relation("items").count(),
+    allItemsDone: Q.relation("items").every(Q.where("state._tag", "done")),
     weight: Q.relation("items").sumExpr(
-      Q.expr.mul(Q.expr.field("weight.amount"), Q.expr.field("tradeUnit.amount"))
+      Q.expr.mul(
+        Q.expr.field("weight.amount"),
+        Q.expr.field("tradeUnit.amount")
+      )
     ),
-    articleIds: Q.relation("items").collectDistinct("articleId")
+    itemIds: Q.relation("items").collectDistinct("itemId")
   })
 )
 ```
@@ -149,8 +153,8 @@ See:
 Q.project(S.Struct({ items: ... }), "project").pipe(
   Effect.map((rows) => rows.map(({ items, ...row }) => ({
     ...row,
-    articleCount: items.length,
-    articleIds: [...new Set(items.map((i) => i.articleId))]
+    itemCount: items.length,
+    itemIds: [...new Set(items.map((i) => i.itemId))]
   })))
 )
 ```
@@ -174,14 +178,15 @@ A query should narrow the dataset once. Avoid re-validating the same predicate b
 ### Bad
 
 ```ts
-yield* orderRepo
+yield * orderRepo
   .query(
-    Q.where("state._tag", "picking"),
-    Q.and("state.cartId", "includes-any", cartId)
+    Q.where("state._tag", "active"),
+    Q.and("state.groupId", "includes-any", groupId)
   )
   .pipe(
     Effect.filterOrFail(
-      (orders) => orders.some((o) => o.items.some((i) => i.state._tag === "picking")),
+      (orders) =>
+        orders.some((o) => o.items.some((i) => i.state._tag === "active")),
       () => new InvalidStateError("...")
     )
   )
@@ -189,7 +194,7 @@ yield* orderRepo
 
 Problems:
 
-- top-level query says `picking`
+- top-level query says `active`
 - application code then scans every returned order again
 - correctness depends on two conditions staying aligned
 
@@ -198,11 +203,11 @@ Problems:
 Encode the child predicate directly in the query and limit the read:
 
 ```ts
-yield* orderRepo
+yield * orderRepo
   .query(
-    Q.where("state._tag", "picking"),
-    Q.and("state.cartId", "includes-any", cartId),
-    Q.and(Q.whereSome("items", Q.where("state._tag", "picking"))),
+    Q.where("state._tag", "active"),
+    Q.and("state.groupId", "includes-any", groupId),
+    Q.and(Q.whereSome("items", Q.where("state._tag", "active"))),
     Q.page({ take: 1 })
   )
 ```
@@ -217,17 +222,17 @@ A state machine's branches usually carry different fields. Project each branch i
 ### Good
 
 ```ts
-const shipmentGetPalletStateProjection = S.Union([
-  PalletInitialState.mapFields(Struct.pick(["_tag", "dimensions"])),
-  PalletReadyState.mapFields(Struct.pick(["_tag", "dimensions", "palletLabel"])),
-  PalletLabelCreatedState.mapFields(Struct.pick(["_tag", "dimensions", "palletLabel"])),
-  PalletPrintedState.mapFields(Struct.pick(["_tag", "dimensions", "palletLabel"]))
+const orderGetStateProjection = S.Union([
+  OrderInitialState.mapFields(Struct.pick(["_tag", "dimensions"])),
+  OrderActiveState.mapFields(Struct.pick(["_tag", "dimensions", "label"])),
+  OrderProcessingState.mapFields(Struct.pick(["_tag", "dimensions", "label"])),
+  OrderDoneState.mapFields(Struct.pick(["_tag", "dimensions", "label"]))
 ])
 ```
 
-See `api/src/<workflow>/ShipList.Controllers.ts` (`Get`, `ReprintLabel`, `ReprintTransferList`).
+See `api/src/<workflow>/Orders.Controllers.ts` (`Get`, `RetryLabel`, `RetryExport`).
 
-Each branch lists only the fields the render path reads on that tag. `_tag` is always picked so union discrimination still works after decode.
+Each branch lists only the fields the render path reads on that tag. `_tag` is always included so union discrimination still works after decode.
 
 ### Rule
 
@@ -242,36 +247,36 @@ Each branch lists only the fields the render path reads on that tag. `_tag` is a
 ### Good (existence check only)
 
 ```ts
-// verify shipment exists — no field is read afterward
-yield* shipmentRepo.query(
-  Q.where("id", shipmentId),
+// verify the order exists — no field is read afterward
+yield * orderRepo.query(
+  Q.where("id", orderId),
   Q.one,
-  Q.project(S.toEncoded(Shipment.mapFields(Struct.pick(["id"]))), "project")
+  Q.project(S.toEncoded(Order.mapFields(Struct.pick(["id"]))), "project")
 )
 ```
 
-See `api/src/<workflow>/ShipList.Controllers.ts` (`PrintTransferList`).
+See `api/src/<workflow>/Orders.Controllers.ts` (`RetryExport`).
 
 ### Good (narrow read)
 
 ```ts
-const shipment = yield* shipmentRepo.query(
-  Q.where("id", shipmentId),
+const order = yield * orderRepo.query(
+  Q.where("id", orderId),
   Q.one,
-  Q.project(shipmentGetProjection, "project")
+  Q.project(orderGetProjection, "project")
 )
 ```
 
 ### Bad
 
 ```ts
-const shipment = yield* shipmentRepo.get(shipmentId)
-// only `shipment.cdcAddress.city` and `shipment.state.labelUrl` are used below
+const order = yield * orderRepo.get(orderId)
+// only `order.address.city` and `order.state.labelUrl` are used below
 ```
 
 Problems:
 
-- pulls every nested array (orderIds, full pallet list, full state) from Cosmos
+- pulls every nested array (itemIds, full child list, full state) from Cosmos
 - runs the full document decoder — including any `S.transform` that fans out to resolvers (e.g. `UserFromId` → `GetUserById` per `createdBy`)
 - couples the handler to fields it never reads
 
@@ -282,16 +287,16 @@ Problems:
 
 ## 7. Use `raw:` + `S.toEncoded(View)` to skip the decode round-trip
 
-When the handler's response *is* the projected shape, decoding the query result into a `View` only to re-encode it for the wire is wasted work — and any resolver-backed transform (e.g. `UserFromId` → DB lookup per user id) fires during that decode.
+When the handler's response _is_ the projected shape, decoding the query result into a `View` only to re-encode it for the wire is wasted work — and any resolver-backed transform (e.g. `UserFromId` → DB lookup per user id) fires during that decode.
 
 ### Good
 
 ```ts
-// resources/PackList.ts
+// resources/Orders.ts
 export class OrderView extends S.Opaque<OrderView>()(S.Struct({
   ...Struct.omit(Order.fields, ["state"]),
   state: S.Union([...]),
-  packages: S.Array(S.Union([PackageView, BuildingBlockView])).withConstructorDefault
+  items: S.Array(S.Union([ItemView, DetailView])).withConstructorDefault
 })) {}
 
 // controllers
@@ -307,20 +312,20 @@ List: {
 }
 ```
 
-See `api/src/<workflow>/PackList.Controllers.ts` and `Order.Controllers.ts` (`Get`).
+See `api/src/<workflow>/Orders.Controllers.ts` (`List`, `Get`).
 
 `Q.project(S.toEncoded(OrderView), "project")` tells Cosmos to return rows already shaped to the encoded `OrderView`. `raw:` on the handler returns them straight to the transport — no decode pass, so resolver-backed transforms never run.
 
 ### Bad
 
 ```ts
-const order = yield* orderRepo.query(Q.where("id", id), Q.one)
-return { ...order, carrier: Order.carrier(order) }
+const order = yield * orderRepo.query(Q.where("id", id), Q.one)
+return { ...order, region: Order.region(order) }
 ```
 
 Problems:
 
-- decodes the row into the full `Order` schema — every transform fires (including `User.resolver` for each `package.createdBy`)
+- decodes the row into the full `Order` schema — every transform fires (including `User.resolver` for each `item.createdBy`)
 - re-encodes to ship over RPC
 - response shape ends up coupled to whatever the full `Order` decodes to
 
@@ -337,41 +342,83 @@ A schema may rename a field on encode (`createdBy` ⇄ `createdById` in the Cosm
 ### Good
 
 ```ts
-BuildingBlockPallet
+Order
   .to
   .mapFields(flow(
-    Struct.pick(["id", "createdBy", "createdAt", "packSpotId", "state"])
+    Struct.pick(["id", "createdBy", "createdAt", "groupId", "state"])
   ))
   .pipe(S.encodeKeys({ createdBy: "createdById" }))
 ```
 
-See `api/src/<workflow>/BuildingBlockPallet.Controllers.ts` and `ShipList.Controllers.ts`.
+See `api/src/<workflow>/Orders.Controllers.ts`.
 
 ### Rule
 
 - Whenever you `mapFields(Struct.pick(...))` on a schema with `encodeKeys`, re-apply the relevant mappings on the projected schema.
-- Only the keys that survived the `pick` need re-mapping.
+- Only the keys that survived the selection need re-mapping.
 
 ## 9. Helpers that take projected rows should accept `Pick<T, ...>`
 
-Static helpers (`Model.render`, `Model.palletNo`, etc.) often only read a couple of fields. Type them as `Pick<Model, "fieldA" | "fieldB">` so projected shapes still satisfy them without casts.
+Static helpers (`Model.render`, `Model.label`, etc.) often only read a couple of fields. Type them as `Pick<Model, "fieldA" | "fieldB">` so projected shapes still satisfy them without casts.
 
 ### Good
 
 ```ts
 static readonly render = (
-  pallet: Pick<BuildingBlockPallet, "createdBy" | "packSpotId">,
-  cdcAddress: Address,
-  palletNo: number
+  order: Pick<Order, "createdBy" | "groupId">,
+  address: Address,
+  number: number
 ) => ...
 ```
 
-See `api/src/<workflow>/models/packages.ts`.
+See `api/src/<workflow>/models/orders.ts`.
 
 ### Rule
 
 - When a helper is read-only and touches a subset of fields, widen the input to `Pick<...>`.
 - Otherwise the helper forces every caller to pass the full document, defeating the projection.
+
+## 10. Batch repo writes with the built-in `{ batch: true }` option
+
+Repo write methods (`save`, `remove`, `removeById`, `saveAndPublish`) accept a `{ batch: true }` option. Use it instead of hand-rolling a `batch(...)` combinator over per-item calls.
+
+### Good
+
+```ts
+yield * repo.save(items, { batch: true })
+yield * repo.removeById(ids, { batch: true })
+```
+
+### Bad
+
+```ts
+yield * pipe(items, batch(N, Effect.succeed, (i) => repo.save(i)))
+```
+
+### Rule
+
+- Reach for the built-in `{ batch: true }` option before writing any manual `batch(...)` fan-out over `save`/`remove`/`removeById`/`saveAndPublish`.
+
+## 11. Parallelize reads, keep writes sequential
+
+`Effect.all` is for independent **reads**. When collapsing a handler's waterfall, batch the queries — never fold a write (`save`/`remove`/mutation) into the same `Effect.all`. Keep writes sequential, before or after the parallel read block.
+
+### Good
+
+```ts
+const [a, b] = yield* Effect.all([repoA.query(...), repoB.query(...)], { concurrency: "inherit" })
+yield* repo.save(next) // writes stay sequential
+```
+
+### Bad
+
+```ts
+yield* Effect.all([repo.query(...), repo.save(next)]) // a read racing a write
+```
+
+### Rule
+
+- Only reads go into `Effect.all`. Writes run sequentially in dependency order.
 
 ## Review checklist
 
@@ -388,3 +435,5 @@ Before merging a repo query, ask:
 9. Does the response shape equal the projected shape? If so, use `raw:` + `Q.project(S.toEncoded(View))` so no decode runs (skips resolver fanout like `UserFromId`).
 10. Did `mapFields(Struct.pick(...))` drop a parent `S.encodeKeys` mapping I need to re-apply?
 11. Do the static helpers I call on the projected row accept `Pick<...>`, or are they forcing the full document?
+12. Am I writing multiple rows with a manual `batch(...)` where `repo.save(rows, { batch: true })` would do?
+13. Did I fold a write into an `Effect.all` of reads? Writes stay sequential.

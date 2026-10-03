@@ -2,14 +2,9 @@
   "reject": [
     "pnpm",
     "jwks-rsa",
-    "applicationinsights",
-    "faker",
-    "@types/faker",
     "redis",
     "@types/redis",
     "eslint-plugin-codegen",
-    "vue-toastification",
-    "@tanstack/*",
     "typescript"
   ]
 }

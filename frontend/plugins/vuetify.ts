@@ -4,6 +4,7 @@ import * as components from "vuetify/components"
 import * as directives from "vuetify/directives"
 import { aliases, mdi } from "vuetify/iconsets/mdi-svg"
 
+// oxlint-disable-next-line no-unassigned-import
 import "vuetify/styles/main.css"
 
 export default defineNuxtPlugin((nuxtApp) => {

@@ -3,23 +3,13 @@
   "typescript.experimental.expandableHover": true,
   "js/ts.hover.maximumLength": 5000,
   "typescript.preferences.includePackageJsonAutoImports": "on",
-  "typescript.preferences.autoImportFileExcludePatterns": [
-    "nuxt/dist",
-    ".nuxt"
-  ],
   "typescript.tsdk": "node_modules/typescript/lib",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  "typescript.native-preview.tsdk": "node_modules/@typescript/native-preview",
   "eslint.workingDirectories": [
     {
-      "pattern": "."
-    },
-    {
       "pattern": "frontend"
-    },
-    {
-      "pattern": "api"
-    },
-    {
-      "pattern": "e2e"
     }
   ],
   "eslint.execArgv": [
@@ -69,6 +59,9 @@
     "pipeable",
     "tsplus"
   ],
+  "chat.tools.terminal.autoApprove": {
+    "pnpm": true
+  },
   "githubPullRequests.ignoredPullRequestBranches": [
     "main"
   ]

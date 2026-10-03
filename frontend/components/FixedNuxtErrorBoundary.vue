@@ -14,8 +14,8 @@
 <script setup lang="ts">
 import { onNuxtReady, useNuxtApp, useRouter } from "#imports"
 import { captureException } from "@sentry/browser"
-import * as Cause from "effect/Cause"
 import { CauseException } from "effect-app/client/errors"
+import * as Cause from "effect/Cause"
 import { onErrorCaptured, shallowRef } from "vue"
 
 defineOptions({

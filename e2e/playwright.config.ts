@@ -1,5 +1,17 @@
 // This config file will be imported into each test
 import type { PlaywrightTestConfig } from "@playwright/test"
+import path from "path"
+import { fileURLToPath } from "url"
+
+/**
+ * Defined __dirname to be relative to the e2e directory.
+ */
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+/**
+ * Define a helper function to get the absolute path to a storage state file.
+ */
+export const resolveStorageState = (fileName: string) => path.resolve(__dirname, fileName)
 
 const basicAuthCredentials = process.env["BASIC_AUTH_CREDENTIALS"]
 

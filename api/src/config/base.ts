@@ -9,13 +9,13 @@ const FROM = {
 
 const serviceName_ = "effect-app-boilerplate"
 
-export const env = C.string("env").pipe(C.withDefault("local-dev"))
-export const apiVersion = C.string("apiVersion").pipe(C.withDefault("local-dev"))
+export const env = C.String("env").pipe(C.withDefault("local-dev"))
+export const apiVersion = C.String("apiVersion").pipe(C.withDefault("local-dev"))
 export const serviceName = C.succeed(serviceName_)
 
 export const sendgrid = C.all({
-  realMail: C.boolean("realMail").pipe(C.withDefault(false)),
-  apiKey: C.redacted("sendgridApiKey").pipe(C.withDefault(
+  realMail: C.Boolean("realMail").pipe(C.withDefault(false)),
+  apiKey: C.Redacted("sendgridApiKey").pipe(C.withDefault(
     Redacted.make("")
   )),
   fakeMailAddress: C.succeed("fake+{i}@example.com"),
@@ -25,7 +25,7 @@ export const sendgrid = C.all({
 
 export const sentry = C.all({
   dsn: C
-    .redacted("dsn")
+    .Redacted("dsn")
     .pipe(
       C.nested("sentry"),
       C.withDefault(

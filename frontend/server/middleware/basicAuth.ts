@@ -1,10 +1,8 @@
-import type { IncomingMessage } from "http"
-
 export default defineEventHandler((event) => {
   const config = useRuntimeConfig()
   const base64Credentials = event.req.headers?.authorization?.split(" ")?.[1]
 
-  const { originalUrl } = event.req as IncomingMessageExtended
+  const { originalUrl } = event.req
 
   let allow = !config.basicAuthCredentials
     || config.basicAuthCredentials === "false"
@@ -33,7 +31,3 @@ export default defineEventHandler((event) => {
     event.res.end("Unauthorized")
   }
 })
-
-interface IncomingMessageExtended extends IncomingMessage {
-  originalUrl?: string
-}

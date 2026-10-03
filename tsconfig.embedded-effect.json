@@ -1,0 +1,38 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./repos/effect/packages/effect"
+    },
+    {
+      "path": "./repos/effect/packages/vitest"
+    },
+    {
+      "path": "./repos/effect/packages/platform-node"
+    },
+    {
+      "path": "./repos/effect/packages/platform-node-shared"
+    },
+    {
+      "path": "./repos/effect/packages/platform-browser"
+    },
+    {
+      "path": "./repos/effect/packages/sql/sqlite-node"
+    },
+    {
+      "path": "./repos/effect/packages/atom/vue"
+    },
+    {
+      "path": "./repos/effect/packages/opentelemetry"
+    },
+    {
+      "path": "./repos/effect-app/packages/effect-app/tsconfig.src.json"
+    },
+    {
+      "path": "./repos/effect-app/packages/infra/tsconfig.src.json"
+    },
+    {
+      "path": "./repos/effect-app/packages/vue/tsconfig.src.json"
+    }
+  ]
+}

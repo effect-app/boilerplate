@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as Metrics from "@effect/opentelemetry/Metrics"
+import * as Metrics from "@effect/opentelemetry/OtelMetrics"
+import * as Tracer from "@effect/opentelemetry/OtelTracer"
 import * as Resource from "@effect/opentelemetry/Resource"
-import * as Tracer from "@effect/opentelemetry/Tracer"
 import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node"
 import { AsyncLocalStorageContextManager } from "@opentelemetry/context-async-hooks"
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http"
