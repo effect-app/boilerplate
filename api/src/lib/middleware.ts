@@ -1,8 +1,8 @@
 import * as Effect from "effect-app/Effect"
 import { HttpHeaders, HttpMiddleware, HttpServerResponse } from "effect-app/http"
+import * as HttpEffect from "effect/http/HttpEffect"
+import { HttpServerRequest } from "effect/http/HttpServerRequest"
 import { type ReadonlyRecord } from "effect/Record"
-import * as HttpEffect from "effect/unstable/http/HttpEffect"
-import { HttpServerRequest } from "effect/unstable/http/HttpServerRequest"
 import z from "zlib"
 
 export * from "@effect-app/infra/middlewares"

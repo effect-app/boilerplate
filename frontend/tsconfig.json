@@ -11,6 +11,7 @@
       "dom.iterable",
       "ES2023"
     ],
+    "allowImportingTsExtensions": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
     // This is not desirable, as it's useful in generators.
@@ -22,6 +23,6 @@
   "references": [
     {
       "path": "../api"
-    },
+    }
   ]
 }

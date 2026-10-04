@@ -6,11 +6,16 @@
 
 ## Steps
 
-1. run `pnpm test` and `pnpm lint-fix` to compare later
-2. update package.json files
+1. run `pnpm check && pnpm lint-fix` to compare later
+2. update the effect / `@effect/*` / `effect-app` / `@effect-app/*` versions in the package.json files
 3. run `pnpm i`
-4. update `repos/effect-v4` and `repos/effect-app` pointer to the same version we just updated the packages to. and run `pnpm i` inside it.
-5. run test and lint again, compare to from before the update.
+4. update the `repos/effect` and `repos/effect-app` submodule pointers to the same versions we just updated the packages to
+   (or `pnpm effa sync-effect`, then `pnpm i` inside the submodules when needed)
+5. run `pnpm check && pnpm lint-fix` again, compare to before the update
 6. prepare commit
 
 If new errors occur, first describe the problem, propose solutions and wait for answers.
+
+Note: `effect` / `effect-app` resolve from the registry by default; `repos/*` are reference
+source only. Use `pnpm embedded:effect:link` / `pnpm embedded:effect:unlink` when you need to
+test a change against vendored source.

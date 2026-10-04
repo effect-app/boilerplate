@@ -1,5 +1,5 @@
 declare module "http-proxy-node16" {
-  import * as Server from "http-proxy"
+  import Server = require("http-proxy")
 
   export = Server
 }

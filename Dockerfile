@@ -1,34 +1,30 @@
-FROM node:24-alpine
+FROM node:24.18-alpine
 
-RUN npm i -g pnpm
-
-# Install CUPS/AVAHI
-RUN apk update --no-cache && apk add --no-cache cups cups-filters avahi inotify-tools
+RUN corepack enable pnpm && corepack install -g pnpm@11.20.0
 
 WORKDIR /app
 
 ENV NODE_ENV production
 
-# no effect-language-service patch here
-ENV SKIP_PREPARE=true
+RUN apk update --no-cache && apk upgrade --no-cache
 
 # pnpm fetch does require only lockfile
 COPY patches ./patches
-COPY pnpm-lock.yaml .npmrc ./
-COPY package.json pnpm-workspace.yaml ./
+# pnpm-workspace.yaml must be present BEFORE fetch: pnpm 11 reads its
+# supply-chain policies (minimumReleaseAge=0, etc.) from it, and they are
+# enforced at fetch time. Without it, fetch falls back to the v11 defaults
+# (minimumReleaseAge=1440) and rejects freshly published lockfile entries.
+COPY .pnpmfile.cjs pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY package.json ./
+COPY scripts ./scripts
 RUN pnpm fetch --prod
-
 
 COPY api/package.json ./api/
 
 # As we're going to deploy, we want only the minimal production dependencies.
-# TODO
-RUN pnpm install --frozen-lockfile --prod
-#RUN --mount=type=cache,target=/root/.pnpm pnpm_CACHE_FOLDER=/root/.pnpm pnpm install --frozen-lockfile --prod
+RUN pnpm install --config.confirmModulesPurge=false --offline --frozen-lockfile --prod
 
 COPY api/src ./api/src
-
-#COPY data ./data
 
 WORKDIR /app/api
 EXPOSE 3610

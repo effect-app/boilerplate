@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { clientFor as clientFor_ } from "#resources/lib"
-import type { makeIntl } from "@effect-app/vue"
 import { Commander } from "@effect-app/vue/commander"
 import { Confirm } from "@effect-app/vue/confirm"
 import { I18n } from "@effect-app/vue/intl"
-import { makeClient } from "@effect-app/vue/makeClient"
+import { makeClient, useMutation } from "@effect-app/vue/makeClient"
+import type { makeIntl } from "@effect-app/vue/makeIntl"
 import * as Toast_ from "@effect-app/vue/toast"
 import { WithToast } from "@effect-app/vue/withToast"
 import * as Effect from "effect-app/Effect"
@@ -17,8 +17,11 @@ import { useIntl } from "./intl"
 
 export { useToast } from "vue-toastification"
 
-export { AsyncResult, makeContext } from "@effect-app/vue"
-export { composeQueries, mapHandler, pauseWhileProcessing, useIntervalPauseWhileProcessing, useMutation } from "@effect-app/vue"
+export { AsyncResult } from "@effect-app/vue/lib"
+export { mapHandler, pauseWhileProcessing, useIntervalPauseWhileProcessing } from "@effect-app/vue/lib"
+export { makeContext } from "@effect-app/vue/makeContext"
+export { composeQueries } from "@effect-app/vue/query"
+export { useMutation }
 
 export const useRuntime = () => useNuxtApp().$runtime
 

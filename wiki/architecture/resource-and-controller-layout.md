@@ -1,5 +1,4 @@
 <!-- Space: SA -->
-<!-- Parent: Scanner Wiki -->
 <!-- Parent: Architecture -->
 <!-- Parent: Architecture (shared) -->
 <!-- Title: Resource and Controller Layout -->
@@ -10,17 +9,17 @@ Convention for ordering declarations in resource files and controllers. Apply to
 
 ## Naming
 
-Request classes use the following name patterns. Pick the most specific one that fits.
+Request classes use the following name patterns. Choose the most specific one that fits.
 
-| Pattern | Use | Examples |
-|---|---|---|
-| `List` | Sole list query in the resource. | `List` |
-| `List*` | Additional list queries; suffix disambiguates. | `ListByCDC`, `ListLogin`, `ListOrders` |
-| `Get` | Sole singular query (e.g. by-id). **Non-nullable success schema.** Missing row → typed `NotFoundError` (most cases) or `Effect.die` (only when input is not user-controllable). | `Get` |
-| `Get*` | Additional singular queries; suffix names the read. Same non-nullable rule. | `GetById`, `GetCloseList`, `GetSettings`, `GetLabelPreview` |
-| `Find` / `Find*` | Singular query that may return `null` / no result. Absence is part of the normal contract. | `Find`, `FindByGTIN`, `FindActiveCart` |
+| Pattern          | Use                                                                                                                                                                             | Examples                                             |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `List`           | Sole list query in the resource.                                                                                                                                                | `List`                                               |
+| `List*`          | Additional list queries; suffix disambiguates.                                                                                                                                  | `ListByRegion`, `ListActive`, `ListOrders`           |
+| `Get`            | Sole singular query (e.g. by-id). **Non-nullable success schema.** Missing row → typed `NotFoundError` (most cases) or `Effect.die` (only when input is not user-controllable). | `Get`                                                |
+| `Get*`           | Additional singular queries; suffix names the read. Same non-nullable rule.                                                                                                     | `GetById`, `GetSummary`, `GetSettings`, `GetPreview` |
+| `Find` / `Find*` | Singular query that may return `null` / no result. Absence is part of the normal contract.                                                                                      | `Find`, `FindByCode`, `FindActiveOrder`              |
 
-`Get` vs `Find` split is **non-nullable success vs nullable success**. How missing rows surface from a `Get` depends on who picked the input: typed `NotFoundError` when the user could plausibly have picked a stale/invalid key, `Effect.die` only when the input is not user-controllable (tenant enum, own dashboard's own workflow). See [query-shape-list-vs-get.md](./query-shape-list-vs-get.md#backend-pattern) for the full rule.
+`Get` vs `Find` split is **non-nullable success vs nullable success**. How missing rows surface from a `Get` depends on who chose the input: typed `NotFoundError` when the user could plausibly have chosen a stale/invalid key, `Effect.die` only when the input is not user-controllable (tenant enum, own dashboard's own workflow). See [query-shape-list-vs-get.md](./query-shape-list-vs-get.md#backend-pattern) for the full rule.
 | `<Verb>` | Commands. Verb first, alphabetical within commands. | `ChangeBlocked`, `Close`, `RetryLabel`, `Update` |
 
 Do not name queries with bare nouns (`Settings`, `Orders`) or with `Preview*` prefixes. Use `Get*`/`List*`/`Find*` so the request kind is visible at the call site.
@@ -43,22 +42,27 @@ Do not name queries with bare nouns (`Settings`, `Orders`) or with `Preview*` pr
 
 The class body is preserved byte-for-byte during a reorder. No reformatting.
 
-## Splitting queries from commands
+## Splitting queries from commands (rare)
 
-Keep a single public resource module for ordinary consumers, but split query
-classes into a query-only sibling when command invalidation would otherwise
-create a circular import.
+Keep a single public resource module for ordinary consumers. Split query classes
+into a query-only sibling only when **module graph** needs force it (e.g. a
+shared view schema import cycle), not to wire cache invalidation.
 
-Pattern:
+**Query invalidation is not a reason to split files or import other resources'
+query classes.** Repository-derived read/write dependencies refresh live queries
+automatically across namespaces and adapters. Do not add `Req.Command` 4th-arg
+`invalidatesQueries` callbacks, `queryInvalidation` options, or
+`clientFor(..., invalidationMap)` maps. Details:
+[command-pattern.md](./command-pattern.md#repository-derived-query-invalidation-is-the-default).
+
+When a split is justified for import-cycle reasons only:
 
 - `resources/Foo.Queries.ts` contains only query request classes and their view
   schemas.
 - `resources/Foo.ts` re-exports `Foo.Queries.ts`, defines the same `Req`
-  namespace, then defines commands.
-- Commands in other resources import query classes from `Foo.Queries.ts` for
-  invalidation.
-- Frontend and controllers keep importing `resources/Foo` unless they only need
-  a query class for resource-level invalidation.
+  namespace, then defines commands (with **no** invalidation callbacks).
+- Frontend and controllers keep importing `resources/Foo` unless they truly need
+  the query-only module for typing.
 - Query-only split files must use the original resource module name in
   `TaggedRequestFor(...)`. The shared codegen config strips `.Queries` from
   `meta`-generated module names; if a project does not have that shared default,
@@ -66,37 +70,29 @@ Pattern:
   file. File-level `stripSuffixes` overrides plugin/config defaults.
 
 ```ts
-// resources/PickCarts.Queries.ts
-// codegen:start {preset: meta, sourcePrefix: src/EasyLife/}
-const Req = TaggedRequestFor("Standard/PickCarts")
+// resources/Orders.Queries.ts
+// codegen:start {preset: meta, sourcePrefix: src/Domain/}
+const Req = TaggedRequestFor("Orders")
 // codegen:end
 
 export class List extends Req.Query<List>()("List", {}, {
   allowRoles: ["user"],
-  success: S.Struct({ carts: S.Array(CartState) })
+  success: S.Struct({ orders: S.Array(OrderState) })
 }) {}
 ```
 
 ```ts
-// resources/PickCarts.ts
-import { List as DropshippingPickList } from "../../Dropshipping/resources/PickList.Queries.ts"
-import { GetStats } from "./PickCarts.Queries.ts"
+// resources/Orders.ts
+export * from "./Orders.Queries.ts"
 
-export * from "./PickCarts.Queries.ts"
-
-const Req = TaggedRequestFor("Standard/PickCarts")
+const Req = TaggedRequestFor("Orders")
 
 export class Assign extends Req.Command<Assign>()(
   "Assign",
-  { cartId: OneOrMoreCarts },
-  { allowRoles: ["user"] },
-  (queryKey) => [queryKey, GetMe, GetStats, DropshippingPickList]
+  { orderId: OrderId },
+  { allowRoles: ["user"] }
 ) {}
 ```
-
-Do not solve circular invalidation by configuring `clientFor(Resource, () => …)`
-in a page. Resource definitions are the source of truth for which query caches a
-mutation changes.
 
 ## Controller file order
 
@@ -106,7 +102,7 @@ Everything outside the `match({...})` object (imports, layer deps, `*effect` set
 
 ## When adding a new request
 
-1. Pick the name pattern from the table above.
+1. Choose the name pattern from the table above.
 2. Place the class in the resource at the correct slot.
 3. Place any helper class immediately before its first user in that order.
 4. Add the matching handler in the controller at the same slot, with a blank line separator.
@@ -121,3 +117,20 @@ For a refactoring pass:
 3. Map each helper to its first-user request by name reference inside the request body.
 4. Emit blocks in the order above. Verify the count of `extends Req.\(Query\|Command\)` matches before and after.
 5. For controllers, reorder handler keys inside `match({...})`, insert single blank lines, verify handler count.
+
+## Read Effect `Config` in service construction, not in handlers
+
+Resolve `Config` values in the service `make` / `Layer.effect` generator, not inside a request handler. Reading config once at layer build keeps `ConfigError` off the controller (request) error channel — so handlers don't need `orDie`.
+
+```ts
+// GOOD — resolved once when the layer builds
+Layer.effect(MyService, Effect.gen(function*() {
+  const timeout = yield* Config.duration("MY_TIMEOUT")
+  return { run: (x) => /* uses timeout */ ... }
+}))
+
+// BAD — ConfigError leaks into every handler's error channel (forces orDie)
+*Handler() {
+  const timeout = yield* Config.duration("MY_TIMEOUT").pipe(Effect.orDie)
+}
+```

@@ -1,8 +1,7 @@
 import { initializeAsync } from "@effect-app/vue/runtime"
-import { E2E_FLAGS_HEADER, encodeE2EFlags } from "@macs-scanner/api/lib/e2e"
 import { ApiClientFactory, type ApiConfig } from "effect-app/client/apiClientFactory"
 import * as Layer from "effect-app/Layer"
-import * as FetchHttpClient from "effect/unstable/http/FetchHttpClient"
+import * as FetchHttpClient from "effect/http/FetchHttpClient"
 import { readFileSync } from "fs"
 import { resolveStorageState } from "../playwright.config.ts"
 import { type Company, resolveStorageStateName } from "./companyPorts.ts"
@@ -41,8 +40,7 @@ export function makeHeaders(
       : undefined),
     ...(cookie ? { "Cookie": cookie } : undefined),
     "x-store-id": namespace,
-    "x-port": port?.toString() ?? undefined,
-    [E2E_FLAGS_HEADER]: encodeE2EFlags([{ _tag: "PrintSkip" }, { _tag: "AbasShortCircuit" }])
+    "x-port": port?.toString() ?? undefined
   }
 }
 

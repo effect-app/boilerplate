@@ -1,303 +1,249 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "Clean Dist",
-			"type": "shell",
-			"command": "pnpm clean-dist",
-			"group": "build"
-		},
-		{
-			"label": "Watch API, Models, Resources",
-			"type": "shell",
-			"command": "pnpm watch-src",
-			// "options": {
-			// 	"cwd": "${workspaceRoot}/api/test",
-			// },
-			"dependsOn": [
-				//"Scan Resources",
-				"Clean Dist"
-			],
-			"group": {
-				"kind": "build",
-			},
-			"isBackground": true,
-			"presentation": {
-				"group": "watch-build",
-			},
-			"problemMatcher": [
-				{
-					"base": "$tsc-watch",
-					"fileLocation": [
-						"relative",
-						"${workspaceRoot}",
-					],
-				}
-			]
-		},
-		{
-			"label": "Watch Libs",
-			"type": "shell",
-			"command": "pnpm build-libs -w",
-			// "options": {
-			// 	"cwd": "${workspaceRoot}/api/test",
-			// },
-			"dependsOn": [
-				//"Scan Resources",
-				"Clean Dist"
-			],
-			"group": {
-				"kind": "build",
-			},
-			"isBackground": true,
-			"presentation": {
-				"group": "watch-build",
-			},
-			"problemMatcher": [
-				{
-					"base": "$tsc-watch",
-					"fileLocation": [
-						"relative",
-						"${workspaceRoot}/libs",
-					],
-				}
-			]
-		},
-		{
-			"label": "Watch E2E",
-			"type": "shell",
-			"command": "pnpm watch",
-			"options": {
-				"cwd": "${workspaceRoot}/e2e"
-			},
-			"group": "build",
-			"isBackground": true,
-			"presentation": {
-				"group": "watch-build"
-			},
-			"problemMatcher": [
-				{
-					"base": "$tsc-watch",
-					"fileLocation": [
-						"relative",
-						"${workspaceRoot}/e2e",
-					],
-				}
-			]
-		},
-		{
-			"label": "Watch Frontend",
-			"type": "shell",
-			"command": "pnpm watch",
-			"options": {
-				"cwd": "${workspaceRoot}/frontend"
-			},
-			"dependsOn": [
-				"Watch API, Models, Resources"
-			],
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"isBackground": true,
-			"presentation": {
-				"group": "watch-build"
-			},
-			"problemMatcher": [
-				{
-					"base": "$tsc-watch",
-					"fileLocation": [
-						"relative",
-						"${workspaceRoot}/frontend",
-					],
-				}
-			]
-		},
-		{
-			"label": "Run API",
-			"type": "shell",
-			"command": "pnpm dev",
-			"options": {
-				"cwd": "${workspaceRoot}/api"
-			},
-			"isBackground": true,
-			// FAKE... but works..
-			"problemMatcher": {
-				"severity": "warning",
-				"pattern": [
-					{
-						"regexp": "^\\s+(.*)\\((\\d+),(\\d+)\\):\\s+(.*)$",
-						"file": 1,
-						"line": 2,
-						"column": 3,
-						"message": 4
-					}
-				],
-				"background": {
-					"beginsPattern": "starting",
-					"endsPattern": "Running on",
-				}
-			},
-			"presentation": {
-				"group": "run"
-			}
-		},
-		{
-			"label": "Run API Debug",
-			"type": "shell",
-			"command": "pnpm dev:compiled",
-			"options": {
-				"cwd": "${workspaceRoot}/api"
-			},
-			"isBackground": true,
-			// FAKE... but works..
-			"problemMatcher": {
-				"severity": "warning",
-				"pattern": [
-					{
-						"regexp": "^\\s+(.*)\\((\\d+),(\\d+)\\):\\s+(.*)$",
-						"file": 1,
-						"line": 2,
-						"column": 3,
-						"message": 4
-					}
-				],
-				"background": {
-					"beginsPattern": "starting",
-					"endsPattern": "Running on",
-				}
-			},
-			"presentation": {
-				"group": "run"
-			}
-		},
-		{
-			"label": "Run UI",
-			"type": "shell",
-			"command": "pnpm dev",
-			"options": {
-				"cwd": "${workspaceRoot}/frontend"
-			},
-			"dependsOrder": "sequence",
-			"dependsOn": [
-				//				"Clean",
-				// "API Watch",
-				// "UI Watch",
-				"Run API",
-			],
-			"isBackground": true,
-			// FAKE...
-			"problemMatcher": {
-				"severity": "warning",
-				"pattern": [
-					{
-						"regexp": "^\\s+(.*)\\((\\d+),(\\d+)\\):\\s+(.*)$",
-						"file": 1,
-						"line": 2,
-						"column": 3,
-						"message": 4
-					}
-				],
-				"background": {
-					"activeOnStart": true,
-					"beginsPattern": "Nuxi",
-					"endsPattern": "Vite client warmed up in",
-				}
-			},
-			"presentation": {
-				"group": "run"
-			}
-		},
-		{
-			"label": "API-E2E",
-			"type": "shell",
-			"command": "pnpm run test --watch",
-			"options": {
-				"cwd": "${workspaceRoot}/api/test"
-			},
-			"group": "test",
-			"isBackground": true,
-			// FAKE... but works..
-			"problemMatcher": {
-				"severity": "warning",
-				"pattern": [
-					{
-						"regexp": "^\\s+(.*)\\((\\d+),(\\d+)\\):\\s+(.*)$",
-						"file": 1,
-						"line": 2,
-						"column": 3,
-						"message": 4
-					}
-				],
-				"background": {
-					"beginsPattern": "starting",
-					"endsPattern": "Running on",
-				}
-			},
-			"presentation": {
-				"group": "test"
-			}
-		},
-		{
-			"label": "E2E",
-			"type": "shell",
-			"command": "pnpm run test",
-			"options": {
-				"cwd": "${workspaceRoot}/e2e"
-			},
-			"group": "test",
-			"isBackground": true,
-			// FAKE... but works..
-			"problemMatcher": {
-				"severity": "warning",
-				"pattern": [
-					{
-						"regexp": "^\\s+(.*)\\((\\d+),(\\d+)\\):\\s+(.*)$",
-						"file": 1,
-						"line": 2,
-						"column": 3,
-						"message": 4
-					}
-				],
-				"background": {
-					"beginsPattern": "starting",
-					"endsPattern": "Running on",
-				}
-			},
-			"presentation": {
-				"group": "run"
-			}
-		},
-		{
-			"label": "UI Build Prod",
-			"type": "shell",
-			"command": "pnpm build",
-			"options": {
-				"cwd": "${workspaceRoot}/frontend"
-			},
-			"group": "build",
-			"dependsOrder": "sequence",
-			"dependsOn": [
-				"Types Build",
-				"Client Build"
-			],
-			"problemMatcher": []
-		},
-		{
-			"label": "Develop",
-			"type": "shell",
-			"dependsOn": [
-				"Watch Frontend",
-				"Run UI",
-				"Run API"
-			],
-			"isBackground": true,
-			"dependsOrder": "parallel",
-			"presentation": {
-				"group": "run",
-				"reveal": "never"
-			},
-			"problemMatcher":[]
-		}
-	]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Watch API, Models, Resources",
+      "type": "shell",
+      "command": "pnpm watch-src",
+      "group": {
+        "kind": "build"
+      },
+      "isBackground": true,
+      "presentation": {
+        "group": "watch-build"
+      },
+      "problemMatcher": [
+        {
+          "base": "$tsc-watch",
+          "fileLocation": [
+            "relative",
+            "${workspaceRoot}"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Watch E2E",
+      "type": "shell",
+      "command": "pnpm watch",
+      "options": {
+        "cwd": "${workspaceRoot}/e2e"
+      },
+      "group": "build",
+      "isBackground": true,
+      "presentation": {
+        "group": "watch-build"
+      },
+      "problemMatcher": [
+        {
+          "base": "$tsc-watch",
+          "fileLocation": [
+            "relative",
+            "${workspaceRoot}/e2e"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Watch Frontend",
+      "type": "shell",
+      "command": "pnpm watch",
+      "options": {
+        "cwd": "${workspaceRoot}/frontend"
+      },
+      "dependsOn": [
+        "Watch API, Models, Resources"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "isBackground": true,
+      "presentation": {
+        "group": "watch-build"
+      },
+      "problemMatcher": [
+        {
+          "base": "$tsc-watch",
+          "fileLocation": [
+            "relative",
+            "${workspaceRoot}/frontend"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Run API",
+      "type": "shell",
+      "command": "pnpm dev",
+      "options": {
+        "cwd": "${workspaceRoot}/api"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "severity": "warning",
+        "pattern": [
+          {
+            "regexp": "^\\s+(.*)\\((\\d+),(\\d+)\\):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        ],
+        "background": {
+          "beginsPattern": "starting",
+          "endsPattern": "Running on"
+        }
+      },
+      "presentation": {
+        "group": "run"
+      }
+    },
+    {
+      "label": "Run API Debug",
+      "type": "shell",
+      "command": "pnpm debug",
+      "options": {
+        "cwd": "${workspaceRoot}/api"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "severity": "warning",
+        "pattern": [
+          {
+            "regexp": "^\\s+(.*)\\((\\d+),(\\d+)\\):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        ],
+        "background": {
+          "beginsPattern": "starting",
+          "endsPattern": "Running on"
+        }
+      },
+      "presentation": {
+        "group": "run"
+      }
+    },
+    {
+      "label": "Run UI",
+      "type": "shell",
+      "command": "pnpm dev",
+      "options": {
+        "cwd": "${workspaceRoot}/frontend"
+      },
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Run API"
+      ],
+      "isBackground": true,
+      "problemMatcher": {
+        "severity": "warning",
+        "pattern": [
+          {
+            "regexp": "^\\s+(.*)\\((\\d+),(\\d+)\\):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Nuxi",
+          "endsPattern": "Vite client warmed up in"
+        }
+      },
+      "presentation": {
+        "group": "run"
+      }
+    },
+    {
+      "label": "API-E2E",
+      "type": "shell",
+      "command": "pnpm test",
+      "options": {
+        "cwd": "${workspaceRoot}/api"
+      },
+      "group": "test",
+      "isBackground": true,
+      "problemMatcher": {
+        "severity": "warning",
+        "pattern": [
+          {
+            "regexp": "^\\s+(.*)\\((\\d+),(\\d+)\\):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        ],
+        "background": {
+          "beginsPattern": "starting",
+          "endsPattern": "Running on"
+        }
+      },
+      "presentation": {
+        "group": "test"
+      }
+    },
+    {
+      "label": "E2E",
+      "type": "shell",
+      "command": "pnpm run test",
+      "options": {
+        "cwd": "${workspaceRoot}/e2e"
+      },
+      "group": "test",
+      "isBackground": true,
+      "problemMatcher": {
+        "severity": "warning",
+        "pattern": [
+          {
+            "regexp": "^\\s+(.*)\\((\\d+),(\\d+)\\):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "message": 4
+          }
+        ],
+        "background": {
+          "beginsPattern": "starting",
+          "endsPattern": "Running on"
+        }
+      },
+      "presentation": {
+        "group": "run"
+      }
+    },
+    {
+      "label": "UI Build Prod",
+      "type": "shell",
+      "command": "pnpm build",
+      "options": {
+        "cwd": "${workspaceRoot}/frontend"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Develop",
+      "type": "shell",
+      "dependsOn": [
+        "Watch Frontend",
+        "Run UI",
+        "Run API"
+      ],
+      "isBackground": true,
+      "dependsOrder": "parallel",
+      "presentation": {
+        "group": "run",
+        "reveal": "never"
+      },
+      "problemMatcher": []
+    }
+  ]
 }

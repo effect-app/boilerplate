@@ -27,8 +27,9 @@ RUN curl https://get.volta.sh | bash
 WORKDIR /workspaces/boilerplate
 
 # and install node and pnpm
-RUN volta install node@20
-RUN npm i -g pnpm
+# corepack picks the pnpm version up from package.json's `packageManager`.
+RUN volta install node@24
+RUN corepack enable
 
 RUN echo 
 

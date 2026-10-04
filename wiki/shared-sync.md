@@ -4,14 +4,14 @@ How shared architecture docs, e2e helpers, and ts-plugins move between this proj
 
 ## Where things live
 
-| Local path | Source of truth | Sync method |
-|---|---|---|
-| `wiki/architecture/*` | `effect-app/shared` `wiki/architecture/` | `effa sync` (strict) |
-| `wiki/how-we-build.md` | `effect-app/shared` | `effa sync` (strict) |
-| `e2e/helpers/*` (except `adapter.ts`) | `effect-app/shared` `e2e/helpers/` | `effa sync` (strict) |
-| `e2e/helpers/adapter.ts` | **project-local** | hand-edited per project |
-| `scripts/ts-plugins/prefer-namespace-import/` | `effect-app/shared` `ts-plugins/...` | `effa sync` (strict) |
-| `tsconfig.plugins.json` | `effect-app/shared` `templates/tsconfig.plugins.json` | manual diff + merge |
+| Local path                                    | Source of truth                                       | Sync method             |
+| --------------------------------------------- | ----------------------------------------------------- | ----------------------- |
+| `wiki/architecture/*`                         | `effect-app/shared` `wiki/architecture/`              | `effa sync` (strict)    |
+| `wiki/how-we-build.md`                        | `effect-app/shared`                                   | `effa sync` (strict)    |
+| `e2e/helpers/*` (except `adapter.ts`)         | `effect-app/shared` `e2e/helpers/`                    | `effa sync` (strict)    |
+| `e2e/helpers/adapter.ts`                      | **project-local**                                     | hand-edited per project |
+| `scripts/ts-plugins/prefer-namespace-import/` | `effect-app/shared` `ts-plugins/...`                  | `effa sync` (strict)    |
+| `tsconfig.plugins.json`                       | `effect-app/shared` `templates/tsconfig.plugins.json` | manual diff + merge     |
 
 Lockfile: [`.shared.json`](../.shared.json) pins the upstream sha.
 
@@ -58,7 +58,7 @@ The synced `command.ts` imports project-local intl from `./adapter.js`:
 import { type ActionIntlKey, deActionMessages } from "./adapter.js"
 ```
 
-This project owns `e2e/helpers/adapter.ts` and re-exports from the actual API resource. The stub on initial sync is a no-op (empty messages). Wire to your real intl source once the api package exposes one:
+This project owns `e2e/helpers/adapter.ts` and re-exports from the actual API resource. The stub on initial sync is a no-op (empty messages). Wire to your real intl source once the api module exposes one:
 
 ```ts
 export { type ActionIntlKey, deActionMessages } from "@<project>/api/resources/action-intl"

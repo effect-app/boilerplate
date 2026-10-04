@@ -1,14 +1,12 @@
 # E2E Tests
 
-End-to-end tests live in `e2e/` and run on Playwright. They drive the real frontend against a real backend per company.
+End-to-end tests live in `e2e/` and run on Playwright. They drive the real frontend against a real backend.
 
 > **Mandatory pattern: walk a flow via UI exactly once per workflow; API-seed all variants.**
 > See [E2E State Pattern](./e2e-state-pattern.md) for the full rule + helpers.
-> Audit of current duplicate walks: [duplicate-walks audit](../flows/e2e-duplicate-walks.md).
-> Coverage gaps: [coverage-gaps](../flows/e2e-coverage-gaps.md).
 
-- Test files: `e2e/tests/<company>/<workflow>/*.spec.ts`
-- Page Object Models: `e2e/tests/poms/<company>/<workflow>.ts`
+- Test files: `e2e/tests/<workflow>/*.spec.ts`
+- Page Object Models: `e2e/tests/poms/<workflow>.ts`
 - Helpers: `e2e/helpers/` (toast handling, CSV import, client fixups)
 - Playwright config: `e2e/playwright.config.ts`
 - Operational notes & inventory: [`e2e/README.md`](../../e2e/README.md)
@@ -17,7 +15,7 @@ End-to-end tests live in `e2e/` and run on Playwright. They drive the real front
 
 How to design and name POM methods — dynamic getters, parametrization, locator priority, layering — is documented separately:
 
-- [POM Architecture](../../e2e/tests/poms/ARCHITECTURE.md)
+- [Playwright POM design](./playwright-poms.md)
 
 Specs compose POM primitives. Test-specific values (order IDs, weights, cities, counts) belong in the spec, not the POM.
 
@@ -44,10 +42,10 @@ Reach for `test.slow()` only after investigating why the test is slow. A test th
 - **Blind `waitForTimeout(...)`** — replace with locator-based waits (`expect(locator).toBeVisible()`, `waitForResponse(...)`).
 - **`networkidle` waits on SPA pages** — `waitForURL` does not wait for paint; pair it with an assertion on a stable element instead of `networkidle`.
 - **Sequential `expect()` polls that could be one assertion** — e.g. checking N rows individually instead of asserting on the list count once.
-- **Auto-generated Vuetify IDs in locators** that retry on every component-tree change — see POM Architecture for locator priority.
+- **Auto-generated Vuetify IDs in locators** that retry on every component-tree change — see [Playwright POM design](./playwright-poms.md) for locator priority.
 - **Re-running fixtures or imports inside steps that should reuse state** — import once per test, not per step.
 
-If a test legitimately exercises a multi-stage workflow (pick → pack → closeout) and the wall-clock floor is dominated by real backend work, `test.slow()` is fine. Document why in a short comment next to the call.
+If a test legitimately exercises a multi-stage workflow and the wall-clock floor is dominated by real backend work, `test.slow()` is fine. Document why in a short comment next to the call.
 
 ### CI cost
 

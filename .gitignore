@@ -1,31 +1,37 @@
 .DS_Store
 node_modules/
+.pnpm-store/
+.cache/
 *.log
+**/*/.next/
 **/dist/
-**/dist/
+**/dist-*/
 !**/.eslintrc*.js
 .build/
 dist/
-.cache/
+.opencode/
 **/bin/*.js
 **/bin/*.js.map
 **/bin/*.d.ts
 **/bin/*.d.ts.map
 tsconfig.tsbuildinfo
 .tsbuildinfo
+*.tsbuildinfo
 .ultra.cache.json
 .jest-cache
-.telemetry-exporter-running
+.next
+.data/
+.data.*/
+.data copy*/
+.logs/
 
 .env.local
+.env.*.local
 .env
 
 _cjs/
 _mjs/
 _esm/
-
-.data/
-.data.*/
 
 
 # CMake
@@ -54,4 +60,25 @@ fabric.properties
 # vitest?
 *.timestamp-*.mjs
 
+.telemetry-exporter-running
+.codex
+
+# Pdf commented because need to be tested in CI
+test.pdf
+
+#nix
 .direnv
+
+# Local agent tooling (gh policy shim installed by scripts/install-git-hooks.ts)
+.tools/
+
+debug/
+dump/
+
+# Local e2e agent-owned stack runtime (ports/pids/logs)
+.run/
+
+# Local agent planning scratchpad — plan files stay local; the PR description is
+# the shared, portable record. README (the convention/template) stays tracked.
+.plans/*
+!.plans/README.md

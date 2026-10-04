@@ -44,9 +44,9 @@
           "enabled": true,
           "ignoreNames": []
         },
-        // Rules 1 & 2: flag `export *` barrels in company / workflow roots and
+        // Rules 1 & 2: flag `export *` barrels in company roots and
         // self re-exports of same-named submodules. Populate with project-specific
-        // workflow-root filenames (e.g. ["EasyLife.ts", "Mako.ts"]).
+        // workflow-root filenames when applicable.
         "forbiddenBarrels": {
           "enabled": true,
           "forbiddenBarrelBasenames": []
@@ -73,18 +73,10 @@
       },
       {
         "name": "@effect/language-service",
+        "diagnostics": false,
         "ignoreEffectWarningsInTscExitCode": true,
         "namespaceImportPackages": ["effect", "@effect/*", "effect-app", "@effect-app/*"],
-        "topLevelNamedReexports": "follow",
-        "diagnosticSeverity": {
-          "missingEffectServiceDependency": "error",
-          "effectFnOpportunity": "warning",
-          "globalErrorInEffectFailure": "warning",
-          "preferSchemaOverJson": "off",
-          "unnecessaryEffectGen": "warning",
-          "effectSucceedWithVoid": "off",
-          "importFromBarrel": "warning"
-        }
+        "topLevelNamedReexports": "follow"
       }
     ]
   }

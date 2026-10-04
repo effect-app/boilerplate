@@ -2,17 +2,17 @@
   "compilerOptions": {
     "erasableSyntaxOnly": true,
     "paths": {
+      "#api": [
+        "./src/api.ts"
+      ],
       "#config": [
         "./src/config.ts"
       ],
-      "#config/*": [
-        "./src/config/*.ts"
+      "#lib/*": [
+        "./src/lib/*.ts"
       ],
       "#core/*": [
         "./src/core/*.ts"
-      ],
-      "#lib/*": [
-        "./src/lib/*.ts"
       ],
       "#models": [
         "./src/models.ts"

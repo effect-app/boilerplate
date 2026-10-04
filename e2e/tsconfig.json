@@ -4,27 +4,21 @@
     "rootDir": ".",
     "outDir": "./test-out",
     "lib": [
-      "es5",
-      "dom"
+      "ES2023",
+      "DOM",
+      "dom.iterable"
     ],
+    "allowImportingTsExtensions": true,
     "paths": {
       "e2e/*": [
         "./*"
       ]
     },
+    "types": [
+      "node"
+    ],
     // helps performance
     "disableSourceOfProjectReferenceRedirect": true
-    // "transformers": [
-    //   // Transform paths in output .js files
-    //   {
-    //     "name": "ts-transform-paths"
-    //   },
-    //   // Transform paths in output .d.ts files (Include this line if you output declarations files)
-    //   {
-    //     "name": "ts-transform-paths",
-    //     "position": "afterDeclaration"
-    //   }
-    // ]
   },
   "include": [
     "**/*.ts"

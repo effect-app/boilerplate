@@ -3,7 +3,7 @@ import * as HelloWorldRsc from "#resources/HelloWorld"
 import { GetHelloWorld } from "#resources/HelloWorld"
 import { UserView } from "#resources/views/UserView"
 import { UserRepo } from "#services/DBContext/UserRepo"
-import { generate } from "@effect-app/infra/test"
+import { createRandomInstance } from "@effect-app/infra/test"
 import { InvalidStateError } from "effect-app/client"
 import * as Effect from "effect-app/Effect"
 import * as S from "effect-app/Schema"
@@ -38,7 +38,7 @@ export default Router(HelloWorldRsc)({
           echo,
           state,
           currentUser: user,
-          randomUser: generate(S.toArbitrary(UserView)).value
+          randomUser: createRandomInstance(UserView)()
         })
       },
       *SetState(req) {

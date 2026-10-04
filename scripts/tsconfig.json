@@ -1,0 +1,23 @@
+{
+  // Editor/typecheck coverage for repo maintenance scripts, which run via
+  // `node scripts/**/*.ts` (Node type stripping) and sit outside the package
+  // tsconfig graph. `types: ["node"]` resolves to the root-hoisted @types/node.
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": ["node"],
+    "skipLibCheck": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "exactOptionalPropertyTypes": false
+  },
+  "include": ["./**/*.ts"],
+  "exclude": [
+    "./ts-plugins",
+    "./node_modules"
+  ]
+}

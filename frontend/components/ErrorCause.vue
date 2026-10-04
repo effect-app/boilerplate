@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useRuntimeConfig } from "#app"
+import type { SupportedErrors } from "effect-app/client/errors"
 import * as Cause from "effect/Cause"
 import * as Match from "effect/Match"
 import * as Result from "effect/Result"
-import type { SupportedErrors } from "effect-app/client/errors"
 
 defineProps<{ cause: Cause.Cause<unknown> }>()
 const config = useRuntimeConfig()

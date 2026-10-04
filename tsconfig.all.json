@@ -12,11 +12,8 @@
     {
       "path": "api"
     },
-    // {
-    //   "path": "frontend-vue"
-    // },
-    //     {
-    //       "path": "frontend-react"
-    //     },
+    {
+      "path": "e2e/tsconfig.json"
+    }
   ]
 }

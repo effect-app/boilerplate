@@ -5,9 +5,9 @@ import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-web"
 import { browserTracingIntegration } from "@sentry/browser"
 import { SentryPropagator, SentrySpanProcessor } from "@sentry/opentelemetry-node"
 import * as Sentry from "@sentry/vue"
+import { isErrorSilenced } from "effect-app/client/errors"
 import * as Effect from "effect-app/Effect"
 import * as Layer from "effect-app/Layer"
-import { isErrorSilenced } from "effect-app/client/errors"
 import type { App } from "vue"
 
 // import {

@@ -1,7 +1,7 @@
 <template>
   <v-text-field
-    :type="field.type === 'float' || field.type === 'int' ? 'number' : 'text'"
     v-bind="$props"
+    :type="field.type === 'float' || field.type === 'int' ? 'number' : 'text'"
     :model-value="convertIn(props.modelValue as any, field.type)"
     :required="field.metadata.required"
     :rules="props.extraRules ? [...props.extraRules, ...field.rules] : field.rules"

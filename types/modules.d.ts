@@ -1,2 +1,2 @@
-declare module 'express-compression';
-declare module 'tcp-port-used';
+declare module "express-compression"
+declare module "tcp-port-used"

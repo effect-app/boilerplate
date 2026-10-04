@@ -1,0 +1,14 @@
+diff --git a/bin/cli.js b/bin/cli.js
+index 99b53370dac23a5980aae07fb97299aec221d15e..4b42c6cdb41936d9f55fd65b17439e467923c108 100755
+--- a/bin/cli.js
++++ b/bin/cli.js
+@@ -142,6 +142,9 @@ function dependencyFilter() {
+ 
+ 			prevFile = traversedFilePath;
+ 		}
++		// disable self referencing dependencies for now
++		// TODO: only filter self exports (export * as X from "./thisfile")
++		return dependencyFilePath !== traversedFilePath
+ 	};
+ }
+ 
