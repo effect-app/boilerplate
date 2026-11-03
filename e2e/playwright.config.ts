@@ -21,6 +21,7 @@ const config: PlaywrightTestConfig = {
   retries: process.env["CI"] ? 2 : 0,
   // workers: process.env["CI"] ? 4 : 2,
   use: {
+    launchOptions: { chromiumSandbox: true },
     baseURL: process.env["BASE_URL"] ?? "http://localhost:4000",
     extraHTTPHeaders: basicAuthCredentials
       ? {
