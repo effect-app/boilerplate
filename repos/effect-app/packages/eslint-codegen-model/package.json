@@ -1,0 +1,43 @@
+{
+  "name": "@effect-app/eslint-codegen-model",
+  "description": "Contains eslint helpers",
+  "sideEffects": false,
+  "type": "module",
+  "version": "2.0.0-beta.20",
+  "bin": {
+    "effect-app-codegen": "./dist/cli.js"
+  },
+  "scripts": {
+    "watch": "pnpm build:tsc -w",
+    "build:tsc": "pnpm clean-dist && pnpm check",
+    "check": "tsgo --build",
+    "build": "tsgo",
+    "codegen": "pnpm build && node ./dist/cli.js",
+    "circular": "madge --circular --ts-config ./tsconfig.json --extensions ts ./src",
+    "ncu": "ncu",
+    "pub": "pnpm prepublish && npm publish --access public",
+    "prepublish": "cp -f ./tsconfig.json ./tsconfig.json.bak && node ../../scripts/mergeTsConfig.mjs ./tsconfig.json",
+    "postpublish": "mv -f ./tsconfig.json.bak ./tsconfig.json && rm -f tsplus.config.json"
+  },
+  "dependencies": {
+    "glob": "8.1.0",
+    "js-yaml": "4.1.1",
+    "oxc-parser": "0.129.0"
+  },
+  "devDependencies": {
+    "@types/glob": "8.1.0",
+    "@types/js-yaml": "4.0.9",
+    "madge": "8.0.0",
+    "oxlint": "1.63.0",
+    "typescript": "~6.0.3",
+    "effect-app": "workspace:*",
+    "@effect-app/eslint-shared-config": "workspace:*"
+  },
+  "main": "index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./oxlint": "./dist/oxlint/index.js"
+  },
+  "author": "Wessel van der Veen & Scott vanBommel",
+  "license": "ISC"
+}

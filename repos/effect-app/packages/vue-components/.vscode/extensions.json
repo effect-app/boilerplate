@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "oxc.oxc-vscode",
+    "dprint.dprint",
+    "Vue.volar"
+  ]
+}

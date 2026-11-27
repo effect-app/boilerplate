@@ -1,0 +1,20 @@
+{
+  "reject": [
+    "glob",
+    "@types/glob",
+    "jwks-rsa",
+    "applicationinsights",
+    "@faker-js/faker",
+    "redis",
+    "@types/redis",
+    "react-hook-form",
+    "eslint-plugin-codegen",
+    "@tanstack/*"
+  ],
+  "dep": [
+    "prod",
+    "dev",
+    "optional",
+    "peer"
+  ]
+}

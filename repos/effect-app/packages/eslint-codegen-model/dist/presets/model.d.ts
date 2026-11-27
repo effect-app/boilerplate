@@ -1,0 +1,12 @@
+type PresetFn<T = Record<string, unknown>> = (args: {
+    meta: {
+        filename: string;
+        existingContent: string;
+    };
+    options: T;
+}, context?: unknown) => string;
+export declare const model: PresetFn<{
+    writeFullTypes?: boolean;
+}>;
+export {};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibW9kZWwuZC50cyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9wcmVzZXRzL21vZGVsLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUVBLEtBQUssUUFBUSxDQUFDLENBQUMsR0FBRyxNQUFNLENBQUMsTUFBTSxFQUFFLE9BQU8sQ0FBQyxJQUFJLENBQUMsSUFBSSxFQUFFO0lBQ2xELElBQUksRUFBRTtRQUFFLFFBQVEsRUFBRSxNQUFNLENBQUM7UUFBQyxlQUFlLEVBQUUsTUFBTSxDQUFBO0tBQUUsQ0FBQTtJQUNuRCxPQUFPLEVBQUUsQ0FBQyxDQUFBO0NBQ1gsRUFBRSxPQUFPLENBQUMsRUFBRSxPQUFPLEtBQUssTUFBTSxDQUFBO0FBd0MvQixlQUFPLE1BQU0sS0FBSyxFQUFFLFFBQVEsQ0FBQztJQUMzQixjQUFjLENBQUMsRUFBRSxPQUFPLENBQUE7Q0FDekIsQ0F1Q0EsQ0FBQSJ9
