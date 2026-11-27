@@ -80,6 +80,17 @@ ts-plugins are synced from `effect-app/shared` — see
 When using this boilerplate for a new project, keep the synced files in place and
 add your project-specific flow docs under `wiki/flows/`.
 
+### Reference sources (git subtrees)
+
+`repos/effect` and `repos/effect-app` are vendored as `--squash` git subtrees for
+local source reference and optional linking (`pnpm embedded:effect:link`). Sync them
+to the versions pinned in `package.json` with:
+
+```sh
+pnpm subtree:effect
+pnpm subtree:effect-app
+```
+
 ## Framework documentation
 
 [WIP](https://github.com/effect-ts-app/docs)
