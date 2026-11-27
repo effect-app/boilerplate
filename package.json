@@ -35,6 +35,7 @@
     "ncu:effect": "pnpm ncu:filters \"effect\" \"@effect/*\" \"@effect/atom*\" && pnpm ncu:effect-app",
     "ncu:effect-app": "pnpm ncu:filters \"effect-app\" \"@effect-app/*\" && pnpm i",
     "subtree:effect": "pnpm effa sync-effect",
+    "subtree:effect-app": "pnpm effa sync-effect-app --prefix repos/effect-app",
     "embedded:effect:link": "node scripts/embedded-effect-source.ts link",
     "embedded:effect:unlink": "node scripts/embedded-effect-source.ts unlink",
     "embedded:effect:status": "node scripts/embedded-effect-source.ts status",
