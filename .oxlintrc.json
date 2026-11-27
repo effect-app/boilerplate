@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "extends": ["./packages/eslint-shared-config/src/oxlintrc.json"],
+  // ignorePatterns overwrites (not merges) the base — all standard patterns must be repeated here.
+  "ignorePatterns": [
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/*.d.ts",
+    "**/*.js",
+    "**/*.jsx",
+    "**/vitest.config.ts",
+    "**/eslint.*.mjs",
+    "**/CHANGELOG.md",
+    "repos/**"
+  ]
+}

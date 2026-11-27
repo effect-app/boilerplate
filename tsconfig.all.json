@@ -1,0 +1,29 @@
+{
+  "extends": "./tsconfig.base.json",
+  "include": [],
+  "exclude": [
+    "**/.jest-cache",
+    "**/node_modules",
+    "**/build",
+    "**/lib",
+    "**/dist",
+    "**/.*"
+  ],
+  "references": [
+    {
+      "path": "packages/cli"
+    },
+    {
+      "path": "packages/eslint-codegen-model"
+    },
+    {
+      "path": "packages/effect-app"
+    },
+    {
+      "path": "packages/infra"
+    },
+    {
+      "path": "packages/vue"
+    }
+  ]
+}
