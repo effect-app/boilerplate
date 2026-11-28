@@ -62,23 +62,23 @@
           '';
         };
         # pnpm 12 is a native release archive; retain its adjacent node-gyp files
-        pnpmVersion = "12.14.0";
+        pnpmVersion = "12.23.0";
         pnpmAssets = {
           x86_64-linux = {
             file = "pnpm-linux-x64.tar.gz";
-            hash = "sha256-ORDDhSE2vtW8FRG5E3pF/UNX7Ws5cNnQiJNkHpAFhn4=";
+            hash = "sha256-tRXinyrBrcD75jFzQUpmgoJ7r/JPF+etNHaCG97yNqw=";
           };
           aarch64-linux = {
             file = "pnpm-linux-arm64.tar.gz";
-            hash = "sha256-z8eAueaQVJ5mM+EEX7H7bvhOOQcR4gmebMuukcMkVuo=";
+            hash = "sha256-3QP3YWYl/48T2VL2QfCGSiMA1z0KdRpoJzdhW9n5p6I=";
           };
           x86_64-darwin = {
             file = "pnpm-darwin-x64.tar.gz";
-            hash = "sha256-LEEuBzggSbTtsE+m2njz1O94ELdYU8gFRNz7fA7XmIA=";
+            hash = "sha256-llWHfGPzO7tkUIhx5EP8BaXkqHZBwb7Ng6RXF6SxXZA=";
           };
           aarch64-darwin = {
             file = "pnpm-darwin-arm64.tar.gz";
-            hash = "sha256-UPSODhdQiVJ5Cj+/WPzxTzuC76X1lMoErZBOKar4VLA=";
+            hash = "sha256-UrsxS/DUiSj8FRJszOQqoZknXikBi+8RKgSuis3KrxQ=";
           };
         };
         pnpmAsset = pnpmAssets.${system};
