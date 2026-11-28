@@ -1,6 +1,6 @@
 FROM node:24.22.1-alpine
 
-RUN corepack enable pnpm && corepack install -g pnpm@12.14.0
+RUN corepack enable pnpm && corepack install -g pnpm@12.23.0
 
 WORKDIR /app
 
