@@ -9,8 +9,7 @@
 1. run `pnpm check && pnpm lint-fix` to compare later
 2. update the effect / `@effect/*` / `effect-app` / `@effect-app/*` versions in the package.json files
 3. run `pnpm i`
-4. update the `repos/effect` and `repos/effect-app` submodule pointers to the same versions we just updated the packages to
-   (or `pnpm effa sync-effect`, then `pnpm i` inside the submodules when needed)
+4. update vendored `repos/effect` (`pnpm subtree:effect`, `--squash` git subtree) and `repos/effect-app` (`pnpm subtree:effect-app`, pruned `effa sync-effect-app` stripping nested `repos/`) to the same versions we just updated the packages to
 5. run `pnpm check && pnpm lint-fix` again, compare to before the update
 6. prepare commit
 

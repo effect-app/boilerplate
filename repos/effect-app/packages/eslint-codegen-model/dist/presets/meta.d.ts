@@ -1,0 +1,15 @@
+type PresetFn<T = Record<string, unknown>> = (args: {
+    meta: {
+        filename: string;
+        existingContent: string;
+    };
+    options: T;
+}, context?: unknown) => string;
+/**
+ * Adds file meta
+ */
+export declare const meta: PresetFn<{
+    sourcePrefix?: string;
+}>;
+export {};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWV0YS5kLnRzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL3ByZXNldHMvbWV0YS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxLQUFLLFFBQVEsQ0FBQyxDQUFDLEdBQUcsTUFBTSxDQUFDLE1BQU0sRUFBRSxPQUFPLENBQUMsSUFBSSxDQUFDLElBQUksRUFBRTtJQUNsRCxJQUFJLEVBQUU7UUFBRSxRQUFRLEVBQUUsTUFBTSxDQUFDO1FBQUMsZUFBZSxFQUFFLE1BQU0sQ0FBQTtLQUFFLENBQUE7SUFDbkQsT0FBTyxFQUFFLENBQUMsQ0FBQTtDQUNYLEVBQUUsT0FBTyxDQUFDLEVBQUUsT0FBTyxLQUFLLE1BQU0sQ0FBQTtBQUkvQjs7R0FFRztBQUNILGVBQU8sTUFBTSxJQUFJLEVBQUUsUUFBUSxDQUFDO0lBQUUsWUFBWSxDQUFDLEVBQUUsTUFBTSxDQUFBO0NBQUUsQ0FtQnBELENBQUEifQ==

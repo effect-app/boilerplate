@@ -1,0 +1,57 @@
+.claude/worktrees
+.DS_Store
+node_modules/
+*.log
+**/*/.next/
+packages/**/dist/
+!**/.eslintrc*.js
+.build/
+dist/
+**/bin/*.js
+**/bin/*.js.map
+**/bin/*.d.ts
+**/bin/*.d.ts.map
+tsconfig.tsbuildinfo
+.tsbuildinfo
+.ultra.cache.json
+.jest-cache
+.next
+.data/
+.npmrc
+.cache/
+
+.env.local
+.env
+
+# CMake
+cmake-build-*/
+
+
+# File-based project format
+*.iws
+
+# IntelliJ
+out/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# End of https://www.toptal.com/developers/gitignore/api/intellij
+
+.infra/*_rev.yaml
+
+# vitest?
+*.timestamp-*.mjs
+
+# nix
+.direnv
+
+
+storybook-static/
+run.sh

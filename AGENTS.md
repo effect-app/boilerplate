@@ -50,6 +50,11 @@ Keep it brief — a paragraph or a few bullets per angle. Record on every non-tr
   earlier spread (order matters).
 - No local imports from `repos/*`; use packages. `repos/effect` and `repos/effect-app`
   are reference source only. Never webfetch Effect; read the local `repos/effect`.
+- `repos/effect` and `repos/effect-app` are vendored in-repo (not submodules):
+  `repos/effect` as a `--squash` git subtree (`pnpm subtree:effect`) and
+  `repos/effect-app` via pruned `effa sync-effect-app` (`pnpm subtree:effect-app`,
+  which strips upstream `effect-app/libs`'s nested `repos/` directory and leaves
+  `repos/effect-app/repos/README.md` with an exact-commit upstream link).
 - `effect` / `effect-app` / `@effect-app/*` resolve from the **registry** by
   default, so edits to `repos/*` source are dormant in the app. To test a
   repos change locally, run `pnpm embedded:effect:link` first (links the vendored
